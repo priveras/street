@@ -2,7 +2,7 @@ version: '2'
 services:  
   nginx:
     image: nginx:latest
-    container_name: nz01
+    container_name: nzos
     ports:
       - "8000:8000"
     volumes:
@@ -12,7 +12,7 @@ services:
       - web
   web:
     build: .
-    container_name: dz01
+    container_name: dzos
     depends_on:
       - db
     volumes:
@@ -23,9 +23,11 @@ services:
       - redis
   db:
     image: postgres:latest
-    container_name: pz01
+    container_name: pzos
+    volumes:
+      - /var/lib/postgresql/data
   redis:
     image: redis:latest
-    container_name: rz01
+    container_name: rzos
     ports:
      - '6379:6379'

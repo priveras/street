@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'myapp.apps.MyappConfig',
     'celery',
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
@@ -134,6 +135,7 @@ CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
 STATIC_ROOT = './static/'
 MEDIA_ROOT = '/media/'
 
+LOGIN_REDIRECT_URL = '/home/'
 
 import os
 
