@@ -21,6 +21,22 @@ class DetailView(generic.DetailView):
 
         return context
 
+class SeedView(generic.DetailView):
+    model = Project
+    template_name = 'seed.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(SeedView, self).get_context_data(**kwargs)
+        context['team'] = Team.objects.filter(project=self.object)
+        context['comments'] = Comment.objects.filter(project=self.object)
+        context['assumptions'] = Assumption.objects.filter(project=self.object)
+        context['problems'] = Problem.objects.filter(project=self.object)
+        context['solutions'] = Solution.objects.filter(project=self.object)
+        context['models'] = BusinessModel.objects.filter(project=self.object)
+        context['metrics'] = Metric.objects.filter(project=self.object)
+
+        return context
+
 class HomeView(generic.ListView):
     template_name = 'home.html'
     context_object_name = 'projects_list'
