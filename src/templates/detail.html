@@ -29,7 +29,7 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(-142px, 20px, 0px);">
                         <!-- item-->
-                        <a href="javascript:void(0);" class="dropdown-item"><i class="mdi mdi-pencil mr-1"></i>Edit</a>
+                        <button class="dropdown-item" data-toggle="modal" data-target="#edit-project"><i class="mdi mdi-pencil mr-1"></i>Edit</button>
                         <!-- item-->
                         <a href="javascript:void(0);" class="dropdown-item"><i class="mdi mdi-delete mr-1"></i>Delete</a>
                         <!-- item-->
@@ -363,4 +363,31 @@
     </div>
 </div>
 <!-- end row -->
+<!--  Modal content for the above example -->
+<div class="modal fade" id="edit-project" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myLargeModalLabel">Edit Project</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group mb-3">
+                        <label for="simpleinput">Name</label>
+                        <input type="text" id="simpleinput" class="form-control">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="example-textarea">Description</label>
+                        <textarea class="form-control" id="example-textarea" rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 {% endblock %}
