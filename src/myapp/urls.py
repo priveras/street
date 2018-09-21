@@ -15,4 +15,5 @@ urlpatterns = [
     url(r'^accounts/logout/$', auth_views.logout, name='logout'),
     url(r'^accounts/info/$', login_required(views.InfoView.as_view()), name='info'),
     url(r'^learn/$', login_required(views.learn), name='learn'),
+    url(r'^faq/$', login_required(views.FaqView.as_view()), name='faq'),
 ]

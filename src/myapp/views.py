@@ -95,6 +95,9 @@ class HomeView(generic.ListView):
 
         return context
 
+class FaqView(generic.TemplateView):
+    template_name = 'faq.html'
+
 class InfoView(generic.CreateView):
     model = Profile
     form_class = ProfileForm
