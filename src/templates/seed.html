@@ -14,7 +14,7 @@
                     <li class="breadcrumb-item active">Seed</li>
                 </ol>
             </div>
-            <h4 class="page-title">Project Details</h4>
+            <h4 class="page-title">{{project.title}} - Seed I to III</h4>
         </div>
     </div>
 </div>     
@@ -23,32 +23,125 @@
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
+                <div class="card-widgets">
+                    <a href="javascript:;" data-toggle="reload"><i class="mdi mdi-refresh"></i></a>
+                    <a data-toggle="collapse" href="#cardCollpasec" role="button" aria-expanded="false" aria-controls="cardCollpase1"><i class="mdi mdi-minus"></i></a>
+                    <a href="#" data-toggle="remove"><i class="mdi mdi-close"></i></a>
+                </div>
                 <h4 class="header-title">Status Summary</h4>
-                <p class="text-muted font-14 mb-3">
-                    Badges scale to match the size of the immediate parent element by using relative font sizing and <code>em</code> units.
+                <p class="text-muted font-14 mb-2">
+                    Add your problem in this section and keep track of the hypothesis results
                 </p>
+
+                <div class="table-responsive collapse show" id="cardCollpasec">
+                    <table class="table table-top mb-0">
+                        <tbody>
+                            {% if not summary %}
+                            <p><i class="text-muted fa fa-exclamation-triangle"></i> No data available</p>
+                            {% endif %}
+                            {% for sum in summary %}
+                            <tr class="text-justify">
+                                <td>
+                                    {{sum.text}}
+                                    <br><br>
+                                    <small class="text-muted">{{sum.updated_at|date}}</small>
+                                </td>
+                                <td class="table-action">
+                                    <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-pencil"></i></a>
+                                    <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div> <!-- end card-body-->
+            <div class="card-footer text-muted">
+                <button type="button" class="btn btn-outline-primary btn-sm float-right" data-toggle="modal" data-target="#bs-example-modal-lg">Add New</button>
+            </div>
         </div> <!-- end card-->
     </div> <!-- end col-->
     <div class="col-md-6">
         <div class="card">
             <div class="card-body">
+                <div class="card-widgets">
+                    <a href="javascript:;" data-toggle="reload"><i class="mdi mdi-refresh"></i></a>
+                    <a data-toggle="collapse" href="#cardCollpaseb" role="button" aria-expanded="false" aria-controls="cardCollpase1"><i class="mdi mdi-minus"></i></a>
+                    <a href="#" data-toggle="remove"><i class="mdi mdi-close"></i></a>
+                </div>
                 <h4 class="header-title">Past 2 weeks Priorities</h4>
-                <p class="text-muted font-14 mb-3">
-                    Badges scale to match the size of the immediate parent element by using relative font sizing and <code>em</code> units.
+                <p class="text-muted font-14 mb-2">
+                    Add your problem in this section and keep track of the hypothesis results
                 </p>
+
+                <div class="table-responsive collapse show" id="cardCollpaseb">
+                    <table class="table table-top mb-0">
+                        <tbody>
+                            {% if not past %}
+                            <p><i class="text-muted fa fa-exclamation-triangle"></i> No data available</p>
+                            {% endif %}
+                            {% for p in past %}
+                            <tr class="text-justify">
+                                <td>
+                                    {{p.text}}
+                                    <br><br>
+                                    <small class="text-muted">{{p.updated_at|date}}</small>
+                                </td>
+                                <td class="table-action">
+                                    <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-pencil"></i></a>
+                                    <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div> <!-- end card-body-->
+            <div class="card-footer text-muted">
+                <button type="button" class="btn btn-outline-primary btn-sm float-right" data-toggle="modal" data-target="#bs-example-modal-lg">Add New</button>
+            </div>
         </div> <!-- end card-->
     </div> <!-- end col-->
 
     <div class="col-md-6">
         <div class="card">
             <div class="card-body">
+                <div class="card-widgets">
+                    <a href="javascript:;" data-toggle="reload"><i class="mdi mdi-refresh"></i></a>
+                    <a data-toggle="collapse" href="#cardCollpasea" role="button" aria-expanded="false" aria-controls="cardCollpase1"><i class="mdi mdi-minus"></i></a>
+                    <a href="#" data-toggle="remove"><i class="mdi mdi-close"></i></a>
+                </div>
                 <h4 class="header-title">Next 2 weeks Priorities</h4>
-                <p class="text-muted font-14 mb-3">
-                    Badges scale to match the size of the immediate parent element by using relative font sizing and <code>em</code> units.
+                <p class="text-muted font-14 mb-2">
+                    Add your problem in this section and keep track of the hypothesis results
                 </p>
+
+                <div class="table-responsive collapse show" id="cardCollpasea">
+                    <table class="table table-top mb-0">
+                        <tbody>
+                            {% if not future %}
+                            <p><i class="text-muted fa fa-exclamation-triangle"></i> No data available</p>
+                            {% endif %}
+                            {% for f in future %}
+                            <tr class="text-justify">
+                                <td>
+                                    {{f.text}}
+                                    <br><br>
+                                    <small class="text-muted">{{f.updated_at|date}}</small>
+                                </td>
+                                <td class="table-action">
+                                    <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-pencil"></i></a>
+                                    <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div> <!-- end card-body-->
+            <div class="card-footer text-muted">
+                <button type="button" class="btn btn-outline-primary btn-sm float-right" data-toggle="modal" data-target="#bs-example-modal-lg">Add New</button>
+            </div>
         </div> <!-- end card-->
     </div> <!-- end col-->
 
@@ -108,7 +201,7 @@
     <div class="card-body">
         <div class="card-widgets">
             <a href="javascript:;" data-toggle="reload"><i class="mdi mdi-refresh"></i></a>
-            <a data-toggle="collapse" href="#cardCollpase2" role="button" aria-expanded="false" aria-controls="cardCollpase1" class="collapsed"><i class="mdi mdi-minus"></i></a>
+            <a data-toggle="collapse" href="#cardCollpase2" role="button" aria-expanded="false" aria-controls="cardCollpase1"><i class="mdi mdi-minus"></i></a>
             <a href="#" data-toggle="remove"><i class="mdi mdi-close"></i></a>
         </div>
         <h4 class="header-title">Solution</h4>
@@ -158,7 +251,7 @@
     <div class="card-body">
         <div class="card-widgets">
             <a href="javascript:;" data-toggle="reload"><i class="mdi mdi-refresh"></i></a>
-            <a data-toggle="collapse" href="#cardCollpase3" role="button" aria-expanded="false" aria-controls="cardCollpase3" class="collapsed"><i class="mdi mdi-minus"></i></a>
+            <a data-toggle="collapse" href="#cardCollpase3" role="button" aria-expanded="false" aria-controls="cardCollpase3"><i class="mdi mdi-minus"></i></a>
             <a href="#" data-toggle="remove"><i class="mdi mdi-close"></i></a>
         </div>
         <h4 class="header-title">Business Model</h4>
@@ -208,7 +301,7 @@
     <div class="card-body">
         <div class="card-widgets">
             <a href="javascript:;" data-toggle="reload"><i class="mdi mdi-refresh"></i></a>
-            <a data-toggle="collapse" href="#cardCollpase4" role="button" aria-expanded="false" aria-controls="cardCollpase3" class="collapsed"><i class="mdi mdi-minus"></i></a>
+            <a data-toggle="collapse" href="#cardCollpase4" role="button" aria-expanded="false" aria-controls="cardCollpase3"><i class="mdi mdi-minus"></i></a>
             <a href="#" data-toggle="remove"><i class="mdi mdi-close"></i></a>
         </div>
         <h4 class="header-title">Assumptions</h4>
@@ -274,7 +367,7 @@
     <div class="card-body">
         <div class="card-widgets">
             <a href="javascript:;" data-toggle="reload"><i class="mdi mdi-refresh"></i></a>
-            <a data-toggle="collapse" href="#cardCollpase5" role="button" aria-expanded="false" aria-controls="cardCollpase3" class="collapsed"><i class="mdi mdi-minus"></i></a>
+            <a data-toggle="collapse" href="#cardCollpase5" role="button" aria-expanded="false" aria-controls="cardCollpase3"><i class="mdi mdi-minus"></i></a>
             <a href="#" data-toggle="remove"><i class="mdi mdi-close"></i></a>
         </div>
         <h4 class="header-title">Metrics</h4>

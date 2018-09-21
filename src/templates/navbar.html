@@ -7,10 +7,10 @@
         <!-- LOGO -->
         <a href="index.html" class="logo text-center">
             <span class="logo-lg">
-                <img src="assets/images/logo.png" alt="" height="16">
+                <img src="{% static 'assets/images/logo.png' %}" alt="" height="16">
             </span>
             <span class="logo-sm">
-                <img src="assets/images/logo_sm.png" alt="" height="16">
+                <img src="{% static 'assets/images/logo_sm.png' %}" alt="" height="16">
             </span>
         </a>
 
@@ -22,25 +22,31 @@
             <li class="side-nav-item">
                 <a href="{% url 'app:home' %}" class="side-nav-link">
                     <i class="dripicons-meter"></i>
-                    <span class="badge badge-success float-right">7</span>
-                    <span> Home </span>
+                    <!--<span class="badge badge-success float-right">7</span>-->
+                    <span> Projects </span>
                 </a>
             </li>
 
-            <li class="side-nav-item">
+            <!--<li class="side-nav-item">
                 <a href="javascript: void(0);" class="side-nav-link">
                     <i class="dripicons-location"></i>
                     <span> Projects </span>
                     <span class="menu-arrow"></span>
                 </a>
                 <ul class="side-nav-second-level" aria-expanded="false">
+                    {% for project in projects_list %}
                     <li>
-                        <a href="maps-google.html">Google Maps</a>
+                        <a href="{% url 'app:detail' project.slug %}">{{project.title}}</a>
                     </li>
-                    <li>
-                        <a href="maps-vector.html">Vector Maps</a>
-                    </li>
+                    {% endfor %}
                 </ul>
+            </li>-->
+            <li class="side-nav-item">
+                <a href="{% url 'app:learn' %}" class="side-nav-link">
+                    <i class="dripicons-meter"></i>
+                    <!--<span class="badge badge-success float-right">7</span>-->
+                    <span> Learn </span>
+                </a>
             </li>
 
         </ul>

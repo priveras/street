@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block content %}
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">OS Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'app:home' %}">Learn</a></li>
+                    <li class="breadcrumb-item active">Learn the OS</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Learn</h4>
+        </div>
+    </div>
+</div> 
+{% endblock %}

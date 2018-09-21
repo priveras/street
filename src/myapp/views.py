@@ -1,8 +1,14 @@
 from django.views import generic
-from .models import Project, Team, Comment, Assumption, Problem, BusinessModel, Solution, Metric, File, Profile
+from .models import Project, Team, Comment, Assumption, Problem, BusinessModel, Solution, Metric, File, Profile, Summary, Past, Future, Tutorial
 from django.contrib.auth.models import User
 from django.db.models import Q
 from .forms import ProfileForm
+from django.shortcuts import render
+
+def learn(request):
+    tutorial = Tutorial.objects.all()
+
+    return render(request, 'learn.html',{'tutorial':tutorial})
 
 class DetailView(generic.DetailView):
     model = Project
@@ -34,6 +40,9 @@ class SeedView(generic.DetailView):
         context['solutions'] = Solution.objects.filter(project=self.object)
         context['models'] = BusinessModel.objects.filter(project=self.object)
         context['metrics'] = Metric.objects.filter(project=self.object)
+        context['summary'] = Summary.objects.filter(project=self.object)
+        context['past'] = Past.objects.filter(project=self.object)
+        context['future'] = Future.objects.filter(project=self.object)
 
         return context
 

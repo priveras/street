@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'myapp.apps.MyappConfig',
     'celery',
     'widget_tweaks',
+    'django_summernote',
 ]
 
 MIDDLEWARE = [
