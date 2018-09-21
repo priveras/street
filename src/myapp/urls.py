@@ -8,6 +8,8 @@ app_name = 'app'
 urlpatterns = [
     url(r'^project/(?P<slug>[^\.]+)/$', login_required(views.DetailView.as_view()), name='detail'),
     url(r'^seed/(?P<slug>[^\.]+)/$', login_required(views.SeedView.as_view()), name='seed'),
+    url(r'^seed-launch/(?P<slug>[^\.]+)/$', login_required(views.SeedLaunchView.as_view()), name='seed-launch'),
+    url(r'^launch/(?P<slug>[^\.]+)/$', login_required(views.LaunchView.as_view()), name='launch'),
     url(r'^home/$', login_required(views.HomeView.as_view()), name='home'),
     url(r'^accounts/login/$', auth_views.login, name='login', kwargs={'redirect_authenticated_user': True}),
     url(r'^accounts/logout/$', auth_views.logout, name='logout'),

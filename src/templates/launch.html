@@ -1,0 +1,490 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load humanize %}
+{% block content %}
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">OS Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'app:home' %}">Projects</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'app:detail' project.slug %}">{{project.title}}</a></li>
+                    <li class="breadcrumb-item active">Launch</li>
+                </ol>
+            </div>
+            <h4 class="page-title">{{project.title}} - Launch</h4>
+        </div>
+    </div>
+</div>     
+<!-- end page title --> 
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="card-widgets">
+                    <a href="javascript:;" data-toggle="reload"><i class="mdi mdi-refresh"></i></a>
+                    <a data-toggle="collapse" href="#cardCollpasec" role="button" aria-expanded="false" aria-controls="cardCollpase1"><i class="mdi mdi-minus"></i></a>
+                    <a href="#" data-toggle="remove"><i class="mdi mdi-close"></i></a>
+                </div>
+                <h4 class="header-title">DVF Metrics</h4>
+                <div class="timeline-alt pb-0">
+                    <div class="timeline-item">
+                        <i class="bg-warning-lighten text-info timeline-icon"></i>
+                        <div class="timeline-item-info">
+                            <a href="#" class="mb-1 d-block" style="color:#6c757d">Desirabilty</a>
+                            <p></p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <i class="bg-danger-lighten text-primary timeline-icon"></i>
+                        <div class="timeline-item-info">
+                            <a href="#" class="mb-1 d-block" style="color:#6c757d">Viability</a>
+                            <p></p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <i class="bg-success-lighten text-primary timeline-icon"></i>
+                        <div class="timeline-item-info">
+                            <a href="#" class="mb-1 d-block" style="color:#6c757d">Feasibility</a>
+                            <p>
+                                <small class="text-muted">14 hours ago</small>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- end card-body-->
+            <div class="card-footer text-muted">
+                <button type="button" class="btn btn-outline-primary btn-sm float-right" data-toggle="modal" data-target="#bs-example-modal-lg">Edit</button>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body">
+                <div class="card-widgets">
+                    <a href="javascript:;" data-toggle="reload"><i class="mdi mdi-refresh"></i></a>
+                    <a data-toggle="collapse" href="#cardCollpasec" role="button" aria-expanded="false" aria-controls="cardCollpase1"><i class="mdi mdi-minus"></i></a>
+                    <a href="#" data-toggle="remove"><i class="mdi mdi-close"></i></a>
+                </div>
+                <h4 class="header-title">Status Summary</h4>
+                <p class="text-muted font-14 mb-2">
+                    Add your problem in this section and keep track of the hypothesis results
+                </p>
+
+                <div class="table-responsive collapse show" id="cardCollpasec" style="max-height:125px; overflow-y: auto;">
+                    <table class="table table-top mb-0">
+                        <tbody>
+                            {% if not summary %}
+                            <p><i class="text-muted fa fa-exclamation-triangle"></i> No data available</p>
+                            {% endif %}
+                            {% for sum in summary %}
+                            <tr class="text-justify">
+                                <td>
+                                    {{sum.text}}
+                                    <br><br>
+                                    <small class="text-muted">{{sum.updated_at|date}}</small>
+                                </td>
+                                <td class="table-action">
+                                    <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-pencil"></i></a>
+                                    <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div> <!-- end card-body-->
+            <div class="card-footer text-muted">
+                <button type="button" class="btn btn-outline-primary btn-sm float-right" data-toggle="modal" data-target="#bs-example-modal-lg">Add New</button>
+            </div>
+        </div> <!-- end card-->
+    </div> <!-- end col-->
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <div class="card-widgets">
+                    <a href="javascript:;" data-toggle="reload"><i class="mdi mdi-refresh"></i></a>
+                    <a data-toggle="collapse" href="#cardCollpaseb" role="button" aria-expanded="false" aria-controls="cardCollpase1"><i class="mdi mdi-minus"></i></a>
+                    <a href="#" data-toggle="remove"><i class="mdi mdi-close"></i></a>
+                </div>
+                <h4 class="header-title">Past 2 weeks Priorities</h4>
+                <p class="text-muted font-14 mb-2">
+                    Add your problem in this section and keep track of the hypothesis results
+                </p>
+
+                <div class="table-responsive collapse show" id="cardCollpaseb">
+                    <table class="table table-top mb-0">
+                        <tbody>
+                            {% if not past %}
+                            <p><i class="text-muted fa fa-exclamation-triangle"></i> No data available</p>
+                            {% endif %}
+                            {% for p in past %}
+                            <tr class="text-justify">
+                                <td>
+                                    {{p.text}}
+                                    <br><br>
+                                    <small class="text-muted">{{p.updated_at|date}}</small>
+                                </td>
+                                <td class="table-action">
+                                    <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-pencil"></i></a>
+                                    <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div> <!-- end card-body-->
+            <div class="card-footer text-muted">
+                <button type="button" class="btn btn-outline-primary btn-sm float-right" data-toggle="modal" data-target="#bs-example-modal-lg">Add New</button>
+            </div>
+        </div> <!-- end card-->
+    </div> <!-- end col-->
+
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <div class="card-widgets">
+                    <a href="javascript:;" data-toggle="reload"><i class="mdi mdi-refresh"></i></a>
+                    <a data-toggle="collapse" href="#cardCollpasea" role="button" aria-expanded="false" aria-controls="cardCollpase1"><i class="mdi mdi-minus"></i></a>
+                    <a href="#" data-toggle="remove"><i class="mdi mdi-close"></i></a>
+                </div>
+                <h4 class="header-title">Next 2 weeks Priorities</h4>
+                <p class="text-muted font-14 mb-2">
+                    Add your problem in this section and keep track of the hypothesis results
+                </p>
+
+                <div class="table-responsive collapse show" id="cardCollpasea">
+                    <table class="table table-top mb-0">
+                        <tbody>
+                            {% if not future %}
+                            <p><i class="text-muted fa fa-exclamation-triangle"></i> No data available</p>
+                            {% endif %}
+                            {% for f in future %}
+                            <tr class="text-justify">
+                                <td>
+                                    {{f.text}}
+                                    <br><br>
+                                    <small class="text-muted">{{f.updated_at|date}}</small>
+                                </td>
+                                <td class="table-action">
+                                    <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-pencil"></i></a>
+                                    <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div> <!-- end card-body-->
+            <div class="card-footer text-muted">
+                <button type="button" class="btn btn-outline-primary btn-sm float-right" data-toggle="modal" data-target="#bs-example-modal-lg">Add New</button>
+            </div>
+        </div> <!-- end card-->
+    </div> <!-- end col-->
+
+</div>
+<div class="card">
+    <div class="card-body">
+        <div class="card-widgets">
+            <a href="javascript:;" data-toggle="reload"><i class="mdi mdi-refresh"></i></a>
+            <a data-toggle="collapse" href="#cardCollpase1" role="button" aria-expanded="false" aria-controls="cardCollpase1"><i class="mdi mdi-minus"></i></a>
+            <a href="#" data-toggle="remove"><i class="mdi mdi-close"></i></a>
+        </div>
+        <h4 class="header-title">Problem</h4>
+        <p class="text-muted font-14 mb-2">
+            Add your problem in this section and keep track of the hypothesis results
+        </p>
+
+        <div class="table-responsive collapse show" id="cardCollpase1">
+            <table class="table table-top mb-0">
+                <tbody>
+                    {% if not problems %}
+                    <p><i class="text-muted fa fa-exclamation-triangle"></i> No data available</p>
+                    {% endif %}
+                    {% for problem in problems %}
+                    <tr class="text-justify">
+                        <td>
+                            {{problem.text}}
+                            <br><br>
+                            <small class="text-muted">{{problem.updated_at|date}}</small>
+                        </td>
+                        <td>
+                            {% if problem.status == "Validated" %}
+                            <span class="badge badge-success">{{problem.status}}</span>
+                            {% elif problem.status == "In Progress" %}
+                            <span class="badge badge-warning" style="color:white">{{problem.status}}</span>
+                            {% else %}
+                            <span class="badge badge-danger">{{problem.status}}</span>
+                            {% endif %}
+                        </td>
+                        <td class="table-action">
+                            <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-pencil"></i></a>
+                            <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+    <div class="card-footer text-muted">
+        <button type="button" class="btn btn-outline-primary btn-sm float-right" data-toggle="modal" data-target="#bs-example-modal-lg">Add New</button>
+    </div>
+</div>
+
+
+<div class="card">
+    <div class="card-body">
+        <div class="card-widgets">
+            <a href="javascript:;" data-toggle="reload"><i class="mdi mdi-refresh"></i></a>
+            <a data-toggle="collapse" href="#cardCollpase2" role="button" aria-expanded="false" aria-controls="cardCollpase1"><i class="mdi mdi-minus"></i></a>
+            <a href="#" data-toggle="remove"><i class="mdi mdi-close"></i></a>
+        </div>
+        <h4 class="header-title">Solution</h4>
+        <p class="text-muted font-14 mb-2">
+            Add your solution in this section and keep track of the hypothesis results
+        </p>
+
+        <div class="table-responsive collapse show" id="cardCollpase2">
+            <table class="table table-top mb-0">
+                <tbody>
+                    {% if not solutions %}
+                    <p><i class="text-muted fa fa-exclamation-triangle"></i> No data available</p>
+                    {% endif %}
+                    {% for solution in solutions %}
+                    <tr class="text-justify">
+                        <td>
+                            {{solution.text}}
+                            <br><br>
+                            <small class="text-muted">{{solution.updated_at|date}}</small>
+                        </td>
+                        <td>
+                            {% if solution.status == "Validated" %}
+                            <span class="badge badge-success">{{solution.status}}</span>
+                            {% elif solution.status == "In Progress" %}
+                            <span class="badge badge-warning" style="color:white">{{solution.status}}</span>
+                            {% else %}
+                            <span class="badge badge-danger">{{solution.status}}</span>
+                            {% endif %}
+                        </td>
+                        <td class="table-action">
+                            <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-pencil"></i></a>
+                            <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+    <div class="card-footer text-muted">
+        <button type="button" class="btn btn-outline-primary btn-sm float-right">Add New</button>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <div class="card-widgets">
+            <a href="javascript:;" data-toggle="reload"><i class="mdi mdi-refresh"></i></a>
+            <a data-toggle="collapse" href="#cardCollpase3" role="button" aria-expanded="false" aria-controls="cardCollpase3"><i class="mdi mdi-minus"></i></a>
+            <a href="#" data-toggle="remove"><i class="mdi mdi-close"></i></a>
+        </div>
+        <h4 class="header-title">Business Model</h4>
+        <p class="text-muted font-14 mb-2">
+            Add your business model in this section and keep track of the hypothesis results
+        </p>
+
+        <div class="table-responsive collapse show" id="cardCollpase3">
+            <table class="table table-top mb-0">
+                <tbody>
+                    {% if not models %}
+                    <p><i class="text-muted fa fa-exclamation-triangle"></i> No data available</p>
+                    {% endif %}
+                    {% for model in models %}
+                    <tr class="text-justify">
+                        <td>
+                            {{model.text}}
+                            <br><br>
+                            <small class="text-muted">{{model.updated_at|date}}</small>
+                        </td>
+                        <td>
+                            {% if model.status == "Validated" %}
+                            <span class="badge badge-success">{{model.status}}</span>
+                            {% elif model.status == "In Progress" %}
+                            <span class="badge badge-warning" style="color:white">{{model.status}}</span>
+                            {% else %}
+                            <span class="badge badge-danger">{{model.status}}</span>
+                            {% endif %}
+                        </td>
+                        <td class="table-action">
+                            <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-pencil"></i></a>
+                            <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+    <div class="card-footer text-muted">
+        <button type="button" class="btn btn-outline-primary btn-sm float-right">Add New</button>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <div class="card-widgets">
+            <a href="javascript:;" data-toggle="reload"><i class="mdi mdi-refresh"></i></a>
+            <a data-toggle="collapse" href="#cardCollpase4" role="button" aria-expanded="false" aria-controls="cardCollpase3"><i class="mdi mdi-minus"></i></a>
+            <a href="#" data-toggle="remove"><i class="mdi mdi-close"></i></a>
+        </div>
+        <h4 class="header-title">Assumptions</h4>
+        <p class="text-muted font-14 mb-2">
+            Add all assumptions, metrics, and status for your project in this section
+        </p>
+
+        <div class="table-responsive crd collapse show" id="cardCollpase4">
+            <table class="table table-hover table-top mb-0 mt-2">
+                <tbody>
+                    {% if not assumptions %}
+                    <p><i class="text-muted fa fa-exclamation-triangle"></i> No data available</p>
+                    {% else %}
+                    <tr>
+                        <th></th>
+                        <th>Assumption</th>
+                        <th>Metric</th>
+                        <th>Learnings</th>
+                        <th>Status</th>
+                        <th></th>
+                    </tr>
+                    {% for assumption in assumptions %}
+                    <tr class="text-justify">
+                        <td>
+                            <span class="badge badge-light">{{assumption.dvf|capfirst}}</span>
+                            <small>{{assumption.updated_at|date:'M d, y'}}</small>    
+                        </td>
+                        <td>
+                            {{assumption.assumption}}
+                        </td>
+                        <td>
+                            {{assumption.metric}}
+                        </td>
+                        <td>
+                            {{assumption.assumption}}
+                        </td>
+                        <td>
+                            {% if assumption.status == "Validated" %}
+                            <span class="badge badge-success">{{assumption.status}}</span>
+                            {% elif assumption.status == "In Progress" %}
+                            <span class="badge badge-warning">{{assumption.status}}</span>
+                            {% else %}
+                            <span class="badge badge-danger">{{assumption.status}}</span>
+                            {% endif %}
+                        </td>
+                        <td class="table-action">
+                            <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-pencil"></i></a>
+                            <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+    <div class="card-footer text-muted">
+        <button type="button" class="btn btn-outline-primary btn-sm float-right">Add New</button>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <div class="card-widgets">
+            <a href="javascript:;" data-toggle="reload"><i class="mdi mdi-refresh"></i></a>
+            <a data-toggle="collapse" href="#cardCollpase5" role="button" aria-expanded="false" aria-controls="cardCollpase3"><i class="mdi mdi-minus"></i></a>
+            <a href="#" data-toggle="remove"><i class="mdi mdi-close"></i></a>
+        </div>
+        <h4 class="header-title">Metrics</h4>
+        <p class="text-muted font-14 mb-2">
+            Add all metrics, values, and status for your project in this section
+        </p>
+
+        <div class="table-responsive crd collapse show" id="cardCollpase5">
+            <table class="table table-hover table-top mb-0">
+                <tbody>
+                    {% if not metrics %}
+                    <p><i class="text-muted fa fa-exclamation-triangle"></i> No data available</p>
+                    {% endif %}
+                    {% for metric in metrics %}
+                    <tr class="text-justify">
+                        <td>1</td>
+                        <td>
+                            <b>Metric:<br></b>{{metric.assumption}}
+                            <br>
+                            <b>Value: </b><br>{{metric.metric}}
+                        </td>
+                        <td>
+                            {% if metric.status == "Validated" %}
+                            <span class="badge badge-success">{{metric.status}}</span>
+                            {% elif metric.status == "In Progress" %}
+                            <span class="badge badge-warning">{{metric.status}}</span>
+                            {% else %}
+                            <span class="badge badge-danger">{{metric.status}}</span>
+                            {% endif %}
+                        </td>
+                        <td class="table-action">
+                            <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-pencil"></i></a>
+                            <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+    <div class="card-footer text-muted">
+        <button type="button" class="btn btn-outline-primary btn-sm float-right">Add New</button>
+    </div>
+</div>
+<!--  Modal content for the above example -->
+<div class="modal fade" id="bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myLargeModalLabel">Problem</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group mb-3">
+                        <label for="example-textarea">Problem Statement</label>
+                        <textarea class="form-control" id="example-textarea" rows="3"></textarea>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="example-select">Status</label>
+                        <select class="form-control" id="example-select">
+                            <option>In Progress</option>
+                            <option>Validated</option>
+                            <option>Invalidated</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+{% endblock %}

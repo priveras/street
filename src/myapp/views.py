@@ -35,14 +35,52 @@ class SeedView(generic.DetailView):
         context = super(SeedView, self).get_context_data(**kwargs)
         context['team'] = Team.objects.filter(project=self.object)
         context['comments'] = Comment.objects.filter(project=self.object)
-        context['assumptions'] = Assumption.objects.filter(project=self.object)
-        context['problems'] = Problem.objects.filter(project=self.object)
-        context['solutions'] = Solution.objects.filter(project=self.object)
-        context['models'] = BusinessModel.objects.filter(project=self.object)
-        context['metrics'] = Metric.objects.filter(project=self.object)
-        context['summary'] = Summary.objects.filter(project=self.object)
-        context['past'] = Past.objects.filter(project=self.object)
-        context['future'] = Future.objects.filter(project=self.object)
+        context['assumptions'] = Assumption.objects.filter(project=self.object).filter(stage="seed")
+        context['problems'] = Problem.objects.filter(project=self.object).filter(stage="seed")
+        context['solutions'] = Solution.objects.filter(project=self.object).filter(stage="seed")
+        context['models'] = BusinessModel.objects.filter(project=self.object).filter(stage="seed")
+        context['metrics'] = Metric.objects.filter(project=self.object).filter(stage="seed")
+        context['summary'] = Summary.objects.filter(project=self.object).filter(stage="seed")
+        context['past'] = Past.objects.filter(project=self.object).filter(stage="seed")
+        context['future'] = Future.objects.filter(project=self.object).filter(stage="seed")
+
+        return context
+
+class SeedLaunchView(generic.DetailView):
+    model = Project
+    template_name = 'seed-launch.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(SeedLaunchView, self).get_context_data(**kwargs)
+        context['team'] = Team.objects.filter(project=self.object)
+        context['comments'] = Comment.objects.filter(project=self.object)
+        context['assumptions'] = Assumption.objects.filter(project=self.object).filter(stage="seedlaunch")
+        context['problems'] = Problem.objects.filter(project=self.object).filter(stage="seedlaunch")
+        context['solutions'] = Solution.objects.filter(project=self.object).filter(stage="seedlaunch")
+        context['models'] = BusinessModel.objects.filter(project=self.object).filter(stage="seedlaunch")
+        context['metrics'] = Metric.objects.filter(project=self.object).filter(stage="seedlaunch")
+        context['summary'] = Summary.objects.filter(project=self.object).filter(stage="seedlaunch")
+        context['past'] = Past.objects.filter(project=self.object).filter(stage="seedlaunch")
+        context['future'] = Future.objects.filter(project=self.object).filter(stage="seedlaunch")
+
+        return context
+
+class LaunchView(generic.DetailView):
+    model = Project
+    template_name = 'launch.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(LaunchView, self).get_context_data(**kwargs)
+        context['team'] = Team.objects.filter(project=self.object)
+        context['comments'] = Comment.objects.filter(project=self.object)
+        context['assumptions'] = Assumption.objects.filter(project=self.object).filter(stage="launch")
+        context['problems'] = Problem.objects.filter(project=self.object).filter(stage="launch")
+        context['solutions'] = Solution.objects.filter(project=self.object).filter(stage="launch")
+        context['models'] = BusinessModel.objects.filter(project=self.object).filter(stage="launch")
+        context['metrics'] = Metric.objects.filter(project=self.object).filter(stage="launch")
+        context['summary'] = Summary.objects.filter(project=self.object).filter(stage="launch")
+        context['past'] = Past.objects.filter(project=self.object).filter(stage="launch")
+        context['future'] = Future.objects.filter(project=self.object).filter(stage="launch")
 
         return context
 

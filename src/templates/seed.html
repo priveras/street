@@ -356,7 +356,7 @@
                 <tbody>
                     {% if not assumptions %}
                     <p><i class="text-muted fa fa-exclamation-triangle"></i> No data available</p>
-                    {% endif %}
+                    {% else %}
                     <tr>
                         <th></th>
                         <th>Assumption</th>
@@ -395,6 +395,7 @@
                         </td>
                     </tr>
                     {% endfor %}
+                    {% endif %}
                 </tbody>
             </table>
         </div>
