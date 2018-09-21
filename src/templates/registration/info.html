@@ -1,0 +1,71 @@
+{% extends '../base.html' %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+{% block content %}
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">OS Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Accounts</a></li>
+                    <li class="breadcrumb-item active">Info</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Complete Your Profile</h4>
+        </div>
+    </div>
+</div>     
+<!-- end page title --> 
+
+<!-- CONTENT -->
+<div class="container-fluid">
+<div class="row" id="validation">
+{% if form.errors %}
+  <ul>
+    {% for field in form %}
+        {% if field.errors %}
+            <li><strong class="text-danger">{{ field.label_tag }}</strong> {{ field.errors }}</li>
+        {% endif %}
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}
+</div>
+<div class="row">
+  <div class="col-12 col-xl-8">
+    <div class="card">
+        <div class="card-body">
+
+          <form action="" method="POST" enctype="multipart/form-data" class="validation-wizard wizard-circle">
+            {% csrf_token %}
+            <div class="form-group">
+              <label for="exampleInputEmail1">First Name</label>
+              {% render_field form.first_name|attr:"placeholder:John" class="form-control required" %}
+            </div>
+            <div class="form-group">
+              <label for="exampleInputPassword1">Last Name</label>
+              {% render_field form.last_name|attr:"placeholder:Doe" class="form-control required" %}
+            </div>
+            <div class="form-group">
+              <label for="exampleInputPassword1">Job Title</label>
+              {% render_field form.job_title|attr:"placeholder:Marketing Director" class="form-control required" %}
+            </div>
+            <div class="form-group">
+              <label for="exampleInputPassword1">Location</label>
+              {% render_field form.location|attr:"placeholder:San Francisco" class="form-control required" %}
+            </div>
+            <div class="form-group">
+              <label for="exampleInputPassword1">Profile Image</label>
+              {% render_field form.profile_image class="form-control-file required" %}
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+          
+        </div>
+      </div>
+  </div>
+</div>
+</div>
+{% endblock %}

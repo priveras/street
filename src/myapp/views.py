@@ -3,7 +3,7 @@ from .models import Project, Team, Comment, Assumption, Problem, BusinessModel, 
 from django.contrib.auth.models import User
 from django.db.models import Q
 from .forms import ProfileForm
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 def learn(request):
     tutorial = Tutorial.objects.all()
@@ -57,10 +57,10 @@ class HomeView(generic.ListView):
 
         return context
 
-class RegisterView(generic.CreateView):
+class InfoView(generic.CreateView):
     model = Profile
     form_class = ProfileForm
-    template_name = 'registration/register.html'
+    template_name = 'registration/info.html'
 
     def form_valid(self, form):
         p = form.save(commit=False)
@@ -77,4 +77,4 @@ class RegisterView(generic.CreateView):
             p.id = profile.id
 
         p.save()
-        return redirect('/')
+        return redirect('/home/')

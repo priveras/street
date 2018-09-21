@@ -131,11 +131,15 @@
                                 <a class="nav-link dropdown-toggle nav-user arrow-none mr-0" data-toggle="dropdown" href="#" role="button" aria-haspopup="false"
                                     aria-expanded="false">
                                     <span class="account-user-avatar"> 
-                                        <img src="{% static 'assets/images/users/avatar-1.jpg' %}" alt="user-image" class="rounded-circle">
+                                        {% for profile in user.profile_set.all %}
+                                        <img src="{{profile.profile_image.url}}" alt="user-image" class="rounded-circle">
+                                        {% endfor %}
                                     </span>
                                     <span>
                                         <span class="account-user-name">{{user.first_name}} {{user.last_name}}</span>
-                                        <span class="account-position">Founder</span>
+                                        {% for profile in user.profile_set.all %}
+                                        <span class="account-position">{{profile.job_title}}</span>
+                                        {% endfor %}
                                     </span>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-animated profile-dropdown ">

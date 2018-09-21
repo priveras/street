@@ -8,10 +8,9 @@ class Tutorial(models.Model):
 
 class Profile(models.Model):
     user = models.ForeignKey(User, unique=True)
-    profile_image = models.FileField(upload_to='images/%Y%m%d', blank=True, null=True), 
-    job_title = models.CharField(max_length=200, blank=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    created_at = models.DateTimeField(db_index=True, auto_now_add=True)
+    job_title = models.CharField(max_length=200)
+    location = models.CharField(max_length=200)
+    profile_image = models.FileField(upload_to='images/%Y%m%d', null=True)
 
     def __str__(self):
         return str(self.user)

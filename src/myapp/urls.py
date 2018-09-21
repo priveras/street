@@ -11,6 +11,6 @@ urlpatterns = [
     url(r'^home/$', login_required(views.HomeView.as_view()), name='home'),
     url(r'^accounts/login/$', auth_views.login, name='login', kwargs={'redirect_authenticated_user': True}),
     url(r'^accounts/logout/$', auth_views.logout, name='logout'),
-    url(r'^register/$', login_required(views.RegisterView.as_view()), name='register'),
+    url(r'^accounts/info/$', login_required(views.InfoView.as_view()), name='info'),
     url(r'^learn/$', login_required(views.learn), name='learn'),
 ]
