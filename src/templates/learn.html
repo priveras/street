@@ -16,4 +16,209 @@
         </div>
     </div>
 </div> 
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+                <h4 class="header-title mb-3">Learn the OS</h4>
+
+                <div class="row">
+                    <div class="col-sm-3 mb-2 mb-sm-0">
+                        <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                            <a class="nav-link active show" data-id="nav-1" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">
+                                <i class="mdi mdi-home-variant d-lg-none d-block mr-1"></i>
+                                <span class="d-none d-lg-block">ZX Dashboard <i class="mdi mdi-check-circle text-success"></i></span>
+                            </a>
+                            <a class="nav-link" data-id="nav-2" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">
+                                <i class="mdi mdi-account-circle d-lg-none d-block mr-1"></i>
+                                <span class="d-none d-lg-block">OS Model</span>
+                            </a>
+                            <a class="nav-link" data-id="nav-3" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">
+                                <i class="mdi mdi-settings-outline d-lg-none d-block mr-1"></i>
+                                <span class="d-none d-lg-block">Assumptions</span>
+                            </a>
+                            <a class="nav-link" data-id="nav-4" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-4" role="tab" aria-controls="v-pills-settings" aria-selected="false">
+                                <i class="mdi mdi-settings-outline d-lg-none d-block mr-1"></i>
+                                <span class="d-none d-lg-block">Elevator Pitch</span>
+                            </a>
+                            <a class="nav-link" data-id="nav-5" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-5" role="tab" aria-controls="v-pills-settings" aria-selected="false">
+                                <i class="mdi mdi-settings-outline d-lg-none d-block mr-1"></i>
+                                <span class="d-none d-lg-block">Problem</span>
+                            </a>
+                            <a class="nav-link" data-id="nav-6" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-6" role="tab" aria-controls="v-pills-settings" aria-selected="false">
+                                <i class="mdi mdi-settings-outline d-lg-none d-block mr-1"></i>
+                                <span class="d-none d-lg-block">Solution</span>
+                            </a>
+                            <a class="nav-link" data-id="nav-7" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-7" role="tab" aria-controls="v-pills-settings" aria-selected="false">
+                                <i class="mdi mdi-settings-outline d-lg-none d-block mr-1"></i>
+                                <span class="d-none d-lg-block">Business Model</span>
+                            </a>
+                            <a class="nav-link" data-id="nav-8" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-8" role="tab" aria-controls="v-pills-settings" aria-selected="false">
+                                <i class="mdi mdi-settings-outline d-lg-none d-block mr-1"></i>
+                                <span class="d-none d-lg-block">Checkpoint</span>
+                            </a>
+                            <a class="nav-link" data-id="nav-9" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-9" role="tab" aria-controls="v-pills-settings" aria-selected="false">
+                                <i class="mdi mdi-settings-outline d-lg-none d-block mr-1"></i>
+                                <span class="d-none d-lg-block">Assumption List</span>
+                            </a>
+                            <a class="nav-link" data-id="nav-10" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-10" role="tab" aria-controls="v-pills-settings" aria-selected="false">
+                                <i class="mdi mdi-settings-outline d-lg-none d-block mr-1"></i>
+                                <span class="d-none d-lg-block">Traction</span>
+                            </a>
+                            <a class="nav-link" data-id="nav-11" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-11" role="tab" aria-controls="v-pills-settings" aria-selected="false">
+                                <i class="mdi mdi-settings-outline d-lg-none d-block mr-1"></i>
+                                <span class="d-none d-lg-block">Dashboard</span>
+                            </a>
+                            <a class="nav-link" data-id="nav-12" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-12" role="tab" aria-controls="v-pills-settings" aria-selected="false">
+                                <i class="mdi mdi-settings-outline d-lg-none d-block mr-1"></i>
+                                <span class="d-none d-lg-block">Next Steps</span>
+                            </a>
+                        </div>
+                    </div> <!-- end col-->
+
+                    <div class="col-sm-9">
+                        <div class="tab-content" id="v-pills-tabContent">
+                            <div class="tab-pane fade active show" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                                {{tutorial.0.content|safe}}
+                                <div class="row" style="margin-top:50px">
+                                    <div class="col-sm-6">
+                                        
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="btn btn-success float-right">Continue</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                                {{tutorial.1.content|safe}}
+                                <div class="row" style="margin-top:50px">
+                                    <div class="col-sm-6">
+                                        <div class="btn btn-success left">Previous</div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="btn btn-success float-right">Continue</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+                              {{tutorial.2.content|safe}}
+                              <div class="row" style="margin-top:50px">
+                                    <div class="col-sm-6">
+                                        <div class="btn btn-success left">Previous</div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="btn btn-success float-right">Continue</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="v-pills-4" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+                              {{tutorial.3.content|safe}}
+                              <div class="row" style="margin-top:50px">
+                                    <div class="col-sm-6">
+                                        <div class="btn btn-success left">Previous</div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="btn btn-success float-right">Continue</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="v-pills-5" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+                              {{tutorial.4.content|safe}}
+                              <div class="row" style="margin-top:50px">
+                                    <div class="col-sm-6">
+                                        <div class="btn btn-success left">Previous</div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="btn btn-success float-right">Continue</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="v-pills-6" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+                              {{tutorial.5.content|safe}}
+                              <div class="row" style="margin-top:50px">
+                                    <div class="col-sm-6">
+                                        <div class="btn btn-success left">Previous</div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="btn btn-success float-right">Continue</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="v-pills-7" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+                              {{tutorial.6.content|safe}}
+                              <div class="row" style="margin-top:50px">
+                                    <div class="col-sm-6">
+                                        <div class="btn btn-success left">Previous</div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="btn btn-success float-right">Continue</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="v-pills-8" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+                              {{tutorial.7.content|safe}}
+                              <div class="row" style="margin-top:50px">
+                                    <div class="col-sm-6">
+                                        <div class="btn btn-success left">Previous</div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="btn btn-success float-right">Continue</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="v-pills-9" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+                              {{tutorial.8.content|safe}}
+                              <div class="row" style="margin-top:50px">
+                                    <div class="col-sm-6">
+                                        <div class="btn btn-success left">Previous</div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="btn btn-success float-right">Continue</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="v-pills-10" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+                              {{tutorial.9.content|safe}}
+                              <div class="row" style="margin-top:50px">
+                                    <div class="col-sm-6">
+                                        <div class="btn btn-success left">Previous</div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="btn btn-success float-right">Continue</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="v-pills-11" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+                              {{tutorial.10.content|safe}}
+                              <div class="row" style="margin-top:50px">
+                                    <div class="col-sm-6">
+                                        <div class="btn btn-success left">Previous</div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="btn btn-success float-right">Continue</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="v-pills-12" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+                              {{tutorial.11.content|safe}}
+                              <div class="row" style="margin-top:50px">
+                                    <div class="col-sm-6">
+                                        <div class="btn btn-success left">Previous</div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <a href="{% url 'app:home' %}">
+                                            <div class="btn btn-success float-right">Finish</div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> <!-- end tab-content-->
+                    </div> <!-- end col-->
+                </div>
+                <!-- end row-->
+            </div> <!-- end card-body-->
+        </div>
+    </div>
+</div>
 {% endblock %}

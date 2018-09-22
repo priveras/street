@@ -6,7 +6,7 @@ from .forms import ProfileForm
 from django.shortcuts import render, redirect
 
 def learn(request):
-    tutorial = Tutorial.objects.all()
+    tutorial = Tutorial.objects.order_by('created_at')
 
     return render(request, 'learn.html',{'tutorial':tutorial})
 

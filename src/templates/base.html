@@ -13,7 +13,6 @@
         <!-- App css -->
         <link href="{% static 'assets/css/icons.min.css' %}" rel="stylesheet" type="text/css" />
         <link href="{% static 'assets/css/app.min.css' %}" rel="stylesheet" type="text/css" />
-        <link href="{% static 'assets/css/main.css' %}" rel="stylesheet" type="text/css" />
 
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 
@@ -115,7 +114,7 @@
                                     </a>
 
                                     <!-- item-->
-                                    <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                    <a href="{% url 'app:logout' %}" class="dropdown-item notify-item">
                                         <i class="mdi mdi-logout"></i>
                                         <span>Logout</span>
                                     </a>
@@ -289,7 +288,10 @@
 
 
         <!-- App js -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="{% static 'assets/js/app.min.js' %}"></script>
+
+        <script src="{% static 'assets/js/main.js' %}"></script>
 
         <!-- third party js -->
         <script src="{% static 'assets/js/vendor/Chart.bundle.min.js' %}"></script>
