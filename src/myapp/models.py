@@ -40,13 +40,18 @@ class Project(models.Model):
 		return str(self.title)
 
 class Team(models.Model):
-	user = models.ForeignKey(User)
-	project = models.ForeignKey(Project)
-	updated_at = models.DateTimeField(auto_now=True)
-	created_at = models.DateTimeField(db_index=True, auto_now_add=True)
+    user = models.ForeignKey(User)
+    project = models.ForeignKey(Project)
+    permission_choices = (
+            ('edit', 'Edit'),
+            ('view', 'View'),
+            )
+    permission = models.CharField(choices=permission_choices, max_length=200, blank=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(db_index=True, auto_now_add=True)
 
-	def __str__(self):
-		return str(self.project)
+    def __str__(self):
+        return str(self.project)
 
 class Comment(models.Model):
     project = models.ForeignKey(Project)
