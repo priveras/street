@@ -79,16 +79,31 @@
                     </div>
                 </div>
 
-                <div>
-                    <h5>Team Members:</h5>
-                    {% for member in team %}
-                    {{member.user.logentry}}
-                    <a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{member.user.first_name}} {{member.user.last_name}}" class="d-inline-block">
-                        {% for profile in user.profile_set.all %}
-                        <img src="{{profile.profile_image.url}}" class="rounded-circle img-thumbnail avatar-sm" alt="friend">
+                <div class="row">
+                    <div class="col-6">
+                        <h5>Team Members:</h5>
+                        {% for member in team %}
+                        {{member.user.logentry}}
+                        <a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{member.user.first_name}} {{member.user.last_name}}" class="d-inline-block">
+                            {% for profile in member.user.profile_set.all %}
+                            <img src="{{profile.profile_image.url}}" class="rounded-circle img-thumbnail avatar-sm" alt="friend">
+                            {% endfor %}
+                        </a>
                         {% endfor %}
-                    </a>
-                    {% endfor %}
+                    </div>
+                    <div class="col-auto">
+                        {% if viewers %}
+                        <h5>Viewers:</h5>
+                        {% for member in viewers %}
+                        {{member.user.logentry}}
+                        <a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{member.user.first_name}} {{member.user.last_name}}" class="d-inline-block">
+                            {% for profile in member.user.profile_set.all %}
+                            <img src="{{profile.profile_image.url}}" class="rounded-circle img-thumbnail avatar-sm" alt="friend">
+                            {% endfor %}
+                        </a>
+                        {% endfor %}
+                        {% endif %}
+                    </div>
                 </div>
 
             </div> <!-- end card-body-->
@@ -216,7 +231,7 @@
                     {% for comment in comments %}
 
                     <div class="media mt-2">
-                        {% for profile in user.profile_set.all %}
+                        {% for profile in comment.user.profile_set.all %}
                         <img class="mr-3 avatar-sm rounded-circle" src="{{profile.profile_image.url}}" alt="Generic placeholder image">
                         {% endfor %}
                         <div class="media-body">

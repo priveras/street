@@ -18,7 +18,8 @@ class DetailView(generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(DetailView, self).get_context_data(**kwargs)
-        context['team'] = Team.objects.filter(project=self.object)
+        context['team'] = Team.objects.filter(project=self.object).filter(permission="edit")
+        context['viewers'] = Team.objects.filter(project=self.object).filter(permission="view")
         context['comments'] = Comment.objects.filter(project=self.object)
         context['assumptions'] = Assumption.objects.filter(project=self.object)
         context['problems'] = Problem.objects.filter(project=self.object)
@@ -36,6 +37,7 @@ class SeedView(generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super(SeedView, self).get_context_data(**kwargs)
         context['team'] = Team.objects.filter(project=self.object)
+        context['permission'] = Team.objects.filter(project=self.object).filter(user=self.request.user).filter(permission="edit")
         context['comments'] = Comment.objects.filter(project=self.object)
         context['assumptions'] = Assumption.objects.filter(project=self.object).filter(stage="seed")
         context['problems'] = Problem.objects.filter(project=self.object).filter(stage="seed")

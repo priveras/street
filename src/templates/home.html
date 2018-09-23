@@ -22,7 +22,7 @@
         <span aria-hidden="true">×</span>
     </button>
     <h4 class="alert-heading">Welcome to the OS Dashboard!</h4>
-    <p>We are very happy to see you here. You're almost ready to start tracking your amazing project. Before you start please view go through the tutorial video so you can get the most out of using the dashboard.</p>
+    <p>We are very happy to see you here. You're almost ready to start tracking your amazing project. Before you start please go through the welcome video so you can get the most out of using the dashboard.</p>
     <button type="button" class="btn btn-info" data-toggle="modal" data-target="#video">Welcome Video</button>
     <!--<hr>
     <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>-->
@@ -85,7 +85,7 @@
                 <div>
                     {% for member in project.team_set.all|slice:":4" %}
                     <a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{member.user.first_name}} {{member.user.last_name}}" class="d-inline-block">
-                        {% for profile in user.profile_set.all %}
+                        {% for profile in member.user.profile_set.all %}
                         <img src="{{profile.profile_image.url}}" class="rounded-circle avatar-xs" alt="friend">
                         {% endfor %}
                     </a>
@@ -128,7 +128,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary">Mark as Viewed</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
@@ -145,11 +145,11 @@
                 <form id="post-form" action="/project/create/" method="post">
                     <div class="form-group mb-3">
                         <label for="simpleinput">Title</label>
-                        <input id="title" type="text" id="simpleinput" class="form-control">
+                        <input id="title" type="text" id="simpleinput" class="form-control" placeholder="Add a title...">
                     </div>
                     <div class="form-group mb-3">
                         <label for="example-textarea">Description</label>
-                        <textarea id="description"class="form-control" id="example-textarea" rows="3"></textarea>
+                        <textarea id="description"class="form-control" id="example-textarea" rows="3" placeholder="Add a description..."></textarea>
                     </div>
                 </form>
             </div>
@@ -202,6 +202,13 @@
                     <div class="form-group mb-3">
                         <label for="simpleinput">EmailAddress</label>
                         <input id="title" type="email" id="simpleinput" class="form-control" placeholder="john@doe.com">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="simpleinput">Access Type</label>
+                        <select class="form-control" id="example-select">
+                            <option>Edit</option>
+                            <option>View</option>
+                        </select>
                     </div>
                 </form>
             </div>
