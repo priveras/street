@@ -100,6 +100,11 @@
                                         <i class="mdi mdi-account-circle"></i>
                                         <span>My Account</span>
                                     </a>
+                                    <!-- item-->
+                                    <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                        <i class="mdi mdi-account-settings-variant"></i>
+                                        <span>Tutorial</span>
+                                    </a>
 
                                     <!-- item-->
                                     <a href="javascript:void(0);" class="dropdown-item notify-item">
@@ -114,10 +119,16 @@
                                     </a>
 
                                     <!-- item-->
-                                    <a href="{% url 'app:logout' %}" class="dropdown-item notify-item">
-                                        <i class="mdi mdi-logout"></i>
-                                        <span>Logout</span>
-                                    </a>
+                                    <form method="post" action="{% url 'account_logout' %}">
+                                        {% csrf_token %}
+                                        {% if redirect_field_value %}
+                                        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+                                        {% endif %}
+                                        <button class="dropdown-item notify-item" style="cursor:pointer">
+                                            <i class="mdi mdi-logout"></i>
+                                            <span>Logout</span>
+                                        </button>
+                                    </form>
 
                                 </div>
                             </li>

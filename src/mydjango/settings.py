@@ -42,6 +42,10 @@ INSTALLED_APPS = [
     'celery',
     'widget_tweaks',
     'django_summernote',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
 ]
 
 MIDDLEWARE = [
@@ -111,6 +115,14 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+AUTHENTICATION_BACKENDS = (
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 
@@ -124,6 +136,13 @@ USE_L10N = True
 
 USE_TZ = True
 
+SITE_ID = 1
+
+ACCOUNT_EMAIL_REQUIRED = True
+
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
@@ -138,7 +157,7 @@ CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
 STATIC_ROOT = './static/'
 MEDIA_ROOT = '/media/'
 
-LOGIN_REDIRECT_URL = '/home/'
+LOGIN_REDIRECT_URL = '/projects/'
 
 import os
 
