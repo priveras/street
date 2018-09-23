@@ -1,9 +1,11 @@
 from django.views import generic
-from .models import Project, Team, Comment, Assumption, Problem, BusinessModel, Solution, Metric, File, Profile, Summary, Past, Future, Tutorial
+from .models import Project, Team, Comment, Assumption, Problem, BusinessModel, Solution, Metric, File, Profile, Summary, Past, Future, Tutorial, Elevator
 from django.contrib.auth.models import User
 from django.db.models import Q
 from .forms import ProfileForm
 from django.shortcuts import render, redirect
+from django.views.decorators.csrf import csrf_exempt
+from datetime import date
 
 def learn(request):
     tutorial = Tutorial.objects.order_by('created_at')
@@ -43,6 +45,7 @@ class SeedView(generic.DetailView):
         context['summary'] = Summary.objects.filter(project=self.object).filter(stage="seed")
         context['past'] = Past.objects.filter(project=self.object).filter(stage="seed")
         context['future'] = Future.objects.filter(project=self.object).filter(stage="seed")
+        context['elevators'] = Elevator.objects.filter(project=self.object).filter(stage="seed")
 
         return context
 
@@ -62,6 +65,7 @@ class SeedLaunchView(generic.DetailView):
         context['summary'] = Summary.objects.filter(project=self.object).filter(stage="seedlaunch")
         context['past'] = Past.objects.filter(project=self.object).filter(stage="seedlaunch")
         context['future'] = Future.objects.filter(project=self.object).filter(stage="seedlaunch")
+        context['elevators'] = Elevator.objects.filter(project=self.object).filter(stage="seedlaunch")
 
         return context
 
@@ -81,6 +85,7 @@ class LaunchView(generic.DetailView):
         context['summary'] = Summary.objects.filter(project=self.object).filter(stage="launch")
         context['past'] = Past.objects.filter(project=self.object).filter(stage="launch")
         context['future'] = Future.objects.filter(project=self.object).filter(stage="launch")
+        context['elevators'] = Elevator.objects.filter(project=self.object).filter(stage="launch")
 
         return context
 
@@ -91,7 +96,14 @@ class HomeView(generic.ListView):
 
     def get_context_data(self, **kwargs):
         context = super(HomeView, self).get_context_data(**kwargs)
+        
+        if date.today() == self.request.user.date_joined.date():
+            alert = True
+        else:
+            alert = False
+
         context['projects_list'] = Project.objects.filter(team__user=self.request.user)
+        context['alert'] = alert
 
         return context
 
@@ -118,4 +130,4 @@ class InfoView(generic.CreateView):
             p.id = profile.id
 
         p.save()
-        return redirect('/home/')
+        return redirect('/projects/')

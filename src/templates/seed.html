@@ -25,11 +25,12 @@
             <div class="card-body">
                 <div class="card-widgets">
                     <a href="javascript:;" data-toggle="reload"><i class="mdi mdi-refresh"></i></a>
-                    <a data-toggle="collapse" href="#cardCollpasec" role="button" aria-expanded="false" aria-controls="cardCollpase1"><i class="mdi mdi-minus"></i></a>
+                    <a data-toggle="collapse" href="#cardCollpase9" role="button" aria-expanded="false" aria-controls="cardCollpase1"><i class="mdi mdi-minus"></i></a>
+
                     <a href="#" data-toggle="remove"><i class="mdi mdi-close"></i></a>
                 </div>
                 <h4 class="header-title">DVF Metrics</h4>
-                <div class="timeline-alt pb-0">
+                <div id="cardCollpase9"  class="timeline-alt pb-0 collapse show">
                     <div class="timeline-item">
                         <i class="bg-warning-lighten text-info timeline-icon"></i>
                         <div class="timeline-item-info">
@@ -116,7 +117,7 @@
                     Add your problem in this section and keep track of the hypothesis results
                 </p>
 
-                <div class="table-responsive collapse show" id="cardCollpaseb">
+                <div class="table-responsive collapse show" id="cardCollpaseb" style="max-height:125px; overflow-y: auto;">
                     <table class="table table-top mb-0">
                         <tbody>
                             {% if not past %}
@@ -158,7 +159,7 @@
                     Add your problem in this section and keep track of the hypothesis results
                 </p>
 
-                <div class="table-responsive collapse show" id="cardCollpasea">
+                <div class="table-responsive collapse show" id="cardCollpasea" style="max-height:125px; overflow-y: auto;">
                     <table class="table table-top mb-0">
                         <tbody>
                             {% if not future %}
@@ -192,6 +193,46 @@
     <div class="card-body">
         <div class="card-widgets">
             <a href="javascript:;" data-toggle="reload"><i class="mdi mdi-refresh"></i></a>
+            <a data-toggle="collapse" href="#cardCollpase4" role="button" aria-expanded="false" aria-controls="cardCollpase1"><i class="mdi mdi-minus"></i></a>
+            <a href="#" data-toggle="remove"><i class="mdi mdi-close"></i></a>
+        </div>
+        <h4 class="header-title">Elevator Pitch</h4>
+        <p class="text-muted font-14 mb-2">
+            Add your problem in this section and keep track of the hypothesis results
+        </p>
+
+        <div class="table-responsive collapse show" id="cardCollpase4" style="max-height:125px; overflow-y: auto;">
+            <table class="table table-top mb-0">
+                <tbody>
+                    {% if not elevators %}
+                    <p><i class="text-muted fa fa-exclamation-triangle"></i> No data available</p>
+                    {% endif %}
+                    {% for elevator in elevators %}
+                    <tr class="text-justify">
+                        <td>
+                            {{elevator.text}}
+                            <br><br>
+                            <small class="text-muted">{{elevator.updated_at|date}}</small>
+                        </td>
+                        <td class="table-action">
+                            <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-pencil"></i></a>
+                            <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+    <div class="card-footer text-muted">
+        <button type="button" class="btn btn-outline-primary btn-sm float-right" data-toggle="modal" data-target="#bs-example-modal-lg">Add New</button>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <div class="card-widgets">
+            <a href="javascript:;" data-toggle="reload"><i class="mdi mdi-refresh"></i></a>
             <a data-toggle="collapse" href="#cardCollpase1" role="button" aria-expanded="false" aria-controls="cardCollpase1"><i class="mdi mdi-minus"></i></a>
             <a href="#" data-toggle="remove"><i class="mdi mdi-close"></i></a>
         </div>
@@ -200,7 +241,7 @@
             Add your problem in this section and keep track of the hypothesis results
         </p>
 
-        <div class="table-responsive collapse show" id="cardCollpase1">
+        <div class="table-responsive collapse show" id="cardCollpase1" style="max-height:125px; overflow-y: auto;">
             <table class="table table-top mb-0">
                 <tbody>
                     {% if not problems %}
@@ -251,7 +292,7 @@
             Add your solution in this section and keep track of the hypothesis results
         </p>
 
-        <div class="table-responsive collapse show" id="cardCollpase2">
+        <div class="table-responsive collapse show" id="cardCollpase2" style="max-height:125px; overflow-y: auto;">
             <table class="table table-top mb-0">
                 <tbody>
                     {% if not solutions %}
@@ -301,7 +342,7 @@
             Add your business model in this section and keep track of the hypothesis results
         </p>
 
-        <div class="table-responsive collapse show" id="cardCollpase3">
+        <div class="table-responsive collapse show" id="cardCollpase3" style="max-height:125px; overflow-y: auto;">
             <table class="table table-top mb-0">
                 <tbody>
                     {% if not models %}
@@ -396,57 +437,6 @@
                     </tr>
                     {% endfor %}
                     {% endif %}
-                </tbody>
-            </table>
-        </div>
-
-    </div>
-    <div class="card-footer text-muted">
-        <button type="button" class="btn btn-outline-primary btn-sm float-right">Add New</button>
-    </div>
-</div>
-
-<div class="card">
-    <div class="card-body">
-        <div class="card-widgets">
-            <a href="javascript:;" data-toggle="reload"><i class="mdi mdi-refresh"></i></a>
-            <a data-toggle="collapse" href="#cardCollpase5" role="button" aria-expanded="false" aria-controls="cardCollpase3"><i class="mdi mdi-minus"></i></a>
-            <a href="#" data-toggle="remove"><i class="mdi mdi-close"></i></a>
-        </div>
-        <h4 class="header-title">Metrics</h4>
-        <p class="text-muted font-14 mb-2">
-            Add all metrics, values, and status for your project in this section
-        </p>
-
-        <div class="table-responsive crd collapse show" id="cardCollpase5">
-            <table class="table table-hover table-top mb-0">
-                <tbody>
-                    {% if not metrics %}
-                    <p><i class="text-muted fa fa-exclamation-triangle"></i> No data available</p>
-                    {% endif %}
-                    {% for metric in metrics %}
-                    <tr class="text-justify">
-                        <td>1</td>
-                        <td>
-                            <b>Metric:<br></b>{{metric.assumption}}
-                            <br>
-                            <b>Value: </b><br>{{metric.metric}}
-                        </td>
-                        <td>
-                            {% if metric.status == "Validated" %}
-                            <span class="badge badge-success">{{metric.status}}</span>
-                            {% elif metric.status == "In Progress" %}
-                            <span class="badge badge-warning">{{metric.status}}</span>
-                            {% else %}
-                            <span class="badge badge-danger">{{metric.status}}</span>
-                            {% endif %}
-                        </td>
-                        <td class="table-action">
-                            <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-pencil"></i></a>
-                            <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a>
-                        </td>
-                    </tr>
-                    {% endfor %}
                 </tbody>
             </table>
         </div>

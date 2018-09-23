@@ -139,6 +139,22 @@ class Problem(models.Model):
     def __str__(self):
         return str(self.project)
 
+class Elevator(models.Model):
+    user = models.ForeignKey(User)
+    project = models.ForeignKey(Project)
+    stage_choices = (
+            ('seed', 'Seed'),
+            ('seedlaunch', 'Seed Launch'),
+            ('launch', 'Launch'),
+            )
+    stage = models.CharField(choices=stage_choices, max_length=200, blank=True)
+    text = models.TextField(blank=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(db_index=True, auto_now_add=True)
+
+    def __str__(self):
+        return str(self.project)
+
 class Summary(models.Model):
     user = models.ForeignKey(User)
     project = models.ForeignKey(Project)
