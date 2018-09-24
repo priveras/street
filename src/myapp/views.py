@@ -72,6 +72,7 @@ class SeedView(generic.DetailView):
         context['past'] = Past.objects.filter(project=self.object).filter(stage="seed").order_by('-updated_at')
         context['future'] = Future.objects.filter(project=self.object).filter(stage="seed").order_by('-updated_at')
         context['elevators'] = Elevator.objects.filter(project=self.object).filter(stage="seed").order_by('-updated_at')
+        context['dvf_seed'] = Dvf.objects.filter(project=self.object).filter(stage="seed").order_by('-updated_at')
 
         return context
 
@@ -93,6 +94,7 @@ class SeedLaunchView(generic.DetailView):
         context['future'] = Future.objects.filter(project=self.object).filter(stage="seedlaunch").order_by('-updated_at')
         context['elevators'] = Elevator.objects.filter(project=self.object).filter(stage="seedlaunch").order_by('-updated_at')
         context['permission'] = Team.objects.filter(project=self.object).filter(user=self.request.user).filter(permission="edit")
+        context['dvf_seedlaunch'] = Dvf.objects.filter(project=self.object).filter(stage="seedlaunch").order_by('-updated_at')
 
         return context
 
@@ -114,6 +116,7 @@ class LaunchView(generic.DetailView):
         context['future'] = Future.objects.filter(project=self.object).filter(stage="launch").order_by('-updated_at')
         context['elevators'] = Elevator.objects.filter(project=self.object).filter(stage="launch").order_by('-updated_at')
         context['permission'] = Team.objects.filter(project=self.object).filter(user=self.request.user).filter(permission="edit")
+        context['dvf_launch'] = Dvf.objects.filter(project=self.object).filter(stage="launch").order_by('-updated_at')
 
         return context
 
