@@ -5,5 +5,6 @@ celery==4.2.0
 redis==2.10.6
 django-widget-tweaks==1.4.1
 django-summernote
-django-allauth
-django-summernote
+django-allauth==0.36.0
+sendgrid==3.6.5
+sendgrid-django==4.2.0

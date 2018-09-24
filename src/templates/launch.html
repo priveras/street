@@ -19,6 +19,7 @@
     </div>
 </div>     
  
+<!-- end page title --> 
 <div class="row">
     <div class="col-md-4">
         <div class="card">
@@ -58,9 +59,11 @@
                     </div>
                 </div>
             </div> <!-- end card-body-->
+            {% if permission %}
             <div class="card-footer text-muted">
                 <button type="button" class="btn btn-outline-primary btn-sm float-right" data-toggle="modal" data-target="#bs-example-modal-lg">Edit</button>
             </div>
+            {% endif %}
         </div>
     </div>
     <div class="col-md-8">
@@ -89,19 +92,23 @@
                                     <br><br>
                                     <small class="text-muted">{{sum.updated_at|date}}</small>
                                 </td>
+                                {% if permission %}
                                 <td class="table-action">
                                     <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-pencil"></i></a>
                                     <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a>
                                 </td>
+                                {% endif %}
                             </tr>
                             {% endfor %}
                         </tbody>
                     </table>
                 </div>
             </div> <!-- end card-body-->
+            {% if permission %}
             <div class="card-footer text-muted">
                 <button type="button" class="btn btn-outline-primary btn-sm float-right" data-toggle="modal" data-target="#bs-example-modal-lg">Add New</button>
             </div>
+            {% endif %}
         </div> <!-- end card-->
     </div> <!-- end col-->
     <div class="col-md-6">
@@ -130,19 +137,23 @@
                                     <br><br>
                                     <small class="text-muted">{{p.updated_at|date}}</small>
                                 </td>
+                                {% if permission %}
                                 <td class="table-action">
                                     <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-pencil"></i></a>
                                     <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a>
                                 </td>
+                                {% endif %}
                             </tr>
                             {% endfor %}
                         </tbody>
                     </table>
                 </div>
             </div> <!-- end card-body-->
+            {% if permission %}
             <div class="card-footer text-muted">
                 <button type="button" class="btn btn-outline-primary btn-sm float-right" data-toggle="modal" data-target="#bs-example-modal-lg">Add New</button>
             </div>
+            {% endif %}
         </div> <!-- end card-->
     </div> <!-- end col-->
 
@@ -172,19 +183,23 @@
                                     <br><br>
                                     <small class="text-muted">{{f.updated_at|date}}</small>
                                 </td>
+                                {% if permission %}
                                 <td class="table-action">
                                     <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-pencil"></i></a>
                                     <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a>
                                 </td>
+                                {% endif %}
                             </tr>
                             {% endfor %}
                         </tbody>
                     </table>
                 </div>
             </div> <!-- end card-body-->
+            {% if permission %}
             <div class="card-footer text-muted">
                 <button type="button" class="btn btn-outline-primary btn-sm float-right" data-toggle="modal" data-target="#bs-example-modal-lg">Add New</button>
             </div>
+            {% endif %}
         </div> <!-- end card-->
     </div> <!-- end col-->
 
@@ -214,10 +229,12 @@
                             <br><br>
                             <small class="text-muted">{{elevator.updated_at|date}}</small>
                         </td>
+                        {% if permission %}
                         <td class="table-action">
                             <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-pencil"></i></a>
                             <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a>
                         </td>
+                        {% endif %}
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -225,9 +242,11 @@
         </div>
 
     </div>
+    {% if permission %}
     <div class="card-footer text-muted">
         <button type="button" class="btn btn-outline-primary btn-sm float-right" data-toggle="modal" data-target="#bs-example-modal-lg">Add New</button>
     </div>
+    {% endif %}
 </div>
 <div class="card">
     <div class="card-body">
@@ -263,10 +282,12 @@
                             <span class="badge badge-danger">{{problem.status}}</span>
                             {% endif %}
                         </td>
+                        {% if permission %}
                         <td class="table-action">
                             <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-pencil"></i></a>
                             <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a>
                         </td>
+                        {% endif %}
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -274,9 +295,11 @@
         </div>
 
     </div>
+    {% if permission %}
     <div class="card-footer text-muted">
         <button type="button" class="btn btn-outline-primary btn-sm float-right" data-toggle="modal" data-target="#bs-example-modal-lg">Add New</button>
     </div>
+    {% endif %}
 </div>
 
 
@@ -314,10 +337,12 @@
                             <span class="badge badge-danger">{{solution.status}}</span>
                             {% endif %}
                         </td>
+                        {% if permission %}
                         <td class="table-action">
                             <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-pencil"></i></a>
                             <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a>
                         </td>
+                        {% endif %}
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -325,9 +350,11 @@
         </div>
 
     </div>
+    {% if permission %}
     <div class="card-footer text-muted">
         <button type="button" class="btn btn-outline-primary btn-sm float-right">Add New</button>
     </div>
+    {% endif %}
 </div>
 
 <div class="card">
@@ -364,10 +391,12 @@
                             <span class="badge badge-danger">{{model.status}}</span>
                             {% endif %}
                         </td>
+                        {% if permission %}
                         <td class="table-action">
                             <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-pencil"></i></a>
                             <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a>
                         </td>
+                        {% endif %}
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -375,9 +404,11 @@
         </div>
 
     </div>
+    {% if permission %}
     <div class="card-footer text-muted">
         <button type="button" class="btn btn-outline-primary btn-sm float-right">Add New</button>
     </div>
+    {% endif %}
 </div>
 
 <div class="card">
@@ -430,10 +461,12 @@
                             <span class="badge badge-danger">{{assumption.status}}</span>
                             {% endif %}
                         </td>
+                        {% if permission %}
                         <td class="table-action">
                             <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-pencil"></i></a>
                             <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a>
                         </td>
+                        {% endif %}
                     </tr>
                     {% endfor %}
                     {% endif %}
@@ -442,9 +475,11 @@
         </div>
 
     </div>
+    {% if permission %}
     <div class="card-footer text-muted">
         <button type="button" class="btn btn-outline-primary btn-sm float-right">Add New</button>
     </div>
+    {% endif %}
 </div>
 <!--  Modal content for the above example -->
 <div class="modal fade" id="bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">

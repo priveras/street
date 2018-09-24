@@ -15,6 +15,19 @@ from .models import Solution, Metric, File, Profile, Summary, Past, Future
 from .models import Elevator, Tutorial
 
 
+# Error Pages
+def server_error(request):
+    return render(request, 'errors/500.html')
+ 
+def not_found(request):
+    return render(request, 'errors/404.html')
+ 
+def permission_denied(request):
+    return render(request, 'errors/403.html')
+ 
+def bad_request(request):
+    return render(request, 'errors/400.html')
+
 def learn(request):
     tutorial = Tutorial.objects.order_by('created_at')
 
@@ -26,7 +39,8 @@ class DetailView(generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(DetailView, self).get_context_data(**kwargs)
-        context['team'] = Team.objects.filter(project=self.object)
+        context['team'] = Team.objects.filter(project=self.object).filter(permission="edit")
+        context['viewers'] = Team.objects.filter(project=self.object).filter(permission="view")
         context['comments'] = Comment.objects.filter(project=self.object)
         context['assumptions'] = Assumption.objects.filter(project=self.object)
         context['problems'] = Problem.objects.filter(project=self.object)
@@ -34,6 +48,7 @@ class DetailView(generic.DetailView):
         context['models'] = BusinessModel.objects.filter(project=self.object)
         context['metrics'] = Metric.objects.filter(project=self.object)
         context['files'] = File.objects.filter(project=self.object)
+        context['permission'] = Team.objects.filter(project=self.object).filter(user=self.request.user).filter(permission="edit")
 
         return context
 
@@ -44,6 +59,7 @@ class SeedView(generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super(SeedView, self).get_context_data(**kwargs)
         context['team'] = Team.objects.filter(project=self.object)
+        context['permission'] = Team.objects.filter(project=self.object).filter(user=self.request.user).filter(permission="edit")
         context['comments'] = Comment.objects.filter(project=self.object)
         context['assumptions'] = Assumption.objects.filter(project=self.object).filter(stage="seed")
         context['problems'] = Problem.objects.filter(project=self.object).filter(stage="seed")
