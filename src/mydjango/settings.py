@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '-au3&glnt&h(g^!s$rjjgh6szj=$(wxnelw2uiw+6^83+5ab^#'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['web']
 
@@ -142,7 +142,9 @@ ACCOUNT_EMAIL_REQUIRED = True
 
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+DEFAULT_FROM_EMAIL = "Admin ZX Platform <admin@zx-platform.com>"
+EMAIL_BACKEND = "sgbackend.SendGridBackend"
+SENDGRID_API_KEY = "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"
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/

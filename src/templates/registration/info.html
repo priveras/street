@@ -42,7 +42,7 @@
             {% csrf_token %}
             <div class="form-group">
               <label for="exampleInputEmail1">First Name</label>
-              {% render_field form.first_name|attr:"placeholder:John" class="form-control required" %}
+              {% render_field form.first_name|attr:"placeholder:John" class="form-control required" value="" %}
             </div>
             <div class="form-group">
               <label for="exampleInputPassword1">Last Name</label>

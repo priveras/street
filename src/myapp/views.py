@@ -7,6 +7,19 @@ from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from datetime import date
 
+# Error Pages
+def server_error(request):
+    return render(request, 'errors/500.html')
+ 
+def not_found(request):
+    return render(request, 'errors/404.html')
+ 
+def permission_denied(request):
+    return render(request, 'errors/403.html')
+ 
+def bad_request(request):
+    return render(request, 'errors/400.html')
+
 def learn(request):
     tutorial = Tutorial.objects.order_by('created_at')
 
@@ -27,6 +40,7 @@ class DetailView(generic.DetailView):
         context['models'] = BusinessModel.objects.filter(project=self.object)
         context['metrics'] = Metric.objects.filter(project=self.object)
         context['files'] = File.objects.filter(project=self.object)
+        context['permission'] = Team.objects.filter(project=self.object).filter(user=self.request.user).filter(permission="edit")
 
         return context
 

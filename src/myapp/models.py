@@ -17,27 +17,46 @@ class Profile(models.Model):
 
 class Project(models.Model):
 
-	STATUS_ACTIVE = 'Active'
-	STATUS_ARCHIVED = 'Archived'
-	STATUS_KILLED = 'Killed'
-	STATUS_DRAFT = 'Draft'
+    STATUS_ACTIVE = 'Active'
+    STATUS_ARCHIVED = 'Archived'
+    STATUS_KILLED = 'Killed'
+    STATUS_DRAFT = 'Draft'
 
-	STATUS_ALL = (
-		(STATUS_ACTIVE, 'Active'),
-		(STATUS_ARCHIVED, 'Archived'),
-		(STATUS_KILLED, 'Killed'),
-		(STATUS_DRAFT, 'Draft'),
-	)
+    STAGE_CONCEPT = 'Concept'
+    STAGE_SEED_1 = 'Seed 1'
+    STAGE_SEED_2 = 'Seed 2'
+    STAGE_SEED_3 = 'Seed 3'
+    STAGE_LAUNCH_1 = 'Launch 1'
+    STAGE_LAUNCH_2 = 'Launch 2'
+    STAGE_SCALE = 'Scale'
 
-	title = models.CharField(max_length=200)
-	slug = models.SlugField(max_length=200, unique=True)
-	description = models.TextField(blank=True)
-	status = models.CharField(choices=STATUS_ALL, max_length=200)
-	updated_at = models.DateTimeField(auto_now=True)
-	created_at = models.DateTimeField(db_index=True, auto_now_add=True)
+    STATUS_ALL = (
+        (STATUS_ACTIVE, 'Active'),
+        (STATUS_ARCHIVED, 'Archived'),
+        (STATUS_KILLED, 'Killed'),
+        (STATUS_DRAFT, 'Draft'),
+        )
 
-	def __str__(self):
-		return str(self.title)
+    STAGES = (
+        (STAGE_CONCEPT, 'Concept'),
+        (STAGE_SEED_1, 'Seed 1'),
+        (STAGE_SEED_2, 'Seed 2'),
+        (STAGE_SEED_3, 'Seed 3'),
+        (STAGE_LAUNCH_1, 'Launch 1'),
+        (STAGE_LAUNCH_2, 'Launch 2'),
+        (STAGE_SCALE, 'Scale'),
+        )
+
+    title = models.CharField(max_length=200)
+    slug = models.SlugField(max_length=200, unique=True)
+    description = models.TextField(blank=True)
+    stage = models.CharField(choices=STAGES, max_length=200, blank=True)
+    status = models.CharField(choices=STATUS_ALL, max_length=200)
+    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(db_index=True, auto_now_add=True)
+
+    def __str__(self):
+        return str(self.title)
 
 class Team(models.Model):
     user = models.ForeignKey(User)
