@@ -266,33 +266,31 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(-142px, 20px, 0px);">
                         
-                        <a href="javascript:void(0);" class="dropdown-item"><i class="mdi mdi-pencil mr-1"></i>Edit</a>
-                        
-                        <a href="javascript:void(0);" class="dropdown-item"><i class="mdi mdi-delete mr-1"></i>Delete</a>
-                        
-                        <a href="javascript:void(0);" class="dropdown-item"><i class="mdi mdi-email-outline mr-1"></i>Invite</a>
-                        
-                        <a href="javascript:void(0);" class="dropdown-item"><i class="mdi mdi-exit-to-app mr-1"></i>Leave</a>
+                        <a href="javascript:void(0);" class="dropdown-item"><i class="mdi mdi-plus-circle mr-1"></i>Add</a>
                     </div>
                     {% endif %}
                 </div>
                 <h5 class="card-title mb-3">Files</h5>
+                {% if not files %}
+                <p><i class="text-muted fa fa-exclamation-triangle"></i> No files available</p>
+                {% endif %}
                 {% for file in files %}
                 <div class="card mb-1 shadow-none border border-light">
                     <div class="p-2">
                         <div class="row align-items-center">
                             <div class="col-auto">
-                                <i class="mdi mdi-file"></i>
+                                <i class="mdi mdi-file" style="font-size:20px"></i>
                             </div>
                             <div class="col pl-0">
-                                <a href="javascript:void(0);" class="text-muted font-weight-bold">{{file.title|truncatechars:25}}</a>
+                                <a href="{{file.file.url}}" target="_blank" class="text-muted font-weight-bold">{{file.title|truncatechars:25}}</a>
                                 <p class="mb-0">2.3 MB</p>
                             </div>
                             <div class="col-auto">
                                 
-                                <a href="{{file.file}}" target="_blank" class="btn btn-link btn-lg text-muted">
+                                <a href="{{file.file}}" target="_blank" class="btn btn-link btn-lg text-info">
                                     <i class="dripicons-download"></i>
                                 </a>
+                                <span aria-hidden="true">×</span>
                             </div>
                         </div>
                     </div>
@@ -302,6 +300,44 @@
             </div>
         </div>
         <div class="card">
+            <div class="card-body">
+                <div class="dropdown card-widgets">
+                    {% if permission %}
+                    <a href="javascript:void(0);" class="dropdown-toggle arrow-none" data-toggle="dropdown" aria-expanded="false">
+                        <i class="dripicons-dots-3"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(-142px, 20px, 0px);">
+                        <a href="javascript:void(0);" class="dropdown-item"><i class="mdi mdi-plus-circle mr-1"></i>Add</a>
+                    </div>
+                    {% endif %}
+                </div>
+                <h5 class="card-title mb-3">External Links</h5>
+                {% if not links %}
+                <p><i class="text-muted fa fa-exclamation-triangle"></i> No links available</p>
+                {% endif %}
+                {% for link in links %}
+                <div class="card mb-1 shadow-none border-light">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <i class="fa fa-link" style="font-size:15px"></i>
+                        </div>
+                        <div class="col pl-0">
+                            <a href="javascript:void(0);" class="text-dark font-weight-bold">{{link.title|truncatechars:25}}</a>
+                        </div>
+                        <div class="col-auto">
+                            
+                            <a href="{{file.file}}" target="_blank" class="btn btn-link btn-md text-info">
+                                <i class="fa fa-external-link-alt"></i>
+                            </a>
+                            <span aria-hidden="true">×</span>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+
+            </div>
+        </div>
+        <!--<div class="card">
             <div class="card-body">
                 <h4 class="header-title mb-2">Recent Activity</h4>
 
@@ -357,11 +393,9 @@
                             </div>
                         </div>
                     </div>
-                    <!-- end timeline -->
-                </div><div class="slimScrollBar" style="background: rgb(158, 165, 171); width: 8px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 81.225px;"></div><div class="slimScrollRail" style="width: 8px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div></div> <!-- end slimscroll -->
+                </div><div class="slimScrollBar" style="background: rgb(158, 165, 171); width: 8px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 81.225px;"></div><div class="slimScrollRail" style="width: 8px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div></div>
             </div>
-            <!-- end card-body -->
-        </div>
+        </div>-->
     </div>
 </div>
 <!-- end row -->

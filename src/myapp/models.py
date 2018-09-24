@@ -82,6 +82,17 @@ class Comment(models.Model):
     def __str__(self):
         return str(self.project)
 
+class Link(models.Model):
+    project = models.ForeignKey(Project)
+    user = models.ForeignKey(User)
+    title = models.CharField(max_length=500)
+    link = models.CharField(max_length=1000)
+    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(db_index=True, auto_now_add=True)
+
+    def __str__(self):
+        return str(self.project)
+
 class Assumption(models.Model):
     user = models.ForeignKey(User)
     project = models.ForeignKey(Project)
