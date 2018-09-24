@@ -94,7 +94,14 @@
                                 </td>
                                 {% if permission %}
                                 <td class="table-action">
-                                    <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-pencil"></i></a>
+                                        <a
+                                          href="javascript: void(0);"
+                                          data-id="{{ sum.id }}"
+                                          data-name="summary"
+                                          data-title="Status summary"
+                                          class="action-icon edit-doc">
+                                            <i class="mdi mdi-pencil"></i>
+                                        </a>
                                     <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a>
                                 </td>
                                 {% endif %}
@@ -145,7 +152,15 @@
                                 </td>
                                 {% if permission %}
                                 <td class="table-action">
-                                    <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-pencil"></i></a>
+
+                                    <a
+                                      href="javascript: void(0);"
+                                      data-id="{{ p.id }}"
+                                      data-name="past"
+                                      data-title="Past 2 weeks priorities"
+                                      class="action-icon edit-doc">
+                                        <i class="mdi mdi-pencil"></i>
+                                    </a>
                                     <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a>
                                 </td>
                                 {% endif %}
@@ -197,7 +212,14 @@
                                 </td>
                                 {% if permission %}
                                 <td class="table-action">
-                                    <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-pencil"></i></a>
+                                    <a
+                                      href="javascript: void(0);"
+                                      data-id="{{ f.id }}"
+                                      data-name="future"
+                                      data-title="Next 2 weeks priorities"
+                                      class="action-icon edit-doc">
+                                        <i class="mdi mdi-pencil"></i>
+                                    </a>
                                     <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a>
                                 </td>
                                 {% endif %}
@@ -248,7 +270,14 @@
                         </td>
                         {% if permission %}
                         <td class="table-action">
-                            <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-pencil"></i></a>
+                            <a
+                              href="javascript: void(0);"
+                              data-id="{{ elevator.id }}"
+                              data-name="elevator"
+                              data-title="Elevator pitch"
+                              class="action-icon edit-doc">
+                                <i class="mdi mdi-pencil"></i>
+                            </a>
                             <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a>
                         </td>
                         {% endif %}
@@ -306,7 +335,14 @@
                         </td>
                         {% if permission %}
                         <td class="table-action">
-                            <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-pencil"></i></a>
+                            <a
+                              href="javascript: void(0);"
+                              data-id="{{ problem.id }}"
+                              data-name="problem"
+                              data-title="Problem"
+                              class="action-icon edit-doc">
+                                <i class="mdi mdi-pencil"></i>
+                            </a>
                             <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a>
                         </td>
                         {% endif %}
@@ -366,7 +402,14 @@
                         </td>
                         {% if permission %}
                         <td class="table-action">
-                            <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-pencil"></i></a>
+                            <a
+                              href="javascript: void(0);"
+                              data-id="{{ solution.id }}"
+                              data-name="solution"
+                              data-title="Solution"
+                              class="action-icon edit-doc">
+                                <i class="mdi mdi-pencil"></i>
+                            </a>
                             <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a>
                         </td>
                         {% endif %}
@@ -426,7 +469,14 @@
                         </td>
                         {% if permission %}
                         <td class="table-action">
-                            <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-pencil"></i></a>
+                            <a
+                              href="javascript: void(0);"
+                              data-id="{{ model.id }}"
+                              data-name="business_model"
+                              data-title="Business model"
+                              class="action-icon edit-doc">
+                                <i class="mdi mdi-pencil"></i>
+                            </a>
                             <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a>
                         </td>
                         {% endif %}
@@ -502,7 +552,14 @@
                         </td>
                         {% if permission %}
                         <td class="table-action">
-                            <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-pencil"></i></a>
+                            <a
+                              href="javascript: void(0);"
+                              data-id="{{ assumption.id }}"
+                              data-name="assumption"
+                              data-title="Assumptions"
+                              class="action-icon edit-doc">
+                                <i class="mdi mdi-pencil"></i>
+                            </a>
                             <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a>
                         </td>
                         {% endif %}
@@ -587,6 +644,19 @@ $(function() {
     $.post('/api/model/form/' + path, form, function(data) {
       $('#bs-example-modal-lg').modal('toggle')
       window.location.reload();
+    });
+  });
+
+  $('.edit-doc').click(function(){
+    var self = $(this);
+    $('#myLargeModalLabel').text(self.attr('data-title'));
+    $('#bs-example-modal-lg').modal('show');
+
+    var path = self.attr('data-name') + '/project/' + $('#project').val() + '/id/' + self.attr('data-id');
+
+    $.get('/api/model/form/' + path, function(form) {
+      $('#modal-body').html(form);
+      $('#id_stage').val('seed');
     });
   });
 });
