@@ -7,7 +7,7 @@
         <!-- LOGO -->
         <a href="index.html" class="logo text-center">
             <span class="logo-lg">
-                <img src="{% static 'assets/images/logo.png' %}" alt="" height="60">
+                <img src="{% static 'assets/images/logo.png' %}" alt="" height="16">
             </span>
             <span class="logo-sm">
                 <img src="{% static 'assets/images/logo_sm.png' %}" alt="" height="16">
@@ -16,26 +16,20 @@
 
         <!--- Sidemenu -->
         <ul class="metismenu side-nav">
+            {% if user.is_staff %}
             <li class="side-nav-title side-nav-item">Admin</li>
 
+            
             <li class="side-nav-item">
                 <a href="index.html" class="side-nav-link">
                     <i class="dripicons-meter"></i>
                     <span> Dashboard </span>
                 </a>
             </li>
+            {% endif %}
+            
 
             <li class="side-nav-title side-nav-item">Navigation</li>
-
-            {% if user.is_staff %}
-            <li class="side-nav-item">
-                <a href="{% url 'app:home' %}" class="side-nav-link">
-                    <i class="mdi mdi-chart-pie"></i>
-                    <!--<span class="badge badge-success float-right">7</span>-->
-                    <span> Overview </span>
-                </a>
-            </li>
-            {% endif %}
 
             <li class="side-nav-item">
                 <a href="{% url 'app:home' %}" class="side-nav-link">
