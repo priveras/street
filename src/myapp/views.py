@@ -11,7 +11,7 @@ from .forms import ElevatorForm, ProblemForm, SolutionForm, BusinessModelForm
 from .forms import AssumptionForm
 
 from .models import Project, Team, Comment, Assumption, Problem, BusinessModel
-from .models import Solution, Metric, File, Profile, Summary, Past, Future, Link
+from .models import Solution, Metric, File, Profile, Summary, Past, Future, Link, Dvf
 from .models import Elevator, Tutorial
 from django.http import HttpResponseRedirect
 
@@ -47,6 +47,9 @@ class DetailView(generic.DetailView):
         context['comments'] = Comment.objects.filter(project=self.object)
         context['files'] = File.objects.filter(project=self.object).order_by('-updated_at')
         context['links'] = Link.objects.filter(project=self.object).order_by('-updated_at')
+        context['dvf_seed'] = Dvf.objects.filter(project=self.object).filter(stage="seed").order_by('-updated_at')
+        context['dvf_seedlaunch'] = Dvf.objects.filter(project=self.object).filter(stage="seedlaunch").order_by('-updated_at')
+        context['dvf_launch'] = Dvf.objects.filter(project=self.object).filter(stage="launch").order_by('-updated_at')
         context['permission'] = Team.objects.filter(project=self.object).filter(user=self.request.user).filter(permission="edit")
 
         return context
