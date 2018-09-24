@@ -13,7 +13,10 @@ from .forms import AssumptionForm
 from .models import Project, Team, Comment, Assumption, Problem, BusinessModel
 from .models import Solution, Metric, File, Profile, Summary, Past, Future
 from .models import Elevator, Tutorial
+from django.http import HttpResponseRedirect
 
+def index(request):
+    return HttpResponseRedirect('/projects/')
 
 # Error Pages
 def server_error(request):

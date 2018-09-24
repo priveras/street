@@ -6,6 +6,7 @@ from . import views
 
 app_name = 'app'
 urlpatterns = [
+    url(r'^$', login_required(views.index), name='index'),
     url(r'^project/(?P<slug>[^\.]+)/$', login_required(views.DetailView.as_view()), name='detail'),
     url(r'^seed/(?P<slug>[^\.]+)/$', login_required(views.SeedView.as_view()), name='seed'),
     url(r'^seed-launch/(?P<slug>[^\.]+)/$', login_required(views.SeedLaunchView.as_view()), name='seed-launch'),
