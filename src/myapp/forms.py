@@ -1,5 +1,6 @@
 from django import forms
-from .models import Profile, Project
+from .models import Profile, Project, Summary, Past, Future, Elevator
+from .models import Problem, Solution, BusinessModel, Assumption
 
 class ProfileForm(forms.ModelForm):
     class Meta:
@@ -13,3 +14,50 @@ class ProjectForm(forms.ModelForm):
     class Meta:
         model = Project
         exclude = ['created_at', 'updated_at']
+
+
+class SummaryForm(forms.ModelForm):
+    class Meta:
+        model = Summary
+        exclude = ['created_at', 'updated_at', 'user', 'project']
+
+
+class PastForm(forms.ModelForm):
+    class Meta:
+        model = Past
+        exclude = ['created_at', 'updated_at', 'user', 'project']
+
+
+class FutureForm(forms.ModelForm):
+    class Meta:
+        model = Future
+        exclude = ['created_at', 'updated_at', 'user', 'project']
+
+
+class ElevatorForm(forms.ModelForm):
+    class Meta:
+        model = Elevator
+        exclude = ['created_at', 'updated_at', 'user', 'project']
+
+
+class ProblemForm(forms.ModelForm):
+    class Meta:
+        model = Problem
+        exclude = ['created_at', 'updated_at', 'user', 'project']
+
+
+class SolutionForm(forms.ModelForm):
+    class Meta:
+        model = Solution
+        exclude = ['created_at', 'updated_at', 'user', 'project']
+
+
+class BusinessModelForm(forms.ModelForm):
+    class Meta:
+        model = BusinessModel
+        exclude = ['created_at', 'updated_at', 'user', 'project']
+
+class AssumptionForm(forms.ModelForm):
+    class Meta:
+        model = Assumption
+        exclude = ['created_at', 'updated_at', 'user', 'project']

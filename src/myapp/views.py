@@ -1,11 +1,19 @@
 from django.views import generic
-from .models import Project, Team, Comment, Assumption, Problem, BusinessModel, Solution, Metric, File, Profile, Summary, Past, Future, Tutorial, Elevator
 from django.contrib.auth.models import User
 from django.db.models import Q
-from .forms import ProfileForm
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, Http404
 from django.views.decorators.csrf import csrf_exempt
 from datetime import date
+from django.http import JsonResponse
+
+from .forms import ProfileForm, SummaryForm, PastForm, FutureForm
+from .forms import ElevatorForm, ProblemForm, SolutionForm, BusinessModelForm
+from .forms import AssumptionForm
+
+from .models import Project, Team, Comment, Assumption, Problem, BusinessModel
+from .models import Solution, Metric, File, Profile, Summary, Past, Future
+from .models import Elevator, Tutorial
+
 
 def learn(request):
     tutorial = Tutorial.objects.order_by('created_at')
@@ -96,7 +104,7 @@ class HomeView(generic.ListView):
 
     def get_context_data(self, **kwargs):
         context = super(HomeView, self).get_context_data(**kwargs)
-        
+
         if date.today() == self.request.user.date_joined.date():
             alert = True
         else:
@@ -131,3 +139,71 @@ class InfoView(generic.CreateView):
 
         p.save()
         return redirect('/projects/')
+
+
+def model_form(request, name='', project_id=0, id=0):
+    forms = {
+        'summary': SummaryForm,
+        'past': PastForm,
+        'future': FutureForm,
+        'elevator': ElevatorForm,
+        'problem': ProblemForm,
+        'solution': SolutionForm,
+        'business_model': BusinessModelForm,
+        'assumption': AssumptionForm,
+    }
+
+    instances = {
+        'summary': Summary,
+        'past': Past,
+        'future': Future,
+        'elevator': Elevator,
+        'problem': Problem,
+        'solution': Solution,
+        'business_model': BusinessModel,
+        'assumption': Assumption,
+    }
+
+    method = request.method
+
+    form = forms.get(name, None)
+    if form is None:
+        raise Http404('name not found')
+
+    if id == 0:
+        f = form() if method == 'GET' else form(data=request.POST)
+    else:
+        obj = instances.get(name, None)
+        if obj is None:
+            raise Http404('instance name not found')
+
+        try:
+            instance = obj.objects.get(project_id=project_id, pk=id)
+            f = form(instance=instance) if method == 'GET' else form(instance=instance, data=request.POST)
+        except:
+            raise Http404('id not found')
+
+    context = {
+        'form': f,
+        'name': name,
+        'project_id': project_id,
+        'id': id,
+    }
+
+    if method == 'GET':
+        return render(request, 'form.html', context)
+
+    if not f.is_valid():
+        context['form'] = f
+        return JsonResponse(f.errors, status=400)
+
+    project = Project.objects.filter(pk=project_id).first()
+    if project is None:
+        raise Http404('project not foud')
+
+    doc = f.save(commit=False)
+    doc.user = request.user
+    doc.project = project
+    doc.save()
+
+    return JsonResponse({'status': 'ok'})

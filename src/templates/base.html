@@ -77,7 +77,7 @@
                             <li class="dropdown notification-list">
                                 <a class="nav-link dropdown-toggle nav-user arrow-none mr-0" data-toggle="dropdown" href="#" role="button" aria-haspopup="false"
                                     aria-expanded="false">
-                                    <span class="account-user-avatar"> 
+                                    <span class="account-user-avatar">
                                         {% for profile in user.profile_set.all %}
                                         <img src="{{profile.profile_image.url}}" alt="user-image" class="rounded-circle">
                                         {% endfor %}
@@ -142,9 +142,9 @@
 
                     <!-- Start Content-->
                     <div class="container-fluid">
-                        
+
                         {% block content %}{% endblock %}
-                        
+
                     </div> <!-- container -->
 
                 </div> <!-- content -->
@@ -311,6 +311,8 @@
         <!-- demo app -->
         <script src="{% static 'assets/js/pages/demo.project-detail.js' %}"></script>
         <!-- end demo js-->
+        {% block js %}
+        {% endblock %}
 
     </body>
 </html>

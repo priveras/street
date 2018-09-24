@@ -1,0 +1,22 @@
+{% load widget_tweaks %}
+<form action="/api/model/form" method="post" id="dynamic-form">
+    {% csrf_token %}
+    <input type="hidden" id="form-name" value="{{ name }}" />
+    <input type="hidden" id="project" value="{{ project_id }}" />
+    <input type="hidden" id="doc-id" value="{{ id }}" />
+
+    {% for field in form.visible_fields %}
+
+      {% if field.name == 'stage' %}
+        <div style="display:none;">
+            {{ field }}
+        </div>
+      {% else %}
+      <div class="form-group mb-3">
+        <label>{{ field.label_tag }}</label>
+        {% render_field field class+="form-control" %}
+      </div>
+      {% endif %}
+
+    {% endfor %}
+</form>
