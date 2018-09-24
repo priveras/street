@@ -3,6 +3,7 @@
 {% load humanize %}
 {% block content %}
 <!-- start page title -->
+<input type="hidden" id="project" value="{{ project.id }}">
 <div class="row">
     <div class="col-12">
         <div class="page-title-box">
@@ -18,8 +19,7 @@
         </div>
     </div>
 </div>     
- 
-<!-- end page title --> 
+<!-- end page title -->
 <div class="row">
     <div class="col-md-4">
         <div class="card">
@@ -106,7 +106,13 @@
             </div> <!-- end card-body-->
             {% if permission %}
             <div class="card-footer text-muted">
-                <button type="button" class="btn btn-outline-primary btn-sm float-right" data-toggle="modal" data-target="#bs-example-modal-lg">Add New</button>
+                <button
+                        type="button"
+                        class="btn btn-outline-primary btn-sm float-right call-dynamic-form"
+                        data-name="summary"
+                        data-title="Status summary"
+                        data-toggle="modal"
+                        data-target="#bs-example-modal-lg">Add New</button>
             </div>
             {% endif %}
         </div> <!-- end card-->
@@ -151,7 +157,13 @@
             </div> <!-- end card-body-->
             {% if permission %}
             <div class="card-footer text-muted">
-                <button type="button" class="btn btn-outline-primary btn-sm float-right" data-toggle="modal" data-target="#bs-example-modal-lg">Add New</button>
+                <button
+                        type="button"
+                        class="btn btn-outline-primary btn-sm float-right call-dynamic-form"
+                        data-toggle="modal"
+                        data-name="past"
+                        data-title="Past 2 weeks priorities"
+                        data-target="#bs-example-modal-lg">Add New</button>
             </div>
             {% endif %}
         </div> <!-- end card-->
@@ -197,7 +209,12 @@
             </div> <!-- end card-body-->
             {% if permission %}
             <div class="card-footer text-muted">
-                <button type="button" class="btn btn-outline-primary btn-sm float-right" data-toggle="modal" data-target="#bs-example-modal-lg">Add New</button>
+                <button type="button"
+                        class="btn btn-outline-primary btn-sm float-right call-dynamic-form"
+                        data-toggle="modal"
+                        data-name="future"
+                        data-title="Next 2 weeks priorities"
+                        data-target="#bs-example-modal-lg">Add New</button>
             </div>
             {% endif %}
         </div> <!-- end card-->
@@ -244,7 +261,12 @@
     </div>
     {% if permission %}
     <div class="card-footer text-muted">
-        <button type="button" class="btn btn-outline-primary btn-sm float-right" data-toggle="modal" data-target="#bs-example-modal-lg">Add New</button>
+        <button type="button"
+                class="btn btn-outline-primary btn-sm float-right call-dynamic-form"
+                data-toggle="modal"
+                data-name="elevator"
+                data-title="Elevator pitch"
+                data-target="#bs-example-modal-lg">Add New</button>
     </div>
     {% endif %}
 </div>
@@ -297,7 +319,12 @@
     </div>
     {% if permission %}
     <div class="card-footer text-muted">
-        <button type="button" class="btn btn-outline-primary btn-sm float-right" data-toggle="modal" data-target="#bs-example-modal-lg">Add New</button>
+        <button type="button"
+                class="btn btn-outline-primary btn-sm float-right call-dynamic-form"
+                data-name="problem"
+                data-title="Problem"
+                data-toggle="modal"
+                data-target="#bs-example-modal-lg">Add New</button>
     </div>
     {% endif %}
 </div>
@@ -352,7 +379,13 @@
     </div>
     {% if permission %}
     <div class="card-footer text-muted">
-        <button type="button" class="btn btn-outline-primary btn-sm float-right">Add New</button>
+        <button
+                type="button"
+                data-name="solution"
+                data-title="Solution"
+                data-toggle="modal"
+                data-target="#bs-example-modal-lg"
+                class="btn btn-outline-primary btn-sm float-right call-dynamic-form">Add New</button>
     </div>
     {% endif %}
 </div>
@@ -406,7 +439,13 @@
     </div>
     {% if permission %}
     <div class="card-footer text-muted">
-        <button type="button" class="btn btn-outline-primary btn-sm float-right">Add New</button>
+        <button
+                type="button"
+                data-name="business_model"
+                data-title="Business model"
+                data-toggle="modal"
+                data-target="#bs-example-modal-lg"
+                class="btn btn-outline-primary btn-sm float-right call-dynamic-form">Add New</button>
     </div>
     {% endif %}
 </div>
@@ -441,7 +480,7 @@
                     <tr class="text-justify">
                         <td>
                             <span class="badge badge-light">{{assumption.dvf|capfirst}}</span>
-                            <small>{{assumption.updated_at|date:'M d, y'}}</small>    
+                            <small>{{assumption.updated_at|date:'M d, y'}}</small>
                         </td>
                         <td>
                             {{assumption.assumption}}
@@ -477,19 +516,25 @@
     </div>
     {% if permission %}
     <div class="card-footer text-muted">
-        <button type="button" class="btn btn-outline-primary btn-sm float-right">Add New</button>
+        <button
+                type="button"
+                data-name="assumption"
+                data-title="Assumptions"
+                data-toggle="modal"
+                data-target="#bs-example-modal-lg"
+                class="btn btn-outline-primary btn-sm float-right call-dynamic-form">Add New</button>
     </div>
     {% endif %}
 </div>
 <!--  Modal content for the above example -->
 <div class="modal fade" id="bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="myLargeModalLabel">Problem</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" id="modal-body">
                 <form>
                     <div class="form-group mb-3">
                         <label for="example-textarea">Problem Statement</label>
@@ -507,9 +552,43 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save</button>
+                <button type="button" class="btn btn-primary submit-form">Save</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+
+{% endblock %}
+
+{% block js %}
+<script>
+$(function() {
+  $('.call-dynamic-form').click(function(){
+    var self = $(this);
+    $('#myLargeModalLabel').text(self.attr('data-title'));
+    $.get('/api/model/form/' + self.attr('data-name') + '/project/' + $('#project').val(), function(form) {
+      $('#modal-body').html(form);
+      $('#id_stage').val('seedlaunch');
+    });
+  });
+
+  $('.submit-form','#bs-example-modal-lg').click(function(){
+    var form = $('form', '#bs-example-modal-lg').serialize();
+    var project_id = $('#project').val();
+    var id = $('#doc-id').val();
+    var form_name = $('#form-name').val();
+
+    var path = form_name + '/project/' + project_id;
+    if (id > 0) {
+      path += '/id/' + id
+    }
+
+    $.post('/api/model/form/' + path, form, function(data) {
+      $('#bs-example-modal-lg').modal('toggle')
+      window.location.reload();
+    });
+  });
+});
+</script>
 {% endblock %}
