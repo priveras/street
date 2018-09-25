@@ -1,0 +1,229 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load humanize %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="../static/dist/styles.css" rel="stylesheet" />
+    <style>
+        #chart {
+            max-width: 650px;
+            margin: 35px auto;
+        }
+    </style>
+</head>
+<body>
+  <div class="row">
+      <div class="col-12">
+          <div class="page-title-box">
+              <div class="page-title-right">
+                  <ol class="breadcrumb m-0">
+                      <li class="breadcrumb-item"><a href="javascript: void(0);">OS Dashboard</a></li>
+                      <li class="breadcrumb-item"><a href="{% url 'app:home' %}">Admin Panel</a></li>
+                      <li class="breadcrumb-item active">Overview</li>
+                  </ol>
+              </div>
+              <h4 class="page-title">Admin Panel</h4>
+          </div>
+      </div>
+  </div>
+<div class="page-content">
+    <div class="card">
+        <div class="card-body">
+            <div class="p-lg-1">
+              <!-- Total Number of Companies =   {{ projects_list|length }} <br>
+              Total Number of Seed stage Companies = {{ seed_list|length }} <br>
+              Total Number of Seed-Launch stage Companies = {{ seedlaunch_list|length }} <br>
+              Total Number of Launch stage Companies = {{ launch_list|length }} <br>
+              Total Number of Concept stage Companies = {{ concept_list|length }} <br>
+              Total Number of Scale stage Companies = {{ scale_list|length }} <br>
+              Seed in APAC S  = {{ APACSSeed_list|length }} <br>
+              Seed Launch in APAC S  = {{ APACSSeedLaunch_list|length }} <br>
+              Launch in APAC S  = {{ APACSLaunch_list|length }} <br>
+
+              Total Number of Users = {{ users_list|length }} <br>
+              Total Number of Assumptions = {{ assumptions_list|length }}<br>
+              Total Number of Comments = {{ comments_list|length }} <br>
+              Total Number of Active Companies = {{ active_list|length }} <br>
+              Total Number of Killed Companies = {{ killed_list|length }} <br> -->
+
+
+  <div class="example-container">
+      <div class="row">
+  <div class="col-xl-5">
+      <div class="card mb-3 mb-xl-0">
+          <div class="card-body">
+              <h4 class="header-title mb-4"># of Businesses <br>per Stage by Zone</h4>
+              <div id="chartbiz"> </div>
+
+                  <script src="../static/dist/apexcharts.js"></script>
+                  <script>
+                      var options = {
+                          chart: {
+                              height: 220,
+                              type: 'bar',
+                          },
+                          plotOptions: {
+                              bar: {
+                                  horizontal: false,
+                                  dataLabels: {
+                                      position: 'top',
+                              },
+                          }
+                          },
+                          dataLabels: {
+                              enabled: false,
+                              offsetX: -6,
+                              style: {
+                                  fontSize: '12px',
+                                  colors: ['#fff']
+                              }
+                          },
+                          stroke: {
+                              show: true,
+                              width: 1,
+                              colors: ['#fff']
+                          },
+                          series: [{
+                            name: 'Seed',
+
+                              data: [{{ APACSSeed_list|length }}, {{ APACNSeed_list|length }}, {{ EUSeed_list|length }},{{ NAZSeed_list|length }},{{ MAZSeed_list|length }},{{ LANSeed_list|length }}]
+                          },{
+                            name: 'Seed Launch',
+
+                            data: [{{ APACSSeedLaunch_list|length }}, {{ APACNSeedLaunch_list|length }}, {{ EUSeedLaunch_list|length }},{{ NAZSeedLaunch_list|length }},{{ MAZSeedLaunch_list|length }},{{ LANSeedLaunch_list|length }}]
+                          },{
+                            name: 'Launch',
+
+                            data: [{{ APACSLaunch_list|length }}, {{ APACNLaunch_list|length }}, {{ EULaunch_list|length }},{{ NAZLaunch_list|length }},{{ MAZLaunch_list|length }},{{ LANLaunch_list|length }}]
+                          }],
+                          xaxis: {
+                              categories: ["APAC S", "APAC N", "EU", "NAZ", "MAZ", "LAN/LAS"],
+                          },
+
+                      }
+
+
+                     var chartbiz = new ApexCharts(
+                          document.querySelector("#chartbiz"),
+                          options
+                      );
+
+                      chartbiz.render();
+                  </script>
+
+          <!-- end card body-->
+      </div>
+      <!-- end card -->
+  </div>
+    </div>
+    <div class="col-xl-5">
+        <div class="card mb-3 mb-xl-0">
+            <div class="card-body">
+              <h4 class="header-title mb-4">Businesses <br>per Stage</h4>
+
+                	<title>Doughnut Chart</title>
+                	<script src="../static/dist/Chart.bundle.js"></script>
+                	<script src="../static/dist/utils.js"></script>
+                	<style>
+                	canvas {
+                		-moz-user-select: none;
+                		-webkit-user-select: none;
+                		-ms-user-select: none;
+                	}
+                	</style>
+
+                <body>
+                	<div id="canvas-holder" style="width:80%">
+                		<canvas id="chart-area"></canvas>
+                	</div>
+
+                	<script>
+                		var randomScalingFactor = function() {
+                			return Math.round(Math.random() * 100);
+                		};
+
+                		var config = {
+                			type: 'doughnut',
+                			data: {
+                				datasets: [{
+                					data: [
+                						{{ seed_list|length }},
+                					{{ seedlaunch_list|length }},
+                						{{ launch_list|length }},
+                						{{ concept_list|length }},
+                						{{ scale_list|length }},
+                					],
+                					backgroundColor: [
+                						window.chartColors.blue,
+                						window.chartColors.green,
+                						window.chartColors.yellow,
+                						window.chartColors.green,
+                						window.chartColors.red,
+                					],
+                					label: 'Dataset 1'
+                				}],
+                				labels: [
+                					'Seed I-III - {{ seed_list|length }}',
+                					'Seed Launch - {{ seedlaunch_list|length }}',
+                					'Launch - {{ launch_list|length }}',
+                					'Concept - {{ concept_list|length }}',
+                					'Scale - {{ scale_list|length }}'
+                				]
+                			},
+                			options: {
+                				responsive: true,
+                				legend: {
+                					position: 'right',
+                				},
+
+                				animation: {
+                					animateScale: true,
+                					animateRotate: true
+                				}
+                			}
+                		};
+
+                		window.onload = function() {
+                			var ctx = document.getElementById('chart-area').getContext('2d');
+                			window.myDoughnut = new Chart(ctx, config);
+                		};
+
+                	</script>
+                </body>
+
+
+
+
+
+
+
+            <!-- end card body-->
+        </div>
+        <!-- end card -->
+    </div>
+      </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+
+</body>
+
+</html>
+
+
+
+
+
+{% endblock %}
