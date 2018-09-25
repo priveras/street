@@ -9,7 +9,7 @@ from django.utils.text import slugify
 
 from .forms import ProfileForm, SummaryForm, PastForm, FutureForm, ProjectForm
 from .forms import ElevatorForm, ProblemForm, SolutionForm, BusinessModelForm
-from .forms import AssumptionForm
+from .forms import AssumptionForm, CommentForm
 
 from .models import Project, Team, Comment, Assumption, Problem, BusinessModel
 from .models import Solution, Metric, File, Profile, Summary, Past, Future, Link, Dvf
@@ -268,4 +268,17 @@ def project_form(request, id=0):
         context['error'] = 'Project name already taken'
         return render(request, 'form.html', context, status=400)
 
+    return JsonResponse({'status': 'ok'})
+
+def comment_save(request):
+    if request.method != 'POST':
+        raise Http404
+
+    form = CommentForm(data=request.POST)
+    if not form.is_valid():
+        return JsonResponse(form.errors, status=400)
+
+    doc = form.save(commit=False)
+    doc.user = request.user
+    doc.save()
     return JsonResponse({'status': 'ok'})
