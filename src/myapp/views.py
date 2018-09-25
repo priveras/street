@@ -141,6 +141,64 @@ class HomeView(generic.ListView):
 
         return context
 
+class AdminpanelView(generic.ListView):
+    template_name = 'adminpanel.html'
+    model = Project
+
+    def get_context_data(self, **kwargs):
+        context = super(AdminpanelView, self).get_context_data(**kwargs)
+
+        if date.today() == self.request.user.date_joined.date():
+            alert = True
+        else:
+            alert = False
+
+        context['concept_list'] = Project.objects.filter(stage = "Concept")
+        context['scale_list'] = Project.objects.filter(stage = "Scale")
+        context['seed_list'] = Project.objects.filter(stage = "Seed 1" or "Seed 2" or "Seed 3")
+        context['seedlaunch_list'] = Project.objects.filter(stage = "Launch 1")
+        context['launch_list'] = Project.objects.filter(stage = "Launch 2")
+
+        # #APAC S projects list
+        # context['APACSSeed_list'] = Project.objects.filter(zone = "APAC S", stage = "Seed 1")
+        # context['APACSSeedLaunch_list'] = Project.objects.filter(zone = "APAC S", stage = "Launch 1")
+        # context['APACSLaunch_list'] = Project.objects.filter(zone = "APAC S", stage = "Launch 2")
+
+        # #APAC N projects list
+        # context['APACNSeed_list'] = Project.objects.filter(zone = "APAC N", stage = "Seed 1")
+        # context['APACNSeedLaunch_list'] = Project.objects.filter(zone = "APAC N", stage = "Launch 1")
+        # context['ApacnLaunch_list'] = Project.objects.filter(zone = "APAC N", stage = "Launch 2")
+
+        # #EU projects list
+        # context['EUSeed_list'] = Project.objects.filter(zone = "EU", stage = "Seed 1")
+        # context['EUSeedLaunch_list'] = Project.objects.filter(zone = "EU", stage = "Launch 1")
+        # context['EULaunch_list'] = Project.objects.filter(zone = "EU", stage = "Launch 2")
+
+        # #NAZ projects list
+        # context['NAZSeed_list'] = Project.objects.filter(zone = "NAZ", stage = "Seed 1")
+        # context['NAZSeedLaunch_list'] = Project.objects.filter(zone = "NAZ", stage = "Launch 1")
+        # context['NAZLaunch_list'] = Project.objects.filter(zone = "NAZ", stage = "Launch 2")
+
+        # #MAZ projects list
+        # context['MAZSeed_list'] = Project.objects.filter(zone = "MAZ", stage = "Seed 1")
+        # context['MAZSeedLaunch_list'] = Project.objects.filter(zone = "MAZ", stage = "Launch 1")
+        # context['MAZLaunch_list'] = Project.objects.filter(zone = "MAZ", stage = "Launch 2")
+
+        # #LAS/LAN projects list
+        # context['LANSeed_list'] = Project.objects.filter(zone = "LAN LAS", stage = "Seed 1")
+        # context['LANSeedLaunch_list'] = Project.objects.filter(zone = "LAN LAS", stage = "Launch 1")
+        # context['LANLaunch_list'] = Project.objects.filter(zone = "LAN LAS", stage = "Launch 2")
+
+        context['killed_list'] = Project.objects.filter(status = "Killed")
+        context['active_list'] = Project.objects.filter(status = "Active")
+        context['users_list'] = User.objects.filter()
+        context['assumptions_list'] = Assumption.objects.filter()
+        context['comments_list'] = Comment.objects.filter()
+
+        context['alert'] = alert
+
+        return context
+
 class FaqView(generic.TemplateView):
     template_name = 'faq.html'
 
