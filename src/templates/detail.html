@@ -54,10 +54,15 @@
                 <div class="badge badge-primary mb-3">{{project.stage}}</div>
 
                 <h5>Project Description:</h5>
-
+                {% if project.description %}
                 <p class="text-muted mb-2">
                     {{project.description|linebreaks}}
                 </p>
+                {% else %}
+                <p class="text-muted mb-2">
+                    You haven't added a description for your project yet.
+                </p>
+                {% endif %}
 
                 <div class="row">
                     <div class="col-md-4">

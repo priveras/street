@@ -15,6 +15,7 @@ urlpatterns = [
     url(r'^accounts/info/$', login_required(views.InfoView.as_view()), name='info'),
     url(r'^learn/$', login_required(views.learn), name='learn'),
     url(r'^faq/$', login_required(views.FaqView.as_view()), name='faq'),
+    url(r'^tutorial/$', login_required(views.TutorialView.as_view()), name='tutorial'),
     url(r'^api/model/form/(?P<name>[^\.]+)/project/(?P<project_id>[0-9]+)/id/(?P<id>[0-9]+)$',
         login_required(views.model_form),
         name='model-form'),

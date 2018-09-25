@@ -71,8 +71,15 @@
                 {% endif %}
                 <div class="badge badge-primary mb-3">{{project.stage}}</div>
 
+                {% if project.description %}
                 <p class="text-muted font-13 mb-3 text-justify">{{project.description|truncatechars:120}}<a href="{% url 'app:detail' project.slug %}" class="font-weight-bold text-muted">view more</a>
                 </p>
+                {% else %}
+                <p class="text-muted font-13 mb-3 text-justify">You haven't added a description for your project yet.
+                    <br><br><br>
+                </p>
+                {% endif %}
+
 
                 <!-- project detail-->
                 <p class="mb-1">
