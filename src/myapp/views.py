@@ -5,8 +5,9 @@ from django.shortcuts import render, redirect, Http404
 from django.views.decorators.csrf import csrf_exempt
 from datetime import date
 from django.http import JsonResponse
+from django.utils.text import slugify
 
-from .forms import ProfileForm, SummaryForm, PastForm, FutureForm
+from .forms import ProfileForm, SummaryForm, PastForm, FutureForm, ProjectForm
 from .forms import ElevatorForm, ProblemForm, SolutionForm, BusinessModelForm
 from .forms import AssumptionForm
 
@@ -18,13 +19,13 @@ from .models import Elevator, Tutorial
 # Error Pages
 def server_error(request):
     return render(request, 'errors/500.html')
- 
+
 def not_found(request):
     return render(request, 'errors/404.html')
- 
+
 def permission_denied(request):
     return render(request, 'errors/403.html')
- 
+
 def bad_request(request):
     return render(request, 'errors/400.html')
 
@@ -223,5 +224,40 @@ def model_form(request, name='', project_id=0, id=0):
     doc.user = request.user
     doc.project = project
     doc.save()
+
+    return JsonResponse({'status': 'ok'})
+
+def project_form(request, id=0):
+    method = request.method
+
+    if id == 0:
+        f = ProjectForm() if method == 'GET' else ProjectForm(data=request.POST)
+    else:
+        try:
+            instance = Project.objects.get(pk=id)
+            f = ProjectForm(instance=instance) if method == 'GET' else ProjectForm(instance=instance, data=request.POST)
+        except:
+            raise Http404('id not found')
+    context = {
+        'form': f,
+        'id': id,
+        'showstage': True,
+        'error': '',
+    }
+
+    if method == 'GET':
+        return render(request, 'form.html', context)
+
+    if not f.is_valid():
+        context['form'] = f
+        return render(request, 'form.html', context, status=400)
+
+    try:
+        doc = f.save(commit=False)
+        doc.slug = slugify(doc.title)
+        doc.save()
+    except:
+        context['error'] = 'Project name already taken'
+        return render(request, 'form.html', context, status=400)
 
     return JsonResponse({'status': 'ok'})

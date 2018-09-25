@@ -47,7 +47,7 @@ class Project(models.Model):
         (STAGE_SCALE, 'Scale'),
         )
 
-    title = models.CharField(max_length=200)
+    title = models.CharField(max_length=200, blank=False, null=False)
     slug = models.SlugField(max_length=200, unique=True)
     description = models.TextField(blank=True)
     stage = models.CharField(choices=STAGES, max_length=200, blank=True)

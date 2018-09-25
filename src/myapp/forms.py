@@ -13,7 +13,7 @@ class ProfileForm(forms.ModelForm):
 class ProjectForm(forms.ModelForm):
     class Meta:
         model = Project
-        exclude = ['created_at', 'updated_at']
+        exclude = ['created_at', 'updated_at', 'slug', 'status']
 
 
 class SummaryForm(forms.ModelForm):

@@ -5,9 +5,14 @@
     <input type="hidden" id="project" value="{{ project_id }}" />
     <input type="hidden" id="doc-id" value="{{ id }}" />
 
+    {% if error %}
+    <div class="alert alert-danger">
+      {{ error }}
+    </div>
+    {% endif %}
     {% for field in form.visible_fields %}
 
-      {% if field.name == 'stage' %}
+      {% if field.name == 'stage' and not showstage %}
         <div style="display:none;">
             {{ field }}
         </div>
@@ -15,6 +20,11 @@
       <div class="form-group mb-3">
         <label>{{ field.label_tag }}</label>
         {% render_field field class+="form-control" rows="2" %}
+        {% if field.errors %}
+           <div class="alert alert-danger">
+              {{ field.errors.as_text }}
+          </div>
+        {% endif %}
       </div>
       {% endif %}
 
