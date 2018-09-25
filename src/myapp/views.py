@@ -9,11 +9,11 @@ from django.utils.text import slugify
 
 from .forms import ProfileForm, SummaryForm, PastForm, FutureForm, ProjectForm
 from .forms import ElevatorForm, ProblemForm, SolutionForm, BusinessModelForm
-from .forms import AssumptionForm, CommentForm, FileForm
+from .forms import AssumptionForm, CommentForm, FileForm, DvfForm
 
 from .models import Project, Team, Comment, Assumption, Problem, BusinessModel
-from .models import Solution, Metric, File, Profile, Summary, Past, Future, Link, Dvf
-from .models import Elevator, Tutorial, Progress
+from .models import Solution, Metric, File, Profile, Summary, Past, Future, Link
+from .models import Elevator, Tutorial, Progress, Dvf
 from django.http import HttpResponseRedirect
 
 def index(request):
@@ -238,6 +238,7 @@ def model_form(request, name='', project_id=0, id=0):
         'solution': SolutionForm,
         'business_model': BusinessModelForm,
         'assumption': AssumptionForm,
+        'dvf': DvfForm,
     }
 
     instances = {
@@ -249,6 +250,7 @@ def model_form(request, name='', project_id=0, id=0):
         'solution': Solution,
         'business_model': BusinessModel,
         'assumption': Assumption,
+        'dvf': Dvf,
     }
 
     method = request.method

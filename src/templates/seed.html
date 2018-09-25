@@ -83,7 +83,24 @@
             </div> <!-- end card-body-->
             {% if permission %}
             <div class="card-footer text-muted">
-                <button type="button" class="btn btn-outline-primary btn-sm float-right" data-toggle="modal" data-target="#bs-example-modal-lg">Edit</button>
+                <button
+                    type="button"
+                    {% if dvf_seed.0.id %}
+                        class="btn btn-outline-primary btn-sm float-right edit-doc"
+                    {% else %}
+                        class="btn btn-outline-primary btn-sm float-right call-dynamic-form"
+                    {% endif %}
+                    data-name="dvf"
+                    data-title="Dvf"
+                    data-id="{{ dvf_seed.0.id }}"
+                    data-toggle="modal"
+                    data-target="#bs-example-modal-lg">
+                    {% if dvf_seed.0.id %}
+                        Edit
+                    {% else %}
+                        Add
+                    {% endif %}
+                </button>
             </div>
             {% endif %}
         </div>
@@ -273,10 +290,10 @@
             <a href="#" data-toggle="remove"><i class="mdi mdi-close"></i></a>
         </div>
         <h4 class="header-title">
-            Elevator Pitch 
+            Elevator Pitch
             <a href="" class="text-muted" data-toggle="modal" data-target="#elevator">
                 <i class="mdi mdi-information-outline" data-toggle="tooltip" data-placement="top" title="" data-original-title="Learn More"></i>
-            </a>    
+            </a>
         </h4>
         <p class="text-muted font-14 mb-2">
             Add your elevator pitch in this section and keep track of the hypothesis results
@@ -538,7 +555,7 @@
             Assumptions
             <a href="" class="text-muted" data-toggle="modal" data-target="#assumptions">
                 <i class="mdi mdi-information-outline" data-toggle="tooltip" data-placement="top" title="" data-original-title="Learn More"></i>
-            </a>    
+            </a>
         </h4>
         <p class="text-muted font-14 mb-2">
             Add all assumptions, metrics, learnings, and status for your project in this section
@@ -683,7 +700,7 @@
             </div>
             <div class="modal-body text-justify" id="modal-body">
                 <p>
-                    An assumption is a fact or statement being taken for granted as true. Our focus is to challenge and clarify them with research. We generally start by listing all assumptions we’re making and labelling them either “Desirability”, “Feasibility” or “Viability” assumptions, depending on which part of the idea they relate to. 
+                    An assumption is a fact or statement being taken for granted as true. Our focus is to challenge and clarify them with research. We generally start by listing all assumptions we’re making and labelling them either “Desirability”, “Feasibility” or “Viability” assumptions, depending on which part of the idea they relate to.
                     <ul>
                         <li>Desirability assumptions are those about your user and the idea.</li>
                         <li>Feasibility assumptions are those about how you’d produce your product/operate your business.</li>

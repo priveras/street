@@ -83,7 +83,24 @@
             </div> <!-- end card-body-->
             {% if permission %}
             <div class="card-footer text-muted">
-                <button type="button" class="btn btn-outline-primary btn-sm float-right" data-toggle="modal" data-target="#bs-example-modal-lg">Edit</button>
+                <button
+                    type="button"
+                    {% if dvf_launch.0.id %}
+                        class="btn btn-outline-primary btn-sm float-right edit-doc"
+                    {% else %}
+                        class="btn btn-outline-primary btn-sm float-right call-dynamic-form"
+                    {% endif %}
+                    data-name="dvf"
+                    data-title="Dvf"
+                    data-id="{{ dvf_launch.0.id }}"
+                    data-toggle="modal"
+                    data-target="#bs-example-modal-lg">
+                    {% if dvf_launch.0.id %}
+                        Edit
+                    {% else %}
+                        Add
+                    {% endif %}
+                </button>
             </div>
             {% endif %}
         </div>
@@ -678,7 +695,7 @@ $(function() {
 
     $.get('/api/model/form/' + path, function(form) {
       $('#modal-body').html(form);
-      $('#id_stage').val('seed');
+      $('#id_stage').val('launch');
     });
   });
 });

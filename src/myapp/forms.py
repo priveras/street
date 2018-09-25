@@ -1,7 +1,7 @@
 from django import forms
 from .models import Profile, Project, Summary, Past, Future, Elevator
 from .models import Problem, Solution, BusinessModel, Assumption
-from .models import Comment, File
+from .models import Comment, File, Dvf
 
 class CommentForm(forms.ModelForm):
     class Meta:
@@ -12,6 +12,12 @@ class FileForm(forms.ModelForm):
     class Meta:
         model = File
         exclude = ['user', 'created_at', 'updated_at']
+
+
+class DvfForm(forms.ModelForm):
+    class Meta:
+        model = Dvf
+        exclude = ['created_at', 'updated_at', 'user', 'project']
 
 
 class ProfileForm(forms.ModelForm):
