@@ -35,4 +35,8 @@ urlpatterns = [
     url(r'^api/comment',
         login_required(views.comment_save),
         name='comment-save'),
+
+    url(r'^api/file',
+        login_required(views.file_save),
+        name='file-save'),
 ]

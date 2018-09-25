@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load staticfiles %}
+{% load widget_tweaks %}
 {% block content %}
 <!-- start page title -->
 <div class="row">
@@ -363,7 +364,8 @@
                         <i class="dripicons-dots-3"></i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(-142px, 20px, 0px);">
-                        <a href="javascript:void(0);" class="dropdown-item">
+                        <a href="javascript:void(0);" data-toggle="modal"
+                          data-target="#file-modal" class="dropdown-item add-file">
                           <i class="mdi mdi-plus-circle mr-1"></i>
                           Add
                         </a>
@@ -545,6 +547,52 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+<div
+  class="modal fade"
+  id="file-modal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="filemodal"
+  aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <form class="modal-content" action="/api/file" method="post" enctype="multipart/form-data">
+            <div class="modal-header">
+                <h4 class="modal-title">Add a file</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                {% csrf_token %}
+                <input type="hidden" name="project" value="{{ project.id }}" />
+
+                {% if error %}
+                <div class="alert alert-danger">
+                  {{ error }}
+                </div>
+                {% endif %}
+                {% for field in fileform.visible_fields %}
+                  {% if field.name == 'project'  %}
+                  {% else %}
+                  <div class="form-group mb-3">
+                    <label>{{ field.label_tag }}</label>
+                    {% render_field field class+="form-control" rows="2" %}
+                    {% if field.errors %}
+                       <div class="alert alert-danger">
+                          {{ field.errors.as_text }}
+                      </div>
+                    {% endif %}
+                  </div>
+                  {% endif %}
+
+                {% endfor %}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+        </form><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 {% endblock %}
 
 {% block js %}
@@ -561,6 +609,14 @@
       }).fail(function(xhr, status, error){
 
       });
+    });
+
+    $('.add-file').click(function(){
+      $('#file').click();
+    });
+
+    $('#file').change(function(){
+      $('#file-form').submit();
     });
   });
 </script>

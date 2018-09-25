@@ -1,11 +1,16 @@
 from django import forms
 from .models import Profile, Project, Summary, Past, Future, Elevator
 from .models import Problem, Solution, BusinessModel, Assumption
-from .models import Comment
+from .models import Comment, File
 
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
+        exclude = ['user', 'created_at', 'updated_at']
+
+class FileForm(forms.ModelForm):
+    class Meta:
+        model = File
         exclude = ['user', 'created_at', 'updated_at']
 
 

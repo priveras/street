@@ -9,7 +9,7 @@ from django.utils.text import slugify
 
 from .forms import ProfileForm, SummaryForm, PastForm, FutureForm, ProjectForm
 from .forms import ElevatorForm, ProblemForm, SolutionForm, BusinessModelForm
-from .forms import AssumptionForm, CommentForm
+from .forms import AssumptionForm, CommentForm, FileForm
 
 from .models import Project, Team, Comment, Assumption, Problem, BusinessModel
 from .models import Solution, Metric, File, Profile, Summary, Past, Future, Link, Dvf
@@ -52,6 +52,7 @@ class DetailView(generic.DetailView):
         context['dvf_seedlaunch'] = Dvf.objects.filter(project=self.object).filter(stage="seedlaunch").order_by('-updated_at')
         context['dvf_launch'] = Dvf.objects.filter(project=self.object).filter(stage="launch").order_by('-updated_at')
         context['permission'] = Team.objects.filter(project=self.object).filter(user=self.request.user).filter(permission="edit")
+        context['fileform'] = FileForm()
 
         return context
 
@@ -282,3 +283,16 @@ def comment_save(request):
     doc.user = request.user
     doc.save()
     return JsonResponse({'status': 'ok'})
+
+def file_save(request):
+    if request.method != 'POST':
+        raise Http404
+
+    form = FileForm(request.POST, request.FILES)
+    if not form.is_valid():
+        return JsonResponse(form.errors, status=400)
+
+    doc = form.save(commit=False)
+    doc.user = request.user
+    doc.save()
+    return redirect(request.META['HTTP_REFERER'])
