@@ -47,10 +47,28 @@ class Project(models.Model):
         (STAGE_SCALE, 'Scale'),
         )
 
+
+    ZONE_APACS = 'APAC S'
+    ZONE_APACN = 'APAC N'
+    ZONE_EU = 'EU'
+    ZONE_NAZ = 'NAZ'
+    ZONE_MAZ = 'MAZ'
+    ZONE_LAS = 'LAN LAS'
+
+    ZONES = (
+        (ZONE_APACS, 'APAC S'),
+        (ZONE_APACN, 'APAC N'),
+        (ZONE_EU, 'EU'),
+        (ZONE_NAZ, 'NAZ'),
+        (ZONE_MAZ, 'MAZ'),
+        (ZONE_LAS, 'LAN LAS'),
+        )
+
     title = models.CharField(max_length=200, blank=False, null=False)
     slug = models.SlugField(max_length=200, unique=True)
     description = models.TextField(blank=True)
     stage = models.CharField(choices=STAGES, max_length=200, blank=True)
+    zone = models.CharField(choices=ZONES, max_length=200, blank=True)
     status = models.CharField(choices=STATUS_ALL, max_length=200)
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(db_index=True, auto_now_add=True)
