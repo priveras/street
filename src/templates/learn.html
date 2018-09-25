@@ -28,51 +28,99 @@
                         <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                             <a class="nav-link active show" data-id="nav-1" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">
                                 <i class="mdi mdi-home-variant d-lg-none d-block mr-1"></i>
-                                <span class="d-none d-lg-block">ZX Dashboard <i class="mdi mdi-check-circle text-success"></i></span>
+                                <span class="d-none d-lg-block">ZX Dashboard 
+                                    {% if progress.0.zx_dashboard %}
+                                    <i class="mdi mdi-check-circle text-success float-right"></i>
+                                    {% endif %}
+                                </span>
                             </a>
                             <a class="nav-link" data-id="nav-2" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">
                                 <i class="mdi mdi-account-circle d-lg-none d-block mr-1"></i>
-                                <span class="d-none d-lg-block">OS Model</span>
+                                <span class="d-none d-lg-block">OS Model
+                                    {% if progress.0.os_model %}
+                                    <i class="mdi mdi-check-circle text-success float-right"></i>
+                                    {% endif %}
+                                </span>
                             </a>
                             <a class="nav-link" data-id="nav-3" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">
                                 <i class="mdi mdi-settings-outline d-lg-none d-block mr-1"></i>
-                                <span class="d-none d-lg-block">Assumptions</span>
+                                <span class="d-none d-lg-block">Assumptions
+                                    {% if progress.0.assumptions %}
+                                    <i class="mdi mdi-check-circle text-success float-right"></i>
+                                    {% endif %}
+                                </span>
                             </a>
                             <a class="nav-link" data-id="nav-4" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-4" role="tab" aria-controls="v-pills-settings" aria-selected="false">
                                 <i class="mdi mdi-settings-outline d-lg-none d-block mr-1"></i>
-                                <span class="d-none d-lg-block">Elevator Pitch</span>
+                                <span class="d-none d-lg-block">Elevator Pitch
+                                    {% if progress.0.elevator_pitch %}
+                                    <i class="mdi mdi-check-circle text-success float-right"></i>
+                                    {% endif %}
+                                </span>
                             </a>
                             <a class="nav-link" data-id="nav-5" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-5" role="tab" aria-controls="v-pills-settings" aria-selected="false">
                                 <i class="mdi mdi-settings-outline d-lg-none d-block mr-1"></i>
-                                <span class="d-none d-lg-block">Problem</span>
+                                <span class="d-none d-lg-block">Problem
+                                    {% if progress.0.problem %}
+                                    <i class="mdi mdi-check-circle text-success float-right"></i>
+                                    {% endif %}
+                                </span>
                             </a>
                             <a class="nav-link" data-id="nav-6" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-6" role="tab" aria-controls="v-pills-settings" aria-selected="false">
                                 <i class="mdi mdi-settings-outline d-lg-none d-block mr-1"></i>
-                                <span class="d-none d-lg-block">Solution</span>
+                                <span class="d-none d-lg-block">Solution
+                                    {% if progress.0.solution %}
+                                    <i class="mdi mdi-check-circle text-success float-right"></i>
+                                    {% endif %}
+                                </span>
                             </a>
                             <a class="nav-link" data-id="nav-7" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-7" role="tab" aria-controls="v-pills-settings" aria-selected="false">
                                 <i class="mdi mdi-settings-outline d-lg-none d-block mr-1"></i>
-                                <span class="d-none d-lg-block">Business Model</span>
+                                <span class="d-none d-lg-block">Business Model
+                                    {% if progress.0.business_model %}
+                                    <i class="mdi mdi-check-circle text-success float-right"></i>
+                                    {% endif %}
+                                </span>
                             </a>
                             <a class="nav-link" data-id="nav-8" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-8" role="tab" aria-controls="v-pills-settings" aria-selected="false">
                                 <i class="mdi mdi-settings-outline d-lg-none d-block mr-1"></i>
-                                <span class="d-none d-lg-block">Checkpoint</span>
+                                <span class="d-none d-lg-block">Checkpoint
+                                    {% if progress.0.checkpoint %}
+                                    <i class="mdi mdi-check-circle text-success float-right"></i>
+                                    {% endif %}
+                                </span>
                             </a>
                             <a class="nav-link" data-id="nav-9" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-9" role="tab" aria-controls="v-pills-settings" aria-selected="false">
                                 <i class="mdi mdi-settings-outline d-lg-none d-block mr-1"></i>
-                                <span class="d-none d-lg-block">Assumption List</span>
+                                <span class="d-none d-lg-block">Assumption List
+                                    {% if progress.0.assumption_list %}
+                                    <i class="mdi mdi-check-circle text-success float-right"></i>
+                                    {% endif %}
+                                </span>
                             </a>
                             <a class="nav-link" data-id="nav-10" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-10" role="tab" aria-controls="v-pills-settings" aria-selected="false">
                                 <i class="mdi mdi-settings-outline d-lg-none d-block mr-1"></i>
-                                <span class="d-none d-lg-block">Traction</span>
+                                <span class="d-none d-lg-block">Traction
+                                    {% if progress.0.traction %}
+                                    <i class="mdi mdi-check-circle text-success float-right"></i>
+                                    {% endif %}
+                                </span>
                             </a>
                             <a class="nav-link" data-id="nav-11" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-11" role="tab" aria-controls="v-pills-settings" aria-selected="false">
                                 <i class="mdi mdi-settings-outline d-lg-none d-block mr-1"></i>
-                                <span class="d-none d-lg-block">Dashboard</span>
+                                <span class="d-none d-lg-block">Dashboard
+                                    {% if progress.0.dashboard %}
+                                    <i class="mdi mdi-check-circle text-success float-right"></i>
+                                    {% endif %}
+                                </span>
                             </a>
                             <a class="nav-link" data-id="nav-12" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-12" role="tab" aria-controls="v-pills-settings" aria-selected="false">
                                 <i class="mdi mdi-settings-outline d-lg-none d-block mr-1"></i>
-                                <span class="d-none d-lg-block">Next Steps</span>
+                                <span class="d-none d-lg-block">Next Steps
+                                    {% if progress.0.next_steps %}
+                                    <i class="mdi mdi-check-circle text-success float-right"></i>
+                                    {% endif %}
+                                </span>
                             </a>
                         </div>
                     </div> <!-- end col-->

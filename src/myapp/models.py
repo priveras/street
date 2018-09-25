@@ -1,6 +1,22 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+class Progress(models.Model):
+    user = models.ForeignKey(User, unique=True)
+    zx_dashboard = models.BooleanField(default=False, blank=True)
+    os_model = models.BooleanField(default=False, blank=True)
+    assumptions = models.BooleanField(default=False, blank=True)
+    elevator_pitch = models.BooleanField(default=False, blank=True)
+    problem = models.BooleanField(default=False, blank=True)
+    solution = models.BooleanField(default=False, blank=True)
+    business_model = models.BooleanField(default=False, blank=True)
+    checkpoint = models.BooleanField(default=False, blank=True)
+    assumption_list = models.BooleanField(default=False, blank=True)
+    traction = models.BooleanField(default=False, blank=True)
+    dashboard = models.BooleanField(default=False, blank=True)
+    next_steps = models.BooleanField(default=False, blank=True)
+
+
 class Tutorial(models.Model):
     content = models.TextField(blank=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -80,7 +96,7 @@ class Comment(models.Model):
     created_at = models.DateTimeField(db_index=True, auto_now_add=True)
 
     def __str__(self):
-        return str(self.project)
+        return str(self.user)
 
 class Link(models.Model):
     project = models.ForeignKey(Project)

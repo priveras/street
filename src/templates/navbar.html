@@ -16,12 +16,12 @@
 
         <!--- Sidemenu -->
         <ul class="metismenu side-nav">
-            {% if a %}
+            {% if user.is_staff %}
             <li class="side-nav-title side-nav-item">Admin</li>
 
             
             <li class="side-nav-item">
-                <a href="index.html" class="side-nav-link">
+                <a href="/adminpanel" class="side-nav-link">
                     <i class="dripicons-meter"></i>
                     <span> Dashboard </span>
                 </a>
