@@ -121,7 +121,12 @@
             <div class="col-sm-4">
                 <div class="card">
                     <div class="card-body">
-                        <a href="{% url 'app:seed' project.slug %}"><h4 class="header-title">Seed I to III</h4></a>
+                            <h4 class="header-title">
+                                <a href="{% url 'app:seed' project.slug %}">Seed I to III</a>
+                                <a href="" class="text-muted" data-toggle="modal" data-target="#seed">
+                                    <i class="mdi mdi-information-outline" data-toggle="tooltip" data-placement="top" title="" data-original-title="Learn More"></i>
+                                </a>    
+                            </h4>
                         <div class="timeline-alt pb-0">
                             <div class="timeline-item">
                                 {% if dvf_seed.0.desirability == "On Track" %}
@@ -593,6 +598,40 @@
         </form><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+<!--  Modal content for the above example -->
+<div class="modal fade" id="seed" tabindex="-1" role="dialog" aria-labelledby="assumptions" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myLargeModalLabel">Seed I-III</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body text-justify" id="modal-body">
+                <p>
+                    Using the OS is the foundation of our approach. Think of it like a ‘stage gate’ type model for building a disruptive new venture. Unlike Stage-Gate, ventures do not pass sequentially through the OS (with graduations being approved at meetings and so forth). 
+                    <br>
+                    <br>
+                    Ventures can move forward and backwards fluidly as our learning improves and our focus needs to change. We can also use a latter stage of the OS (for example, a ‘Solution’ or ‘Business Model’ idea as a means of helping identify and validate a ‘Problem’ – which is an earlier stage). 
+                </p>
+                <ul>
+                    <li>
+                        <b>SEED I</b>: “PROBLEM” - A venture is seeking to prove the existence, size and acuteness of a consumer problem, and clearly identify the consumer who has it.
+                    </li>    
+                    <li>
+                        <b>SEED II</b>: “SOLUTION” - A venture is has validated a user problem, and is now seeking to validate the best solution to solve the problem.        
+                    </li>
+                    <li>
+                        <b>SEED III</b>: A venture has validated a problem and solution, and is seeking to validate its business model through which the solution will be commercialized for the consumer.
+                    </li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 {% endblock %}
 
 {% block js %}

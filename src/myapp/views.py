@@ -13,7 +13,7 @@ from .forms import AssumptionForm, CommentForm, FileForm
 
 from .models import Project, Team, Comment, Assumption, Problem, BusinessModel
 from .models import Solution, Metric, File, Profile, Summary, Past, Future, Link, Dvf
-from .models import Elevator, Tutorial
+from .models import Elevator, Tutorial, Progress
 from django.http import HttpResponseRedirect
 
 def index(request):
@@ -34,8 +34,9 @@ def bad_request(request):
 
 def learn(request):
     tutorial = Tutorial.objects.order_by('created_at')
+    progress = Progress.objects.filter(user=request.user)
 
-    return render(request, 'learn.html',{'tutorial':tutorial})
+    return render(request, 'learn.html',{'tutorial':tutorial, 'progress':progress})
 
 class DetailView(generic.DetailView):
     model = Project
