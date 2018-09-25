@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load humanize %}
+{% block content %}
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">OS Dashboard</a></li>
+                    <li class="breadcrumb-item active">FAQ</li>
+                </ol>
+            </div>
+            <h4 class="page-title">FAQ</h4>
+        </div>
+    </div>
+</div>     
+<!-- end page title --> 
+
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="text-center">
+            <h3 class="">Frequently Asked Questions</h3>
+            <p class="text-muted mt-3"> Nisi praesentium similique totam odio obcaecati, reprehenderit,
+                dignissimos rem temporibus ea inventore alias!<br> Beatae animi nemo ea
+                tempora, temporibus laborum facilis ut!</p>
+
+            <button type="button" class="btn btn-success btn-sm mt-2"><i class="mdi mdi-email-outline mr-1"></i> Email us your question</button>
+        </div>
+    </div><!-- end col -->
+</div><!-- end row -->
+
+{% endblock %}

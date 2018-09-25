@@ -5,7 +5,7 @@
     <div class="slimscroll-menu">
 
         <!-- LOGO -->
-        <a href="index.html" class="logo text-center">
+        <a href="{% url 'app:home' %}" class="logo text-center">
             <span class="logo-lg">
                 <img src="{% static 'assets/images/logo.png' %}" alt="" height="16">
             </span>
@@ -16,6 +16,18 @@
 
         <!--- Sidemenu -->
         <ul class="metismenu side-nav">
+            {% if a %}
+            <li class="side-nav-title side-nav-item">Admin</li>
+
+            
+            <li class="side-nav-item">
+                <a href="index.html" class="side-nav-link">
+                    <i class="dripicons-meter"></i>
+                    <span> Dashboard </span>
+                </a>
+            </li>
+            {% endif %}
+            
 
             <li class="side-nav-title side-nav-item">Navigation</li>
 

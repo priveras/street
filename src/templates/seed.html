@@ -24,16 +24,18 @@
     <div class="col-md-4">
         <div class="card">
             <div class="card-body">
-                <div class="card-widgets">
-                    <a href="javascript:;" data-toggle="reload"><i class="mdi mdi-refresh"></i></a>
-                    <a data-toggle="collapse" href="#cardCollpase9" role="button" aria-expanded="false" aria-controls="cardCollpase1"><i class="mdi mdi-minus"></i></a>
-
-                    <a href="#" data-toggle="remove"><i class="mdi mdi-close"></i></a>
-                </div>
-                <h4 class="header-title">DVF Metrics</h4>
-                <div id="cardCollpase9"  class="timeline-alt pb-0 collapse show">
+                <a href="{% url 'app:seed' project.slug %}"><h4 class="header-title">Seed I to III</h4></a>
+                <div class="timeline-alt pb-0">
                     <div class="timeline-item">
-                        <i class="bg-warning-lighten text-info timeline-icon"></i>
+                        {% if dvf_seed.0.desirability == "On Track" %}
+                        <i class="bg-success-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_seed.0.desirability}}"></i>
+                        {% elif dvf_seed.0.desirability == "Delayed" %}
+                        <i class="bg-warning-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_seed.0.desirability}}"></i>
+                        {% elif dvf_seed.0.desirability == "At Risk" %}
+                        <i class="bg-danger-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_seed.0.desirability}}"></i>
+                        {% else %}
+                        <i class="bg-secondary-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="No data"></i>
+                        {% endif %}
                         <div class="timeline-item-info">
                             <a href="#" class="mb-1 d-block" style="color:#6c757d">Desirabilty</a>
                             <p></p>
@@ -41,7 +43,15 @@
                     </div>
 
                     <div class="timeline-item">
-                        <i class="bg-danger-lighten text-primary timeline-icon"></i>
+                        {% if dvf_seed.0.viability == "On Track" %}
+                        <i class="bg-success-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_seed.0.viability}}"></i>
+                        {% elif dvf_seed.0.viability == "Delayed" %}
+                        <i class="bg-warning-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_seed.0.viability}}"></i>
+                        {% elif dvf_seed.0.viability == "At Risk" %}
+                        <i class="bg-danger-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_seed.0.viability}}"></i>
+                        {% else %}
+                        <i class="bg-secondary-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="No data"></i>
+                        {% endif %}
                         <div class="timeline-item-info">
                             <a href="#" class="mb-1 d-block" style="color:#6c757d">Viability</a>
                             <p></p>
@@ -49,11 +59,23 @@
                     </div>
 
                     <div class="timeline-item">
-                        <i class="bg-success-lighten text-primary timeline-icon"></i>
+                        {% if dvf_seed.0.feasibility == "On Track" %}
+                        <i class="bg-success-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_seed.0.feasibility}}"></i>
+                        {% elif dvf_seed.0.feasibility == "Delayed" %}
+                        <i class="bg-warning-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_seed.0.feasibility}}"></i>
+                        {% elif dvf_seed.0.feasibility == "At Risk" %}
+                        <i class="bg-danger-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_seed.0.feasibility}}"></i>
+                        {% else %}
+                        <i class="bg-secondary-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="No data"></i>
+                        {% endif %}
                         <div class="timeline-item-info">
                             <a href="#" class="mb-1 d-block" style="color:#6c757d">Feasibility</a>
                             <p>
-                                <small class="text-muted">14 hours ago</small>
+                                {% if dvf_seed.0.updated_at %}
+                                <small class="text-muted">{{dvf_seed.0.updated_at|date}}</small>
+                                {% else %}
+                                <small class="text-muted">NA</small>
+                                {% endif %}
                             </p>
                         </div>
                     </div>
@@ -76,7 +98,7 @@
                 </div>
                 <h4 class="header-title">Status Summary</h4>
                 <p class="text-muted font-14 mb-2">
-                    Add your problem in this section and keep track of the hypothesis results
+                    Add your prject's status summary to this section
                 </p>
 
                 <div class="table-responsive collapse show" id="cardCollpasec" style="max-height:125px; overflow-y: auto;">
@@ -134,7 +156,7 @@
                 </div>
                 <h4 class="header-title">Past 2 weeks Priorities</h4>
                 <p class="text-muted font-14 mb-2">
-                    Add your problem in this section and keep track of the hypothesis results
+                    Add your priorites from the past 2 weeks in this section
                 </p>
 
                 <div class="table-responsive collapse show" id="cardCollpaseb" style="max-height:125px; overflow-y: auto;">
@@ -194,7 +216,7 @@
                 </div>
                 <h4 class="header-title">Next 2 weeks Priorities</h4>
                 <p class="text-muted font-14 mb-2">
-                    Add your problem in this section and keep track of the hypothesis results
+                    Add your priorities for the next 2 weeks in this section
                 </p>
 
                 <div class="table-responsive collapse show" id="cardCollpasea" style="max-height:125px; overflow-y: auto;">
@@ -250,9 +272,14 @@
             <a data-toggle="collapse" href="#cardCollpase4" role="button" aria-expanded="false" aria-controls="cardCollpase1"><i class="mdi mdi-minus"></i></a>
             <a href="#" data-toggle="remove"><i class="mdi mdi-close"></i></a>
         </div>
-        <h4 class="header-title">Elevator Pitch</h4>
+        <h4 class="header-title">
+            Elevator Pitch 
+            <a href="" class="text-muted" data-toggle="modal" data-target="#elevator">
+                <i class="mdi mdi-information-outline" data-toggle="tooltip" data-placement="top" title="" data-original-title="Learn More"></i>
+            </a>    
+        </h4>
         <p class="text-muted font-14 mb-2">
-            Add your problem in this section and keep track of the hypothesis results
+            Add your elevator pitch in this section and keep track of the hypothesis results
         </p>
 
         <div class="table-responsive collapse show" id="cardCollpase4" style="max-height:125px; overflow-y: auto;">
@@ -509,7 +536,7 @@
         </div>
         <h4 class="header-title">Assumptions</h4>
         <p class="text-muted font-14 mb-2">
-            Add all assumptions, metrics, and status for your project in this section
+            Add all assumptions, metrics, learnings, and status for your project in this section
         </p>
 
         <div class="table-responsive crd collapse show" id="cardCollpase4">
@@ -610,6 +637,31 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary submit-form">Save</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!--  Modal content for the above example -->
+<div class="modal fade" id="elevator" tabindex="-1" role="dialog" aria-labelledby="elevator" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myLargeModalLabel">Elevator Pitch</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body text-justify" id="modal-body">
+                <p>An elevator pitch is a brief, persuasive speech that you use to spark interest in what your organization does. You can also use them to create interest in a project, idea, or product – or in yourself. A good elevator pitch should last no longer than a short elevator ride of 20 to 30 seconds, hence the name.
+                <br><br>
+                They should be interesting, memorable, and succinct. They also need to explain what makes you – or your organization, product, or idea – unique.</p>
+                <p>This is a good structure to follow:</p>
+                <ul>
+                    <li>We help ____(consumer X)_____ who ___(problem)___ to ___(solution)___ by ___(how it works)___</li>
+                    <li>Our product/technology is like the ___(insert analogy of comparative company)___ of/for ___(insert your category)___. For example, our venture is like Uber for Trucking.</li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
