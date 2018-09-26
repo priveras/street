@@ -138,6 +138,7 @@ class HomeView(generic.ListView):
 
         context['projects_list'] = Project.objects.filter(team__user=self.request.user)
         context['alert'] = alert
+        #context['permission'] = Team.objects.filter(project=self.object).filter(user=self.request.user).filter(permission="edit")
 
         return context
 
