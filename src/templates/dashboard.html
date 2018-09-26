@@ -263,97 +263,20 @@
                 <div class="table-responsive">
                     <table class="table table-centered table-hover mb-0">
                         <tbody>
+                            {% for user in users %}
+                            {% for profile in user.profile_set.all %}
                             <tr>
                                 <td>
-                                    <h5 class="font-14 mb-1 font-weight-normal">ASOS Ridley High Waist</h5>
-                                    <span class="text-muted font-13">07 April 2018</span>
+                                    <p class="mb-0">
+                                        <img src="{{profile.profile_image.url}}" alt="user-img" class="avatar-xs rounded-circle mr-1">
+                                        <span class="align-middle">{{user.first_name}} {{user.last_name}}</span>
+                                    </p>
                                 </td>
-                                <td>
-                                    <h5 class="font-14 mb-1 font-weight-normal">$79.49</h5>
-                                    <span class="text-muted font-13">Price</span>
-                                </td>
-                                <td>
-                                    <h5 class="font-14 mb-1 font-weight-normal">82</h5>
-                                    <span class="text-muted font-13">Quantity</span>
-                                </td>
-                                <td>
-                                    <h5 class="font-14 mb-1 font-weight-normal">$6,518.18</h5>
-                                    <span class="text-muted font-13">Amount</span>
-                                </td>
+                                <td>{{profile.job_title}}</td>
+                                <td>{{profile.location}}</td>
                             </tr>
-                            <tr>
-                                <td>
-                                    <h5 class="font-14 mb-1 font-weight-normal">Marco Lightweight Shirt</h5>
-                                    <span class="text-muted font-13">25 March 2018</span>
-                                </td>
-                                <td>
-                                    <h5 class="font-14 mb-1 font-weight-normal">$128.50</h5>
-                                    <span class="text-muted font-13">Price</span>
-                                </td>
-                                <td>
-                                    <h5 class="font-14 mb-1 font-weight-normal">37</h5>
-                                    <span class="text-muted font-13">Quantity</span>
-                                </td>
-                                <td>
-                                    <h5 class="font-14 mb-1 font-weight-normal">$4,754.50</h5>
-                                    <span class="text-muted font-13">Amount</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <h5 class="font-14 mb-1 font-weight-normal">Half Sleeve Shirt</h5>
-                                    <span class="text-muted font-13">17 March 2018</span>
-                                </td>
-                                <td>
-                                    <h5 class="font-14 mb-1 font-weight-normal">$39.99</h5>
-                                    <span class="text-muted font-13">Price</span>
-                                </td>
-                                <td>
-                                    <h5 class="font-14 mb-1 font-weight-normal">64</h5>
-                                    <span class="text-muted font-13">Quantity</span>
-                                </td>
-                                <td>
-                                    <h5 class="font-14 mb-1 font-weight-normal">$2,559.36</h5>
-                                    <span class="text-muted font-13">Amount</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <h5 class="font-14 mb-1 font-weight-normal">Lightweight Jacket</h5>
-                                    <span class="text-muted font-13">12 March 2018</span>
-                                </td>
-                                <td>
-                                    <h5 class="font-14 mb-1 font-weight-normal">$20.00</h5>
-                                    <span class="text-muted font-13">Price</span>
-                                </td>
-                                <td>
-                                    <h5 class="font-14 mb-1 font-weight-normal">184</h5>
-                                    <span class="text-muted font-13">Quantity</span>
-                                </td>
-                                <td>
-                                    <h5 class="font-14 mb-1 font-weight-normal">$3,680.00</h5>
-                                    <span class="text-muted font-13">Amount</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <h5 class="font-14 mb-1 font-weight-normal">Marco Shoes</h5>
-                                    <span class="text-muted font-13">05 March 2018</span>
-                                </td>
-                                <td>
-                                    <h5 class="font-14 mb-1 font-weight-normal">$28.49</h5>
-                                    <span class="text-muted font-13">Price</span>
-                                </td>
-                                <td>
-                                    <h5 class="font-14 mb-1 font-weight-normal">69</h5>
-                                    <span class="text-muted font-13">Quantity</span>
-                                </td>
-                                <td>
-                                    <h5 class="font-14 mb-1 font-weight-normal">$1,965.81</h5>
-                                    <span class="text-muted font-13">Amount</span>
-                                </td>
-                            </tr>
-
+                            {% endfor %}
+                            {% endfor %}
                         </tbody>
                     </table>
                 </div> <!-- end table-responsive-->
