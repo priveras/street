@@ -25,7 +25,7 @@ SECRET_KEY = '-au3&glnt&h(g^!s$rjjgh6szj=$(wxnelw2uiw+6^83+5ab^#'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['web']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -142,7 +142,7 @@ ACCOUNT_EMAIL_REQUIRED = True
 
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 
-DEFAULT_FROM_EMAIL = "Admin ZX Platform <admin@zx-platform.com>"
+DEFAULT_FROM_EMAIL = "Admin BOX OS <admin@box-os.com>"
 EMAIL_BACKEND = "sgbackend.SendGridBackend"
 SENDGRID_API_KEY = "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"
 
