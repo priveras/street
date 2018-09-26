@@ -2,6 +2,7 @@
 {% load staticfiles %}
 {% load widget_tweaks %}
 {% block content %}
+<input type="hidden" id="project" value="{{ project.id }}">
 <!-- start page title -->
 <div class="row">
     <div class="col-12">
@@ -125,7 +126,7 @@
                                 <a href="{% url 'app:seed' project.slug %}">Seed I to III</a>
                                 <a href="" class="text-muted" data-toggle="modal" data-target="#seed">
                                     <i class="mdi mdi-information-outline" data-toggle="tooltip" data-placement="top" title="" data-original-title="Learn More"></i>
-                                </a>    
+                                </a>
                             </h4>
                         <div class="timeline-alt pb-0">
                             <div class="timeline-item">
@@ -414,7 +415,14 @@
                         <i class="dripicons-dots-3"></i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(-142px, 20px, 0px);">
-                        <a href="javascript:void(0);" class="dropdown-item"><i class="mdi mdi-plus-circle mr-1"></i>Add</a>
+                        <a
+                          href="javascript: void(0);"
+                          data-name="link"
+                          data-title="External Link"
+                          class="dropdown-item call-dynamic-form">
+                            <i class="mdi mdi-plus-circle mr-1"></i>Add
+                        </a>
+
                     </div>
                     {% endif %}
                 </div>
@@ -507,11 +515,12 @@
 </div>
 <!-- end row -->
 <!--  Modal content for the above example -->
-<div class="modal fade" id="edit-project" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+<div class="modal fade" id="edit-project" tabindex="-1" role="dialog"
+        aria-labelledby="myLargeModalLabel0" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myLargeModalLabel">Edit Project</h4>
+                <h4 class="modal-title" id="myLargeModalLabel0">Edit Project</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             </div>
             <div class="modal-body">
@@ -603,22 +612,22 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myLargeModalLabel">Seed I-III</h4>
+                <h4 class="modal-title" id="myLargeModalLabel1">Seed I-III</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             </div>
-            <div class="modal-body text-justify" id="modal-body">
+            <div class="modal-body text-justify">
                 <p>
-                    Using the OS is the foundation of our approach. Think of it like a ‘stage gate’ type model for building a disruptive new venture. Unlike Stage-Gate, ventures do not pass sequentially through the OS (with graduations being approved at meetings and so forth). 
+                    Using the OS is the foundation of our approach. Think of it like a ‘stage gate’ type model for building a disruptive new venture. Unlike Stage-Gate, ventures do not pass sequentially through the OS (with graduations being approved at meetings and so forth).
                     <br>
                     <br>
-                    Ventures can move forward and backwards fluidly as our learning improves and our focus needs to change. We can also use a latter stage of the OS (for example, a ‘Solution’ or ‘Business Model’ idea as a means of helping identify and validate a ‘Problem’ – which is an earlier stage). 
+                    Ventures can move forward and backwards fluidly as our learning improves and our focus needs to change. We can also use a latter stage of the OS (for example, a ‘Solution’ or ‘Business Model’ idea as a means of helping identify and validate a ‘Problem’ – which is an earlier stage).
                 </p>
                 <ul>
                     <li>
                         <b>SEED I</b>: “PROBLEM” - A venture is seeking to prove the existence, size and acuteness of a consumer problem, and clearly identify the consumer who has it.
-                    </li>    
+                    </li>
                     <li>
-                        <b>SEED II</b>: “SOLUTION” - A venture is has validated a user problem, and is now seeking to validate the best solution to solve the problem.        
+                        <b>SEED II</b>: “SOLUTION” - A venture is has validated a user problem, and is now seeking to validate the best solution to solve the problem.
                     </li>
                     <li>
                         <b>SEED III</b>: A venture has validated a problem and solution, and is seeking to validate its business model through which the solution will be commercialized for the consumer.
@@ -631,6 +640,26 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+
+<!--  Modal content for the above example -->
+<div class="modal fade" id="bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myLargeModalLabel">Problem</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body" id="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary submit-form">Save</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 
 {% endblock %}
 
@@ -657,6 +686,49 @@
     $('#file').change(function(){
       $('#file-form').submit();
     });
+
+
+  $('.call-dynamic-form').click(function(){
+    var self = $(this);
+    $('#myLargeModalLabel').text(self.attr('data-title'));
+    $.get('/api/model/form/' + self.attr('data-name') + '/project/' + $('#project').val(), function(form) {
+      $('#modal-body').html(form);
+      $('#id_stage').val('seed');
+      $('#bs-example-modal-lg').modal('toggle')
+    });
+  });
+
+  $('.submit-form','#bs-example-modal-lg').click(function(){
+    var form = $('form', '#bs-example-modal-lg').serialize();
+    var project_id = $('#project').val();
+    var id = $('#doc-id').val();
+    var form_name = $('#form-name').val();
+
+    var path = form_name + '/project/' + project_id;
+    if (id > 0) {
+      path += '/id/' + id
+    }
+
+    $.post('/api/model/form/' + path, form, function(data) {
+      $('#bs-example-modal-lg').modal('toggle')
+      window.location.reload();
+    }).fail(function(xhr, status, error) {
+      $('#modal-body').html(xhr.responseText);
+    });
+  });
+
+  $('.edit-doc').click(function(){
+    var self = $(this);
+    $('#myLargeModalLabel').text(self.attr('data-title'));
+    $('#bs-example-modal-lg').modal('show');
+
+    var path = self.attr('data-name') + '/project/' + $('#project').val() + '/id/' + self.attr('data-id');
+
+    $.get('/api/model/form/' + path, function(form) {
+      $('#modal-body').html(form);
+      $('#id_stage').val('seed');
+    });
+  });
   });
 </script>
 {% endblock %}

@@ -1,7 +1,7 @@
 from django import forms
 from .models import Profile, Project, Summary, Past, Future, Elevator
 from .models import Problem, Solution, BusinessModel, Assumption
-from .models import Comment, File, Dvf
+from .models import Comment, File, Dvf, Link
 
 class CommentForm(forms.ModelForm):
     class Meta:
@@ -78,4 +78,9 @@ class BusinessModelForm(forms.ModelForm):
 class AssumptionForm(forms.ModelForm):
     class Meta:
         model = Assumption
+        exclude = ['created_at', 'updated_at', 'user', 'project']
+
+class LinkForm(forms.ModelForm):
+    class Meta:
+        model = Link
         exclude = ['created_at', 'updated_at', 'user', 'project']

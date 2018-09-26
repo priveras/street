@@ -9,11 +9,11 @@ from django.utils.text import slugify
 
 from .forms import ProfileForm, SummaryForm, PastForm, FutureForm, ProjectForm
 from .forms import ElevatorForm, ProblemForm, SolutionForm, BusinessModelForm
-from .forms import AssumptionForm, CommentForm, FileForm, DvfForm
+from .forms import AssumptionForm, CommentForm, FileForm, DvfForm, LinkForm
 
 from .models import Project, Team, Comment, Assumption, Problem, BusinessModel
 from .models import Solution, Metric, File, Profile, Summary, Past, Future, Link
-from .models import Elevator, Tutorial, Progress, Dvf
+from .models import Elevator, Tutorial, Progress, Dvf, Link
 from django.http import HttpResponseRedirect
 
 def index(request):
@@ -239,6 +239,7 @@ def model_form(request, name='', project_id=0, id=0):
         'business_model': BusinessModelForm,
         'assumption': AssumptionForm,
         'dvf': DvfForm,
+        'link': LinkForm,
     }
 
     instances = {
@@ -251,6 +252,7 @@ def model_form(request, name='', project_id=0, id=0):
         'business_model': BusinessModel,
         'assumption': Assumption,
         'dvf': Dvf,
+        'link': Link,
     }
 
     method = request.method
@@ -284,7 +286,7 @@ def model_form(request, name='', project_id=0, id=0):
 
     if not f.is_valid():
         context['form'] = f
-        return JsonResponse(f.errors, status=400)
+        return render(request, 'form.html', context, status=400)
 
     project = Project.objects.filter(pk=project_id).first()
     if project is None:
