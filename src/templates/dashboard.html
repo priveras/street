@@ -325,19 +325,12 @@
                   			type: 'doughnut',
                   			data: {
                   				datasets: [{
-                  					// data: [
-                  					// 	{{ seed_list|length }},
-                  					// {{ seedlaunch_list|length }},
-                  					// 	{{ launch_list|length }},
-                  					// 	{{ concept_list|length }},
-                  					// 	{{ scale_list|length }},
-                  					// ],
-                            data: [
-                  						5,
-                  					4,
-                  						3,
-                  						7,
-                  					7,
+                  					data: [
+                  						{{ seed_list|length }},
+                  					{{ seedlaunch_list|length }},
+                  						{{ launch_list|length }},
+                  						{{ concept_list|length }},
+                  						{{ scale_list|length }},
                   					],
                   					backgroundColor: [
                   						window.chartColors.blue,
@@ -420,19 +413,16 @@
                             },
                             series: [{
                               name: 'Seed',
-                                  data:[55,55,55,5,4,2]
+                                  data:[{{zones_apacs_seed|length}},{{zones_apacn_seed|length}},{{zones_eu_seed|length}},{{zones_naz_seed|length}},{{zones_maz_seed|length}},{{zones_lan_seed|length}}]
 
-                                // data: [{{ APACSSeed_list|length }}, {{ APACNSeed_list|length }}, {{ EUSeed_list|length }},{{ NAZSeed_list|length }},{{ MAZSeed_list|length }},{{ LANSeed_list|length }}]
                             },{
                               name: 'Seed Launch',
-                              data:[55,55,55,5,4,2]
+                              data:[{{zones_apacs_seedlaunch|length}},{{zones_apacn_seedlaunch|length}},{{zones_eu_seedlaunch|length}},{{zones_naz_seedlaunch|length}},{{zones_maz_seedlaunch|length}},{{zones_lan_seedlaunch|length}}]
 
-                              // data: [{{ APACSSeedLaunch_list|length }}, {{ APACNSeedLaunch_list|length }}, {{ EUSeedLaunch_list|length }},{{ NAZSeedLaunch_list|length }},{{ MAZSeedLaunch_list|length }},{{ LANSeedLaunch_list|length }}]
                             },{
                               name: 'Launch',
-                              data:[55,55,55,5,4,2]
+                              data:[{{zones_apacs_launch|length}},{{zones_apacn_launch|length}},{{zones_eu_launch|length}},{{zones_naz_launch|length}},{{zones_maz_launch|length}},{{zones_lan_launch|length}}]
 
-                              // data: [{{ APACSLaunch_list|length }}, {{ APACNLaunch_list|length }}, {{ EULaunch_list|length }},{{ NAZLaunch_list|length }},{{ MAZLaunch_list|length }},{{ LANLaunch_list|length }}]
                             }],
                             xaxis: {
                                 categories: ["APAC S", "APAC N", "EU", "NAZ", "MAZ", "LAN/LAS"],
