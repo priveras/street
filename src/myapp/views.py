@@ -331,6 +331,7 @@ def project_form(request, id=0):
 
         if id==0:
             doc = Team()
+            doc.permission = "edit"
             doc.user = request.user
             doc.project = p
             doc.save()
