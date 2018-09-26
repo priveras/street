@@ -405,7 +405,10 @@
                                 <a href="/media/{{file.file}}" target="_blank" class="btn btn-link btn-lg text-info">
                                     <i class="dripicons-download"></i>
                                 </a>
-                                <span aria-hidden="true">×</span>
+                                <span aria-hidden="true"
+                                    class="remove"
+                                    data-name="file"
+                                    data-id={{file.id}}>×</span>
                             </div>
                         </div>
                     </div>
@@ -451,7 +454,10 @@
                             <a href="{{link.link}}" target="_blank" class="btn btn-link btn-md text-info">
                                 <i class="fa fa-external-link-alt"></i>
                             </a>
-                            <span aria-hidden="true">×</span>
+                                <span aria-hidden="true"
+                                    class="remove"
+                                    data-name="link"
+                                    data-id={{link.id}}>×</span>
                         </div>
                     </div>
                 </div>
@@ -668,9 +674,39 @@
 </div><!-- /.modal -->
 
 
+<!--  Modal content for the above example -->
+<div class="modal fade" id="delete-modal" tabindex="-1" role="dialog"
+  aria-labelledby="deleteLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="deleteLabel">Confirm Delete</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body" id="modal-body">
+              Are you sure to delete this element?
+              <form>
+                <input type="hidden" id="remove-id" value="" />
+                <input type="hidden" id="remove-name" value="" />
+                {% csrf_token %}
+              </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger delete-button">Delete</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
 {% endblock %}
 
 {% block js %}
+<style>
+.remove{cursor:pointer;}
+</style>
 <script>
   $(function(){
     $('.submit', '#comment-form').click(function(){
@@ -735,6 +771,33 @@
       $('#modal-body').html(form);
       $('#id_stage').val('seed');
     });
+  });
+
+  $('.delete-button').click(function(){
+    var name = $('#remove-name').val();
+    var id = $('#remove-id').val();
+    var path = name + '/project/0/id/' + id;
+
+    var data = $('form', '#delete-modal').serialize();
+    $('#delete-modal').modal('hide');
+
+    return $.ajax({
+      url: '/api/model/form/' + path,
+      type: 'DELETE',
+      data: data,
+      success: function() {
+        window.location.reload();
+      },
+    });
+  });
+
+  $('.remove').click(function(){
+    var self = $(this);
+    var name = self.attr('data-name');
+    var id = self.attr('data-id');
+    $('#remove-id').val(id);
+    $('#remove-name').val(name);
+    $('#delete-modal').modal('show');
   });
   });
 </script>

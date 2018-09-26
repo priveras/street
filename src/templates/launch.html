@@ -141,7 +141,10 @@
                                           class="action-icon edit-doc">
                                             <i class="mdi mdi-pencil"></i>
                                         </a>
-                                    <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a>
+                                        <a href="javascript: void(0);"
+                                            data-name="summary"
+                                            data-id={{sum.id}}
+                                            class="action-icon remove"> <i class="mdi mdi-delete"></i></a>
                                 </td>
                                 {% endif %}
                             </tr>
@@ -200,7 +203,10 @@
                                       class="action-icon edit-doc">
                                         <i class="mdi mdi-pencil"></i>
                                     </a>
-                                    <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a>
+                                        <a href="javascript: void(0);"
+                                            data-name="past"
+                                            data-id={{p.id}}
+                                            class="action-icon remove"> <i class="mdi mdi-delete"></i></a>
                                 </td>
                                 {% endif %}
                             </tr>
@@ -259,7 +265,10 @@
                                       class="action-icon edit-doc">
                                         <i class="mdi mdi-pencil"></i>
                                     </a>
-                                    <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a>
+                                        <a href="javascript: void(0);"
+                                            data-name="future"
+                                            data-id={{f.id}}
+                                            class="action-icon remove"> <i class="mdi mdi-delete"></i></a>
                                 </td>
                                 {% endif %}
                             </tr>
@@ -317,7 +326,10 @@
                               class="action-icon edit-doc">
                                 <i class="mdi mdi-pencil"></i>
                             </a>
-                            <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a>
+                            <a href="javascript: void(0);"
+                                data-name="elevator"
+                                data-id={{elevator.id}}
+                                class="action-icon remove"> <i class="mdi mdi-delete"></i></a>
                         </td>
                         {% endif %}
                     </tr>
@@ -382,7 +394,10 @@
                               class="action-icon edit-doc">
                                 <i class="mdi mdi-pencil"></i>
                             </a>
-                            <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a>
+                            <a href="javascript: void(0);"
+                                data-name="problem"
+                                data-id={{problem.id}}
+                                class="action-icon remove"> <i class="mdi mdi-delete"></i></a>
                         </td>
                         {% endif %}
                     </tr>
@@ -449,7 +464,10 @@
                               class="action-icon edit-doc">
                                 <i class="mdi mdi-pencil"></i>
                             </a>
-                            <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a>
+                            <a href="javascript: void(0);"
+                                data-name="solution"
+                                data-id={{solution.id}}
+                                class="action-icon remove"> <i class="mdi mdi-delete"></i></a>
                         </td>
                         {% endif %}
                     </tr>
@@ -516,7 +534,10 @@
                               class="action-icon edit-doc">
                                 <i class="mdi mdi-pencil"></i>
                             </a>
-                            <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a>
+                            <a href="javascript: void(0);"
+                                data-name="business_model"
+                                data-id={{model.id}}
+                                class="action-icon remove"> <i class="mdi mdi-delete"></i></a>
                         </td>
                         {% endif %}
                     </tr>
@@ -599,7 +620,10 @@
                               class="action-icon edit-doc">
                                 <i class="mdi mdi-pencil"></i>
                             </a>
-                            <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a>
+                            <a href="javascript: void(0);"
+                                data-name="assumption"
+                                data-id={{assumption.id}}
+                                class="action-icon remove"> <i class="mdi mdi-delete"></i></a>
                         </td>
                         {% endif %}
                     </tr>
@@ -655,6 +679,33 @@
 </div><!-- /.modal -->
 
 
+
+<!--  Modal content for the above example -->
+<div class="modal fade" id="delete-modal" tabindex="-1" role="dialog"
+  aria-labelledby="deleteLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="deleteLabel">Confirm Delete</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body" id="modal-body">
+              Are you sure to delete this element?
+              <form>
+                <input type="hidden" id="remove-id" value="" />
+                <input type="hidden" id="remove-name" value="" />
+                {% csrf_token %}
+              </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger delete-button">Delete</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
 {% endblock %}
 
 {% block js %}
@@ -697,6 +748,32 @@ $(function() {
       $('#modal-body').html(form);
       $('#id_stage').val('launch');
     });
+  });
+  $('.delete-button').click(function(){
+    var name = $('#remove-name').val();
+    var id = $('#remove-id').val();
+    var path = name + '/project/0/id/' + id;
+
+    var data = $('form', '#delete-modal').serialize();
+    $('#delete-modal').modal('hide');
+
+    return $.ajax({
+      url: '/api/model/form/' + path,
+      type: 'DELETE',
+      data: data,
+      success: function() {
+        window.location.reload();
+      },
+    });
+  });
+
+  $('.remove').click(function(){
+    var self = $(this);
+    var name = self.attr('data-name');
+    var id = self.attr('data-id');
+    $('#remove-id').val(id);
+    $('#remove-name').val(name);
+    $('#delete-modal').modal('show');
   });
 });
 </script>

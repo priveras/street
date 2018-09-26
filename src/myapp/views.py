@@ -228,6 +228,7 @@ class InfoView(generic.CreateView):
         return redirect('/projects/')
 
 
+@csrf_exempt
 def model_form(request, name='', project_id=0, id=0):
     forms = {
         'summary': SummaryForm,
@@ -241,6 +242,7 @@ def model_form(request, name='', project_id=0, id=0):
         'dvf': DvfForm,
         'link': LinkForm,
         'project': ProjectForm,
+        'file': FileForm,
     }
 
     instances = {
@@ -255,9 +257,22 @@ def model_form(request, name='', project_id=0, id=0):
         'dvf': Dvf,
         'link': Link,
         'project': Project,
+        'file': File,
     }
 
     method = request.method
+
+    if method == 'DELETE':
+        obj = instances.get(name, None)
+        if obj is None:
+            raise Http404('instance name not found')
+
+        doc = obj.objects.filter(pk=id).first()
+        if doc is None:
+            raise Http404('id not found')
+
+        doc.delete()
+        return JsonResponse({'status': 'ok'})
 
     form = forms.get(name, None)
     if form is None:
