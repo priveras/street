@@ -102,13 +102,10 @@
             </div> <!-- end col-->
         </div> <!-- end row -->
 
-    </div> <!-- end col -->
-
-    <div class="col-xl-7">
-        <div class="card">
+        <div class="card bg-primary">
             <div class="card-body">
                 <div class="dropdown float-right">
-                    <a href="#" class="dropdown-toggle arrow-none card-drop" data-toggle="dropdown" aria-expanded="false">
+                    <a href="#" class="dropdown-toggle text-white arrow-none card-drop" data-toggle="dropdown" aria-expanded="false">
                         <i class="mdi mdi-dots-vertical"></i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
@@ -122,15 +119,173 @@
                         <a href="javascript:void(0);" class="dropdown-item">Action</a>
                     </div>
                 </div>
-                <h4 class="header-title mb-3">Projections Vs Actuals</h4>
+                <h4 class="header-title text-white mb-4">Average Sale Size</h4>
+                <div class="text-center">
+                    <p class="mt-4 mb-2">
+                        <span class="badge badge-danger">-23.47 %</span>
+                    </p>
+                    <h3 class="font-weight-normal text-white mb-2">$154.21</h3>
+                    <p class="text-light text-uppercase font-13 font-weight-bold">Per Sale</p>
+                    <a href="javascript: void(0);" class="btn btn-outline-light btn-sm mb-1">More
+                        <i class="mdi mdi-arrow-right ml-1"></i>
+                    </a>
 
-                <div style="height: 263px;" class="chartjs-chart">
-                    <canvas id="high-performing-product"></canvas>
-                </div>
+                </div> <!-- end card-body-->
+            </div> <!-- end card-->
+        </div> <!-- end col-->
 
-            </div> <!-- end card-body-->
-        </div> <!-- end card-->
+    </div> <!-- end col -->
 
+    <div class="col-xl-7">
+      <div class="card">
+          <div class="card-body">
+              <div class="dropdown float-right">
+                  <a href="#" class="dropdown-toggle arrow-none card-drop" data-toggle="dropdown" aria-expanded="false">
+                  </a>
+
+              </div>
+              <h4 class="header-title mb-4">Businesses <br>per Stage</h4>
+
+                  <title>Doughnut Chart</title>
+                  <script src="../static/dist/Chart.bundle.js"></script>
+                  <script src="../static/dist/utils.js"></script>
+                  <style>
+                  canvas {
+                    -moz-user-select: none;
+                    -webkit-user-select: none;
+                    -ms-user-select: none;
+                  }
+                  </style>
+
+                <body>
+                  <div id="canvas-holder" style="width:80%">
+                    <canvas id="chart-area"></canvas>
+                  </div>
+
+                  <script>
+                    var randomScalingFactor = function() {
+                      return Math.round(Math.random() * 100);
+                    };
+
+                    var config = {
+                      type: 'doughnut',
+                      data: {
+                        datasets: [{
+                          data: [
+                            {{ seed_list|length }},
+                          {{ seedlaunch_list|length }},
+                            {{ launch_list|length }},
+                            {{ concept_list|length }},
+                            {{ scale_list|length }},
+                          ],
+                          backgroundColor: [
+                            window.chartColors.blue,
+                            window.chartColors.green,
+                            window.chartColors.yellow,
+                            window.chartColors.green,
+                            window.chartColors.red,
+                          ],
+                          label: 'Dataset 1'
+                        }],
+                        labels: [
+                          'Seed I-III - {{ seed_list|length }}',
+                          'Seed Launch - {{ seedlaunch_list|length }}',
+                          'Launch - {{ launch_list|length }}',
+                          'Concept - {{ concept_list|length }}',
+                          'Scale - {{ scale_list|length }}'
+                        ]
+                      },
+                      options: {
+                        responsive: true,
+                        legend: {
+                          position: 'right',
+                        },
+
+                        animation: {
+                          animateScale: true,
+                          animateRotate: true
+                        }
+                      }
+                    };
+
+                    window.onload = function() {
+                      var ctx = document.getElementById('chart-area').getContext('2d');
+                      window.myDoughnut = new Chart(ctx, config);
+                    };
+
+                  </script>
+
+          </div> <!-- end card-body-->
+      </div> <!-- end card-->         <!-- end card-->
+
+      <div class="card">
+          <div class="card-body">
+              <div class="dropdown float-right">
+                  <a href="#" class="dropdown-toggle arrow-none card-drop" data-toggle="dropdown" aria-expanded="false">
+                  </a>
+
+              </div>
+              <h4 class="header-title mb-4"># of Businesses <br>per Stage by Zone</h4>
+              <div id="chartbiz"> </div>
+
+                  <script src="../static/dist/apexcharts.js"></script>
+                  <script>
+                      var options = {
+                          chart: {
+                              height: 220,
+                              type: 'bar',
+                          },
+                          plotOptions: {
+                              bar: {
+                                  horizontal: false,
+                                  dataLabels: {
+                                      position: 'top',
+                              },
+                          }
+                          },
+                          dataLabels: {
+                              enabled: false,
+                              offsetX: -6,
+                              style: {
+                                  fontSize: '12px',
+                                  colors: ['#fff']
+                              }
+                          },
+                          stroke: {
+                              show: true,
+                              width: 1,
+                              colors: ['#fff']
+                          },
+                          series: [{
+                            name: 'Seed',
+                                data:[{{zones_apacs_seed|length}},{{zones_apacn_seed|length}},{{zones_eu_seed|length}},{{zones_naz_seed|length}},{{zones_maz_seed|length}},{{zones_lan_seed|length}}]
+
+                          },{
+                            name: 'Seed Launch',
+                            data:[{{zones_apacs_seedlaunch|length}},{{zones_apacn_seedlaunch|length}},{{zones_eu_seedlaunch|length}},{{zones_naz_seedlaunch|length}},{{zones_maz_seedlaunch|length}},{{zones_lan_seedlaunch|length}}]
+
+                          },{
+                            name: 'Launch',
+                            data:[{{zones_apacs_launch|length}},{{zones_apacn_launch|length}},{{zones_eu_launch|length}},{{zones_naz_launch|length}},{{zones_maz_launch|length}},{{zones_lan_launch|length}}]
+
+                          }],
+                          xaxis: {
+                              categories: ["APAC S", "APAC N", "EU", "NAZ", "MAZ", "LAN/LAS"],
+                          },
+
+                      }
+
+
+                     var chartbiz = new ApexCharts(
+                          document.querySelector("#chartbiz"),
+                          options
+                      );
+
+                      chartbiz.render();
+                  </script>
+
+          </div> <!-- end card-body-->
+      </div> <!-- end card-->
 
 
 
@@ -290,157 +445,36 @@
                 </div> <!-- end table-responsive-->
             </div> <!-- end card-body-->
         </div> <!-- end card-->
-
         <div class="card">
             <div class="card-body">
                 <div class="dropdown float-right">
                     <a href="#" class="dropdown-toggle arrow-none card-drop" data-toggle="dropdown" aria-expanded="false">
+                        <i class="mdi mdi-dots-vertical"></i>
                     </a>
-
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <!-- item-->
+                        <a href="javascript:void(0);" class="dropdown-item">Sales Report</a>
+                        <!-- item-->
+                        <a href="javascript:void(0);" class="dropdown-item">Export Report</a>
+                        <!-- item-->
+                        <a href="javascript:void(0);" class="dropdown-item">Profit</a>
+                        <!-- item-->
+                        <a href="javascript:void(0);" class="dropdown-item">Action</a>
+                    </div>
                 </div>
-                <h4 class="header-title mb-4">Businesses <br>per Stage</h4>
+                <h4 class="header-title mb-3">Projections Vs Actuals</h4>
 
-                  	<title>Doughnut Chart</title>
-                  	<script src="../static/dist/Chart.bundle.js"></script>
-                  	<script src="../static/dist/utils.js"></script>
-                  	<style>
-                  	canvas {
-                  		-moz-user-select: none;
-                  		-webkit-user-select: none;
-                  		-ms-user-select: none;
-                  	}
-                  	</style>
-
-                  <body>
-                  	<div id="canvas-holder" style="width:80%">
-                  		<canvas id="chart-area"></canvas>
-                  	</div>
-
-                  	<script>
-                  		var randomScalingFactor = function() {
-                  			return Math.round(Math.random() * 100);
-                  		};
-
-                  		var config = {
-                  			type: 'doughnut',
-                  			data: {
-                  				datasets: [{
-                  					data: [
-                  						{{ seed_list|length }},
-                  					{{ seedlaunch_list|length }},
-                  						{{ launch_list|length }},
-                  						{{ concept_list|length }},
-                  						{{ scale_list|length }},
-                  					],
-                  					backgroundColor: [
-                  						window.chartColors.blue,
-                  						window.chartColors.green,
-                  						window.chartColors.yellow,
-                  						window.chartColors.green,
-                  						window.chartColors.red,
-                  					],
-                  					label: 'Dataset 1'
-                  				}],
-                  				labels: [
-                  					'Seed I-III - {{ seed_list|length }}',
-                  					'Seed Launch - {{ seedlaunch_list|length }}',
-                  					'Launch - {{ launch_list|length }}',
-                  					'Concept - {{ concept_list|length }}',
-                  					'Scale - {{ scale_list|length }}'
-                  				]
-                  			},
-                  			options: {
-                  				responsive: true,
-                  				legend: {
-                  					position: 'right',
-                  				},
-
-                  				animation: {
-                  					animateScale: true,
-                  					animateRotate: true
-                  				}
-                  			}
-                  		};
-
-                  		window.onload = function() {
-                  			var ctx = document.getElementById('chart-area').getContext('2d');
-                  			window.myDoughnut = new Chart(ctx, config);
-                  		};
-
-                  	</script>
+                <div style="height: 263px;" class="chartjs-chart">
+                    <canvas id="high-performing-product"></canvas>
+                </div>
 
             </div> <!-- end card-body-->
-        </div> <!-- end card-->
+        </div>
 
 
-        <div class="card">
-            <div class="card-body">
-                <div class="dropdown float-right">
-                    <a href="#" class="dropdown-toggle arrow-none card-drop" data-toggle="dropdown" aria-expanded="false">
-                    </a>
-
-                </div>
-                <h4 class="header-title mb-4"># of Businesses <br>per Stage by Zone</h4>
-                <div id="chartbiz"> </div>
-
-                    <script src="../static/dist/apexcharts.js"></script>
-                    <script>
-                        var options = {
-                            chart: {
-                                height: 220,
-                                type: 'bar',
-                            },
-                            plotOptions: {
-                                bar: {
-                                    horizontal: false,
-                                    dataLabels: {
-                                        position: 'top',
-                                },
-                            }
-                            },
-                            dataLabels: {
-                                enabled: false,
-                                offsetX: -6,
-                                style: {
-                                    fontSize: '12px',
-                                    colors: ['#fff']
-                                }
-                            },
-                            stroke: {
-                                show: true,
-                                width: 1,
-                                colors: ['#fff']
-                            },
-                            series: [{
-                              name: 'Seed',
-                                  data:[{{zones_apacs_seed|length}},{{zones_apacn_seed|length}},{{zones_eu_seed|length}},{{zones_naz_seed|length}},{{zones_maz_seed|length}},{{zones_lan_seed|length}}]
-
-                            },{
-                              name: 'Seed Launch',
-                              data:[{{zones_apacs_seedlaunch|length}},{{zones_apacn_seedlaunch|length}},{{zones_eu_seedlaunch|length}},{{zones_naz_seedlaunch|length}},{{zones_maz_seedlaunch|length}},{{zones_lan_seedlaunch|length}}]
-
-                            },{
-                              name: 'Launch',
-                              data:[{{zones_apacs_launch|length}},{{zones_apacn_launch|length}},{{zones_eu_launch|length}},{{zones_naz_launch|length}},{{zones_maz_launch|length}},{{zones_lan_launch|length}}]
-
-                            }],
-                            xaxis: {
-                                categories: ["APAC S", "APAC N", "EU", "NAZ", "MAZ", "LAN/LAS"],
-                            },
-
-                        }
 
 
-                       var chartbiz = new ApexCharts(
-                            document.querySelector("#chartbiz"),
-                            options
-                        );
 
-                        chartbiz.render();
-                    </script>
-
-            </div> <!-- end card-body-->
-        </div> <!-- end card-->
 
 
 
@@ -493,37 +527,7 @@
     </div> <!-- end col-->
 
     <div class="col-xl-3">
-        <div class="card bg-primary">
-            <div class="card-body">
-                <div class="dropdown float-right">
-                    <a href="#" class="dropdown-toggle text-white arrow-none card-drop" data-toggle="dropdown" aria-expanded="false">
-                        <i class="mdi mdi-dots-vertical"></i>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right">
-                        <!-- item-->
-                        <a href="javascript:void(0);" class="dropdown-item">Sales Report</a>
-                        <!-- item-->
-                        <a href="javascript:void(0);" class="dropdown-item">Export Report</a>
-                        <!-- item-->
-                        <a href="javascript:void(0);" class="dropdown-item">Profit</a>
-                        <!-- item-->
-                        <a href="javascript:void(0);" class="dropdown-item">Action</a>
-                    </div>
-                </div>
-                <h4 class="header-title text-white mb-4">Average Sale Size</h4>
-                <div class="text-center">
-                    <p class="mt-4 mb-2">
-                        <span class="badge badge-danger">-23.47 %</span>
-                    </p>
-                    <h3 class="font-weight-normal text-white mb-2">$154.21</h3>
-                    <p class="text-light text-uppercase font-13 font-weight-bold">Per Sale</p>
-                    <a href="javascript: void(0);" class="btn btn-outline-light btn-sm mb-1">More
-                        <i class="mdi mdi-arrow-right ml-1"></i>
-                    </a>
 
-                </div> <!-- end card-body-->
-            </div> <!-- end card-->
-        </div> <!-- end col-->
 
         <div class="card">
             <div class="card-body">
