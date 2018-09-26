@@ -325,9 +325,16 @@ def project_form(request, id=0):
         return render(request, 'form.html', context, status=400)
 
     try:
-        doc = f.save(commit=False)
-        doc.slug = slugify(doc.title)
-        doc.save()
+        p = f.save(commit=False)
+        p.slug = slugify(p.title)
+        p.save()
+
+        if id==0:
+            doc = Team()
+            doc.permission = "edit"
+            doc.user = request.user
+            doc.project = p
+            doc.save()
     except:
         context['error'] = 'Project name already taken'
         return render(request, 'form.html', context, status=400)
