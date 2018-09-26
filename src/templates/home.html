@@ -23,7 +23,7 @@
         <span aria-hidden="true">×</span>
     </button>
     <h4 class="alert-heading">Welcome to BOX OS!</h4>
-    <p>We are very happy to see you here. You're almost ready to start tracking your amazing project. Before you start please go through the welcome video so you can get the most out of using the dashboard.</p>
+    <p>We are very happy to see you here. You're almost ready to start learning the OS and tracking your amazing project. Before you start please go through the welcome video so you can get the most out of using this tool.</p>
     <button type="button" class="btn btn-info" data-toggle="modal" data-target="#video">Welcome Video</button>
     <!--<hr>
     <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>-->
@@ -76,7 +76,7 @@
                 <div class="badge badge-primary mb-3">{{project.stage}}</div>
 
                 {% if project.description %}
-                <p class="text-muted font-13 mb-3 text-justify">{{project.description|truncatechars:120}}<a href="{% url 'app:detail' project.slug %}" class="font-weight-bold text-muted">view more</a>
+                <p class="text-muted font-13 mb-3 text-justify">{{project.description|truncatechars:120}} <a href="{% url 'app:detail' project.slug %}" class="font-weight-bold text-muted">view more</a>
                 </p>
                 {% else %}
                 <p class="text-muted font-13 mb-3 text-justify">You haven't added a description for your project yet.
