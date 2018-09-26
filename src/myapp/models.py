@@ -132,6 +132,30 @@ class Dvf(models.Model):
     def __str__(self):
         return str(self.project)
 
+class Zone(models.Model):
+    project = models.ForeignKey(Project)
+
+    ZONE_APACS = 'APAC S'
+    ZONE_APACN = 'APAC N'
+    ZONE_EU = 'EU'
+    ZONE_NAZ = 'NAZ'
+    ZONE_MAZ = 'MAZ'
+    ZONE_LAS = 'LAN LAS'
+
+    ZONES = (
+        (ZONE_APACS, 'APAC S'),
+        (ZONE_APACN, 'APAC N'),
+        (ZONE_EU, 'EU'),
+        (ZONE_NAZ, 'NAZ'),
+        (ZONE_MAZ, 'MAZ'),
+        (ZONE_LAS, 'LAN LAS'),
+        )
+
+    zone = models.CharField(choices=ZONES, max_length=200, blank=True)
+
+    def __str__(self):
+        return str(self.project)
+
 class Assumption(models.Model):
     user = models.ForeignKey(User)
     project = models.ForeignKey(Project)
