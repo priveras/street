@@ -85,7 +85,7 @@ WSGI_APPLICATION = 'mydjango.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
-DATABASES = {  
+DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'postgres',
@@ -93,7 +93,7 @@ DATABASES = {
         'HOST': 'db',
         'PORT': 5432,
     }
-} 
+}
 
 
 # Password validation
@@ -157,7 +157,7 @@ CELERY_BROKER_URL = 'redis://redis:6379/0'
 CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
 
 STATIC_ROOT = './static/'
-MEDIA_ROOT = '/media/'
+MEDIA_ROOT = './media/'
 
 LOGIN_REDIRECT_URL = '/projects/'
 
