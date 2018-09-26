@@ -38,6 +38,19 @@ def learn(request):
 
     return render(request, 'learn.html',{'tutorial':tutorial, 'progress':progress})
 
+class DashboardView(generic.ListView):
+    template_name = 'dashboard.html'
+    context_object_name = 'users_list'
+    model = User
+
+    def get_context_data(self, **kwargs):
+        context = super(DashboardView, self).get_context_data(**kwargs)
+        context['projects'] = Project.objects.all()
+        context['users'] = User.objects.all()
+
+        return context
+
+
 class DetailView(generic.DetailView):
     model = Project
     template_name = 'detail.html'
