@@ -13,7 +13,7 @@ from .forms import AssumptionForm, CommentForm, FileForm, DvfForm, LinkForm
 
 from .models import Project, Team, Comment, Assumption, Problem, BusinessModel
 from .models import Solution, Metric, File, Profile, Summary, Past, Future, Link
-from .models import Elevator, Tutorial, Progress, Dvf, Link
+from .models import Elevator, Tutorial, Progress, Dvf, Link, Zone
 from django.http import HttpResponseRedirect
 
 def index(request):
@@ -38,6 +38,53 @@ def learn(request):
 
     return render(request, 'learn.html',{'tutorial':tutorial, 'progress':progress})
 
+class DashboardView(generic.ListView):
+    template_name = 'dashboard.html'
+    # context_object_name = 'users_list'
+    model = Project
+
+    def get_context_data(self, **kwargs):
+        context = super(DashboardView, self).get_context_data(**kwargs)
+
+        context['projects'] = Project.objects.all()
+        context['users'] = User.objects.all()
+
+        context['concept_list'] = Project.objects.filter(stage = "Concept")
+        context['scale_list'] = Project.objects.filter(stage = "Scale")
+        context['seed_list'] = Project.objects.filter(stage = "Seed 1" or "Seed 2" or "Seed 3")
+        context['seedlaunch_list'] = Project.objects.filter(stage = "Launch 1")
+        context['launch_list'] = Project.objects.filter(stage = "Launch 2")
+
+
+        context['zones_apacs_seed'] = Zone.objects.filter(project__stage="Seed 1" or "Seed 2" or "Seed 3").filter(zone="APAC S")
+        context['zones_apacs_seedlaunch'] = Zone.objects.filter(project__stage="Launch 1").filter(zone="APAC S")
+        context['zones_apacs_launch'] = Zone.objects.filter(project__stage="Launch 2").filter(zone="APAC S")
+
+        context['zones_apacn_seed'] = Zone.objects.filter(project__stage="Seed 1" or "Seed 2" or "Seed 3").filter(zone="APAC N")
+        context['zones_apacn_seedlaunch'] = Zone.objects.filter(project__stage="Launch 1").filter(zone="APAC N")
+        context['zones_apacn_launch'] = Zone.objects.filter(project__stage="Launch 2").filter(zone="APAC N")
+
+        context['zones_eu_seed'] = Zone.objects.filter(project__stage="Seed 1" or "Seed 2" or "Seed 3").filter(zone="EU")
+        context['zones_eu_seedlaunch'] = Zone.objects.filter(project__stage="Launch 1").filter(zone="EU")
+        context['zones_eu_launch'] = Zone.objects.filter(project__stage="Launch 2").filter(zone="EU")
+
+        context['zones_naz_seed'] = Zone.objects.filter(project__stage="Seed 1" or "Seed 2" or "Seed 3").filter(zone="NAZ")
+        context['zones_naz_seedlaunch'] = Zone.objects.filter(project__stage="Launch 1").filter(zone="NAZ")
+        context['zones_naz_launch'] = Zone.objects.filter(project__stage="Launch 2").filter(zone="NAZ")
+
+        context['zones_maz_seed'] = Zone.objects.filter(project__stage="Seed 1" or "Seed 2" or "Seed 3").filter(zone="MAZ")
+        context['zones_maz_seedlaunch'] = Zone.objects.filter(project__stage="Launch 1").filter(zone="MAZ")
+        context['zones_maz_launch'] = Zone.objects.filter(project__stage="Launch 2").filter(zone="MAZ")
+
+        context['zones_lan_seed'] = Zone.objects.filter(project__stage="Seed 1" or "Seed 2" or "Seed 3").filter(zone="LAN LAS")
+        context['zones_lan_seedlaunch'] = Zone.objects.filter(project__stage="Launch 1").filter(zone="LAN LAS")
+        context['zones_lan_launch'] = Zone.objects.filter(project__stage="Launch 2").filter(zone="LAN LAS")
+
+
+
+        return context
+
+
 class DetailView(generic.DetailView):
     model = Project
     template_name = 'detail.html'
@@ -45,6 +92,7 @@ class DetailView(generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super(DetailView, self).get_context_data(**kwargs)
         context['team'] = Team.objects.filter(project=self.object).filter(permission="edit")
+
         context['viewers'] = Team.objects.filter(project=self.object).filter(permission="view")
         context['comments'] = Comment.objects.filter(project=self.object)
         context['files'] = File.objects.filter(project=self.object).order_by('-updated_at')
