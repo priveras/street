@@ -16,18 +16,18 @@
 
         <!--- Sidemenu -->
         <ul class="metismenu side-nav">
+            
             {% if user.is_staff %}
             <li class="side-nav-title side-nav-item">Admin</li>
 
-            
             <li class="side-nav-item">
-                <a href="/dashboard/" class="side-nav-link">
+                <a href="{% url 'app:dashboard' %}" class="side-nav-link">
                     <i class="dripicons-meter"></i>
+                    <!--<span class="badge badge-success float-right">7</span>-->
                     <span> Dashboard </span>
                 </a>
             </li>
             {% endif %}
-            
 
             <li class="side-nav-title side-nav-item">Navigation</li>
 
