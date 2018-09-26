@@ -325,12 +325,19 @@
                   			type: 'doughnut',
                   			data: {
                   				datasets: [{
-                  					data: [
-                  						{{ seed_list|length }},
-                  					{{ seedlaunch_list|length }},
-                  						{{ launch_list|length }},
-                  						{{ concept_list|length }},
-                  						{{ scale_list|length }},
+                  					// data: [
+                  					// 	{{ seed_list|length }},
+                  					// {{ seedlaunch_list|length }},
+                  					// 	{{ launch_list|length }},
+                  					// 	{{ concept_list|length }},
+                  					// 	{{ scale_list|length }},
+                  					// ],
+                            data: [
+                  						5,
+                  					4,
+                  						3,
+                  						7,
+                  					7,
                   					],
                   					backgroundColor: [
                   						window.chartColors.blue,
@@ -371,6 +378,82 @@
 
             </div> <!-- end card-body-->
         </div> <!-- end card-->
+
+
+        <div class="card">
+            <div class="card-body">
+                <div class="dropdown float-right">
+                    <a href="#" class="dropdown-toggle arrow-none card-drop" data-toggle="dropdown" aria-expanded="false">
+                    </a>
+
+                </div>
+                <h4 class="header-title mb-4"># of Businesses <br>per Stage by Zone</h4>
+                <div id="chartbiz"> </div>
+
+                    <script src="../static/dist/apexcharts.js"></script>
+                    <script>
+                        var options = {
+                            chart: {
+                                height: 220,
+                                type: 'bar',
+                            },
+                            plotOptions: {
+                                bar: {
+                                    horizontal: false,
+                                    dataLabels: {
+                                        position: 'top',
+                                },
+                            }
+                            },
+                            dataLabels: {
+                                enabled: false,
+                                offsetX: -6,
+                                style: {
+                                    fontSize: '12px',
+                                    colors: ['#fff']
+                                }
+                            },
+                            stroke: {
+                                show: true,
+                                width: 1,
+                                colors: ['#fff']
+                            },
+                            series: [{
+                              name: 'Seed',
+                                  data:[55,55,55,5,4,2]
+
+                                // data: [{{ APACSSeed_list|length }}, {{ APACNSeed_list|length }}, {{ EUSeed_list|length }},{{ NAZSeed_list|length }},{{ MAZSeed_list|length }},{{ LANSeed_list|length }}]
+                            },{
+                              name: 'Seed Launch',
+                              data:[55,55,55,5,4,2]
+
+                              // data: [{{ APACSSeedLaunch_list|length }}, {{ APACNSeedLaunch_list|length }}, {{ EUSeedLaunch_list|length }},{{ NAZSeedLaunch_list|length }},{{ MAZSeedLaunch_list|length }},{{ LANSeedLaunch_list|length }}]
+                            },{
+                              name: 'Launch',
+                              data:[55,55,55,5,4,2]
+
+                              // data: [{{ APACSLaunch_list|length }}, {{ APACNLaunch_list|length }}, {{ EULaunch_list|length }},{{ NAZLaunch_list|length }},{{ MAZLaunch_list|length }},{{ LANLaunch_list|length }}]
+                            }],
+                            xaxis: {
+                                categories: ["APAC S", "APAC N", "EU", "NAZ", "MAZ", "LAN/LAS"],
+                            },
+
+                        }
+
+
+                       var chartbiz = new ApexCharts(
+                            document.querySelector("#chartbiz"),
+                            options
+                        );
+
+                        chartbiz.render();
+                    </script>
+
+            </div> <!-- end card-body-->
+        </div> <!-- end card-->
+
+
+
     </div> <!-- end col-->
 
     <div class="col-xl-3">
