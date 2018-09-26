@@ -240,6 +240,7 @@ def model_form(request, name='', project_id=0, id=0):
         'assumption': AssumptionForm,
         'dvf': DvfForm,
         'link': LinkForm,
+        'project': ProjectForm,
     }
 
     instances = {
@@ -253,6 +254,7 @@ def model_form(request, name='', project_id=0, id=0):
         'assumption': Assumption,
         'dvf': Dvf,
         'link': Link,
+        'project': Project,
     }
 
     method = request.method
@@ -269,7 +271,11 @@ def model_form(request, name='', project_id=0, id=0):
             raise Http404('instance name not found')
 
         try:
-            instance = obj.objects.get(project_id=project_id, pk=id)
+            if name == 'project':
+                instance = obj.objects.get(pk=id)
+            else:
+                instance = obj.objects.get(project_id=project_id, pk=id)
+
             f = form(instance=instance) if method == 'GET' else form(instance=instance, data=request.POST)
         except:
             raise Http404('id not found')
@@ -280,6 +286,9 @@ def model_form(request, name='', project_id=0, id=0):
         'project_id': project_id,
         'id': id,
     }
+
+    if name == 'project':
+        context['showstage'] = True
 
     if method == 'GET':
         return render(request, 'form.html', context)
@@ -294,7 +303,8 @@ def model_form(request, name='', project_id=0, id=0):
 
     doc = f.save(commit=False)
     doc.user = request.user
-    doc.project = project
+    if name != 'project':
+        doc.project = project
     doc.save()
 
     return JsonResponse({'status': 'ok'})
