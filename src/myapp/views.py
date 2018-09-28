@@ -13,7 +13,7 @@ from .forms import AssumptionForm, CommentForm, FileForm, DvfForm, LinkForm
 
 from .models import Project, Team, Comment, Assumption, Problem, BusinessModel
 from .models import Solution, Metric, File, Profile, Summary, Past, Future, Link
-from .models import Elevator, Tutorial, Progress, Dvf, Link, Zone
+from .models import Elevator, Tutorial, Progress, Dvf, Link, Zone, Progress
 from django.http import HttpResponseRedirect
 
 def index(request):
@@ -34,9 +34,29 @@ def bad_request(request):
 
 def learn(request):
     tutorial = Tutorial.objects.order_by('created_at')
-    progress = Progress.objects.filter(user=request.user)
+    progress = Progress.objects.filter(user=request.user).first()
+    doc = progress
 
-    return render(request, 'learn.html',{'tutorial':tutorial, 'progress':progress})
+    saved = [
+        doc.zx_dashboard,
+        doc.os_model,
+        doc.assumptions,
+        doc.elevator_pitch,
+        doc.problem,
+        doc.solution,
+        doc.business_model,
+        doc.checkpoint,
+        doc.assumption_list,
+        doc.traction,
+        doc.dashboard,
+        doc.next_steps,
+    ]
+
+    return render(request, 'learn.html', {
+        'tutorial': tutorial,
+        'progress': progress,
+        'saved': saved,
+    })
 
 class DashboardView(generic.ListView):
     template_name = 'dashboard.html'
@@ -439,3 +459,49 @@ def file_save(request):
     doc.user = request.user
     doc.save()
     return redirect(request.META['HTTP_REFERER'])
+
+
+@csrf_exempt
+def save_learn_progress(request, section=0, value=0):
+    if request.method != 'POST':
+        raise Http404
+
+    doc = Progress.objects.filter(user=request.user).first()
+    if doc is None:
+        doc = Progress()
+
+    section = int(section)
+    value = int(value)
+    opt = True if value == 1 else False
+    print("================")
+    print(opt)
+    print(value)
+
+    if section == 0:
+        doc.zx_dashboard = opt
+    elif section == 1:
+        doc.os_model = opt
+    elif section == 2:
+        doc.assumptions = opt
+    elif section == 3:
+        doc.elevator_pitch = opt
+    elif section == 4:
+        doc.problem = opt
+    elif section == 5:
+        doc.solution = opt
+    elif section == 6:
+        doc.business_model = opt
+    elif section == 7:
+        doc.checkpoint = opt
+    elif section == 8:
+        doc.assumption_list = opt
+    elif section == 9:
+        doc.traction = opt
+    elif section == 10:
+        doc.dashboard = opt
+    elif section == 11:
+        doc.next_steps = opt
+
+    doc.user = request.user
+    doc.save()
+    return JsonResponse({'status': 'ok'})

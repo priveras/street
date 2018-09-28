@@ -15,7 +15,7 @@
             <h4 class="page-title">Learn</h4>
         </div>
     </div>
-</div> 
+</div>
 <div class="row">
     <div class="col-12">
         <div class="card">
@@ -26,15 +26,19 @@
                 <div class="row">
                     <div class="col-sm-3 mb-2 mb-sm-0">
                         <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                            <a class="nav-link active show" data-id="nav-1" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">
+                            <a class="nav-link active show" data-id="nav-1"
+                                    id="v-pills-home-tab" data-toggle="pill"
+                                    href="#v-pills-1" role="tab" aria-controls="v-pills-home" aria-selected="true">
                                 <i class="mdi mdi-home-variant d-lg-none d-block mr-1"></i>
-                                <span class="d-none d-lg-block">ZX Dashboard 
+                                <span class="d-none d-lg-block">ZX Dashboard
                                     {% if progress.0.zx_dashboard %}
                                     <i class="mdi mdi-check-circle text-success float-right"></i>
                                     {% endif %}
                                 </span>
                             </a>
-                            <a class="nav-link" data-id="nav-2" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">
+                            <a class="nav-link" data-id="nav-2"
+                                    id="v-pills-profile-tab" data-toggle="pill"
+                                    href="#v-pills-2" role="tab" aria-controls="v-pills-profile" aria-selected="false">
                                 <i class="mdi mdi-account-circle d-lg-none d-block mr-1"></i>
                                 <span class="d-none d-lg-block">OS Model
                                     {% if progress.0.os_model %}
@@ -42,7 +46,9 @@
                                     {% endif %}
                                 </span>
                             </a>
-                            <a class="nav-link" data-id="nav-3" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">
+                            <a class="nav-link" data-id="nav-3"
+                                    id="v-pills-settings-tab" data-toggle="pill"
+                                    href="#v-pills-3" role="tab" aria-controls="v-pills-settings" aria-selected="false">
                                 <i class="mdi mdi-settings-outline d-lg-none d-block mr-1"></i>
                                 <span class="d-none d-lg-block">Assumptions
                                     {% if progress.0.assumptions %}
@@ -127,151 +133,70 @@
 
                     <div class="col-sm-9">
                         <div class="tab-content" id="v-pills-tabContent">
-                            <div class="tab-pane fade active show" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-                                {{tutorial.0.content|safe}}
-                                <!--<div class="row">
+                            {% for t in tutorial %}
+                            {% if forloop.first %}
+                            <div class="tab-pane fade active show"
+                            {% else %}
+                            <div class="tab-pane fade "
+                            {% endif %}
+                                 id="v-pills-{{ forloop.counter }}" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                                {{t.content|safe}}
+                                <div class="row">
                                     <div class="col-10">
                                         <p class="float-right"><b>Mark as Complete</b></p>
                                     </div>
                                     <div class="col-2">
                                         <div>
-                                            <input type="checkbox" id="switch3" data-switch="success">
-                                            <label for="switch3" data-on-label="Yes" data-off-label="No" class="mb-0 d-block"></label>
+                                                <input type="checkbox"
+                                                       id="switch{{ forloop.counter }}"
+                                                       data-id="{{ forloop.counter0 }}"
+                                                       data-switch="success"
+                                                       {% if forloop.counter0 == 0 and saved.0 %}
+                                                        checked
+                                                       {% elif forloop.counter0 == 1 and saved.1 %}
+                                                        checked
+                                                       {% elif forloop.counter0 == 2 and saved.2 %}
+                                                        checked
+                                                       {% elif forloop.counter0 == 3 and saved.3 %}
+                                                        checked
+                                                       {% elif forloop.counter0 == 4 and saved.4 %}
+                                                        checked
+                                                       {% elif forloop.counter0 == 5 and saved.5 %}
+                                                        checked
+                                                       {% elif forloop.counter0 == 6 and saved.6 %}
+                                                        checked
+                                                       {% elif forloop.counter0 == 7 and saved.7 %}
+                                                        checked
+                                                       {% elif forloop.counter0 == 8 and saved.8 %}
+                                                        checked
+                                                       {% elif forloop.counter0 == 9 and saved.9 %}
+                                                        checked
+                                                       {% elif forloop.counter0 == 10 and saved.10 %}
+                                                        checked
+                                                       {% elif forloop.counter0 == 11 and saved.11 %}
+                                                        checked
+                                                       {% endif %}
+
+                                                />
+                                                <label for="switch{{ forloop.counter }}"
+                                                        data-on-label="Yes" data-off-label="No" class="mb-0 d-block"></label>
                                         </div>
                                     </div>
-                                </div>-->
+                                </div>
                                 <div class="row" style="margin-top:50px">
                                     <div class="col-sm-6">
-                                        
+                                        {% if not forloop.first %}
+                                            <div class="btn btn-success left">Previous</div>
+                                        {% endif %}
                                     </div>
+                                    {% if not forloop.last %}
                                     <div class="col-sm-6">
                                         <div class="btn btn-success float-right">Continue</div>
                                     </div>
+                                    {% endif %}
                                 </div>
                             </div>
-                            <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
-                                {{tutorial.1.content|safe}}
-                                <div class="row" style="margin-top:50px">
-                                    <div class="col-sm-6">
-                                        <div class="btn btn-success left">Previous</div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="btn btn-success float-right">Continue</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
-                              {{tutorial.2.content|safe}}
-                              <div class="row" style="margin-top:50px">
-                                    <div class="col-sm-6">
-                                        <div class="btn btn-success left">Previous</div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="btn btn-success float-right">Continue</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tab-pane fade" id="v-pills-4" role="tabpanel" aria-labelledby="v-pills-settings-tab">
-                              {{tutorial.3.content|safe}}
-                              <div class="row" style="margin-top:50px">
-                                    <div class="col-sm-6">
-                                        <div class="btn btn-success left">Previous</div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="btn btn-success float-right">Continue</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tab-pane fade" id="v-pills-5" role="tabpanel" aria-labelledby="v-pills-settings-tab">
-                              {{tutorial.4.content|safe}}
-                              <div class="row" style="margin-top:50px">
-                                    <div class="col-sm-6">
-                                        <div class="btn btn-success left">Previous</div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="btn btn-success float-right">Continue</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tab-pane fade" id="v-pills-6" role="tabpanel" aria-labelledby="v-pills-settings-tab">
-                              {{tutorial.5.content|safe}}
-                              <div class="row" style="margin-top:50px">
-                                    <div class="col-sm-6">
-                                        <div class="btn btn-success left">Previous</div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="btn btn-success float-right">Continue</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tab-pane fade" id="v-pills-7" role="tabpanel" aria-labelledby="v-pills-settings-tab">
-                              {{tutorial.6.content|safe}}
-                              <div class="row" style="margin-top:50px">
-                                    <div class="col-sm-6">
-                                        <div class="btn btn-success left">Previous</div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="btn btn-success float-right">Continue</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tab-pane fade" id="v-pills-8" role="tabpanel" aria-labelledby="v-pills-settings-tab">
-                              {{tutorial.7.content|safe}}
-                              <div class="row" style="margin-top:50px">
-                                    <div class="col-sm-6">
-                                        <div class="btn btn-success left">Previous</div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="btn btn-success float-right">Continue</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tab-pane fade" id="v-pills-9" role="tabpanel" aria-labelledby="v-pills-settings-tab">
-                              {{tutorial.8.content|safe}}
-                              <div class="row" style="margin-top:50px">
-                                    <div class="col-sm-6">
-                                        <div class="btn btn-success left">Previous</div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="btn btn-success float-right">Continue</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tab-pane fade" id="v-pills-10" role="tabpanel" aria-labelledby="v-pills-settings-tab">
-                              {{tutorial.9.content|safe}}
-                              <div class="row" style="margin-top:50px">
-                                    <div class="col-sm-6">
-                                        <div class="btn btn-success left">Previous</div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="btn btn-success float-right">Continue</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tab-pane fade" id="v-pills-11" role="tabpanel" aria-labelledby="v-pills-settings-tab">
-                              {{tutorial.10.content|safe}}
-                              <div class="row" style="margin-top:50px">
-                                    <div class="col-sm-6">
-                                        <div class="btn btn-success left">Previous</div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="btn btn-success float-right">Continue</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tab-pane fade" id="v-pills-12" role="tabpanel" aria-labelledby="v-pills-settings-tab">
-                              {{tutorial.11.content|safe}}
-                              <div class="row" style="margin-top:50px">
-                                    <div class="col-sm-6">
-                                        <div class="btn btn-success left">Previous</div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <a href="{% url 'app:home' %}">
-                                            <div class="btn btn-success float-right">Finish</div>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
+                            {% endfor %}
                         </div> <!-- end tab-content-->
                     </div> <!-- end col-->
                 </div>
@@ -280,4 +205,19 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block js %}
+<script>
+$(function() {
+  $('input[type="checkbox"]').on('change', function(){
+    var self = $(this);
+    var id = self.attr('data-id');
+
+    var checked = self.prop('checked') ? 1 : 0;
+
+    $.post('/api/learn/progress/'+id+'/value/'+checked, function(){});
+  });
+});
+</script>
 {% endblock %}
