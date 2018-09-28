@@ -298,6 +298,40 @@
 <!-- end row -->
 
 <div class="row">
+  <div class="col-12">
+    <div class="card">
+        <div class="card-body" >
+            <a href="" class="btn btn-sm btn-link float-right mb-3">Export
+                <i class="mdi mdi-download ml-1"></i>
+            </a>
+            <h4 class="header-title mt-2">Users</h4>
+
+            <div class="table-responsive">
+                <table class="table table-centered table-hover mb-0">
+                    <tbody>
+                        {% for user in users %}
+                        {% for profile in user.profile_set.all %}
+                        <tr>
+                            <td>
+                                <p class="mb-0">
+                                    <img src="{{profile.profile_image.url}}" alt="user-img" class="avatar-xs rounded-circle mr-1">
+                                    <span class="align-middle">{{user.first_name}}</span>
+                                </p>
+                            </td>
+                            <td>{{profile.job_title}}</td>
+                            <td>{{profile.location}}</td>
+                        </tr>
+                        {% endfor %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div> <!-- end table-responsive-->
+        </div> <!-- end card-body-->
+    </div> <!-- end card-->
+  </div>
+</div>
+
+<div class="row">
     <div class="col-xl-8">
         <div class="card">
             <div class="card-body">
@@ -416,35 +450,6 @@
 
 <div class="row">
     <div class="col-xl-6">
-        <div class="card">
-            <div class="card-body" >
-                <a href="" class="btn btn-sm btn-link float-right mb-3">Export
-                    <i class="mdi mdi-download ml-1"></i>
-                </a>
-                <h4 class="header-title mt-2">Users</h4>
-
-                <div class="table-responsive">
-                    <table class="table table-centered table-hover mb-0">
-                        <tbody>
-                            {% for user in users %}
-                            {% for profile in user.profile_set.all %}
-                            <tr>
-                                <td>
-                                    <p class="mb-0">
-                                        <img src="{{profile.profile_image.url}}" alt="user-img" class="avatar-xs rounded-circle mr-1">
-                                        <span class="align-middle">{{user.first_name}}</span>
-                                    </p>
-                                </td>
-                                <td>{{profile.job_title}}</td>
-                                <td>{{profile.location}}</td>
-                            </tr>
-                            {% endfor %}
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div> <!-- end table-responsive-->
-            </div> <!-- end card-body-->
-        </div> <!-- end card-->
         <div class="card">
             <div class="card-body">
                 <div class="dropdown float-right">
