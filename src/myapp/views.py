@@ -47,6 +47,10 @@ class DashboardView(generic.ListView):
         context = super(DashboardView, self).get_context_data(**kwargs)
 
         context['projects'] = Project.objects.all()
+        context['actives'] = Project.objects.filter(status="Active")
+        context['killed'] = Project.objects.filter(status="Killed")
+
+
         context['users'] = User.objects.all()
 
         context['concept_list'] = Project.objects.filter(stage = "Concept")
