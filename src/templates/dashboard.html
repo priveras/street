@@ -298,7 +298,7 @@
 <!-- end row -->
 
 <div class="row">
-  <div class="col-12">
+  <div class="col-6">
     <div class="card">
         <div class="card-body" >
             <!--<a href="" class="btn btn-sm btn-link float-right mb-3">Export
@@ -315,16 +315,11 @@
                             <td>
                                 <p class="mb-0">
                                     <img src="{{profile.profile_image.url}}" alt="user-img" class="avatar-xs rounded-circle mr-1">
-                                    <span class="align-middle">{{user.first_name}} {{user.last_name}}</span>
+                                    <span class="align-middle">{{user.first_name|truncatechars:15}}</span>
                                 </p>
                             </td>
                             <td>{{profile.job_title|truncatechars:20}}</td>
                             <td>{{profile.location}}</td>
-                            <td>
-                            {% for team in user.team_set.all %}
-                            {{team.project.title}} 
-                            {% endfor %}
-                            </td>
                         </tr>
                         {% endfor %}
                         {% endfor %}
