@@ -104,7 +104,7 @@
                     </span>
                 </p>
                 <div>
-                    {% for member in project.team_set.all|slice:":4" %}
+                    {% for member in project.team_set.all%}
                     <a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{member.user.first_name}} {{member.user.last_name}}" class="d-inline-block">
                         {% for profile in member.user.profile_set.all %}
                         <img src="{{profile.profile_image.url}}" class="rounded-circle avatar-xs" alt="friend">
@@ -112,9 +112,9 @@
                     </a>
                    {% endfor %}
                    {% if project.team_set.count > 4 %}
-                   <a href="javascript:void(0);" class="d-inline-block text-dark font-weight-bold ml-2">
-                        +{{project.team_set.count|add:"-4"}} more
-                    </a>
+                   <!--+<a href="javascript:void(0);" class="d-inline-block text-dark font-weight-bold ml-2">
+                        {{project.team_set.count|add:"-4"}} more
+                    </a>-->
                     {% endif %}
 
                 </div>
