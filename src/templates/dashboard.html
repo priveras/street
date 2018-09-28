@@ -301,9 +301,9 @@
   <div class="col-12">
     <div class="card">
         <div class="card-body" >
-            <a href="" class="btn btn-sm btn-link float-right mb-3">Export
+            <!--<a href="" class="btn btn-sm btn-link float-right mb-3">Export
                 <i class="mdi mdi-download ml-1"></i>
-            </a>
+            </a>-->
             <h4 class="header-title mt-2">Users</h4>
 
             <div class="table-responsive">
@@ -315,11 +315,16 @@
                             <td>
                                 <p class="mb-0">
                                     <img src="{{profile.profile_image.url}}" alt="user-img" class="avatar-xs rounded-circle mr-1">
-                                    <span class="align-middle">{{user.first_name}}</span>
+                                    <span class="align-middle">{{user.first_name}} {{user.last_name}}</span>
                                 </p>
                             </td>
-                            <td>{{profile.job_title}}</td>
+                            <td>{{profile.job_title|truncatechars:20}}</td>
                             <td>{{profile.location}}</td>
+                            <td>
+                            {% for team in user.team_set.all %}
+                            {{team.title}} 
+                            {% endfor %}
+                            </td>
                         </tr>
                         {% endfor %}
                         {% endfor %}
