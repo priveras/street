@@ -188,7 +188,7 @@ class Assumption(models.Model):
 
 class Metric(models.Model):
     user = models.ForeignKey(User)
-    project = models.ForeignKey(Project)
+    project = models.ForeignKey(Project, null=True)
     stage_choices = (
             ('seed', 'Seed'),
             ('seedlaunch', 'Seed Launch'),
