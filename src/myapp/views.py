@@ -46,8 +46,8 @@ class DashboardView(generic.ListView):
     def get_context_data(self, **kwargs):
         context = super(DashboardView, self).get_context_data(**kwargs)
 
-        context['projects'] = Project.objects.all()
-        context['users'] = User.objects.all()
+        context['projects'] = Project.objects.order_by('title')
+        context['users'] = User.objects.order_by('first_name')
 
         context['concept_list'] = Project.objects.filter(stage = "Concept")
         context['scale_list'] = Project.objects.filter(stage = "Scale")
@@ -184,7 +184,7 @@ class HomeView(generic.ListView):
         else:
             alert = False
 
-        context['projects_list'] = Project.objects.filter(team__user=self.request.user)
+        context['projects_list'] = Project.objects.filter(team__user=self.request.user).order_by('title')
         context['alert'] = alert
 
         return context
