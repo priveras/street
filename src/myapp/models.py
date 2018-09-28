@@ -16,6 +16,9 @@ class Progress(models.Model):
     dashboard = models.BooleanField(default=False, blank=True)
     next_steps = models.BooleanField(default=False, blank=True)
 
+    def __str__(self):
+        return str(self.user)
+
 
 class Tutorial(models.Model):
     content = models.TextField(blank=True)
