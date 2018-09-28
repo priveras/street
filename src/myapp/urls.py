@@ -41,4 +41,8 @@ urlpatterns = [
     url(r'^api/file',
         login_required(views.file_save),
         name='file-save'),
+
+    url(r'^api/learn/progress/(?P<section>[0-9]+)/value/(?P<value>[01])$',
+        login_required(views.save_learn_progress),
+        name='progress-save'),
 ]
