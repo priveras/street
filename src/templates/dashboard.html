@@ -304,11 +304,15 @@
             <!--<a href="" class="btn btn-sm btn-link float-right mb-3">Export
                 <i class="mdi mdi-download ml-1"></i>
             </a>-->
-            <h4 class="header-title mt-2">Users</h4>
 
             <div class="table-responsive">
-                <table class="table table-centered table-hover mb-0">
+                <table class="table table-centered mb-0">
                     <tbody>
+                        <tr>
+                          <th>User</th>
+                          <th>Role</th>
+                          <th>Location</th>
+                        </tr>
                         {% for user in users %}
                         {% for profile in user.profile_set.all %}
                         <tr>
@@ -322,6 +326,38 @@
                             <td>{{profile.location}}</td>
                         </tr>
                         {% endfor %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div> <!-- end table-responsive-->
+        </div> <!-- end card-body-->
+    </div> <!-- end card-->
+  </div>
+  <div class="col-6">
+    <div class="card">
+        <div class="card-body" >
+            <!--<a href="" class="btn btn-sm btn-link float-right mb-3">Export
+                <i class="mdi mdi-download ml-1"></i>
+            </a>-->
+
+            <div class="table-responsive">
+                <table class="table table-centered mb-0">
+                    <tbody>
+                        <tr>
+                          <th>Project</th>
+                          <th>Team</th>
+                        </tr>
+                        {% for project in projects %}
+                        <tr>
+                          <td>{{project.title|capfirst}}</td>
+                          <td>
+                             {% for member in project.team_set.all %}
+                                  {% for profile in member.user.profile_set.all %}
+                                  <img src="{{profile.profile_image.url}}" class="rounded-circle avatar-xs" alt="friend">
+                                  {% endfor %}
+                             {% endfor %}
+                          </td>
+                        </tr>
                         {% endfor %}
                     </tbody>
                 </table>
