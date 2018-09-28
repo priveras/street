@@ -322,7 +322,7 @@
                             <td>{{profile.location}}</td>
                             <td>
                             {% for team in user.team_set.all %}
-                            {{team.title}} 
+                            {{team.project.title}} 
                             {% endfor %}
                             </td>
                         </tr>
