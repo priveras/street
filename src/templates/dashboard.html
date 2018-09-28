@@ -304,11 +304,15 @@
             <!--<a href="" class="btn btn-sm btn-link float-right mb-3">Export
                 <i class="mdi mdi-download ml-1"></i>
             </a>-->
-            <h4 class="header-title mt-2">Users</h4>
 
             <div class="table-responsive">
                 <table class="table table-centered mb-0">
                     <tbody>
+                        <tr>
+                          <th>User</th>
+                          <th>Role</th>
+                          <th>Location</th>
+                        </tr>
                         {% for user in users %}
                         {% for profile in user.profile_set.all %}
                         <tr>
@@ -335,11 +339,14 @@
             <!--<a href="" class="btn btn-sm btn-link float-right mb-3">Export
                 <i class="mdi mdi-download ml-1"></i>
             </a>-->
-            <h4 class="header-title mt-2">Projects</h4>
 
             <div class="table-responsive">
                 <table class="table table-centered mb-0">
                     <tbody>
+                        <tr>
+                          <th>Project</th>
+                          <th>Team</th>
+                        </tr>
                         {% for project in projects %}
                         <tr>
                           <td>{{project.title|capfirst}}</td>
