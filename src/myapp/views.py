@@ -36,6 +36,8 @@ def learn(request):
     tutorial = Tutorial.objects.order_by('created_at')
     progress = Progress.objects.filter(user=request.user).first()
     doc = progress
+    if doc is None:
+        doc = Progress()
 
     saved = [
         doc.zx_dashboard,
