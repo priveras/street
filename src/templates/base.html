@@ -5,7 +5,7 @@
         <meta charset="utf-8" />
         <title>BOX OS by ZX Explore</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta content="OS Dashboard" name="description" />
+        <meta content="BOX OS helps manage early stage businesses by leveraging start-up processes and mechanics" name="description" />
         <meta content="Coderthemes" name="author" />
         <!-- App favicon -->
         <link rel="shortcut icon" href="{% static 'assets/images/favicon.ico' %}">
@@ -18,6 +18,17 @@
 
         <!-- development version, includes helpful console warnings -->
         <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-126693419-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-126693419-1');
+        </script>
+
     </head>
 
     <body>
@@ -153,7 +164,7 @@
                             <div class="col-md-6">
                                 <div class="text-md-right footer-links d-none d-md-block">
                                     <a href="{% url 'app:faq' %}">FAQs</a>
-                                    <a href="mailto:osdashboard@zx-platform.com">Contact Us</a>
+                                    <a href="mailto:pablo.rivera@zx-ventures.com">Contact Us</a>
                                 </div>
                             </div>
                         </div>
