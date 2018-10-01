@@ -309,7 +309,7 @@ document.getElementById("kill").innerHTML = z+'%';
 <!-- end row -->
 
 <div class="row">
-    <div class="col-xl-8">
+    <div class="col-xl-12">
       <div class="card">
           <div class="card-body">
               <div class="dropdown float-right">
@@ -328,22 +328,58 @@ document.getElementById("kill").innerHTML = z+'%';
                   </div>
               </div>
               <h4 class="header-title">Average Time in Each Stage</h4>
-              {% for project in seed_list %}
-              <h5 class="mb-1 mt-0 font-weight-normal">{{project.stage}}</h5>
+
+              <h5 class="mb-1 mt-0 font-weight-normal">Seed I-III</h5>
               <div class="progress-w-percent">
+                {% for project in seed_list %}
+
                 {% for project in projects %}
                   <span class="progress-value font-weight-bold"></span>
-                  <div class="progress progress-sm">
                     {% endfor %}
+                    {% endfor %}
+                    <div class="progress progress-sm">
 
                       <div class="progress-bar" role="progressbar" style="width: 72%;" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100"></div>
                   </div>
 
               </div>
-              {% endfor %}
+              <h5 class="mb-1 mt-0 font-weight-normal">Seed Launch</h5>
+              <div class="progress-w-percent">
+                {% for project in seed_list %}
+
+                {% for project in projects %}
+                  <span class="progress-value font-weight-bold"></span>
+                    {% endfor %}
+                    {% endfor %}
+                    <div class="progress progress-sm">
+
+                      <div class="progress-bar" role="progressbar" style="width: 72%;" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+
+              </div>
+              <h5 class="mb-1 mt-0 font-weight-normal">Launch</h5>
+              <div class="progress-w-percent">
+                {% for project in seed_list %}
+
+                {% for project in projects %}
+                  <span class="progress-value font-weight-bold"></span>
+                    {% endfor %}
+                    {% endfor %}
+                    <div class="progress progress-sm">
+
+                      <div class="progress-bar" role="progressbar" style="width: 72%;" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+
+              </div>
 
           </div> <!-- end card-body-->
+
       </div> <!-- end card-->
+    </div>
+  </div>
+
+  <div class="row">
+      <div class="col-xl-8">
         <div class="card">
             <div class="card-body">
                 <div class="dropdown float-right">
