@@ -332,10 +332,17 @@ document.getElementById("kill").innerHTML = z+'%';
               <h5 class="mb-1 mt-0 font-weight-normal">Seed I-III</h5>
               <div class="progress-w-percent">
                 {% for project in seed_list %}
+                <h3 class="mt-3 mb-3"><p id="time"></p>
 
-                {% for project in projects %}
+                  <script>
+                    var seed_time = {{project.created_at}};
+                    var y = {{killed | length}};
+                    var z = Math.round( y * 100.0 / (x+y))
+                    document.getElementById("time").innerHTML = z+'%';
+                  </script>
+
+              </h3>
                   <span class="progress-value font-weight-bold"></span>
-                    {% endfor %}
                     {% endfor %}
                     <div class="progress progress-sm">
 
