@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'myapp.apps.MyappConfig',
-    'celery',
     'widget_tweaks',
     'django_summernote',
     'django.contrib.sites',
@@ -152,10 +151,6 @@ SENDGRID_API_KEY = "SG.WGHO51DVSbGSq0ad_dsnww.5Zgz2aLjNHDgFtYu3v3xcenhpR4aPHq4Vb
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 
-
-CELERY_BROKER_URL = 'redis://redis:6379/0'
-CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
-
 STATIC_ROOT = './static/'
 MEDIA_ROOT = './media/'
 
@@ -173,10 +168,6 @@ LOGGING = {
     },
     'loggers': {
         'django': {
-            'handlers': ['console'],
-            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
-        },
-        'celery': {
             'handlers': ['console'],
             'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
         },
