@@ -73,32 +73,31 @@ class DashboardView(generic.ListView):
 
         context['concept_list'] = Project.objects.filter(stage = "Concept")
         context['scale_list'] = Project.objects.filter(stage = "Scale")
-        context['seed_list'] = Project.objects.filter(stage = "Seed 1" or "Seed 2" or "Seed 3")
+        context['seed_list'] = Project.objects.filter(stage = "Seed 3") | Project.objects.filter(stage = "Seed 2") | Project.objects.filter(stage = "Seed 1")
         context['seedlaunch_list'] = Project.objects.filter(stage = "Launch 1")
         context['launch_list'] = Project.objects.filter(stage = "Launch 2")
 
-
-        context['zones_apacs_seed'] = Zone.objects.filter(project__stage="Seed 1" or "Seed 2" or "Seed 3").filter(zone="APAC S")
+        context['zones_apacs_seed'] = (Zone.objects.filter(project__stage="Seed 1") | Zone.objects.filter(project__stage="Seed 2") | Zone.objects.filter(project__stage="Seed 3")).filter(zone="APAC S")
         context['zones_apacs_seedlaunch'] = Zone.objects.filter(project__stage="Launch 1").filter(zone="APAC S")
         context['zones_apacs_launch'] = Zone.objects.filter(project__stage="Launch 2").filter(zone="APAC S")
 
-        context['zones_apacn_seed'] = Zone.objects.filter(project__stage="Seed 1" or "Seed 2" or "Seed 3").filter(zone="APAC N")
+        context['zones_apacn_seed'] = (Zone.objects.filter(project__stage="Seed 1") | Zone.objects.filter(project__stage="Seed 2") | Zone.objects.filter(project__stage="Seed 3")).filter(zone="APAC N")
         context['zones_apacn_seedlaunch'] = Zone.objects.filter(project__stage="Launch 1").filter(zone="APAC N")
         context['zones_apacn_launch'] = Zone.objects.filter(project__stage="Launch 2").filter(zone="APAC N")
 
-        context['zones_eu_seed'] = Zone.objects.filter(project__stage="Seed 1" or "Seed 2" or "Seed 3").filter(zone="EU")
+        context['zones_eu_seed'] = (Zone.objects.filter(project__stage="Seed 1") | Zone.objects.filter(project__stage="Seed 2") | Zone.objects.filter(project__stage="Seed 3")).filter(zone="EU")
         context['zones_eu_seedlaunch'] = Zone.objects.filter(project__stage="Launch 1").filter(zone="EU")
         context['zones_eu_launch'] = Zone.objects.filter(project__stage="Launch 2").filter(zone="EU")
 
-        context['zones_naz_seed'] = Zone.objects.filter(project__stage="Seed 1" or "Seed 2" or "Seed 3").filter(zone="NAZ")
+        context['zones_naz_seed'] = (Zone.objects.filter(project__stage="Seed 1") | Zone.objects.filter(project__stage="Seed 2") | Zone.objects.filter(project__stage="Seed 3")).filter(zone="NAZ")
         context['zones_naz_seedlaunch'] = Zone.objects.filter(project__stage="Launch 1").filter(zone="NAZ")
         context['zones_naz_launch'] = Zone.objects.filter(project__stage="Launch 2").filter(zone="NAZ")
 
-        context['zones_maz_seed'] = Zone.objects.filter(project__stage="Seed 1" or "Seed 2" or "Seed 3").filter(zone="MAZ")
+        context['zones_maz_seed'] = (Zone.objects.filter(project__stage="Seed 1") | Zone.objects.filter(project__stage="Seed 2") | Zone.objects.filter(project__stage="Seed 3")).filter(zone="MAZ")
         context['zones_maz_seedlaunch'] = Zone.objects.filter(project__stage="Launch 1").filter(zone="MAZ")
         context['zones_maz_launch'] = Zone.objects.filter(project__stage="Launch 2").filter(zone="MAZ")
 
-        context['zones_lan_seed'] = Zone.objects.filter(project__stage="Seed 1" or "Seed 2" or "Seed 3").filter(zone="LAN LAS")
+        context['zones_lan_seed'] = (Zone.objects.filter(project__stage="Seed 1") | Zone.objects.filter(project__stage="Seed 2") | Zone.objects.filter(project__stage="Seed 3")).filter(zone="LAN LAS")
         context['zones_lan_seedlaunch'] = Zone.objects.filter(project__stage="Launch 1").filter(zone="LAN LAS")
         context['zones_lan_launch'] = Zone.objects.filter(project__stage="Launch 2").filter(zone="LAN LAS")
 
