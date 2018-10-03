@@ -291,7 +291,7 @@
     </div> <!-- end col-->
 
 </div>
-<div class="card">
+<!-- <div class="card">
     <div class="card-body">
         <div class="card-widgets">
             <a href="javascript:;" data-toggle="reload"><i class="mdi mdi-refresh"></i></a>
@@ -563,7 +563,7 @@
                 class="btn btn-outline-primary btn-sm float-right call-dynamic-form">Add New</button>
     </div>
     {% endif %}
-</div>
+</div> -->
 
 <div class="card">
     <div class="card-body">
@@ -591,8 +591,8 @@
                     {% else %}
                     <tr>
                         <th></th>
-                        <th>Assumption</th>
-                        <th>Metric</th>
+                        <th>What to Test</th>
+                        <th>How to Test</th>
                         <th>Learnings</th>
                         <th>Status</th>
                         <th></th>
@@ -610,7 +610,7 @@
                             {{assumption.metric}}
                         </td>
                         <td>
-                            {{assumption.assumption}}
+                            {{assumption.learnings}}
                         </td>
                         <td>
                             {% if assumption.status == "Validated" %}

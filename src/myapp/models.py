@@ -42,8 +42,8 @@ class Project(models.Model):
     STAGE_SEED_1 = 'Seed 1'
     STAGE_SEED_2 = 'Seed 2'
     STAGE_SEED_3 = 'Seed 3'
-    STAGE_LAUNCH_1 = 'Launch 1'
-    STAGE_LAUNCH_2 = 'Launch 2'
+    STAGE_LAUNCH_1 = 'Seed Launch'
+    STAGE_LAUNCH_2 = 'Launch'
     STAGE_SCALE = 'Scale'
 
     STATUS_ALL = (
@@ -58,8 +58,8 @@ class Project(models.Model):
         (STAGE_SEED_1, 'Seed 1'),
         (STAGE_SEED_2, 'Seed 2'),
         (STAGE_SEED_3, 'Seed 3'),
-        (STAGE_LAUNCH_1, 'Launch 1'),
-        (STAGE_LAUNCH_2, 'Launch 2'),
+        (STAGE_LAUNCH_1, 'Seed Launch'),
+        (STAGE_LAUNCH_2, 'Launch'),
         (STAGE_SCALE, 'Scale'),
         )
 
