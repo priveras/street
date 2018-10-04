@@ -41,9 +41,18 @@
                             <i class="mdi mdi-pencil mr-1"></i>Edit
                         </button>
                         <!-- item-->
-                        <a href="javascript:void(0);" class="dropdown-item"><i class="mdi mdi-email-outline mr-1"></i>Invite</a>
+                        <a href=""
+                          data-toggle="modal"
+                          data-target="#invite"
+                          data-id="{{ project.id }}"
+                          class="invite dropdown-item"><i class="mdi mdi-email-outline mr-1"></i>Invite</a>
                         <!-- item-->
-                        <a href="javascript:void(0);" class="dropdown-item"><i class="mdi mdi-exit-to-app mr-1"></i>Leave</a>
+                        <a href=""
+                                id="leave-project"
+                                data-toggle="modal"
+                                data-target="#leave"
+                                data-id="{{ project.id }}"
+                                class="dropdown-item"><i class="mdi mdi-exit-to-app mr-1"></i>Leave</a>
                     </div>
                     {% endif %}
                 </div>
@@ -700,7 +709,47 @@
 </div><!-- /.modal -->
 
 
+<div id="leave" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-body p-4">
+                <div class="text-center">
+                    <i class="dripicons-warning h1 text-warning"></i>
+                    <h4 class="mt-2">Leave project</h4>
+                    <p class="mt-3">Are you sure you want to leave this project? You won't be able to access it anymore.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+                <button type="submit" id="leave-submit" class="btn btn-warning">Leave</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
 
+
+<!--  Modal content for the above example -->
+<div class="modal fade" id="invite" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myLargeModalLabel">Invite</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <h5 class="mt-0">Add a team member</h5>
+                <p>Type the email adress of the team member you want to add. An invite message will be sent to join your project.</p>
+                <div id="invite-form">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" id="submit-invite">Send</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 {% endblock %}
 
 {% block js %}
@@ -799,6 +848,48 @@
     $('#remove-name').val(name);
     $('#delete-modal').modal('show');
   });
+
+  $('.invite').click(function(){
+    var self = $(this);
+    var id = self.attr('data-id');
+
+    $.get('/api/invite/' + id, function(form) {
+      $('#invite-form').html(form);
+    });
   });
+
+  $('#submit-invite').click(function(){
+    var form = $('form', '#invite-form').serialize();
+    var id = $('#project', '#invite-form').val();
+
+    var path = '/api/invite/' + id;
+
+    $.post(path, form, function(data) {
+      $('#invite').modal('toggle')
+    }).fail(function(xhr, status, error) {
+      if (xhr.status != 400) {
+        $('#invite').modal('toggle')
+        return;
+      }
+      $('#invite-form').html(xhr.responseText);
+    });
+  });
+
+  $('#leave-project').click(function(){
+    var id = $(this).attr('data-id');
+    $('#leave-submit').attr('data-id', id);
+  });
+
+  $('#leave-submit').click(function(){
+    var id = $(this).attr('data-id');
+    var path = '/api/leave/' + id;
+
+    $.post(path, function(data) {
+      $('#leave').modal('toggle');
+      window.location.pathname = '/';
+    });
+  });
+
+});
 </script>
 {% endblock %}

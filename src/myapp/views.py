@@ -6,14 +6,19 @@ from django.views.decorators.csrf import csrf_exempt
 from datetime import date
 from django.http import JsonResponse
 from django.utils.text import slugify
+from django.utils.crypto import get_random_string
+from django.core.mail import send_mail
+from django.template.loader import get_template
+from django.template import Context
 
 from .forms import ProfileForm, SummaryForm, PastForm, FutureForm, ProjectForm
 from .forms import ElevatorForm, ProblemForm, SolutionForm, BusinessModelForm
 from .forms import AssumptionForm, CommentForm, FileForm, DvfForm, LinkForm
+from .forms import InviteForm
 
 from .models import Project, Team, Comment, Assumption, Problem, BusinessModel
-from .models import Solution, Metric, File, Profile, Summary, Past, Future, Link
-from .models import Elevator, Tutorial, Progress, Dvf, Link, Zone, Progress
+from .models import Solution, Metric, File, Profile, Summary, Past, Future
+from .models import Elevator, Tutorial, Progress, Dvf, Link, Zone
 from django.http import HttpResponseRedirect
 
 def index(request):
@@ -112,6 +117,11 @@ class DetailView(generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(DetailView, self).get_context_data(**kwargs)
+
+        if not Team.objects.filter(user=self.request.user,
+                project__id=self.object.id).exists():
+            raise Http404
+
         context['team'] = Team.objects.filter(project=self.object).filter(permission="edit")
 
         context['viewers'] = Team.objects.filter(project=self.object).filter(permission="view")
@@ -125,6 +135,12 @@ class DetailView(generic.DetailView):
         context['fileform'] = FileForm()
 
         return context
+    # def dispatch(self, *args, **kwargs):
+    #     if not Team.objects.filter(user=self.request.user,
+    #             project__id=self.object.id).exists():
+    #         raise Http404
+
+    #     return super(DetailView, self).dispatch(*args, **kwargs)
 
 class SeedView(generic.DetailView):
     model = Project
@@ -474,9 +490,6 @@ def save_learn_progress(request, section=0, value=0):
     section = int(section)
     value = int(value)
     opt = True if value == 1 else False
-    print("================")
-    print(opt)
-    print(value)
 
     if section == 0:
         doc.zx_dashboard = opt
@@ -505,4 +518,72 @@ def save_learn_progress(request, section=0, value=0):
 
     doc.user = request.user
     doc.save()
+    return JsonResponse({'status': 'ok'})
+
+
+def send_invite(request, project_id=0):
+    if request.method not in ['POST', 'GET']:
+        raise Http404
+
+    project = Project.objects.filter(pk=project_id).first()
+    if project is None:
+        raise Http404
+
+    context = {
+        'form': InviteForm(),
+        'project': project,
+        'project_id': project_id,
+    }
+
+    if request.method == 'GET':
+        return render(request, 'form.html', context)
+
+    form = InviteForm(request.POST)
+    if not form.is_valid():
+        context['form'] = form
+        return render(request, 'form.html', context, status=400)
+
+    perm = Team.objects.filter(
+        project__id=project_id,
+        permission='edit',
+        user=request.user
+    ).exists()
+
+    if not perm:
+        raise Http404
+
+    doc = form.save(commit=False)
+    doc.user = request.user
+    doc.key = get_random_string(length=32)
+    doc.project = project
+    doc.save()
+
+    host = request.META['HTTP_HOST'] + 'invite/claim?key='
+
+    plaintext = get_template('mails/invite.txt')
+    context = {
+        'link': host+doc.key,
+        'project': project,
+        'user': request.user,
+    }
+
+    text_content = plaintext.render(context)
+
+    send_mail(
+        'You have been invited to Box-os',
+        text_content,
+        'info@box-os.com',
+        [request.POST.get('email')],
+        fail_silently=True,
+    )
+
+    return JsonResponse({'status': 'ok'})
+
+
+@csrf_exempt
+def leave_project(request, project_id):
+    if request.method != 'POST':
+        raise Http404
+
+    Team.objects.filter(project__id=project_id, user=request.user).delete()
     return JsonResponse({'status': 'ok'})

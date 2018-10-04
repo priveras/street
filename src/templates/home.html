@@ -62,9 +62,18 @@
                                    data-id={{project.id}}
                                    class="dropdown-item edit-project"><i class="mdi mdi-pencil mr-1"></i>Edit</a>
                         <!-- item-->
-                        <a href="" data-toggle="modal" data-target="#invite" class="dropdown-item"><i class="mdi mdi-email-outline mr-1"></i>Invite</a>
+                        <a href=""
+                          data-toggle="modal"
+                          data-target="#invite"
+                          data-id="{{ project.id }}"
+                          class="invite dropdown-item"><i class="mdi mdi-email-outline mr-1"></i>Invite</a>
                         <!-- item-->
-                        <a href="" data-toggle="modal" data-target="#leave" class="dropdown-item"><i class="mdi mdi-exit-to-app mr-1"></i>Leave</a>
+                        <a href=""
+                                id="leave-project"
+                                data-toggle="modal"
+                                data-target="#leave"
+                                data-id="{{ project.id }}"
+                                class="dropdown-item"><i class="mdi mdi-exit-to-app mr-1"></i>Leave</a>
                     </div>
                 </div>
                 <!-- project title-->
@@ -248,23 +257,13 @@
             <div class="modal-body">
                 <h5 class="mt-0">Add a team member</h5>
                 <p>Type the email adress of the team member you want to add. An invite message will be sent to join your project.</p>
-                <form id="post-form" action="/project/create/" method="post">
-                    <div class="form-group mb-3">
-                        <label for="simpleinput">EmailAddress</label>
-                        <input id="title" type="email" id="simpleinput" class="form-control" placeholder="john@doe.com">
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="simpleinput">Permission</label>
-                        <select class="form-control" id="example-select">
-                            <option>Edit</option>
-                            <option>View</option>
-                        </select>
-                    </div>
-                </form>
+                <div id="invite-form">
+
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Send</button>
+                <button type="submit" class="btn btn-primary" id="submit-invite">Send</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
@@ -281,7 +280,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-warning">Leave</button>
+                <button type="submit" id="leave-submit" class="btn btn-warning">Leave</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
@@ -305,9 +304,6 @@ $(function() {
     });
   });
 
-
-
-
 $('.submit-form','#create-project').click(function(){
     var form = $('form', '#create-project').serialize();
     var id = $('#doc-id').val();
@@ -325,6 +321,46 @@ $('.submit-form','#create-project').click(function(){
     });
   });
 
+  $('.invite').click(function(){
+    var self = $(this);
+    var id = self.attr('data-id');
+
+    $.get('/api/invite/' + id, function(form) {
+      $('#invite-form').html(form);
+    });
+  });
+
+  $('#submit-invite').click(function(){
+    var form = $('form', '#invite-form').serialize();
+    var id = $('#project', '#invite-form').val();
+
+    var path = '/api/invite/' + id;
+
+    $.post(path, form, function(data) {
+      $('#invite').modal('toggle')
+    }).fail(function(xhr, status, error) {
+      if (xhr.status != 400) {
+        $('#invite').modal('toggle')
+        return;
+      }
+      $('#invite-form').html(xhr.responseText);
+    });
+  });
+
+  $('#leave-project').click(function(){
+    var id = $(this).attr('data-id');
+    $('#leave-submit').attr('data-id', id);
+  });
+
+  $('#leave-submit').click(function(){
+    var id = $(this).attr('data-id');
+    var path = '/api/leave/' + id;
+
+    $.post(path, function(data) {
+      $('#leave').modal('toggle');
+      window.location.reload();
+    });
+  });
 });
 </script>
 

@@ -358,3 +358,23 @@ class File(models.Model):
 
     def __str__(self):
         return str(self.project)
+
+
+class Invite(models.Model):
+    PERMISSION_EDIT = 'edit'
+    PERMISSION_VIEW = 'view'
+
+    PERMISSIONS = (
+        (PERMISSION_EDIT, 'Edit'),
+        (PERMISSION_VIEW, 'View'),
+    )
+
+    permission = models.CharField(choices=PERMISSIONS, max_length=10)
+    user = models.ForeignKey(User)
+    project = models.ForeignKey(Project)
+    email = models.EmailField()
+    key = models.CharField(max_length=32)
+    used = models.BooleanField(default=False)
+
+    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(db_index=True, auto_now_add=True)

@@ -3,7 +3,9 @@ from __future__ import unicode_literals
 
 from django.contrib import admin
 from django_summernote.admin import SummernoteModelAdmin
-from .models import Project, Team, Comment, Assumption, Problem, BusinessModel, Metric, File, Past, Future, Summary, Solution, Tutorial, Profile, Link, Dvf, Progress, Zone
+from .models import Project, Team, Comment, Assumption, Problem, BusinessModel
+from .models import Metric, File, Past, Future, Summary, Solution, Tutorial
+from .models import Profile, Link, Dvf, Progress, Zone, Invite
 
 class ProjectAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('title',)}
@@ -11,8 +13,8 @@ class ProjectAdmin(admin.ModelAdmin):
 class TutorialAdmin(SummernoteModelAdmin):
     summernote_fields = ('content',)
 
-admin.site.register(Tutorial, TutorialAdmin)
 
+admin.site.register(Tutorial, TutorialAdmin)
 admin.site.register(Project, ProjectAdmin)
 admin.site.register(Team)
 admin.site.register(Profile)
@@ -30,4 +32,4 @@ admin.site.register(Summary)
 admin.site.register(Link)
 admin.site.register(Dvf)
 admin.site.register(Progress)
-
+admin.site.register(Invite)

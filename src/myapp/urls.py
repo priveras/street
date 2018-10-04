@@ -45,4 +45,11 @@ urlpatterns = [
     url(r'^api/learn/progress/(?P<section>[0-9]+)/value/(?P<value>[01])$',
         login_required(views.save_learn_progress),
         name='progress-save'),
+
+    url(r'^api/invite/(?P<project_id>[0-9]+)',
+        login_required(views.send_invite),
+        name='send-invite'),
+    url(r'^api/leave/(?P<project_id>[0-9]+)',
+        login_required(views.leave_project),
+        name='leave-project'),
 ]

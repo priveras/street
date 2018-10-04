@@ -1,0 +1,7 @@
+Hi!
+
+You have been invited by {{user.first_name}} {{user.last_name}} to join the {{project.title}} project at BOX OS. Please click on the following link to login or signup and get access to the project.
+
+{{ link }}
+
+Cheers!
