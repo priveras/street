@@ -9,7 +9,7 @@ from django.utils.text import slugify
 
 from .forms import ProfileForm, SummaryForm, PastForm, FutureForm, ProjectForm
 from .forms import ElevatorForm, ProblemForm, SolutionForm, BusinessModelForm
-from .forms import AssumptionForm, CommentForm, FileForm, DvfForm, LinkForm
+from .forms import AssumptionForm, CommentForm, FileForm, DvfForm, LinkForm, MetricForm
 
 from .models import Project, Team, Comment, Assumption, Problem, BusinessModel
 from .models import Solution, Metric, File, Profile, Summary, Past, Future, Link
@@ -129,7 +129,7 @@ class SeedView(generic.DetailView):
         context['problems'] = Problem.objects.filter(project=self.object).filter(stage="seed").order_by('-updated_at')
         context['solutions'] = Solution.objects.filter(project=self.object).filter(stage="seed").order_by('-updated_at')
         context['models'] = BusinessModel.objects.filter(project=self.object).filter(stage="seed").order_by('-updated_at')
-        context['metrics'] = Metric.objects.filter(project=self.object).filter(stage="seed").order_by('-updated_at')
+        context['metrics'] = Metric.objects.filter(project=self.object).filter(stage="seed").order_by('dvf')
         context['summary'] = Summary.objects.filter(project=self.object).filter(stage="seed").order_by('-updated_at')
         context['past'] = Past.objects.filter(project=self.object).filter(stage="seed").order_by('-updated_at')
         context['future'] = Future.objects.filter(project=self.object).filter(stage="seed").order_by('-updated_at')
@@ -146,11 +146,11 @@ class SeedLaunchView(generic.DetailView):
         context = super(SeedLaunchView, self).get_context_data(**kwargs)
         context['team'] = Team.objects.filter(project=self.object)
         context['comments'] = Comment.objects.filter(project=self.object)
-        context['assumptions'] = Assumption.objects.filter(project=self.object).filter(stage="seedlaunch")
+        context['assumptions'] = Assumption.objects.filter(project=self.object).filter(stage="seedlaunch").order_by('dvf')
         context['problems'] = Problem.objects.filter(project=self.object).filter(stage="seedlaunch").order_by('-updated_at')
         context['solutions'] = Solution.objects.filter(project=self.object).filter(stage="seedlaunch").order_by('-updated_at')
         context['models'] = BusinessModel.objects.filter(project=self.object).filter(stage="seedlaunch").order_by('-updated_at')
-        context['metrics'] = Metric.objects.filter(project=self.object).filter(stage="seedlaunch").order_by('-updated_at')
+        context['metrics'] = Metric.objects.filter(project=self.object).filter(stage="seedlaunch").order_by('dvf')
         context['summary'] = Summary.objects.filter(project=self.object).filter(stage="seedlaunch").order_by('-updated_at')
         context['past'] = Past.objects.filter(project=self.object).filter(stage="seedlaunch").order_by('-updated_at')
         context['future'] = Future.objects.filter(project=self.object).filter(stage="seedlaunch").order_by('-updated_at')
@@ -168,11 +168,11 @@ class LaunchView(generic.DetailView):
         context = super(LaunchView, self).get_context_data(**kwargs)
         context['team'] = Team.objects.filter(project=self.object)
         context['comments'] = Comment.objects.filter(project=self.object)
-        context['assumptions'] = Assumption.objects.filter(project=self.object).filter(stage="launch")
+        context['assumptions'] = Assumption.objects.filter(project=self.object).filter(stage="launch").order_by('dvf')
         context['problems'] = Problem.objects.filter(project=self.object).filter(stage="launch").order_by('-updated_at')
         context['solutions'] = Solution.objects.filter(project=self.object).filter(stage="launch").order_by('-updated_at')
         context['models'] = BusinessModel.objects.filter(project=self.object).filter(stage="launch").order_by('-updated_at')
-        context['metrics'] = Metric.objects.filter(project=self.object).filter(stage="launch").order_by('-updated_at')
+        context['metrics'] = Metric.objects.filter(project=self.object).filter(stage="launch").order_by('dvf')
         context['summary'] = Summary.objects.filter(project=self.object).filter(stage="launch").order_by('-updated_at')
         context['past'] = Past.objects.filter(project=self.object).filter(stage="launch").order_by('-updated_at')
         context['future'] = Future.objects.filter(project=self.object).filter(stage="launch").order_by('-updated_at')
@@ -302,6 +302,7 @@ def model_form(request, name='', project_id=0, id=0):
         'link': LinkForm,
         'project': ProjectForm,
         'file': FileForm,
+        'metric':MetricForm,
     }
 
     instances = {
@@ -317,6 +318,7 @@ def model_form(request, name='', project_id=0, id=0):
         'link': Link,
         'project': Project,
         'file': File,
+        'metric': Metric,
     }
 
     method = request.method

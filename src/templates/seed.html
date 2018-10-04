@@ -21,6 +21,67 @@
 </div>
 <!-- end page title -->
 <div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body">
+                <div class="card-widgets">
+                    <a href="javascript:;" data-toggle="reload"><i class="mdi mdi-refresh"></i></a>
+                    <a data-toggle="collapse" href="#cardCollpasec" role="button" aria-expanded="false" aria-controls="cardCollpase1"><i class="mdi mdi-minus"></i></a>
+                    <a href="#" data-toggle="remove"><i class="mdi mdi-close"></i></a>
+                </div>
+                <h4 class="header-title">Status Summary</h4>
+                <p class="text-muted font-14 mb-2">
+                    Add your project's status summary to this section
+                </p>
+
+                <div class="table-responsive collapse show" id="cardCollpasec" style="max-height:125px; overflow-y: auto;">
+                    <table class="table table-top mb-0">
+                        <tbody>
+                            {% if not summary %}
+                            <p><i class="text-muted fa fa-exclamation-triangle"></i> No data available</p>
+                            {% endif %}
+                            {% for sum in summary %}
+                            <tr class="text-justify">
+                                <td>
+                                    {{sum.text}}
+                                    <br><br>
+                                    <small class="text-muted">{{sum.updated_at|date}}</small>
+                                </td>
+                                {% if permission %}
+                                <td class="table-action">
+                                        <a
+                                          href="javascript: void(0);"
+                                          data-id="{{ sum.id }}"
+                                          data-name="summary"
+                                          data-title="Status summary"
+                                          class="action-icon edit-doc">
+                                            <i class="mdi mdi-pencil"></i>
+                                        </a>
+                                        <a href="javascript: void(0);"
+                                            data-name="summary"
+                                            data-id={{sum.id}}
+                                            class="action-icon remove"> <i class="mdi mdi-delete"></i></a>
+                                </td>
+                                {% endif %}
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div> <!-- end card-body-->
+            {% if permission %}
+            <div class="card-footer text-muted">
+                <button
+                        type="button"
+                        class="btn btn-outline-primary btn-sm float-right call-dynamic-form"
+                        data-name="summary"
+                        data-title="Status summary"
+                        data-toggle="modal"
+                        data-target="#bs-example-modal-lg">Add New</button>
+            </div>
+            {% endif %}
+        </div> <!-- end card-->
+    </div> <!-- end col-->
     <div class="col-md-4">
         <div class="card">
             <div class="card-body">
@@ -105,67 +166,7 @@
             {% endif %}
         </div>
     </div>
-    <div class="col-md-8">
-        <div class="card">
-            <div class="card-body">
-                <div class="card-widgets">
-                    <a href="javascript:;" data-toggle="reload"><i class="mdi mdi-refresh"></i></a>
-                    <a data-toggle="collapse" href="#cardCollpasec" role="button" aria-expanded="false" aria-controls="cardCollpase1"><i class="mdi mdi-minus"></i></a>
-                    <a href="#" data-toggle="remove"><i class="mdi mdi-close"></i></a>
-                </div>
-                <h4 class="header-title">Status Summary</h4>
-                <p class="text-muted font-14 mb-2">
-                    Add your project's status summary to this section
-                </p>
-
-                <div class="table-responsive collapse show" id="cardCollpasec" style="max-height:125px; overflow-y: auto;">
-                    <table class="table table-top mb-0">
-                        <tbody>
-                            {% if not summary %}
-                            <p><i class="text-muted fa fa-exclamation-triangle"></i> No data available</p>
-                            {% endif %}
-                            {% for sum in summary %}
-                            <tr class="text-justify">
-                                <td>
-                                    {{sum.text}}
-                                    <br><br>
-                                    <small class="text-muted">{{sum.updated_at|date}}</small>
-                                </td>
-                                {% if permission %}
-                                <td class="table-action">
-                                        <a
-                                          href="javascript: void(0);"
-                                          data-id="{{ sum.id }}"
-                                          data-name="summary"
-                                          data-title="Status summary"
-                                          class="action-icon edit-doc">
-                                            <i class="mdi mdi-pencil"></i>
-                                        </a>
-                                        <a href="javascript: void(0);"
-                                            data-name="summary"
-                                            data-id={{sum.id}}
-                                            class="action-icon remove"> <i class="mdi mdi-delete"></i></a>
-                                </td>
-                                {% endif %}
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div> <!-- end card-body-->
-            {% if permission %}
-            <div class="card-footer text-muted">
-                <button
-                        type="button"
-                        class="btn btn-outline-primary btn-sm float-right call-dynamic-form"
-                        data-name="summary"
-                        data-title="Status summary"
-                        data-toggle="modal"
-                        data-target="#bs-example-modal-lg">Add New</button>
-            </div>
-            {% endif %}
-        </div> <!-- end card-->
-    </div> <!-- end col-->
+    <!--
     <div class="col-md-6">
         <div class="card">
             <div class="card-body">
@@ -214,7 +215,7 @@
                         </tbody>
                     </table>
                 </div>
-            </div> <!-- end card-body-->
+            </div>
             {% if permission %}
             <div class="card-footer text-muted">
                 <button
@@ -226,70 +227,9 @@
                         data-target="#bs-example-modal-lg">Add New</button>
             </div>
             {% endif %}
-        </div> <!-- end card-->
-    </div> <!-- end col-->
-
-    <div class="col-md-6">
-        <div class="card">
-            <div class="card-body">
-                <div class="card-widgets">
-                    <a href="javascript:;" data-toggle="reload"><i class="mdi mdi-refresh"></i></a>
-                    <a data-toggle="collapse" href="#cardCollpasea" role="button" aria-expanded="false" aria-controls="cardCollpase1"><i class="mdi mdi-minus"></i></a>
-                    <a href="#" data-toggle="remove"><i class="mdi mdi-close"></i></a>
-                </div>
-                <h4 class="header-title">Next 2 weeks Priorities</h4>
-                <p class="text-muted font-14 mb-2">
-                    Add your priorities for the next 2 weeks in this section
-                </p>
-
-                <div class="table-responsive collapse show" id="cardCollpasea" style="max-height:125px; overflow-y: auto;">
-                    <table class="table table-top mb-0">
-                        <tbody>
-                            {% if not future %}
-                            <p><i class="text-muted fa fa-exclamation-triangle"></i> No data available</p>
-                            {% endif %}
-                            {% for f in future %}
-                            <tr class="text-justify">
-                                <td>
-                                    {{f.text}}
-                                    <br><br>
-                                    <small class="text-muted">{{f.updated_at|date}}</small>
-                                </td>
-                                {% if permission %}
-                                <td class="table-action">
-                                    <a
-                                      href="javascript: void(0);"
-                                      data-id="{{ f.id }}"
-                                      data-name="future"
-                                      data-title="Next 2 weeks priorities"
-                                      class="action-icon edit-doc">
-                                        <i class="mdi mdi-pencil"></i>
-                                    </a>
-                                        <a href="javascript: void(0);"
-                                            data-name="future"
-                                            data-id={{f.id}}
-                                            class="action-icon remove"> <i class="mdi mdi-delete"></i></a>
-                                </td>
-                                {% endif %}
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div> <!-- end card-body-->
-            {% if permission %}
-            <div class="card-footer text-muted">
-                <button type="button"
-                        class="btn btn-outline-primary btn-sm float-right call-dynamic-form"
-                        data-toggle="modal"
-                        data-name="future"
-                        data-title="Next 2 weeks priorities"
-                        data-target="#bs-example-modal-lg">Add New</button>
-            </div>
-            {% endif %}
-        </div> <!-- end card-->
-    </div> <!-- end col-->
-
+        </div>
+    </div>
+    -->
 </div>
 <!-- <div class="card">
     <div class="card-body">
@@ -564,6 +504,86 @@
     </div>
     {% endif %}
 </div> -->
+
+<div class="card">
+    <div class="card-body">
+        <div class="card-widgets">
+            <a href="javascript:;" data-toggle="reload"><i class="mdi mdi-refresh"></i></a>
+            <a data-toggle="collapse" href="#cardCollpase4" role="button" aria-expanded="false" aria-controls="cardCollpase3"><i class="mdi mdi-minus"></i></a>
+            <a href="#" data-toggle="remove"><i class="mdi mdi-close"></i></a>
+        </div>
+        <h4 class="header-title">
+            Objectives
+        </h4>
+        <p class="text-muted font-14 mb-2">
+            Add quarterly objectives here
+
+        </p>
+
+        <div class="table-responsive crd collapse show" id="cardCollpase4">
+            <table class="table table-hover table-top mb-0 mt-2">
+                <tbody>
+                    {% if not metrics %}
+                    <p><i class="text-muted fa fa-exclamation-triangle"></i> No data available</p>
+                    {% else %}
+                    <tr>
+                        <th>DVF</th>
+                        <th>Objective<th>
+                        <th></th>
+                    </tr>
+                    {% for metric in metrics %}
+                    <tr class="text-justify">
+                        <td>
+                            <span class="badge badge-light">{{metric.dvf|capfirst}}</span>
+                        </td>
+                        <td>
+                            {{metric.metric}}
+                        </td>
+                        <td>
+                            {% if metric.status == "On Track" %}
+                            <span class="badge badge-success">{{metric.status}}</span>
+                            {% elif metric.status == "Delayed" %}
+                            <span class="badge badge-warning">{{metric.status}}</span>
+                            {% else %}
+                            <span class="badge badge-danger">{{metric.status}}</span>
+                            {% endif %}
+                        </td>
+                        {% if permission %}
+                        <td class="table-action">
+                            <a
+                              href="javascript: void(0);"
+                              data-id="{{ metric.id }}"
+                              data-name="metric"
+                              data-title="Metrics"
+                              class="action-icon edit-doc">
+                                <i class="mdi mdi-pencil"></i>
+                            </a>
+                            <a href="javascript: void(0);"
+                                data-name="metric"
+                                data-id={{metric.id}}
+                                class="action-icon remove"> <i class="mdi mdi-delete"></i></a>
+                        </td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+    {% if permission %}
+    <div class="card-footer text-muted">
+        <button
+                type="button"
+                data-name="metric"
+                data-title="Metrics"
+                data-toggle="modal"
+                data-target="#bs-example-modal-lg"
+                class="btn btn-outline-primary btn-sm float-right call-dynamic-form">Add New</button>
+    </div>
+    {% endif %}
+</div>
 
 <div class="card">
     <div class="card-body">
