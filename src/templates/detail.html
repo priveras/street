@@ -183,8 +183,8 @@
                                 <div class="timeline-item-info">
                                     <a href="#" class="mb-1 d-block" style="color:#6c757d">Feasibility</a>
                                     <p>
-                                        {% if dvf_seed.0.updated_at %}
-                                        <small class="text-muted">{{dvf_seed.0.updated_at|date}}</small>
+                                        {% if dvf_seed.0.created_at %}
+                                        <small class="text-muted">Since: {{dvf_seed.0.created_at|date}}</small>
                                         {% else %}
                                         <small class="text-muted">NA</small>
                                         {% endif %}
@@ -195,8 +195,34 @@
                     </div> <!-- end card-body-->
                 </div>
             </div>
-          {% elif project.stage == 'Seed Launch' %}
+          <div class="col-sm-8">
+            <div class="card d-block">
+                <div class="card-body">
+                    <!-- project title-->
+                    <div class="mb-3">
+                        <h4 class="header-title">Status Report</h4>
+                    </div>
+                    <div class="row">
+                        <div class="mb-5">
+                            <div class="col-md-6">
+                                <h4 class="header-title">
+                                    <a href="{% url 'app:seed' project.slug %}" class="btn btn-primary">View & Edit Report</a>
+                                </h4>
+                            </div>
+                            <div class="col-auto">
+                                {% if seed_summary.0.updated_at %}
+                                <h6>Last Updated: <small class="text-muted">{{seed_summary.0.updated_at|date}}</small></h6>
+                                {% else %}
+                                <h6><small class="text-muted">NA</small><h6>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div> <!-- end card-body-->
+            </div> <!-- end card-->
+          </div>
           <!-- Seed Launch -->
+          {% elif project.stage == 'Seed Launch' %}
           <div class="col-sm-4">
                 <div class="card">
                     <div class="card-body">
@@ -247,8 +273,8 @@
                                 <div class="timeline-item-info">
                                     <a href="#" class="mb-1 d-block" style="color:#6c757d">Feasibility</a>
                                     <p>
-                                        {% if dvf_seedlaunch.0.updated_at %}
-                                        <small class="text-muted">{{dvf_seedlaunch.0.updated_at|date}}</small>
+                                        {% if dvf_seedlaunch.0.created_at %}
+                                        <small class="text-muted">Since: {{dvf_seedlaunch.0.created_at|date}}</small>
                                         {% else %}
                                         <small class="text-muted">NA</small>
                                         {% endif %}
@@ -259,8 +285,42 @@
                     </div> <!-- end card-body-->
                 </div>
             </div>
-          {% elif project.stage == 'Launch' %}
+          <div class="col-sm-8">
+              <div class="card d-block">
+                  <div class="card-body">
+                      <!-- project title-->
+                      <div class="mb-3">
+                          <h4 class="header-title">Status Report</h4>
+                      </div>
+                      <div class="row">
+                          <div class="mb-2">
+                              <div class="col-md-6">
+                                  <h4 class="header-title">
+                                      <a href="{% url 'app:seed-launch' project.slug %}" class="btn btn-primary">View & Edit Report</a>
+                                  </h4>
+                              </div>
+                              <div class="col-auto">
+                                  {% if seedlaunch_summary.0.updated_at %}
+                                  <h6>Last Updated: <small class="text-muted">{{seedlaunch_summary.0.updated_at|date}}</small></h6>
+                                  {% else %}
+                                  <h6><small class="text-muted">NA</small><h6>
+                                  {% endif %}
+                              </div>
+                          </div>
+                      </div>
+                      <div class="mb-auto">
+                          <h4 class="header-title">Previous Reports</h4>
+                      </div>
+                      <div class="row">
+                          <div class="col-6">
+                              <a href="{% url 'app:seed-launch' project.slug %}"><h5>Seed I to III</h5></a>
+                          </div>
+                      </div>
+                  </div> <!-- end card-body-->
+              </div> <!-- end card-->
+            </div>
           <!-- Launch -->
+          {% elif project.stage == 'Launch' %}
           <div class="col-sm-4">
               <div class="card">
                   <div class="card-body">
@@ -311,8 +371,8 @@
                               <div class="timeline-item-info">
                                   <a href="#" class="mb-1 d-block" style="color:#6c757d">Feasibility</a>
                                   <p>
-                                      {% if dvf_launch.0.updated_at %}
-                                      <small class="text-muted">{{dvf_launch.0.updated_at|date}}</small>
+                                      {% if dvf_launch.0.created_at %}
+                                      <small class="text-muted">{{dvf_launch.0.created_at|date}}</small>
                                       {% else %}
                                       <small class="text-muted">NA</small>
                                       {% endif %}
@@ -322,6 +382,43 @@
                       </div>
                   </div> <!-- end card-body-->
               </div>
+          </div>
+          <div class="col-sm-8">
+            <div class="card d-block">
+                <div class="card-body">
+                    <!-- project title-->
+                    <div class="mb-3">
+                        <h4 class="header-title">Status Report</h4>
+                    </div>
+                    <div class="row">
+                        <div class="mb-2">
+                            <div class="col-md-6">
+                                <h4 class="header-title">
+                                    <a href="{% url 'app:launch' project.slug %}" class="btn btn-primary">View & Edit Report</a>
+                                </h4>
+                            </div>
+                            <div class="col-auto">
+                                {% if launch_summary.0.updated_at %}
+                                <h6>Last Updated: <small class="text-muted">{{launch_summary.0.updated_at|date}}</small></h6>
+                                {% else %}
+                                <h6><small class="text-muted">NA</small><h6>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-auto">
+                        <h4 class="header-title">Previous Reports</h4>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <a href="{% url 'app:seed-launch' project.slug %}"><h5>Seed Launch</h5></a>
+                        </div>
+                        <div class="col-auto">
+                            <a href="{% url 'app:seed' project.slug %}"><h5>Seed I to III</h5></a>
+                        </div>
+                    </div>
+                </div> <!-- end card-body-->
+            </div> <!-- end card-->
           </div>
           {% else %}
           <!-- Seed I to III -->
@@ -1027,8 +1124,8 @@
                             <option>Seed I</option>
                             <option>Seed II</option>
                             <option>Seed III</option>
-                            <option>Launch I</option>
-                            <option>Launch II</option>
+                            <option>Seed Launch</option>
+                            <option>Launch</option>
                         </select>
                     </div>
                     <div class="form-group mb-3">
@@ -1148,6 +1245,62 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+<!--  Modal content for the above example -->
+<div class="modal fade" id="bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myLargeModalLabel">Problem</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <form>
+                    <div class="form-group mb-3">
+                        <label for="example-textarea">Problem Statement</label>
+                        <textarea class="form-control" id="example-textarea" rows="3"></textarea>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="example-select">Status</label>
+                        <select class="form-control" id="example-select">
+                            <option>In Progress</option>
+                            <option>Validated</option>
+                            <option>Invalidated</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary submit-form">Save</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!--  Modal content for the above example -->
+<div class="modal fade" id="elevator" tabindex="-1" role="dialog" aria-labelledby="elevator" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myLargeModalLabel">Elevator Pitch</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body text-justify" id="modal-body">
+                <p>An elevator pitch is a brief, persuasive speech that you use to spark interest in what your organization does. You can also use them to create interest in a project, idea, or product – or in yourself. A good elevator pitch should last no longer than a short elevator ride of 20 to 30 seconds, hence the name.
+                <br><br>
+                They should be interesting, memorable, and succinct. They also need to explain what makes you – or your organization, product, or idea – unique.</p>
+                <p>This is a good structure to follow:</p>
+                <ul>
+                    <li>We help ____(consumer X)_____ who ___(problem)___ to ___(solution)___ by ___(how it works)___</li>
+                    <li>Our product/technology is like the ___(insert analogy of comparative company)___ of/for ___(insert your category)___. For example, our venture is like Uber for Trucking.</li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 <!--  Modal content for the above example -->
 <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog"
@@ -1174,8 +1327,6 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-
-
 {% endblock %}
 
 {% block js %}
@@ -1183,7 +1334,7 @@
 .remove{cursor:pointer;}
 </style>
 <script>
-  $(function(){
+$(function() {
     $('.submit', '#comment-form').click(function(){
       if($('textarea[name="text"]','#comment-form').val().trim() == '') {
         return;
@@ -1204,7 +1355,6 @@
     $('#file').change(function(){
       $('#file-form').submit();
     });
-
 
   $('.call-dynamic-form').click(function(){
     var self = $(this);
@@ -1274,6 +1424,6 @@
     $('#remove-name').val(name);
     $('#delete-modal').modal('show');
   });
-  });
+});
 </script>
 {% endblock %}

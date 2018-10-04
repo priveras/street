@@ -106,6 +106,14 @@ class DetailView(generic.DetailView):
         context['permission'] = Team.objects.filter(project=self.object).filter(user=self.request.user).filter(permission="edit")
         context['fileform'] = FileForm()
 
+        context['elevators'] = Elevator.objects.filter(project=self.object).filter(stage="seed").order_by('-updated_at')
+        context['problems'] = Problem.objects.filter(project=self.object).filter(stage="seed").order_by('-updated_at')
+        context['solutions'] = Solution.objects.filter(project=self.object).filter(stage="seed").order_by('-updated_at')
+        context['models'] = BusinessModel.objects.filter(project=self.object).filter(stage="seed").order_by('-updated_at')
+        context['seed_summary'] = Summary.objects.filter(project=self.object).filter(stage="seed").order_by('-updated_at')
+        context['seedlaunch_summary'] = Summary.objects.filter(project=self.object).filter(stage="seedlaunch").order_by('-updated_at')
+        context['launch_summary'] = Summary.objects.filter(project=self.object).filter(stage="launch").order_by('-updated_at')
+
         return context
 
 class SeedView(generic.DetailView):
