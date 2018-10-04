@@ -18,7 +18,7 @@ from .forms import InviteForm
 
 from .models import Project, Team, Comment, Assumption, Problem, BusinessModel
 from .models import Solution, Metric, File, Profile, Summary, Past, Future
-from .models import Elevator, Tutorial, Progress, Dvf, Link, Zone
+from .models import Elevator, Tutorial, Progress, Dvf, Link, Zone, Invite
 from django.http import HttpResponseRedirect
 
 def index(request):
@@ -587,3 +587,31 @@ def leave_project(request, project_id):
 
     Team.objects.filter(project__id=project_id, user=request.user).delete()
     return JsonResponse({'status': 'ok'})
+
+
+def check_invite(request):
+    if request.method != 'GET':
+        raise Http404
+
+    key = request.GET.get('key', None)
+    if key is None:
+        raise Http404
+
+    invite = Invite.objects.filter(
+        user=request.user,
+        key=key,
+        used=False).first()
+
+    if invite is None:
+        raise Http404
+
+    doc = Team()
+    doc.user = request.user
+    doc.project = invite.project
+    doc.permission = invite.permission
+    doc.save()
+
+    invite.used = True
+    invite.save()
+
+    return redirect('/')

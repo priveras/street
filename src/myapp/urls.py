@@ -49,6 +49,11 @@ urlpatterns = [
     url(r'^api/invite/(?P<project_id>[0-9]+)',
         login_required(views.send_invite),
         name='send-invite'),
+
+    url(r'^invite$',
+        login_required(views.check_invite),
+        name='check-invite'),
+
     url(r'^api/leave/(?P<project_id>[0-9]+)',
         login_required(views.leave_project),
         name='leave-project'),
