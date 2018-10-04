@@ -328,22 +328,16 @@ document.getElementById("kill").innerHTML = z+'%';
                   </div>
               </div>
               <h4 class="header-title">Average Time in Each Stage</h4>
+              {% for project in projects %}
+            <p>  {{project.current_time}}</p>
+            <p>  {{project.created_at}}</p>
+            <p>  {{project.time_dif}} hello</p>
 
+
+            {% endfor %}
               <h5 class="mb-1 mt-0 font-weight-normal">Seed I-III</h5>
               <div class="progress-w-percent">
-                {% for project in seed_list %}
-                <h3 class="mt-3 mb-3"><p id="time"></p>
 
-                  <script>
-                    var seed_time = {{project.created_at}};
-                    var y = {{killed | length}};
-                    var z = Math.round( y * 100.0 / (x+y))
-                    document.getElementById("time").innerHTML = z+'%';
-                  </script>
-
-              </h3>
-                  <span class="progress-value font-weight-bold"></span>
-                    {% endfor %}
                     <div class="progress progress-sm">
 
                       <div class="progress-bar" role="progressbar" style="width: 72%;" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100"></div>
