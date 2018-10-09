@@ -178,6 +178,7 @@ class Assumption(models.Model):
             ('Validated', 'Validated'),
             ('In Progress', 'In Progress'),
             ('Invalidated', 'Invalidated'),
+            ('Inconclusive', 'Inconclusive'),
             )
     status = models.CharField(choices=status_choices, max_length=200, blank=True)
     updated_at = models.DateTimeField(auto_now=True)

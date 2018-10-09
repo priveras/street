@@ -637,6 +637,8 @@
                             <span class="badge badge-success">{{assumption.status}}</span>
                             {% elif assumption.status == "In Progress" %}
                             <span class="badge badge-warning">{{assumption.status}}</span>
+                            {% elif assumption.status == "Inconclusive" %}
+                            <span class="badge badge-light">{{assumption.status}}</span>
                             {% else %}
                             <span class="badge badge-danger">{{assumption.status}}</span>
                             {% endif %}
