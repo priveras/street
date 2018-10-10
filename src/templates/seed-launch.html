@@ -240,7 +240,7 @@
                 </div>
                 <h4 class="header-title">Current Priorities</h4>
                 <p class="text-muted font-14 mb-2">
-                    Add your problem in this section and keep track of the hypothesis results
+                    Add immediate priorities to be addressed here (i.e. next 2 weeks)
                 </p>
 
                 <div class="table-responsive collapse show" id="cardCollpasea" style="max-height:125px; overflow-y: auto;">
@@ -571,14 +571,14 @@
             Objectives
         </h4>
         <p class="text-muted font-14 mb-2">
-            Add quarterly objectives here
+            Add high level objectives here (i.e. monthly or quarterly)
 
         </p>
 
         <div class="table-responsive crd collapse show" id="cardCollpase4">
             <table class="table table-hover table-top mb-0 mt-2">
                 <tbody>
-                    {% if not metrics %}
+                    {% if not objectives %}
                     <p><i class="text-muted fa fa-exclamation-triangle"></i> No data available</p>
                     {% else %}
                     <tr>
@@ -586,36 +586,36 @@
                         <th>Objective<th>
                         <th></th>
                     </tr>
-                    {% for metric in metrics %}
+                    {% for objective in objectives %}
                     <tr class="text-justify">
                         <td>
-                            <span class="badge badge-light">{{metric.dvf|capfirst}}</span>
+                            <span class="badge badge-light">{{objective.dvf|capfirst}}</span>
                         </td>
                         <td>
-                            {{metric.metric}}
+                            {{objective.metric}}
                         </td>
                         <td>
-                            {% if metric.status == "On Track" %}
-                            <span class="badge badge-success">{{metric.status}}</span>
-                            {% elif metric.status == "Delayed" %}
-                            <span class="badge badge-warning">{{metric.status}}</span>
+                            {% if objective.status == "On Track" %}
+                            <span class="badge badge-success">{{objective.status}}</span>
+                            {% elif objective.status == "Delayed" %}
+                            <span class="badge badge-warning">{{objective.status}}</span>
                             {% else %}
-                            <span class="badge badge-danger">{{metric.status}}</span>
+                            <span class="badge badge-danger">{{objective.status}}</span>
                             {% endif %}
                         </td>
                         {% if permission %}
                         <td class="table-action">
                             <a
                               href="javascript: void(0);"
-                              data-id="{{ metric.id }}"
-                              data-name="metric"
-                              data-title="Metrics"
+                              data-id="{{ objective.id }}"
+                              data-name="objective"
+                              data-title="Objectives"
                               class="action-icon edit-doc">
                                 <i class="mdi mdi-pencil"></i>
                             </a>
                             <a href="javascript: void(0);"
-                                data-name="metric"
-                                data-id={{metric.id}}
+                                data-name="objective"
+                                data-id={{objective.id}}
                                 class="action-icon remove"> <i class="mdi mdi-delete"></i></a>
                         </td>
                         {% endif %}
@@ -631,8 +631,8 @@
     <div class="card-footer text-muted">
         <button
                 type="button"
-                data-name="metric"
-                data-title="Metrics"
+                data-name="objective"
+                data-title="Objectives"
                 data-toggle="modal"
                 data-target="#bs-example-modal-lg"
                 class="btn btn-outline-primary btn-sm float-right call-dynamic-form">Add New</button>
@@ -647,9 +647,10 @@
             <a data-toggle="collapse" href="#cardCollpase4" role="button" aria-expanded="false" aria-controls="cardCollpase3"><i class="mdi mdi-minus"></i></a>
             <a href="#" data-toggle="remove"><i class="mdi mdi-close"></i></a>
         </div>
-        <h4 class="header-title">Assumptions</h4>
+        <h4 class="header-title">Learning Plan</h4>
         <p class="text-muted font-14 mb-2">
-            Add all assumptions, metrics, and status for your project in this section
+            Add what needs to be tested in order to validate desirability, viability, and feasibility<br/>
+            Update regularly with learnings and status
         </p>
 
         <div class="table-responsive crd collapse show" id="cardCollpase4">

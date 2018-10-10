@@ -9,11 +9,11 @@ from django.utils.text import slugify
 
 from .forms import ProfileForm, SummaryForm, PastForm, FutureForm, ProjectForm
 from .forms import ElevatorForm, ProblemForm, SolutionForm, BusinessModelForm
-from .forms import AssumptionForm, CommentForm, FileForm, DvfForm, LinkForm, MetricForm
+from .forms import AssumptionForm, CommentForm, FileForm, DvfForm, LinkForm, ObjectiveForm
 
 from .models import Project, Team, Comment, Assumption, Problem, BusinessModel
 from .models import Solution, Metric, File, Profile, Summary, Past, Future, Link
-from .models import Elevator, Tutorial, Progress, Dvf, Link, Zone
+from .models import Elevator, Tutorial, Progress, Dvf, Link, Zone, Objective
 from django.http import HttpResponseRedirect
 
 def index(request):
@@ -106,10 +106,10 @@ class DetailView(generic.DetailView):
         context['permission'] = Team.objects.filter(project=self.object).filter(user=self.request.user).filter(permission="edit")
         context['fileform'] = FileForm()
 
-        context['elevators'] = Elevator.objects.filter(project=self.object).filter(stage="seed").order_by('-updated_at')
-        context['problems'] = Problem.objects.filter(project=self.object).filter(stage="seed").order_by('-updated_at')
-        context['solutions'] = Solution.objects.filter(project=self.object).filter(stage="seed").order_by('-updated_at')
-        context['models'] = BusinessModel.objects.filter(project=self.object).filter(stage="seed").order_by('-updated_at')
+        context['elevators'] = Elevator.objects.filter(project=self.object).order_by('-updated_at')
+        context['problems'] = Problem.objects.filter(project=self.object).order_by('-updated_at')
+        context['solutions'] = Solution.objects.filter(project=self.object).order_by('-updated_at')
+        context['models'] = BusinessModel.objects.filter(project=self.object).order_by('-updated_at')
         context['seed_summary'] = Summary.objects.filter(project=self.object).filter(stage="seed").order_by('-updated_at')
         context['seedlaunch_summary'] = Summary.objects.filter(project=self.object).filter(stage="seedlaunch").order_by('-updated_at')
         context['launch_summary'] = Summary.objects.filter(project=self.object).filter(stage="launch").order_by('-updated_at')
@@ -126,14 +126,10 @@ class SeedView(generic.DetailView):
         context['permission'] = Team.objects.filter(project=self.object).filter(user=self.request.user).filter(permission="edit")
         context['comments'] = Comment.objects.filter(project=self.object)
         context['assumptions'] = Assumption.objects.filter(project=self.object).filter(stage="seed").order_by('dvf')
-        context['problems'] = Problem.objects.filter(project=self.object).filter(stage="seed").order_by('-updated_at')
-        context['solutions'] = Solution.objects.filter(project=self.object).filter(stage="seed").order_by('-updated_at')
-        context['models'] = BusinessModel.objects.filter(project=self.object).filter(stage="seed").order_by('-updated_at')
-        context['metrics'] = Metric.objects.filter(project=self.object).filter(stage="seed").order_by('dvf')
+        context['objectives'] = Objective.objects.filter(project=self.object).filter(stage="seed").order_by('dvf')
         context['summary'] = Summary.objects.filter(project=self.object).filter(stage="seed").order_by('-updated_at')
         context['past'] = Past.objects.filter(project=self.object).filter(stage="seed").order_by('-updated_at')
         context['future'] = Future.objects.filter(project=self.object).filter(stage="seed").order_by('-updated_at')
-        context['elevators'] = Elevator.objects.filter(project=self.object).filter(stage="seed").order_by('-updated_at')
         context['dvf_seed'] = Dvf.objects.filter(project=self.object).filter(stage="seed").order_by('-updated_at')
 
         return context
@@ -147,14 +143,10 @@ class SeedLaunchView(generic.DetailView):
         context['team'] = Team.objects.filter(project=self.object)
         context['comments'] = Comment.objects.filter(project=self.object)
         context['assumptions'] = Assumption.objects.filter(project=self.object).filter(stage="seedlaunch").order_by('dvf')
-        context['problems'] = Problem.objects.filter(project=self.object).filter(stage="seedlaunch").order_by('-updated_at')
-        context['solutions'] = Solution.objects.filter(project=self.object).filter(stage="seedlaunch").order_by('-updated_at')
-        context['models'] = BusinessModel.objects.filter(project=self.object).filter(stage="seedlaunch").order_by('-updated_at')
-        context['metrics'] = Metric.objects.filter(project=self.object).filter(stage="seedlaunch").order_by('dvf')
+        context['objectives'] = Objective.objects.filter(project=self.object).filter(stage="seedlaunch").order_by('dvf')
         context['summary'] = Summary.objects.filter(project=self.object).filter(stage="seedlaunch").order_by('-updated_at')
         context['past'] = Past.objects.filter(project=self.object).filter(stage="seedlaunch").order_by('-updated_at')
         context['future'] = Future.objects.filter(project=self.object).filter(stage="seedlaunch").order_by('-updated_at')
-        context['elevators'] = Elevator.objects.filter(project=self.object).filter(stage="seedlaunch").order_by('-updated_at')
         context['permission'] = Team.objects.filter(project=self.object).filter(user=self.request.user).filter(permission="edit")
         context['dvf_seedlaunch'] = Dvf.objects.filter(project=self.object).filter(stage="seedlaunch").order_by('-updated_at')
 
@@ -169,14 +161,10 @@ class LaunchView(generic.DetailView):
         context['team'] = Team.objects.filter(project=self.object)
         context['comments'] = Comment.objects.filter(project=self.object)
         context['assumptions'] = Assumption.objects.filter(project=self.object).filter(stage="launch").order_by('dvf')
-        context['problems'] = Problem.objects.filter(project=self.object).filter(stage="launch").order_by('-updated_at')
-        context['solutions'] = Solution.objects.filter(project=self.object).filter(stage="launch").order_by('-updated_at')
-        context['models'] = BusinessModel.objects.filter(project=self.object).filter(stage="launch").order_by('-updated_at')
-        context['metrics'] = Metric.objects.filter(project=self.object).filter(stage="launch").order_by('dvf')
+        context['objectives'] = Objective.objects.filter(project=self.object).filter(stage="launch").order_by('dvf')
         context['summary'] = Summary.objects.filter(project=self.object).filter(stage="launch").order_by('-updated_at')
         context['past'] = Past.objects.filter(project=self.object).filter(stage="launch").order_by('-updated_at')
         context['future'] = Future.objects.filter(project=self.object).filter(stage="launch").order_by('-updated_at')
-        context['elevators'] = Elevator.objects.filter(project=self.object).filter(stage="launch").order_by('-updated_at')
         context['permission'] = Team.objects.filter(project=self.object).filter(user=self.request.user).filter(permission="edit")
         context['dvf_launch'] = Dvf.objects.filter(project=self.object).filter(stage="launch").order_by('-updated_at')
 
@@ -302,7 +290,7 @@ def model_form(request, name='', project_id=0, id=0):
         'link': LinkForm,
         'project': ProjectForm,
         'file': FileForm,
-        'metric':MetricForm,
+        'objective':ObjectiveForm,
     }
 
     instances = {
@@ -318,7 +306,7 @@ def model_form(request, name='', project_id=0, id=0):
         'link': Link,
         'project': Project,
         'file': File,
-        'metric': Metric,
+        'objective': Objective,
     }
 
     method = request.method

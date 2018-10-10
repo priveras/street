@@ -216,7 +216,7 @@ class Metric(models.Model):
     def __str__(self):
         return str(self.project)
 
-class Problem(models.Model):
+class Objective(models.Model):
     user = models.ForeignKey(User)
     project = models.ForeignKey(Project)
     stage_choices = (
@@ -225,6 +225,29 @@ class Problem(models.Model):
             ('launch', 'Launch'),
             )
     stage = models.CharField(choices=stage_choices, max_length=200, blank=True)
+    dvf_choices = (
+            ('desirability', 'Desirability'),
+            ('viability', 'Viability'),
+            ('feasibility', 'Feasibility'),
+            )
+    dvf = models.CharField(choices=dvf_choices, max_length=200, blank=True)
+    metric = models.TextField(blank=True)
+    value = models.TextField(blank=True)
+    status_choices = (
+            ('On Track', 'On Track'),
+            ('Delayed', 'Delayed'),
+            ('At Risk', 'At Risk'),
+            )
+    status = models.CharField(choices=status_choices, max_length=200, blank=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(db_index=True, auto_now_add=True)
+
+    def __str__(self):
+        return str(self.project)
+
+class Problem(models.Model):
+    user = models.ForeignKey(User)
+    project = models.ForeignKey(Project)
     text = models.TextField(blank=True)
     status_choices = (
             ('Validated', 'Validated'),
@@ -241,12 +264,6 @@ class Problem(models.Model):
 class Elevator(models.Model):
     user = models.ForeignKey(User)
     project = models.ForeignKey(Project)
-    stage_choices = (
-            ('seed', 'Seed'),
-            ('seedlaunch', 'Seed Launch'),
-            ('launch', 'Launch'),
-            )
-    stage = models.CharField(choices=stage_choices, max_length=200, blank=True)
     text = models.TextField(blank=True)
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(db_index=True, auto_now_add=True)
@@ -305,12 +322,6 @@ class Future(models.Model):
 class Solution(models.Model):
     user = models.ForeignKey(User)
     project = models.ForeignKey(Project)
-    stage_choices = (
-            ('seed', 'Seed'),
-            ('seedlaunch', 'Seed Launch'),
-            ('launch', 'Launch'),
-            )
-    stage = models.CharField(choices=stage_choices, max_length=200, blank=True)
     text = models.TextField(blank=True)
     status_choices = (
             ('Validated', 'Validated'),
@@ -327,12 +338,6 @@ class Solution(models.Model):
 class BusinessModel(models.Model):
     user = models.ForeignKey(User)
     project = models.ForeignKey(Project)
-    stage_choices = (
-            ('seed', 'Seed'),
-            ('seedlaunch', 'Seed Launch'),
-            ('launch', 'Launch'),
-            )
-    stage = models.CharField(choices=stage_choices, max_length=200, blank=True)
     text = models.TextField(blank=True)
     status_choices = (
             ('Validated', 'Validated'),

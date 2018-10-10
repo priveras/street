@@ -230,6 +230,66 @@
         </div>
     </div>
     -->
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="card-widgets">
+                    <a href="javascript:;" data-toggle="reload"><i class="mdi mdi-refresh"></i></a>
+                    <a data-toggle="collapse" href="#cardCollpasea" role="button" aria-expanded="false" aria-controls="cardCollpase1"><i class="mdi mdi-minus"></i></a>
+                    <a href="#" data-toggle="remove"><i class="mdi mdi-close"></i></a>
+                </div>
+                <h4 class="header-title">Current Priorities</h4>
+                <p class="text-muted font-14 mb-2">
+                    Add immediate priorities to be addressed here (i.e. next 2 weeks)
+                </p>
+
+                <div class="table-responsive collapse show" id="cardCollpasea" style="max-height:125px; overflow-y: auto;">
+                    <table class="table table-top mb-0">
+                        <tbody>
+                            {% if not future %}
+                            <p><i class="text-muted fa fa-exclamation-triangle"></i> No data available</p>
+                            {% endif %}
+                            {% for f in future %}
+                            <tr class="text-justify">
+                                <td>
+                                    {{f.text}}
+                                    <br><br>
+                                    <small class="text-muted">{{f.updated_at|date}}</small>
+                                </td>
+                                {% if permission %}
+                                <td class="table-action">
+                                    <a
+                                      href="javascript: void(0);"
+                                      data-id="{{ f.id }}"
+                                      data-name="future"
+                                      data-title="Next 2 weeks priorities"
+                                      class="action-icon edit-doc">
+                                        <i class="mdi mdi-pencil"></i>
+                                    </a>
+                                        <a href="javascript: void(0);"
+                                            data-name="future"
+                                            data-id={{f.id}}
+                                            class="action-icon remove"> <i class="mdi mdi-delete"></i></a>
+                                </td>
+                                {% endif %}
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div> <!-- end card-body-->
+            {% if permission %}
+            <div class="card-footer text-muted">
+                <button type="button"
+                        class="btn btn-outline-primary btn-sm float-right call-dynamic-form"
+                        data-toggle="modal"
+                        data-name="future"
+                        data-title="Next 2 weeks priorities"
+                        data-target="#bs-example-modal-lg">Add New</button>
+            </div>
+            {% endif %}
+        </div> <!-- end card-->
+    </div> <!-- end col-->
 </div>
 <!-- <div class="card">
     <div class="card-body">
@@ -516,14 +576,14 @@
             Objectives
         </h4>
         <p class="text-muted font-14 mb-2">
-            Add quarterly objectives here
+            Add high level objectives here (i.e. monthly or quarterly)
 
         </p>
 
         <div class="table-responsive crd collapse show" id="cardCollpase4">
             <table class="table table-hover table-top mb-0 mt-2">
                 <tbody>
-                    {% if not metrics %}
+                    {% if not objectives %}
                     <p><i class="text-muted fa fa-exclamation-triangle"></i> No data available</p>
                     {% else %}
                     <tr>
@@ -531,36 +591,36 @@
                         <th>Objective<th>
                         <th></th>
                     </tr>
-                    {% for metric in metrics %}
+                    {% for objective in objectives %}
                     <tr class="text-justify">
                         <td>
-                            <span class="badge badge-light">{{metric.dvf|capfirst}}</span>
+                            <span class="badge badge-light">{{objective.dvf|capfirst}}</span>
                         </td>
                         <td>
-                            {{metric.metric}}
+                            {{objective.metric}}
                         </td>
                         <td>
-                            {% if metric.status == "On Track" %}
-                            <span class="badge badge-success">{{metric.status}}</span>
-                            {% elif metric.status == "Delayed" %}
-                            <span class="badge badge-warning">{{metric.status}}</span>
+                            {% if objective.status == "On Track" %}
+                            <span class="badge badge-success">{{objective.status}}</span>
+                            {% elif objective.status == "Delayed" %}
+                            <span class="badge badge-warning">{{objective.status}}</span>
                             {% else %}
-                            <span class="badge badge-danger">{{metric.status}}</span>
+                            <span class="badge badge-danger">{{objective.status}}</span>
                             {% endif %}
                         </td>
                         {% if permission %}
                         <td class="table-action">
                             <a
                               href="javascript: void(0);"
-                              data-id="{{ metric.id }}"
-                              data-name="metric"
-                              data-title="Metrics"
+                              data-id="{{ objective.id }}"
+                              data-name="objective"
+                              data-title="Objectives"
                               class="action-icon edit-doc">
                                 <i class="mdi mdi-pencil"></i>
                             </a>
                             <a href="javascript: void(0);"
-                                data-name="metric"
-                                data-id={{metric.id}}
+                                data-name="objective"
+                                data-id={{objective.id}}
                                 class="action-icon remove"> <i class="mdi mdi-delete"></i></a>
                         </td>
                         {% endif %}
@@ -576,8 +636,8 @@
     <div class="card-footer text-muted">
         <button
                 type="button"
-                data-name="metric"
-                data-title="Metrics"
+                data-name="objective"
+                data-title="Objectives"
                 data-toggle="modal"
                 data-target="#bs-example-modal-lg"
                 class="btn btn-outline-primary btn-sm float-right call-dynamic-form">Add New</button>
@@ -593,14 +653,14 @@
             <a href="#" data-toggle="remove"><i class="mdi mdi-close"></i></a>
         </div>
         <h4 class="header-title">
-            Assumptions
+            Learning Plan
             <a href="" class="text-muted" data-toggle="modal" data-target="#assumptions">
                 <i class="mdi mdi-information-outline" data-toggle="tooltip" data-placement="top" title="" data-original-title="Learn More"></i>
             </a>
         </h4>
         <p class="text-muted font-14 mb-2">
-            Add all assumptions, metrics, learnings, and status for your project in this section
-
+            Add what needs to be tested in order to validate desirability, viability, and feasibility<br/>
+            Update regularly with learnings and status
         </p>
 
         <div class="table-responsive crd collapse show" id="cardCollpase4">
@@ -746,6 +806,7 @@
             </div>
             <div class="modal-body text-justify" id="modal-body">
                 <p>
+                    A learning plan is used to test assumptions.<br/><br/>
                     An assumption is a fact or statement being taken for granted as true. Our focus is to challenge and clarify them with research. We generally start by listing all assumptions we’re making and labelling them either “Desirability”, “Feasibility” or “Viability” assumptions, depending on which part of the idea they relate to.
                     <ul>
                         <li>Desirability assumptions are those about your user and the idea.</li>
