@@ -9,3 +9,5 @@
 src/mydjango/__pycache__/settings.cpython-35.pyc
 #*/static/
 */media/
+src/.DS_Store
+src/myapp/.DS_Store

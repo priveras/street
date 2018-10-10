@@ -21,6 +21,67 @@
 </div>
 <!-- end page title -->
 <div class="row">
+    <div class="col-md-8">
+      <div class="card">
+          <div class="card-body">
+              <div class="card-widgets">
+                  <a href="javascript:;" data-toggle="reload"><i class="mdi mdi-refresh"></i></a>
+                  <a data-toggle="collapse" href="#cardCollpasec" role="button" aria-expanded="false" aria-controls="cardCollpase1"><i class="mdi mdi-minus"></i></a>
+                  <a href="#" data-toggle="remove"><i class="mdi mdi-close"></i></a>
+              </div>
+              <h4 class="header-title">Status Summary</h4>
+              <p class="text-muted font-14 mb-2">
+                  Add your problem in this section and keep track of the hypothesis results
+              </p>
+
+              <div class="table-responsive collapse show" id="cardCollpasec" style="max-height:125px; overflow-y: auto;">
+                  <table class="table table-top mb-0">
+                      <tbody>
+                          {% if not summary %}
+                          <p><i class="text-muted fa fa-exclamation-triangle"></i> No data available</p>
+                          {% endif %}
+                          {% for sum in summary %}
+                          <tr class="text-justify">
+                              <td>
+                                  {{sum.text}}
+                                  <br><br>
+                                  <small class="text-muted">{{sum.updated_at|date}}</small>
+                              </td>
+                              {% if permission %}
+                              <td class="table-action">
+                                      <a
+                                        href="javascript: void(0);"
+                                        data-id="{{ sum.id }}"
+                                        data-name="summary"
+                                        data-title="Status summary"
+                                        class="action-icon edit-doc">
+                                          <i class="mdi mdi-pencil"></i>
+                                      </a>
+                                      <a href="javascript: void(0);"
+                                          data-name="summary"
+                                          data-id={{sum.id}}
+                                          class="action-icon remove"> <i class="mdi mdi-delete"></i></a>
+                              </td>
+                              {% endif %}
+                          </tr>
+                          {% endfor %}
+                      </tbody>
+                  </table>
+              </div>
+          </div> <!-- end card-body-->
+          {% if permission %}
+          <div class="card-footer text-muted">
+              <button
+                      type="button"
+                      class="btn btn-outline-primary btn-sm float-right call-dynamic-form"
+                      data-name="summary"
+                      data-title="Status summary"
+                      data-toggle="modal"
+                      data-target="#bs-example-modal-lg">Add New</button>
+          </div>
+          {% endif %}
+      </div> <!-- end card-->
+  </div> <!-- end col-->
     <div class="col-md-4">
         <div class="card">
             <div class="card-body">
@@ -105,67 +166,7 @@
             {% endif %}
         </div>
     </div>
-    <div class="col-md-8">
-        <div class="card">
-            <div class="card-body">
-                <div class="card-widgets">
-                    <a href="javascript:;" data-toggle="reload"><i class="mdi mdi-refresh"></i></a>
-                    <a data-toggle="collapse" href="#cardCollpasec" role="button" aria-expanded="false" aria-controls="cardCollpase1"><i class="mdi mdi-minus"></i></a>
-                    <a href="#" data-toggle="remove"><i class="mdi mdi-close"></i></a>
-                </div>
-                <h4 class="header-title">Status Summary</h4>
-                <p class="text-muted font-14 mb-2">
-                    Add your problem in this section and keep track of the hypothesis results
-                </p>
-
-                <div class="table-responsive collapse show" id="cardCollpasec" style="max-height:125px; overflow-y: auto;">
-                    <table class="table table-top mb-0">
-                        <tbody>
-                            {% if not summary %}
-                            <p><i class="text-muted fa fa-exclamation-triangle"></i> No data available</p>
-                            {% endif %}
-                            {% for sum in summary %}
-                            <tr class="text-justify">
-                                <td>
-                                    {{sum.text}}
-                                    <br><br>
-                                    <small class="text-muted">{{sum.updated_at|date}}</small>
-                                </td>
-                                {% if permission %}
-                                <td class="table-action">
-                                        <a
-                                          href="javascript: void(0);"
-                                          data-id="{{ sum.id }}"
-                                          data-name="summary"
-                                          data-title="Status summary"
-                                          class="action-icon edit-doc">
-                                            <i class="mdi mdi-pencil"></i>
-                                        </a>
-                                        <a href="javascript: void(0);"
-                                            data-name="summary"
-                                            data-id={{sum.id}}
-                                            class="action-icon remove"> <i class="mdi mdi-delete"></i></a>
-                                </td>
-                                {% endif %}
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div> <!-- end card-body-->
-            {% if permission %}
-            <div class="card-footer text-muted">
-                <button
-                        type="button"
-                        class="btn btn-outline-primary btn-sm float-right call-dynamic-form"
-                        data-name="summary"
-                        data-title="Status summary"
-                        data-toggle="modal"
-                        data-target="#bs-example-modal-lg">Add New</button>
-            </div>
-            {% endif %}
-        </div> <!-- end card-->
-    </div> <!-- end col-->
+    <!--
     <div class="col-md-6">
         <div class="card">
             <div class="card-body">
@@ -214,7 +215,7 @@
                         </tbody>
                     </table>
                 </div>
-            </div> <!-- end card-body-->
+            </div>
             {% if permission %}
             <div class="card-footer text-muted">
                 <button
@@ -226,10 +227,10 @@
                         data-target="#bs-example-modal-lg">Add New</button>
             </div>
             {% endif %}
-        </div> <!-- end card-->
-    </div> <!-- end col-->
-
-    <div class="col-md-6">
+        </div>
+    </div>
+    -->
+    <div class="col-md-12">
         <div class="card">
             <div class="card-body">
                 <div class="card-widgets">
@@ -237,9 +238,9 @@
                     <a data-toggle="collapse" href="#cardCollpasea" role="button" aria-expanded="false" aria-controls="cardCollpase1"><i class="mdi mdi-minus"></i></a>
                     <a href="#" data-toggle="remove"><i class="mdi mdi-close"></i></a>
                 </div>
-                <h4 class="header-title">Next 2 weeks Priorities</h4>
+                <h4 class="header-title">Current Priorities</h4>
                 <p class="text-muted font-14 mb-2">
-                    Add your problem in this section and keep track of the hypothesis results
+                    Add immediate priorities to be addressed here (i.e. next 2 weeks)
                 </p>
 
                 <div class="table-responsive collapse show" id="cardCollpasea" style="max-height:125px; overflow-y: auto;">
@@ -289,8 +290,8 @@
             {% endif %}
         </div> <!-- end card-->
     </div> <!-- end col-->
-
 </div>
+<!--
 <div class="card">
     <div class="card-body">
         <div class="card-widgets">
@@ -558,6 +559,86 @@
                 class="btn btn-outline-primary btn-sm float-right call-dynamic-form">Add New</button>
     </div>
     {% endif %}
+</div> -->
+
+<div class="card">
+    <div class="card-body">
+        <div class="card-widgets">
+            <a href="javascript:;" data-toggle="reload"><i class="mdi mdi-refresh"></i></a>
+            <a data-toggle="collapse" href="#cardCollpase4" role="button" aria-expanded="false" aria-controls="cardCollpase3"><i class="mdi mdi-minus"></i></a>
+            <a href="#" data-toggle="remove"><i class="mdi mdi-close"></i></a>
+        </div>
+        <h4 class="header-title">
+            Objectives
+        </h4>
+        <p class="text-muted font-14 mb-2">
+            Add high level objectives here (i.e. monthly or quarterly)
+
+        </p>
+
+        <div class="table-responsive crd collapse show" id="cardCollpase4">
+            <table class="table table-hover table-top mb-0 mt-2">
+                <tbody>
+                    {% if not objectives %}
+                    <p><i class="text-muted fa fa-exclamation-triangle"></i> No data available</p>
+                    {% else %}
+                    <tr>
+                        <th>DVF</th>
+                        <th>Objective<th>
+                        <th></th>
+                    </tr>
+                    {% for objective in objectives %}
+                    <tr class="text-justify">
+                        <td>
+                            <span class="badge badge-light">{{objective.dvf|capfirst}}</span>
+                        </td>
+                        <td>
+                            {{objective.metric}}
+                        </td>
+                        <td>
+                            {% if objective.status == "On Track" %}
+                            <span class="badge badge-success">{{objective.status}}</span>
+                            {% elif objective.status == "Delayed" %}
+                            <span class="badge badge-warning">{{objective.status}}</span>
+                            {% else %}
+                            <span class="badge badge-danger">{{objective.status}}</span>
+                            {% endif %}
+                        </td>
+                        {% if permission %}
+                        <td class="table-action">
+                            <a
+                              href="javascript: void(0);"
+                              data-id="{{ objective.id }}"
+                              data-name="objective"
+                              data-title="Objectives"
+                              class="action-icon edit-doc">
+                                <i class="mdi mdi-pencil"></i>
+                            </a>
+                            <a href="javascript: void(0);"
+                                data-name="objective"
+                                data-id={{objective.id}}
+                                class="action-icon remove"> <i class="mdi mdi-delete"></i></a>
+                        </td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+    {% if permission %}
+    <div class="card-footer text-muted">
+        <button
+                type="button"
+                data-name="objective"
+                data-title="Objectives"
+                data-toggle="modal"
+                data-target="#bs-example-modal-lg"
+                class="btn btn-outline-primary btn-sm float-right call-dynamic-form">Add New</button>
+    </div>
+    {% endif %}
 </div>
 
 <div class="card">
@@ -567,9 +648,10 @@
             <a data-toggle="collapse" href="#cardCollpase4" role="button" aria-expanded="false" aria-controls="cardCollpase3"><i class="mdi mdi-minus"></i></a>
             <a href="#" data-toggle="remove"><i class="mdi mdi-close"></i></a>
         </div>
-        <h4 class="header-title">Assumptions</h4>
+        <h4 class="header-title">Learning Plan</h4>
         <p class="text-muted font-14 mb-2">
-            Add all assumptions, metrics, and status for your project in this section
+            Add what needs to be tested in order to validate desirability, viability, and feasibility<br/>
+            Update regularly with learnings and status
         </p>
 
         <div class="table-responsive crd collapse show" id="cardCollpase4">
@@ -580,8 +662,8 @@
                     {% else %}
                     <tr>
                         <th></th>
-                        <th>Assumption</th>
-                        <th>Metric</th>
+                        <th>What to Test</th>
+                        <th>How to Test</th>
                         <th>Learnings</th>
                         <th>Status</th>
                         <th></th>
@@ -606,6 +688,8 @@
                             <span class="badge badge-success">{{assumption.status}}</span>
                             {% elif assumption.status == "In Progress" %}
                             <span class="badge badge-warning">{{assumption.status}}</span>
+                            {% elif assumption.status == "Inconclusive" %}
+                            <span class="badge badge-light">{{assumption.status}}</span>
                             {% else %}
                             <span class="badge badge-danger">{{assumption.status}}</span>
                             {% endif %}

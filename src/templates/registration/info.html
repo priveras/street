@@ -16,8 +16,8 @@
             <h4 class="page-title">Complete Your Profile</h4>
         </div>
     </div>
-</div>     
-<!-- end page title --> 
+</div>
+<!-- end page title -->
 
 <!-- CONTENT -->
 <div class="container-fluid">
@@ -57,12 +57,12 @@
               {% render_field form.location|attr:"placeholder:San Francisco" class="form-control required" %}
             </div>
             <div class="form-group">
-              <label for="exampleInputPassword1">Profile Image</label>
+              <label for="exampleInputPassword1">Profile Image <small class="text-muted">(Max File Size 1MB)</small></label>
               {% render_field form.profile_image class="form-control-file required" %}
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
           </form>
-          
+
         </div>
       </div>
   </div>

@@ -135,7 +135,303 @@
         </div> <!-- end card-->
 
         <div class="row">
-            <div class="col-sm-4">
+          {% if project.stage == 'Seed 1' or project.stage == 'Seed 2' or project.stage == 'Seed 3' %}
+          <!-- Seed I to III -->
+          <div class="col-sm-4">
+                <div class="card">
+                    <div class="card-body">
+                            <h4 class="header-title">
+                                <a href="{% url 'app:seed' project.slug %}">Seed I to III</a>
+                                <a href="" class="text-muted" data-toggle="modal" data-target="#seed">
+                                    <i class="mdi mdi-information-outline" data-toggle="tooltip" data-placement="top" title="" data-original-title="Learn More"></i>
+                                </a>
+                            </h4>
+                        <div class="timeline-alt pb-0">
+                            <div class="timeline-item">
+                                {% if dvf_seed.0.desirability == "On Track" %}
+                                <i class="bg-success-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_seed.0.desirability}}"></i>
+                                {% elif dvf_seed.0.desirability == "Delayed" %}
+                                <i class="bg-warning-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_seed.0.desirability}}"></i>
+                                {% elif dvf_seed.0.desirability == "At Risk" %}
+                                <i class="bg-danger-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_seed.0.desirability}}"></i>
+                                {% else %}
+                                <i class="bg-secondary-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="No data"></i>
+                                {% endif %}
+                                <div class="timeline-item-info">
+                                    <a href="#" class="mb-1 d-block" style="color:#6c757d">Desirabilty</a>
+                                    <p></p>
+                                </div>
+                            </div>
+
+                            <div class="timeline-item">
+                                {% if dvf_seed.0.viability == "On Track" %}
+                                <i class="bg-success-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_seed.0.viability}}"></i>
+                                {% elif dvf_seed.0.viability == "Delayed" %}
+                                <i class="bg-warning-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_seed.0.viability}}"></i>
+                                {% elif dvf_seed.0.viability == "At Risk" %}
+                                <i class="bg-danger-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_seed.0.viability}}"></i>
+                                {% else %}
+                                <i class="bg-secondary-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="No data"></i>
+                                {% endif %}
+                                <div class="timeline-item-info">
+                                    <a href="#" class="mb-1 d-block" style="color:#6c757d">Viability</a>
+                                    <p></p>
+                                </div>
+                            </div>
+
+                            <div class="timeline-item">
+                                {% if dvf_seed.0.feasibility == "On Track" %}
+                                <i class="bg-success-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_seed.0.feasibility}}"></i>
+                                {% elif dvf_seed.0.feasibility == "Delayed" %}
+                                <i class="bg-warning-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_seed.0.feasibility}}"></i>
+                                {% elif dvf_seed.0.feasibility == "At Risk" %}
+                                <i class="bg-danger-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_seed.0.feasibility}}"></i>
+                                {% else %}
+                                <i class="bg-secondary-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="No data"></i>
+                                {% endif %}
+                                <div class="timeline-item-info">
+                                    <a href="#" class="mb-1 d-block" style="color:#6c757d">Feasibility</a>
+                                    <p>
+                                        {% if dvf_seed.0.created_at %}
+                                        <small class="text-muted">Since: {{dvf_seed.0.created_at|date}}</small>
+                                        {% else %}
+                                        <small class="text-muted">NA</small>
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div> <!-- end card-body-->
+                </div>
+            </div>
+          <div class="col-sm-8">
+            <div class="card d-block">
+                <div class="card-body">
+                    <!-- project title-->
+                    <div class="mb-3">
+                        <h4 class="header-title">Status Report</h4>
+                    </div>
+                    <div class="row">
+                        <div class="mb-5">
+                            <div class="col-md-6">
+                                <h4 class="header-title">
+                                    <a href="{% url 'app:seed' project.slug %}" class="btn btn-primary">View & Edit Report</a>
+                                </h4>
+                            </div>
+                            <div class="col-auto">
+                                {% if seed_summary.0.updated_at %}
+                                <h6>Last Updated: <small class="text-muted">{{seed_summary.0.updated_at|date}}</small></h6>
+                                {% else %}
+                                <h6><small class="text-muted">NA</small><h6>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div> <!-- end card-body-->
+            </div> <!-- end card-->
+          </div>
+          <!-- Seed Launch -->
+          {% elif project.stage == 'Seed Launch' %}
+          <div class="col-sm-4">
+                <div class="card">
+                    <div class="card-body">
+                        <a href="{% url 'app:seed-launch' project.slug %}"><h4 class="header-title">Seed Launch</h4></a>
+                        <div class="timeline-alt pb-0">
+                            <div class="timeline-item">
+                                {% if dvf_seedlaunch.0.desirability == "On Track" %}
+                                <i class="bg-success-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_seedlaunch.0.desirability}}"></i>
+                                {% elif dvf_seedlaunch.0.desirability == "Delayed" %}
+                                <i class="bg-warning-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_seedlaunch.0.desirability}}"></i>
+                                {% elif dvf_seedlaunch.0.desirability == "At Risk" %}
+                                <i class="bg-danger-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_seedlaunch.0.desirability}}"></i>
+                                {% else %}
+                                <i class="bg-secondary-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="No data"></i>
+                                {% endif %}
+                                <div class="timeline-item-info">
+                                    <a href="#" class="mb-1 d-block" style="color:#6c757d">Desirabilty</a>
+                                    <p></p>
+                                </div>
+                            </div>
+
+                            <div class="timeline-item">
+                                {% if dvf_seedlaunch.0.viability == "On Track" %}
+                                <i class="bg-success-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_seedlaunch.0.viability}}"></i>
+                                {% elif dvf_seedlaunch.0.viability == "Delayed" %}
+                                <i class="bg-warning-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_seedlaunch.0.viability}}"></i>
+                                {% elif dvf_seedlaunch.0.viability == "At Risk" %}
+                                <i class="bg-danger-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_seedlaunch.0.viability}}"></i>
+                                {% else %}
+                                <i class="bg-secondary-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="No data"></i>
+                                {% endif %}
+                                <div class="timeline-item-info">
+                                    <a href="#" class="mb-1 d-block" style="color:#6c757d">Viability</a>
+                                    <p></p>
+                                </div>
+                            </div>
+
+                            <div class="timeline-item">
+                                {% if dvf_seedlaunch.0.feasibility == "On Track" %}
+                                <i class="bg-success-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_seedlaunch.0.feasibility}}"></i>
+                                {% elif dvf_seedlaunch.0.feasibility == "Delayed" %}
+                                <i class="bg-warning-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_seedlaunch.0.feasibility}}"></i>
+                                {% elif dvf_seedlaunch.0.feasibility == "At Risk" %}
+                                <i class="bg-danger-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_seedlaunch.0.feasibility}}"></i>
+                                {% else %}
+                                <i class="bg-secondary-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="No data"></i>
+                                {% endif %}
+                                <div class="timeline-item-info">
+                                    <a href="#" class="mb-1 d-block" style="color:#6c757d">Feasibility</a>
+                                    <p>
+                                        {% if dvf_seedlaunch.0.created_at %}
+                                        <small class="text-muted">Since: {{dvf_seedlaunch.0.created_at|date}}</small>
+                                        {% else %}
+                                        <small class="text-muted">NA</small>
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div> <!-- end card-body-->
+                </div>
+            </div>
+          <div class="col-sm-8">
+              <div class="card d-block">
+                  <div class="card-body">
+                      <!-- project title-->
+                      <div class="mb-3">
+                          <h4 class="header-title">Status Report</h4>
+                      </div>
+                      <div class="row">
+                          <div class="mb-2">
+                              <div class="col-md-6">
+                                  <h4 class="header-title">
+                                      <a href="{% url 'app:seed-launch' project.slug %}" class="btn btn-primary">View & Edit Report</a>
+                                  </h4>
+                              </div>
+                              <div class="col-auto">
+                                  {% if seedlaunch_summary.0.updated_at %}
+                                  <h6>Last Updated: <small class="text-muted">{{seedlaunch_summary.0.updated_at|date}}</small></h6>
+                                  {% else %}
+                                  <h6><small class="text-muted">NA</small><h6>
+                                  {% endif %}
+                              </div>
+                          </div>
+                      </div>
+                      <div class="mb-auto">
+                          <h4 class="header-title">Previous Reports</h4>
+                      </div>
+                      <div class="row">
+                          <div class="col-6">
+                              <a href="{% url 'app:seed-launch' project.slug %}"><h5>Seed I to III</h5></a>
+                          </div>
+                      </div>
+                  </div> <!-- end card-body-->
+              </div> <!-- end card-->
+            </div>
+          <!-- Launch -->
+          {% elif project.stage == 'Launch' %}
+          <div class="col-sm-4">
+              <div class="card">
+                  <div class="card-body">
+                      <a href="{% url 'app:launch' project.slug %}"><h4 class="header-title">Launch</h4></a>
+                      <div class="timeline-alt pb-0">
+                          <div class="timeline-item">
+                              {% if dvf_launch.0.desirability == "On Track" %}
+                              <i class="bg-success-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_launch.0.desirability}}"></i>
+                              {% elif dvf_launch.0.desirability == "Delayed" %}
+                              <i class="bg-warning-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_launch.0.desirability}}"></i>
+                              {% elif dvf_launch.0.desirability == "At Risk" %}
+                              <i class="bg-danger-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_launch.0.desirability}}"></i>
+                              {% else %}
+                              <i class="bg-secondary-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="No data"></i>
+                              {% endif %}
+                              <div class="timeline-item-info">
+                                  <a href="#" class="mb-1 d-block" style="color:#6c757d">Desirabilty</a>
+                                  <p></p>
+                              </div>
+                          </div>
+
+                          <div class="timeline-item">
+                              {% if dvf_launch.0.viability == "On Track" %}
+                              <i class="bg-success-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_launch.0.viability}}"></i>
+                              {% elif dvf_launch.0.viability == "Delayed" %}
+                              <i class="bg-warning-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_launch.0.viability}}"></i>
+                              {% elif dvf_launch.0.viability == "At Risk" %}
+                              <i class="bg-danger-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_launch.0.viability}}"></i>
+                              {% else %}
+                              <i class="bg-secondary-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="No data"></i>
+                              {% endif %}
+                              <div class="timeline-item-info">
+                                  <a href="#" class="mb-1 d-block" style="color:#6c757d">Viability</a>
+                                  <p></p>
+                              </div>
+                          </div>
+
+                          <div class="timeline-item">
+                              {% if dvf_launch.0.feasibility == "On Track" %}
+                              <i class="bg-success-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_launch.0.feasibility}}"></i>
+                              {% elif dvf_launch.0.feasibility == "Delayed" %}
+                              <i class="bg-warning-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_launch.0.feasibility}}"></i>
+                              {% elif dvf_launch.0.feasibility == "At Risk" %}
+                              <i class="bg-danger-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_launch.0.feasibility}}"></i>
+                              {% else %}
+                              <i class="bg-secondary-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="No data"></i>
+                              {% endif %}
+                              <div class="timeline-item-info">
+                                  <a href="#" class="mb-1 d-block" style="color:#6c757d">Feasibility</a>
+                                  <p>
+                                      {% if dvf_launch.0.created_at %}
+                                      <small class="text-muted">{{dvf_launch.0.created_at|date}}</small>
+                                      {% else %}
+                                      <small class="text-muted">NA</small>
+                                      {% endif %}
+                                  </p>
+                              </div>
+                          </div>
+                      </div>
+                  </div> <!-- end card-body-->
+              </div>
+          </div>
+          <div class="col-sm-8">
+            <div class="card d-block">
+                <div class="card-body">
+                    <!-- project title-->
+                    <div class="mb-3">
+                        <h4 class="header-title">Status Report</h4>
+                    </div>
+                    <div class="row">
+                        <div class="mb-2">
+                            <div class="col-md-6">
+                                <h4 class="header-title">
+                                    <a href="{% url 'app:launch' project.slug %}" class="btn btn-primary">View & Edit Report</a>
+                                </h4>
+                            </div>
+                            <div class="col-auto">
+                                {% if launch_summary.0.updated_at %}
+                                <h6>Last Updated: <small class="text-muted">{{launch_summary.0.updated_at|date}}</small></h6>
+                                {% else %}
+                                <h6><small class="text-muted">NA</small><h6>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-auto">
+                        <h4 class="header-title">Previous Reports</h4>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <a href="{% url 'app:seed-launch' project.slug %}"><h5>Seed Launch</h5></a>
+                        </div>
+                        <div class="col-auto">
+                            <a href="{% url 'app:seed' project.slug %}"><h5>Seed I to III</h5></a>
+                        </div>
+                    </div>
+                </div> <!-- end card-body-->
+            </div> <!-- end card-->
+          </div>
+          {% else %}
+          <!-- Seed I to III -->
+          <div class="col-sm-4">
                 <div class="card">
                     <div class="card-body">
                             <h4 class="header-title">
@@ -202,132 +498,408 @@
                     </div> <!-- end card-body-->
                 </div>
             </div>
-            <div class="col-sm-4">
-                <div class="card">
-                    <div class="card-body">
-                        <a href="{% url 'app:seed-launch' project.slug %}"><h4 class="header-title">Seed Launch</h4></a>
-                        <div class="timeline-alt pb-0">
-                            <div class="timeline-item">
-                                {% if dvf_seedlaunch.0.desirability == "On Track" %}
-                                <i class="bg-success-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_seedlaunch.0.desirability}}"></i>
-                                {% elif dvf_seedlaunch.0.desirability == "Delayed" %}
-                                <i class="bg-warning-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_seedlaunch.0.desirability}}"></i>
-                                {% elif dvf_seedlaunch.0.desirability == "At Risk" %}
-                                <i class="bg-danger-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_seedlaunch.0.desirability}}"></i>
-                                {% else %}
-                                <i class="bg-secondary-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="No data"></i>
-                                {% endif %}
-                                <div class="timeline-item-info">
-                                    <a href="#" class="mb-1 d-block" style="color:#6c757d">Desirabilty</a>
-                                    <p></p>
-                                </div>
-                            </div>
+          <!-- Seed Launch -->
+          <div class="col-sm-4">
+                  <div class="card">
+                      <div class="card-body">
+                          <a href="{% url 'app:seed-launch' project.slug %}"><h4 class="header-title">Seed Launch</h4></a>
+                          <div class="timeline-alt pb-0">
+                              <div class="timeline-item">
+                                  {% if dvf_seedlaunch.0.desirability == "On Track" %}
+                                  <i class="bg-success-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_seedlaunch.0.desirability}}"></i>
+                                  {% elif dvf_seedlaunch.0.desirability == "Delayed" %}
+                                  <i class="bg-warning-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_seedlaunch.0.desirability}}"></i>
+                                  {% elif dvf_seedlaunch.0.desirability == "At Risk" %}
+                                  <i class="bg-danger-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_seedlaunch.0.desirability}}"></i>
+                                  {% else %}
+                                  <i class="bg-secondary-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="No data"></i>
+                                  {% endif %}
+                                  <div class="timeline-item-info">
+                                      <a href="#" class="mb-1 d-block" style="color:#6c757d">Desirabilty</a>
+                                      <p></p>
+                                  </div>
+                              </div>
 
-                            <div class="timeline-item">
-                                {% if dvf_seedlaunch.0.viability == "On Track" %}
-                                <i class="bg-success-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_seedlaunch.0.viability}}"></i>
-                                {% elif dvf_seedlaunch.0.viability == "Delayed" %}
-                                <i class="bg-warning-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_seedlaunch.0.viability}}"></i>
-                                {% elif dvf_seedlaunch.0.viability == "At Risk" %}
-                                <i class="bg-danger-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_seedlaunch.0.viability}}"></i>
-                                {% else %}
-                                <i class="bg-secondary-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="No data"></i>
-                                {% endif %}
-                                <div class="timeline-item-info">
-                                    <a href="#" class="mb-1 d-block" style="color:#6c757d">Viability</a>
-                                    <p></p>
-                                </div>
-                            </div>
+                              <div class="timeline-item">
+                                  {% if dvf_seedlaunch.0.viability == "On Track" %}
+                                  <i class="bg-success-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_seedlaunch.0.viability}}"></i>
+                                  {% elif dvf_seedlaunch.0.viability == "Delayed" %}
+                                  <i class="bg-warning-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_seedlaunch.0.viability}}"></i>
+                                  {% elif dvf_seedlaunch.0.viability == "At Risk" %}
+                                  <i class="bg-danger-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_seedlaunch.0.viability}}"></i>
+                                  {% else %}
+                                  <i class="bg-secondary-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="No data"></i>
+                                  {% endif %}
+                                  <div class="timeline-item-info">
+                                      <a href="#" class="mb-1 d-block" style="color:#6c757d">Viability</a>
+                                      <p></p>
+                                  </div>
+                              </div>
 
-                            <div class="timeline-item">
-                                {% if dvf_seedlaunch.0.feasibility == "On Track" %}
-                                <i class="bg-success-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_seedlaunch.0.feasibility}}"></i>
-                                {% elif dvf_seedlaunch.0.feasibility == "Delayed" %}
-                                <i class="bg-warning-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_seedlaunch.0.feasibility}}"></i>
-                                {% elif dvf_seedlaunch.0.feasibility == "At Risk" %}
-                                <i class="bg-danger-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_seedlaunch.0.feasibility}}"></i>
-                                {% else %}
-                                <i class="bg-secondary-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="No data"></i>
-                                {% endif %}
-                                <div class="timeline-item-info">
-                                    <a href="#" class="mb-1 d-block" style="color:#6c757d">Feasibility</a>
-                                    <p>
-                                        {% if dvf_seedlaunch.0.updated_at %}
-                                        <small class="text-muted">{{dvf_seedlaunch.0.updated_at|date}}</small>
-                                        {% else %}
-                                        <small class="text-muted">NA</small>
-                                        {% endif %}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div> <!-- end card-body-->
-                </div>
-            </div>
-            <div class="col-sm-4">
-                <div class="card">
-                    <div class="card-body">
-                        <a href="{% url 'app:launch' project.slug %}"><h4 class="header-title">Launch</h4></a>
-                        <div class="timeline-alt pb-0">
-                            <div class="timeline-item">
-                                {% if dvf_launch.0.desirability == "On Track" %}
-                                <i class="bg-success-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_launch.0.desirability}}"></i>
-                                {% elif dvf_launch.0.desirability == "Delayed" %}
-                                <i class="bg-warning-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_launch.0.desirability}}"></i>
-                                {% elif dvf_launch.0.desirability == "At Risk" %}
-                                <i class="bg-danger-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_launch.0.desirability}}"></i>
-                                {% else %}
-                                <i class="bg-secondary-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="No data"></i>
-                                {% endif %}
-                                <div class="timeline-item-info">
-                                    <a href="#" class="mb-1 d-block" style="color:#6c757d">Desirabilty</a>
-                                    <p></p>
-                                </div>
-                            </div>
+                              <div class="timeline-item">
+                                  {% if dvf_seedlaunch.0.feasibility == "On Track" %}
+                                  <i class="bg-success-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_seedlaunch.0.feasibility}}"></i>
+                                  {% elif dvf_seedlaunch.0.feasibility == "Delayed" %}
+                                  <i class="bg-warning-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_seedlaunch.0.feasibility}}"></i>
+                                  {% elif dvf_seedlaunch.0.feasibility == "At Risk" %}
+                                  <i class="bg-danger-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_seedlaunch.0.feasibility}}"></i>
+                                  {% else %}
+                                  <i class="bg-secondary-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="No data"></i>
+                                  {% endif %}
+                                  <div class="timeline-item-info">
+                                      <a href="#" class="mb-1 d-block" style="color:#6c757d">Feasibility</a>
+                                      <p>
+                                          {% if dvf_seedlaunch.0.updated_at %}
+                                          <small class="text-muted">{{dvf_seedlaunch.0.updated_at|date}}</small>
+                                          {% else %}
+                                          <small class="text-muted">NA</small>
+                                          {% endif %}
+                                      </p>
+                                  </div>
+                              </div>
+                          </div>
+                      </div> <!-- end card-body-->
+                  </div>
+              </div>
+          <!-- Launch -->
+          <div class="col-sm-4">
+                  <div class="card">
+                      <div class="card-body">
+                          <a href="{% url 'app:launch' project.slug %}"><h4 class="header-title">Launch</h4></a>
+                          <div class="timeline-alt pb-0">
+                              <div class="timeline-item">
+                                  {% if dvf_launch.0.desirability == "On Track" %}
+                                  <i class="bg-success-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_launch.0.desirability}}"></i>
+                                  {% elif dvf_launch.0.desirability == "Delayed" %}
+                                  <i class="bg-warning-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_launch.0.desirability}}"></i>
+                                  {% elif dvf_launch.0.desirability == "At Risk" %}
+                                  <i class="bg-danger-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_launch.0.desirability}}"></i>
+                                  {% else %}
+                                  <i class="bg-secondary-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="No data"></i>
+                                  {% endif %}
+                                  <div class="timeline-item-info">
+                                      <a href="#" class="mb-1 d-block" style="color:#6c757d">Desirabilty</a>
+                                      <p></p>
+                                  </div>
+                              </div>
 
-                            <div class="timeline-item">
-                                {% if dvf_launch.0.viability == "On Track" %}
-                                <i class="bg-success-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_launch.0.viability}}"></i>
-                                {% elif dvf_launch.0.viability == "Delayed" %}
-                                <i class="bg-warning-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_launch.0.viability}}"></i>
-                                {% elif dvf_launch.0.viability == "At Risk" %}
-                                <i class="bg-danger-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_launch.0.viability}}"></i>
-                                {% else %}
-                                <i class="bg-secondary-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="No data"></i>
-                                {% endif %}
-                                <div class="timeline-item-info">
-                                    <a href="#" class="mb-1 d-block" style="color:#6c757d">Viability</a>
-                                    <p></p>
-                                </div>
-                            </div>
+                              <div class="timeline-item">
+                                  {% if dvf_launch.0.viability == "On Track" %}
+                                  <i class="bg-success-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_launch.0.viability}}"></i>
+                                  {% elif dvf_launch.0.viability == "Delayed" %}
+                                  <i class="bg-warning-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_launch.0.viability}}"></i>
+                                  {% elif dvf_launch.0.viability == "At Risk" %}
+                                  <i class="bg-danger-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_launch.0.viability}}"></i>
+                                  {% else %}
+                                  <i class="bg-secondary-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="No data"></i>
+                                  {% endif %}
+                                  <div class="timeline-item-info">
+                                      <a href="#" class="mb-1 d-block" style="color:#6c757d">Viability</a>
+                                      <p></p>
+                                  </div>
+                              </div>
 
-                            <div class="timeline-item">
-                                {% if dvf_launch.0.feasibility == "On Track" %}
-                                <i class="bg-success-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_launch.0.feasibility}}"></i>
-                                {% elif dvf_launch.0.feasibility == "Delayed" %}
-                                <i class="bg-warning-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_launch.0.feasibility}}"></i>
-                                {% elif dvf_launch.0.feasibility == "At Risk" %}
-                                <i class="bg-danger-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_launch.0.feasibility}}"></i>
-                                {% else %}
-                                <i class="bg-secondary-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="No data"></i>
-                                {% endif %}
-                                <div class="timeline-item-info">
-                                    <a href="#" class="mb-1 d-block" style="color:#6c757d">Feasibility</a>
-                                    <p>
-                                        {% if dvf_launch.0.updated_at %}
-                                        <small class="text-muted">{{dvf_launch.0.updated_at|date}}</small>
-                                        {% else %}
-                                        <small class="text-muted">NA</small>
-                                        {% endif %}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div> <!-- end card-body-->
-                </div>
-            </div>
+                              <div class="timeline-item">
+                                  {% if dvf_launch.0.feasibility == "On Track" %}
+                                  <i class="bg-success-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_launch.0.feasibility}}"></i>
+                                  {% elif dvf_launch.0.feasibility == "Delayed" %}
+                                  <i class="bg-warning-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_launch.0.feasibility}}"></i>
+                                  {% elif dvf_launch.0.feasibility == "At Risk" %}
+                                  <i class="bg-danger-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_launch.0.feasibility}}"></i>
+                                  {% else %}
+                                  <i class="bg-secondary-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="No data"></i>
+                                  {% endif %}
+                                  <div class="timeline-item-info">
+                                      <a href="#" class="mb-1 d-block" style="color:#6c757d">Feasibility</a>
+                                      <p>
+                                          {% if dvf_launch.0.updated_at %}
+                                          <small class="text-muted">{{dvf_launch.0.updated_at|date}}</small>
+                                          {% else %}
+                                          <small class="text-muted">NA</small>
+                                          {% endif %}
+                                      </p>
+                                  </div>
+                              </div>
+                          </div>
+                      </div> <!-- end card-body-->
+                  </div>
+              </div>
+          {% endif %}
         </div>
 
+        <div class="card">
+            <div class="card-body">
+                <div class="card-widgets">
+                    <a href="javascript:;" data-toggle="reload"><i class="mdi mdi-refresh"></i></a>
+                    <a data-toggle="collapse" href="#cardCollpase4" role="button" aria-expanded="false" aria-controls="cardCollpase1"><i class="mdi mdi-minus"></i></a>
+                    <a href="#" data-toggle="remove"><i class="mdi mdi-close"></i></a>
+                </div>
+                <h4 class="header-title">
+                    Elevator Pitch
+                    <a href="" class="text-muted" data-toggle="modal" data-target="#elevator">
+                        <i class="mdi mdi-information-outline" data-toggle="tooltip" data-placement="top" title="" data-original-title="Learn More"></i>
+                    </a>
+                </h4>
+                <p class="text-muted font-14 mb-2">
+                    Add your elevator pitch in this section and keep track of the hypothesis results
+                </p>
+
+                <div class="table-responsive collapse show" id="cardCollpase4" style="max-height:125px; overflow-y: auto;">
+                    <table class="table table-top mb-0">
+                        <tbody>
+                            {% if not elevators %}
+                            <p><i class="text-muted fa fa-exclamation-triangle"></i> No data available</p>
+                            {% endif %}
+                            {% for elevator in elevators %}
+                            <tr class="text-justify">
+                                <td>
+                                    {{elevator.text}}
+                                    <br><br>
+                                    <small class="text-muted">{{elevator.updated_at|date}}</small>
+                                </td>
+                                {% if permission %}
+                                <td class="table-action">
+                                    <a
+                                      href="javascript: void(0);"
+                                      data-id="{{ elevator.id }}"
+                                      data-name="elevator"
+                                      data-title="Elevator pitch"
+                                      class="action-icon edit-doc">
+                                        <i class="mdi mdi-pencil"></i>
+                                    </a>
+                                    <a href="javascript: void(0);"
+                                        data-name="elevator"
+                                        data-id={{elevator.id}}
+                                        class="action-icon remove"> <i class="mdi mdi-delete"></i></a>
+                                </td>
+                                {% endif %}
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+            {% if permission %}
+            <div class="card-footer text-muted">
+                <button type="button"
+                        class="btn btn-outline-primary btn-sm float-right call-dynamic-form"
+                        data-toggle="modal"
+                        data-name="elevator"
+                        data-title="Elevator pitch"
+                        data-target="#bs-example-modal-lg">Add New</button>
+            </div>
+            {% endif %}
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <div class="card-widgets">
+                    <a href="javascript:;" data-toggle="reload"><i class="mdi mdi-refresh"></i></a>
+                    <a data-toggle="collapse" href="#cardCollpase1" role="button" aria-expanded="false" aria-controls="cardCollpase1"><i class="mdi mdi-minus"></i></a>
+                    <a href="#" data-toggle="remove"><i class="mdi mdi-close"></i></a>
+                </div>
+                <h4 class="header-title">Problem</h4>
+                <p class="text-muted font-14 mb-2">
+                    Add your problem in this section and keep track of the hypothesis results
+                </p>
+
+                <div class="table-responsive collapse show" id="cardCollpase1" style="max-height:125px; overflow-y: auto;">
+                    <table class="table table-top mb-0">
+                        <tbody>
+                            {% if not problems %}
+                            <p><i class="text-muted fa fa-exclamation-triangle"></i> No data available</p>
+                            {% endif %}
+                            {% for problem in problems %}
+                            <tr class="text-justify">
+                                <td>
+                                    {{problem.text}}
+                                    <br><br>
+                                    <small class="text-muted">{{problem.updated_at|date}}</small>
+                                </td>
+                                <td>
+                                    {% if problem.status == "Validated" %}
+                                    <span class="badge badge-success">{{problem.status}}</span>
+                                    {% elif problem.status == "In Progress" %}
+                                    <span class="badge badge-warning" style="color:white">{{problem.status}}</span>
+                                    {% else %}
+                                    <span class="badge badge-danger">{{problem.status}}</span>
+                                    {% endif %}
+                                </td>
+                                {% if permission %}
+                                <td class="table-action">
+                                    <a
+                                      href="javascript: void(0);"
+                                      data-id="{{ problem.id }}"
+                                      data-name="problem"
+                                      data-title="Problem"
+                                      class="action-icon edit-doc">
+                                        <i class="mdi mdi-pencil"></i>
+                                    </a>
+                                    <a href="javascript: void(0);"
+                                        data-name="problem"
+                                        data-id={{problem.id}}
+                                        class="action-icon remove"> <i class="mdi mdi-delete"></i></a>
+                                </td>
+                                {% endif %}
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+            {% if permission %}
+            <div class="card-footer text-muted">
+                <button type="button"
+                        class="btn btn-outline-primary btn-sm float-right call-dynamic-form"
+                        data-name="problem"
+                        data-title="Problem"
+                        data-toggle="modal"
+                        data-target="#bs-example-modal-lg">Add New</button>
+            </div>
+            {% endif %}
+        </div>
+
+
+        <div class="card">
+            <div class="card-body">
+                <div class="card-widgets">
+                    <a href="javascript:;" data-toggle="reload"><i class="mdi mdi-refresh"></i></a>
+                    <a data-toggle="collapse" href="#cardCollpase2" role="button" aria-expanded="false" aria-controls="cardCollpase1"><i class="mdi mdi-minus"></i></a>
+                    <a href="#" data-toggle="remove"><i class="mdi mdi-close"></i></a>
+                </div>
+                <h4 class="header-title">Solution</h4>
+                <p class="text-muted font-14 mb-2">
+                    Add your solution in this section and keep track of the hypothesis results
+                </p>
+
+                <div class="table-responsive collapse show" id="cardCollpase2" style="max-height:125px; overflow-y: auto;">
+                    <table class="table table-top mb-0">
+                        <tbody>
+                            {% if not solutions %}
+                            <p><i class="text-muted fa fa-exclamation-triangle"></i> No data available</p>
+                            {% endif %}
+                            {% for solution in solutions %}
+                            <tr class="text-justify">
+                                <td>
+                                    {{solution.text}}
+                                    <br><br>
+                                    <small class="text-muted">{{solution.updated_at|date}}</small>
+                                </td>
+                                <td>
+                                    {% if solution.status == "Validated" %}
+                                    <span class="badge badge-success">{{solution.status}}</span>
+                                    {% elif solution.status == "In Progress" %}
+                                    <span class="badge badge-warning" style="color:white">{{solution.status}}</span>
+                                    {% else %}
+                                    <span class="badge badge-danger">{{solution.status}}</span>
+                                    {% endif %}
+                                </td>
+                                {% if permission %}
+                                <td class="table-action">
+                                    <a
+                                      href="javascript: void(0);"
+                                      data-id="{{ solution.id }}"
+                                      data-name="solution"
+                                      data-title="Solution"
+                                      class="action-icon edit-doc">
+                                        <i class="mdi mdi-pencil"></i>
+                                    </a>
+                                    <a href="javascript: void(0);"
+                                        data-name="solution"
+                                        data-id={{solution.id}}
+                                        class="action-icon remove"> <i class="mdi mdi-delete"></i></a>
+                                </td>
+                                {% endif %}
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+            {% if permission %}
+            <div class="card-footer text-muted">
+                <button
+                        type="button"
+                        data-name="solution"
+                        data-title="Solution"
+                        data-toggle="modal"
+                        data-target="#bs-example-modal-lg"
+                        class="btn btn-outline-primary btn-sm float-right call-dynamic-form">Add New</button>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <div class="card-widgets">
+                    <a href="javascript:;" data-toggle="reload"><i class="mdi mdi-refresh"></i></a>
+                    <a data-toggle="collapse" href="#cardCollpase3" role="button" aria-expanded="false" aria-controls="cardCollpase3"><i class="mdi mdi-minus"></i></a>
+                    <a href="#" data-toggle="remove"><i class="mdi mdi-close"></i></a>
+                </div>
+                <h4 class="header-title">Business Model</h4>
+                <p class="text-muted font-14 mb-2">
+                    Add your business model in this section and keep track of the hypothesis results
+                </p>
+
+                <div class="table-responsive collapse show" id="cardCollpase3" style="max-height:125px; overflow-y: auto;">
+                    <table class="table table-top mb-0">
+                        <tbody>
+                            {% if not models %}
+                            <p><i class="text-muted fa fa-exclamation-triangle"></i> No data available</p>
+                            {% endif %}
+                            {% for model in models %}
+                            <tr class="text-justify">
+                                <td>
+                                    {{model.text}}
+                                    <br><br>
+                                    <small class="text-muted">{{model.updated_at|date}}</small>
+                                </td>
+                                <td>
+                                    {% if model.status == "Validated" %}
+                                    <span class="badge badge-success">{{model.status}}</span>
+                                    {% elif model.status == "In Progress" %}
+                                    <span class="badge badge-warning" style="color:white">{{model.status}}</span>
+                                    {% else %}
+                                    <span class="badge badge-danger">{{model.status}}</span>
+                                    {% endif %}
+                                </td>
+                                {% if permission %}
+                                <td class="table-action">
+                                    <a
+                                      href="javascript: void(0);"
+                                      data-id="{{ model.id }}"
+                                      data-name="business_model"
+                                      data-title="Business model"
+                                      class="action-icon edit-doc">
+                                        <i class="mdi mdi-pencil"></i>
+                                    </a>
+                                    <a href="javascript: void(0);"
+                                        data-name="business_model"
+                                        data-id={{model.id}}
+                                        class="action-icon remove"> <i class="mdi mdi-delete"></i></a>
+                                </td>
+                                {% endif %}
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+            {% if permission %}
+            <div class="card-footer text-muted">
+                <button
+                        type="button"
+                        data-name="business_model"
+                        data-title="Business model"
+                        data-toggle="modal"
+                        data-target="#bs-example-modal-lg"
+                        class="btn btn-outline-primary btn-sm float-right call-dynamic-form">Add New</button>
+            </div>
+            {% endif %}
+        </div>
         <div class="card">
             <div class="card-body">
                 <h4 class="mt-0 mb-3">Comments ({{project.comment_set.count }})</h4>
@@ -561,8 +1133,8 @@
                             <option>Seed I</option>
                             <option>Seed II</option>
                             <option>Seed III</option>
-                            <option>Launch I</option>
-                            <option>Launch II</option>
+                            <option>Seed Launch</option>
+                            <option>Launch</option>
                         </select>
                     </div>
                     <div class="form-group mb-3">
@@ -682,6 +1254,62 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+<!--  Modal content for the above example -->
+<div class="modal fade" id="bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myLargeModalLabel">Problem</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <form>
+                    <div class="form-group mb-3">
+                        <label for="example-textarea">Problem Statement</label>
+                        <textarea class="form-control" id="example-textarea" rows="3"></textarea>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="example-select">Status</label>
+                        <select class="form-control" id="example-select">
+                            <option>In Progress</option>
+                            <option>Validated</option>
+                            <option>Invalidated</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary submit-form">Save</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!--  Modal content for the above example -->
+<div class="modal fade" id="elevator" tabindex="-1" role="dialog" aria-labelledby="elevator" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myLargeModalLabel">Elevator Pitch</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body text-justify" id="modal-body">
+                <p>An elevator pitch is a brief, persuasive speech that you use to spark interest in what your organization does. You can also use them to create interest in a project, idea, or product – or in yourself. A good elevator pitch should last no longer than a short elevator ride of 20 to 30 seconds, hence the name.
+                <br><br>
+                They should be interesting, memorable, and succinct. They also need to explain what makes you – or your organization, product, or idea – unique.</p>
+                <p>This is a good structure to follow:</p>
+                <ul>
+                    <li>We help ____(consumer X)_____ who ___(problem)___ to ___(solution)___ by ___(how it works)___</li>
+                    <li>Our product/technology is like the ___(insert analogy of comparative company)___ of/for ___(insert your category)___. For example, our venture is like Uber for Trucking.</li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 <!--  Modal content for the above example -->
 <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog"
@@ -757,7 +1385,7 @@
 .remove{cursor:pointer;}
 </style>
 <script>
-  $(function(){
+$(function() {
     $('.submit', '#comment-form').click(function(){
       if($('textarea[name="text"]','#comment-form').val().trim() == '') {
         return;
@@ -778,7 +1406,6 @@
     $('#file').change(function(){
       $('#file-form').submit();
     });
-
 
   $('.call-dynamic-form').click(function(){
     var self = $(this);
