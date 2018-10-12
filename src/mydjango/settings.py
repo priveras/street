@@ -143,7 +143,7 @@ ACCOUNT_AUTHENTICATION_METHOD = 'email'
 
 DEFAULT_FROM_EMAIL = "Admin BOX OS <admin@box-os.com>"
 EMAIL_BACKEND = "sgbackend.SendGridBackend"
-SENDGRID_API_KEY = "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"
+SENDGRID_API_KEY = "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"
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/

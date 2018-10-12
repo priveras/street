@@ -597,9 +597,9 @@ def send_invite(request, project_id=0):
     text_content = plaintext.render(context)
 
     send_mail(
-        'You have been invited to Box-os',
+        'You have been invited to Box OS',
         text_content,
-        'info@box-os.com',
+        'admin@box-os.com',
         [request.POST.get('email')],
         fail_silently=True,
     )
