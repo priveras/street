@@ -659,8 +659,11 @@
             </a>
         </h4>
         <p class="text-muted font-14 mb-2">
-            Add what needs to be tested in order to validate desirability, viability, and feasibility<br/>
-            Update regularly with learnings and status
+            Add what needs to be tested in order to validate desirability, viability, and feasibility. Update regularly with learnings and status. Need help? <a href="" data-toggle="modal" data-target="#assumptions">
+                Learn More
+            </a>
+            <br>
+            Not sure what metrics to use. Check out the <a href="" data-toggle="modal" data-target="#metricsdb">Metrics Database</a> for Seed Stage Businesses.
         </p>
 
         <div class="table-responsive crd collapse show" id="cardCollpase4">
@@ -670,7 +673,7 @@
                     <p><i class="text-muted fa fa-exclamation-triangle"></i> No data available</p>
                     {% else %}
                     <tr>
-                        <th></th>
+                        <th>Learn</th>
                         <th>What to Test</th>
                         <th>How to Test</th>
                         <th>Learnings</th>
@@ -681,6 +684,7 @@
                     <tr class="text-justify">
                         <td>
                             <span class="badge badge-light">{{assumption.dvf|capfirst}}</span>
+                            <br>
                             <small>{{assumption.updated_at|date:'M d, y'}}</small>
                         </td>
                         <td>
@@ -801,7 +805,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myLargeModalLabel">Assumptions</h4>
+                <h4 class="modal-title" id="myLargeModalLabel">Learning Plan (Assumptions)</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             </div>
             <div class="modal-body text-justify" id="modal-body">
@@ -814,6 +818,75 @@
                         <li>Viability assumptions are those related to your financial elements (margins, costs, pricing etc).</li>
                     </ul>
                 </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!--  Modal content for the above example -->
+<div class="modal fade" id="metricsdb" tabindex="-1" role="dialog" aria-labelledby="metricsdb" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myLargeModalLabel">Metrics Database for Seed Businesses</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body text-justify" id="modal-body" style="overflow:scroll; height:400px">
+                <div class="table-responsive-sm">
+                    <p class="text-muted font-14 mb-4">
+                        Use this data to set the right metrics for your seed stage business.
+                    </p>
+                    <table class="table table-centered mb-0" >
+                        <thead>
+                            <tr>
+                                <th>Business Model</th>
+                                <th>DVF</th>
+                                <th>KPI</th>
+                                <th>Description</th>
+                                <th>Benchmark</th>
+                                <th>Unit Measure</th>
+                            </tr>
+                        </thead>
+                        <tbody style="overflow:scroll; height:400px">
+                            <tr><td>Ecommerce</td><td>D</td><td># of interviews conducted</td><td>Number of people that you have interviewed</td><td>50</td><td>#</td></tr>
+                            <tr><td>Ecommerce</td><td>V</td><td>Conversion</td><td>Pre-launch: % of store visitors that exchange some value</td><td>5</td><td>%</td></tr>
+                            <tr><td>Marketplace</td><td>D</td><td># of prospects</td><td>Number of people that expressed interest in buying your solution</td><td></td><td>#</td></tr>
+                            <tr><td>Marketplace</td><td>D</td><td># of interviews conducted</td><td>Number of people that you have interviewed</td><td>100</td><td>#</td></tr>
+                            <tr><td>Marketplace</td><td>F</td><td># of trials</td><td></td><td></td><td>#</td></tr>
+                            <tr><td>Marketplace</td><td>V</td><td>Exchange of value</td><td></td><td></td><td>$</td></tr>
+                            <tr><td>Marketplace</td><td>V</td><td>Cost of learning</td><td></td><td></td><td>$</td></tr>
+                            <tr><td>MEDIA</td><td>D</td><td># of prospects</td><td>Number of people that expressed interest in your solution</td><td></td><td>#</td></tr>
+                            <tr><td>MEDIA</td><td>D</td><td># of interviews conducted</td><td>Number of people that you have interviewed</td><td>50</td><td>#</td></tr>
+                            <tr><td>MEDIA</td><td>F</td><td># of trials</td><td></td><td></td><td>#</td></tr>
+                            <tr><td>MEDIA</td><td>V</td><td>Exchange of value</td><td></td><td></td><td></td></tr>
+                            <tr><td>MEDIA</td><td>V</td><td>Cost of learning</td><td></td><td></td><td>$</td></tr>
+                            <tr><td>Mobile</td><td>D</td><td># of prospects</td><td>Number of people that expressed interest in your solution</td><td></td><td>#</td></tr>
+                            <tr><td>Mobile</td><td>D</td><td># of interviews conducted</td><td>Number of people that you have interviewed</td><td>50</td><td>#</td></tr>
+                            <tr><td>Mobile</td><td>F</td><td># of trials</td><td># of test trials before product scale</td><td></td><td>#</td></tr>
+                            <tr><td>Mobile</td><td>V</td><td>Exchange of value</td><td></td><td></td><td>$</td></tr>
+                            <tr><td>Mobile</td><td>V</td><td>Cost of learning</td><td></td><td></td><td>$</td></tr>
+                            <tr><td>Mobile</td><td>V</td><td>Burn Rate</td><td>Monthly expenses (all in including wages, rent, travel, etc)</td><td>Less than 50K</td><td>$</td></tr>
+                            <tr><td>Products</td><td>D</td><td># of prospects</td><td>Number of people that expressed interest in your solution</td><td></td><td>#</td></tr>
+                            <tr><td>Products</td><td>D</td><td>$ pre-sales</td><td>Dollar value of pre-sales / POs</td><td></td><td>$</td></tr>
+                            <tr><td>Products</td><td>D</td><td># of interviews conducted</td><td>Number of people that you have interviewed</td><td>50</td><td>#</td></tr>
+                            <tr><td>Products</td><td>V</td><td>Exchange of value</td><td></td><td></td><td>$</td></tr>
+                            <tr><td>Products</td><td>V</td><td>Cost of learning</td><td></td><td></td><td>$</td></tr>
+                            <tr><td>Services</td><td>D</td><td># of prospects</td><td>Number of people that expressed interest in your solution</td><td></td><td>#</td></tr>
+                            <tr><td>Services</td><td>D</td><td># of interviews conducted</td><td>Number of people that you have interviewed</td><td>50</td><td>#</td></tr>
+                            <tr><td>Services</td><td>V</td><td>Exchange of value</td><td></td><td></td><td>$</td></tr>
+                            <tr><td>Services</td><td>F</td><td># of Pilots</td><td># of pilot programs</td><td></td><td>#</td></tr>
+                            <tr><td>Services</td><td>V</td><td>Cost of learning</td><td></td><td></td><td>$</td></tr>
+                            <tr><td>User Content</td><td>D</td><td># of prospects</td><td>Number of people that expressed interest in your solution</td><td></td><td>#</td></tr>
+                            <tr><td>User Content</td><td>D</td><td># of interviews conducted</td><td>Number of people that you have interviewed</td><td>50</td><td>#</td></tr>
+                            <tr><td>User Content</td><td>F</td><td># of trials</td><td></td><td></td><td>#</td></tr>
+                            <tr><td>User Content</td><td></td><td>Exchange of value</td><td></td><td></td><td>$</td></tr>
+                            <tr><td>User Content</td><td>V</td><td>Cost of learning</td><td></td><td></td><td>$</td></tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>

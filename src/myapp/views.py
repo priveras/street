@@ -22,6 +22,17 @@ from .models import Elevator, Tutorial, Progress, Dvf, Link, Zone, Invite
 from .models import Objective
 from django.http import HttpResponseRedirect
 
+class LibraryView(generic.ListView):
+    template_name = 'library.html'
+    context_object_name = 'resources_list'
+    model = Project
+
+    def get_context_data(self, **kwargs):
+        context = super(LibraryView, self).get_context_data(**kwargs)
+        context['resources_list'] = Project.objects.all()
+
+        return context
+
 class DashboardProjectsView(generic.ListView):
     template_name = 'dashboard/projects.html'
     context_object_name = 'projects_list'
