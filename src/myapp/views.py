@@ -585,7 +585,7 @@ def send_invite(request, project_id=0):
     doc.project = project
     doc.save()
 
-    host = request.META['HTTP_HOST'] + 'invite/claim?key='
+    host = request.META['HTTP_HOST'] + '/invite/claim?key='
 
     plaintext = get_template('mails/invite.txt')
     context = {
