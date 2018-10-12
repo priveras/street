@@ -27,7 +27,7 @@
                 </a>
                 <ul class="side-nav-second-level" aria-expanded="false">
                     <li>
-                        <a href="apps-calendar.html">Reports</a>
+                        <a href="{% url 'app:dashboard' %}">Reports</a>
                     </li>
                     <li>
                         <a href="{% url 'app:dashboard-projects' %}">Projects</a>
@@ -62,9 +62,16 @@
             </li>-->
             <li class="side-nav-item">
                 <a href="{% url 'app:learn' %}" class="side-nav-link">
-                    <i class="mdi mdi-clipboard-check-outline"></i>
+                    <i class="fa fa-graduation-cap"></i>
                     <!--<span class="badge badge-success float-right">7</span>-->
                     <span> Learn </span>
+                </a>
+            </li>
+            <li class="side-nav-item">
+                <a href="{% url 'app:learn' %}" class="side-nav-link">
+                    <i class="mdi mdi-clipboard-check-outline"></i>
+                    <!--<span class="badge badge-success float-right">7</span>-->
+                    <span> Library </span>
                 </a>
             </li>
 

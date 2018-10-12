@@ -18,18 +18,18 @@ from .forms import InviteForm, ObjectiveForm
 
 from .models import Project, Team, Comment, Assumption, Problem, BusinessModel
 from .models import Solution, Metric, File, Profile, Summary, Past, Future
-from .models import Elevator, Tutorial, Progress, Dvf, Link, Zone, Invite
+from .models import Elevator, Tutorial, Progress, Dvf, Link, Zone, Invite, Resource
 from .models import Objective
 from django.http import HttpResponseRedirect
 
 class LibraryView(generic.ListView):
     template_name = 'library.html'
     context_object_name = 'resources_list'
-    model = Project
+    model = Resource
 
     def get_context_data(self, **kwargs):
         context = super(LibraryView, self).get_context_data(**kwargs)
-        context['resources_list'] = Project.objects.all()
+        context['resources_list'] = Resource.objects.all()
 
         return context
 
@@ -40,7 +40,7 @@ class DashboardProjectsView(generic.ListView):
 
     def get_context_data(self, **kwargs):
         context = super(DashboardProjectsView, self).get_context_data(**kwargs)
-        context['projects_list'] = Project.objects.all()
+        context['projects_list'] = Project.objects.order_by("-created_at")
 
         return context
 
@@ -144,9 +144,10 @@ class DetailView(generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super(DetailView, self).get_context_data(**kwargs)
 
-        if not Team.objects.filter(user=self.request.user,
+        if not self.request.user.is_superuser:
+            if not Team.objects.filter(user=self.request.user,
                 project__id=self.object.id).exists():
-            raise Http404
+                raise Http404
 
         context['team'] = Team.objects.filter(project=self.object).filter(permission="edit")
 

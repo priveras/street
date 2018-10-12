@@ -1,6 +1,19 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+class Resource(models.Model):
+    user = models.ForeignKey(User)
+    title = models.CharField(max_length=300, blank=True)
+    excerpt = models.TextField(blank=True)
+    link = models.CharField(max_length=300, blank=True)
+    file = models.FileField(upload_to='files/%Y%m%d', blank=True)
+    featured = models.BooleanField(default=False, blank=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(db_index=True, auto_now_add=True)
+
+    def __str__(self):
+        return str(self.title)
+
 class Progress(models.Model):
     user = models.ForeignKey(User, unique=True)
     zx_dashboard = models.BooleanField(default=False, blank=True)

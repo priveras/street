@@ -21,13 +21,13 @@
 <!-- end page title -->
 <div class="row">
     {% for project in projects_list %}
-    <div class="col-12">
+    <div class="col-md-6 col-xl-4">
         <!-- project card -->
         <div class="card d-block">
             <div class="card-body">
                 <!-- project title-->
                 <h4 class="mt-0">
-                    <a href="javascript:void(0);" class="text-dark">{{project.title}}</a>
+                    <a href="{% url 'app:detail' project.slug %}" class="text-dark">{{project.title}}</a>
                 </h4>
                 {% if project.status == "Active" %}
                 <div class="badge badge-success mb-3">{{project.status}}</div>
@@ -41,42 +41,70 @@
                 <div class="badge badge-primary mb-3">{{project.stage}}</div>
 
                 {% if project.description %}
-                <p class="text-muted font-13 mb-3 text-justify">{{project.description|truncatechars:120}} <a href="{% url 'app:detail' project.slug %}" class="font-weight-bold text-muted">view more</a>
+                <p style="min-height:57px" class="text-muted font-13 mb-3 text-justify">{{project.description|truncatechars:120}} <a href="{% url 'app:detail' project.slug %}" class="font-weight-bold text-muted">view more</a>
                 </p>
                 {% else %}
-                <p style="min-height:57px" class="text-muted font-13 mb-3 text-justify">No description for this project.
+                <p style="min-height:57px" class="text-muted font-13 mb-3 text-justify">No description available
                     <br><br><br>
                 </p>
                 {% endif %}
 
+
                 <!-- project detail-->
                 <p class="mb-1">
                     <span class="pr-2 text-nowrap mb-2 d-inline-block">
-                        <i class="mdi mdi-format-list-bulleted-type text-muted"></i>
+                        <b>{{project.elevator_set.count }}</b> Elevator Pitch
+                    </span>
+                    <span class="pr-2 text-nowrap mb-2 d-inline-block">
+                        <b>{{project.problem_set.count }}</b> Problem
+                    </span>
+                    <span class="pr-2 text-nowrap mb-2 d-inline-block">
+                        <b>{{project.businessmodel_set.count }}</b> Business Model
+                    </span>
+                    <span class="pr-2 text-nowrap mb-2 d-inline-block">
+                        <b>{{project.solution_set.count }}</b> Solution
+                    </span>
+                    <span class="pr-2 text-nowrap mb-2 d-inline-block">
+                        <b>{{project.status_set.count }}</b> Status
+                    </span>
+                    <span class="pr-2 text-nowrap mb-2 d-inline-block">
+                        <b>{{project.dvf_set.count }}</b> DVF
+                    </span>
+                    <span class="pr-2 text-nowrap mb-2 d-inline-block">
+                        <b>{{project.future_set.count }}</b> Priorities
+                    </span>
+                    <span class="pr-2 text-nowrap mb-2 d-inline-block">
+                        <b>{{project.objective_set.count }}</b> Objectives
+                    </span>
+                    <span class="pr-2 text-nowrap mb-2 d-inline-block">
                         <b>{{project.assumption_set.count }}</b> Assumptions
                     </span>
                     <span class="text-nowrap mb-2 d-inline-block">
-                        <i class="mdi mdi-comment-multiple-outline text-muted"></i>
                         <b>{{project.comment_set.count }}</b> Comments
                     </span>
                 </p>
-                 <div>
-                    {% for member in project.team_set.all|slice:":4" %}
+                <div>
+                    {% for member in project.team_set.all %}
                     <a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{member.user.first_name}} {{member.user.last_name}}" class="d-inline-block">
                         {% for profile in member.user.profile_set.all %}
                         <img src="{{profile.profile_image.url}}" class="rounded-circle avatar-xs">
                         {% endfor %}
                     </a>
-                   {% endfor %}
-                   {% if project.team_set.count > 4 %}
-                   +<a href="javascript:void(0);" class="d-inline-block text-dark font-weight-bold ml-2">
-                        {{project.team_set.count|add:"-4"}} more
-                    </a>
-                    {% endif %}
+                    {% endfor %}
+
                 </div>
             </div> <!-- end card-body-->
+            <!--<ul class="list-group list-group-flush">
+                <li class="list-group-item p-3">
+                    <p class="mb-2 font-weight-bold">Progress <span class="float-right">100%</span></p>
+                    <div class="progress progress-sm">
+                        <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%;">
+                        </div>
+                    </div>
+                </li>
+            </ul>-->
         </div> <!-- end card-->
-    </div>
+    </div> <!-- end col -->
     {% endfor %}
 </div>
 {% endblock %}
