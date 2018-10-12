@@ -22,6 +22,17 @@ from .models import Elevator, Tutorial, Progress, Dvf, Link, Zone, Invite
 from .models import Objective
 from django.http import HttpResponseRedirect
 
+class DashboardProjectsView(generic.ListView):
+    template_name = 'dashboard/projects.html'
+    context_object_name = 'projects_list'
+    model = Project
+
+    def get_context_data(self, **kwargs):
+        context = super(DashboardProjectsView, self).get_context_data(**kwargs)
+        context['projects_list'] = Project.objects.all()
+
+        return context
+
 def index(request):
     return HttpResponseRedirect('/projects/')
 
@@ -67,7 +78,7 @@ def learn(request):
     })
 
 class DashboardView(generic.ListView):
-    template_name = 'dashboard.html'
+    template_name = 'dashboard/reports.html'
     # context_object_name = 'users_list'
     model = Project
 
@@ -303,6 +314,8 @@ class InfoView(generic.CreateView):
         user.first_name = self.request.POST.get('first_name', '')
         user.last_name = self.request.POST.get('last_name', '')
         user.save()
+
+        
 
         #if there is an existent profile, edit it
         profile = Profile.objects.filter(user=self.request.user).first()

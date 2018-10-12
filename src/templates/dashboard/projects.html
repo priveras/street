@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+{% block content %}
+<input type="hidden" id="project" value="{{ project.id }}">
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">BOX OS</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'app:home' %}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Projects</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Dashboard Projects Details</h4>
+        </div>
+    </div>
+</div>
+<!-- end page title -->
+<div class="row">
+    {% for project in projects_list %}
+    <div class="col-12">
+        <!-- project card -->
+        <div class="card d-block">
+            <div class="card-body">
+                <!-- project title-->
+                <h4 class="mt-0">
+                    <a href="javascript:void(0);" class="text-dark">{{project.title}}</a>
+                </h4>
+                {% if project.status == "Active" %}
+                <div class="badge badge-success mb-3">{{project.status}}</div>
+                {% elif project.status == "Archived" %}
+                <div class="badge badge-secondary mb-3">{{project.status}}</div>
+                {% elif project.status == "Killed" %}
+                <div class="badge badge-danger mb-3">{{project.status}}</div>
+                {% else %}
+                <div class="badge badge-secondary mb-3">{{project.status}}</div>
+                {% endif %}
+                <div class="badge badge-primary mb-3">{{project.stage}}</div>
+
+                {% if project.description %}
+                <p class="text-muted font-13 mb-3 text-justify">{{project.description|truncatechars:120}} <a href="{% url 'app:detail' project.slug %}" class="font-weight-bold text-muted">view more</a>
+                </p>
+                {% else %}
+                <p style="min-height:57px" class="text-muted font-13 mb-3 text-justify">No description for this project.
+                    <br><br><br>
+                </p>
+                {% endif %}
+
+                <!-- project detail-->
+                <p class="mb-1">
+                    <span class="pr-2 text-nowrap mb-2 d-inline-block">
+                        <i class="mdi mdi-format-list-bulleted-type text-muted"></i>
+                        <b>{{project.assumption_set.count }}</b> Assumptions
+                    </span>
+                    <span class="text-nowrap mb-2 d-inline-block">
+                        <i class="mdi mdi-comment-multiple-outline text-muted"></i>
+                        <b>{{project.comment_set.count }}</b> Comments
+                    </span>
+                </p>
+                 <div>
+                    {% for member in project.team_set.all|slice:":4" %}
+                    <a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{member.user.first_name}} {{member.user.last_name}}" class="d-inline-block">
+                        {% for profile in member.user.profile_set.all %}
+                        <img src="{{profile.profile_image.url}}" class="rounded-circle avatar-xs">
+                        {% endfor %}
+                    </a>
+                   {% endfor %}
+                   {% if project.team_set.count > 4 %}
+                   +<a href="javascript:void(0);" class="d-inline-block text-dark font-weight-bold ml-2">
+                        {{project.team_set.count|add:"-4"}} more
+                    </a>
+                    {% endif %}
+                </div>
+            </div> <!-- end card-body-->
+        </div> <!-- end card-->
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

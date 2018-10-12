@@ -17,13 +17,13 @@ restart:
 	docker-compose stop && docker-compose start
 
 shell-nginx:
-	docker exec -ti nz01 bash
+	docker exec -ti nzos bash
 
 shell-web:
-	docker exec -ti dz01 bash
+	docker exec -ti dzos bash
 
 shell-db:
-	docker exec -ti pz01 bash
+	docker exec -ti pzos bash
 
 log-nginx:
 	docker-compose logs nginx  

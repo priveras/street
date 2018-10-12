@@ -14,6 +14,7 @@ urlpatterns = [
     url(r'^projects/$', login_required(views.HomeView.as_view()), name='home'),
     url(r'^adminpanel/$', login_required(views.AdminpanelView.as_view()), name='adminpanel'),
     url(r'^dashboard/$', login_required(views.DashboardView.as_view()), name='dashboard'),
+    url(r'^dashboard/projects/$', login_required(views.DashboardProjectsView.as_view()), name='dashboard-projects'),
     url(r'^accounts/info/$', login_required(views.InfoView.as_view()), name='info'),
     url(r'^learn/$', login_required(views.learn), name='learn'),
     url(r'^faq/$', login_required(views.FaqView.as_view()), name='faq'),
