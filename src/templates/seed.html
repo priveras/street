@@ -673,7 +673,7 @@
                     <p><i class="text-muted fa fa-exclamation-triangle"></i> No data available</p>
                     {% else %}
                     <tr>
-                        <th>Learn</th>
+                        <th></th>
                         <th>What to Test</th>
                         <th>How to Test</th>
                         <th>Learnings</th>
@@ -688,15 +688,31 @@
                             <small>{{assumption.updated_at|date:'M d, y'}}</small>
                         </td>
                         <td>
+                            {% if not assumption.assumption %}
+                            NA
+                            {% else %}
                             {{assumption.assumption}}
+                            {% endif %}
                         </td>
                         <td>
+                            {% if not assumption.metric %}
+                            NA
+                            {% else %}
                             {{assumption.metric}}
+                            {% endif %}
                         </td>
                         <td>
+                            {% if not assumption.learnings %}
+                            NA
+                            {% else %}
                             {{assumption.learnings}}
+                            {% endif %}
                         </td>
                         <td>
+                            {% if not assumption.status %}
+                            NA
+                            {% else %}
+                            
                             {% if assumption.status == "Validated" %}
                             <span class="badge badge-success">{{assumption.status}}</span>
                             {% elif assumption.status == "In Progress" %}
@@ -705,6 +721,7 @@
                             <span class="badge badge-light">{{assumption.status}}</span>
                             {% else %}
                             <span class="badge badge-danger">{{assumption.status}}</span>
+                            {% endif %}
                             {% endif %}
                         </td>
                         {% if permission %}

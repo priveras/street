@@ -41,6 +41,8 @@ class DashboardProjectsView(generic.ListView):
     def get_context_data(self, **kwargs):
         context = super(DashboardProjectsView, self).get_context_data(**kwargs)
         context['projects_list'] = Project.objects.order_by("-created_at")
+        context['assumptions'] = Assumption.objects.all()
+        context['objectives'] = Objective.objects.all()
 
         return context
 
@@ -236,8 +238,11 @@ class HomeView(generic.ListView):
     context_object_name = 'projects_list'
     model = Project
 
+
     def get_context_data(self, **kwargs):
         context = super(HomeView, self).get_context_data(**kwargs)
+
+        self.request.session['session_var_name'] = "Value"
 
         if date.today() == self.request.user.date_joined.date():
             alert = True

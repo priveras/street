@@ -18,16 +18,208 @@
         </div>
     </div>
 </div>
-<!-- end page title -->
+<div class="row">
+    <div class="col-xl-6">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title mt-2">Project Summary</h4>
+
+                <div class="table-responsive" style="overflow:scroll; height:400px">
+                    <table class="table table-centered table-hover mb-0">
+                        <tbody>
+                            <tr>
+                                <th>Project</th>
+                                <th>DVF</th>
+                                <th>Assumptions</th>
+                                <th>Objectives</th>
+                                <th>Priorities</th>
+                                <th>Status</th>
+                            </tr>
+                            {% for project in projects_list %}
+                            <tr>
+                                <td>
+                                    <h5 class="font-14 mb-1 font-weight-normal">{{project.title}}</h5>
+                                    <span class="text-muted font-13">{{project.created_at}}</span>
+                                </td>
+                                <td class="text-center">
+                                    {% if project.dvf_set.count > 0 %}
+                                    <i class="fa fa-check-square text-success"></i>
+                                    {% else %}
+                                    <i class="fa fa-times text-muted"></i>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <h5 class="font-14 mb-1 font-weight-normal text-center">{{project.assumption_set.count}}</h5>
+                                </td>
+                                <td>
+                                    <h5 class="font-14 mb-1 font-weight-normal text-center">{{project.objective_set.count}}</h5>
+                                </td>
+                                <td>
+                                    <h5 class="font-14 mb-1 font-weight-normal text-center">{{project.future_set.count}}</h5>
+                                </td>
+                                <td>
+                                    <h5 class="font-14 mb-1 font-weight-normal text-center">{{project.summary_set.count}}</h5>
+                                </td>
+                            </tr>
+                            {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div> <!-- end table-responsive-->
+            </div> <!-- end card-body-->
+        </div> <!-- end card-->
+    </div> <!-- end col-->
+
+    <div class="col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title mb-3">Totals</h4>
+
+                <div class="chart-widget-list">
+                    <p>
+                        <i class="mdi mdi-square text-primary"></i> Projects
+                        <span class="float-right">{{projects_list.count}}</span>
+                    </p>
+                    <p>
+                        <i class="mdi mdi-square text-danger"></i> Assumptions
+                        <span class="float-right">{{assumptions.count}}</span>
+                    </p>
+                    <p>
+                        <i class="mdi mdi-square text-success"></i> Objectives
+                        <span class="float-right">{{objectives.count}}</span>
+                    </p>
+                    <p class="mb-0">
+                        <i class="mdi mdi-square"></i> E-mail
+                        <span class="float-right">$154.02</span>
+                    </p>
+                </div>
+            </div> <!-- end card-body-->
+        </div> <!-- end card-->
+    </div> <!-- end col-->
+
+    <div class="col-xl-3">
+        <div class="card bg-primary">
+            <div class="card-body">
+                <div class="dropdown float-right">
+                    <a href="#" class="dropdown-toggle text-white arrow-none card-drop" data-toggle="dropdown" aria-expanded="false">
+                        <i class="mdi mdi-dots-vertical"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <!-- item-->
+                        <a href="javascript:void(0);" class="dropdown-item">Sales Report</a>
+                        <!-- item-->
+                        <a href="javascript:void(0);" class="dropdown-item">Export Report</a>
+                        <!-- item-->
+                        <a href="javascript:void(0);" class="dropdown-item">Profit</a>
+                        <!-- item-->
+                        <a href="javascript:void(0);" class="dropdown-item">Action</a>
+                    </div>
+                </div>
+                <h4 class="header-title text-white mb-4">Average Sale Size</h4>
+                <div class="text-center">
+                    <p class="mt-4 mb-2">
+                        <span class="badge badge-danger">-23.47 %</span>
+                    </p>
+                    <h3 class="font-weight-normal text-white mb-2">$154.21</h3>
+                    <p class="text-light text-uppercase font-13 font-weight-bold">Per Sale</p>
+                    <a href="javascript: void(0);" class="btn btn-outline-light btn-sm mb-1">More
+                        <i class="mdi mdi-arrow-right ml-1"></i>
+                    </a>
+
+                </div> <!-- end card-body-->
+            </div> <!-- end card-->
+        </div> <!-- end col-->
+
+        <div class="card">
+            <div class="card-body">
+                <div class="dropdown float-right">
+                    <a href="#" class="dropdown-toggle arrow-none card-drop" data-toggle="dropdown" aria-expanded="false">
+                        <i class="mdi mdi-dots-vertical"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <!-- item-->
+                        <a href="javascript:void(0);" class="dropdown-item">Sales Report</a>
+                        <!-- item-->
+                        <a href="javascript:void(0);" class="dropdown-item">Export Report</a>
+                        <!-- item-->
+                        <a href="javascript:void(0);" class="dropdown-item">Profit</a>
+                        <!-- item-->
+                        <a href="javascript:void(0);" class="dropdown-item">Action</a>
+                    </div>
+                </div>
+                <h4 class="header-title mb-2">Recent Activity</h4>
+
+                <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 456px;"><div class="slimscroll" style="max-height: 171px; overflow: hidden; width: auto; height: 456px;">
+                    <div class="timeline-alt pb-0">
+                        <div class="timeline-item">
+                            <i class="mdi mdi-upload bg-info-lighten text-info timeline-icon"></i>
+                            <div class="timeline-item-info">
+                                <a href="#" class="text-info font-weight-bold mb-1 d-block">You sold an item</a>
+                                <small>Paul Burgess just purchased “Hyper - Admin Dashboard”!</small>
+                                <p>
+                                    <small class="text-muted">5 minutes ago</small>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <i class="mdi mdi-airplane bg-primary-lighten text-primary timeline-icon"></i>
+                            <div class="timeline-item-info">
+                                <a href="#" class="text-primary font-weight-bold mb-1 d-block">Product on the Bootstrap Market</a>
+                                <small>Dave Gamache added
+                                    <span class="font-weight-bold">Admin Dashboard</span>
+                                </small>
+                                <p>
+                                    <small class="text-muted">30 minutes ago</small>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <i class="mdi mdi-microphone bg-info-lighten text-info timeline-icon"></i>
+                            <div class="timeline-item-info">
+                                <a href="#" class="text-info font-weight-bold mb-1 d-block">Robert Delaney</a>
+                                <small>Send you message
+                                    <span class="font-weight-bold">"Are you there?"</span>
+                                </small>
+                                <p>
+                                    <small class="text-muted">2 hours ago</small>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <i class="mdi mdi-upload bg-primary-lighten text-primary timeline-icon"></i>
+                            <div class="timeline-item-info">
+                                <a href="#" class="text-primary font-weight-bold mb-1 d-block">Audrey Tobey</a>
+                                <small>Uploaded a photo
+                                    <span class="font-weight-bold">"Error.jpg"</span>
+                                </small>
+                                <p>
+                                    <small class="text-muted">14 hours ago</small>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end timeline -->
+                </div><div class="slimScrollBar" style="background: rgb(158, 165, 171); width: 8px; position: absolute; top: 0px; opacity: 0.4; display: block; border-radius: 7px; z-index: 99; right: 1px; height: 65.8581px;"></div><div class="slimScrollRail" style="width: 8px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div></div> <!-- end slimscroll -->
+            </div>
+            <!-- end card-body -->
+        </div>
+        <!-- end card-->
+    </div>
+    <!-- end col -->
+
+</div>
 <div class="row">
     {% for project in projects_list %}
-    <div class="col-md-6 col-xl-4">
+    <div class="col-md-6 col-xl-3">
         <!-- project card -->
         <div class="card d-block">
             <div class="card-body">
                 <!-- project title-->
                 <h4 class="mt-0">
-                    <a href="{% url 'app:detail' project.slug %}" class="text-dark">{{project.title}}</a>
+                    <a href="{% url 'app:detail' project.slug %}" class="text-dark">{{project.title | capfirst}}</a>
                 </h4>
                 {% if project.status == "Active" %}
                 <div class="badge badge-success mb-3">{{project.status}}</div>
@@ -41,48 +233,13 @@
                 <div class="badge badge-primary mb-3">{{project.stage}}</div>
 
                 {% if project.description %}
-                <p style="min-height:57px" class="text-muted font-13 mb-3 text-justify">{{project.description|truncatechars:120}} <a href="{% url 'app:detail' project.slug %}" class="font-weight-bold text-muted">view more</a>
+                <p class="text-muted font-13 text-justify">{{project.description|truncatechars:120}} <a href="{% url 'app:detail' project.slug %}" class="font-weight-bold text-muted">view more</a>
                 </p>
                 {% else %}
                 <p style="min-height:57px" class="text-muted font-13 mb-3 text-justify">No description available
                     <br><br><br>
                 </p>
                 {% endif %}
-
-
-                <!-- project detail-->
-                <p class="mb-1">
-                    <span class="pr-2 text-nowrap mb-2 d-inline-block">
-                        <b>{{project.elevator_set.count }}</b> Elevator Pitch
-                    </span>
-                    <span class="pr-2 text-nowrap mb-2 d-inline-block">
-                        <b>{{project.problem_set.count }}</b> Problem
-                    </span>
-                    <span class="pr-2 text-nowrap mb-2 d-inline-block">
-                        <b>{{project.businessmodel_set.count }}</b> Business Model
-                    </span>
-                    <span class="pr-2 text-nowrap mb-2 d-inline-block">
-                        <b>{{project.solution_set.count }}</b> Solution
-                    </span>
-                    <span class="pr-2 text-nowrap mb-2 d-inline-block">
-                        <b>{{project.status_set.count }}</b> Status
-                    </span>
-                    <span class="pr-2 text-nowrap mb-2 d-inline-block">
-                        <b>{{project.dvf_set.count }}</b> DVF
-                    </span>
-                    <span class="pr-2 text-nowrap mb-2 d-inline-block">
-                        <b>{{project.future_set.count }}</b> Priorities
-                    </span>
-                    <span class="pr-2 text-nowrap mb-2 d-inline-block">
-                        <b>{{project.objective_set.count }}</b> Objectives
-                    </span>
-                    <span class="pr-2 text-nowrap mb-2 d-inline-block">
-                        <b>{{project.assumption_set.count }}</b> Assumptions
-                    </span>
-                    <span class="text-nowrap mb-2 d-inline-block">
-                        <b>{{project.comment_set.count }}</b> Comments
-                    </span>
-                </p>
                 <div>
                     {% for member in project.team_set.all %}
                     <a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{member.user.first_name}} {{member.user.last_name}}" class="d-inline-block">

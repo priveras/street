@@ -78,7 +78,7 @@
                 </div>
                 <!-- project title-->
                 <h4 class="mt-0">
-                    <a href="{% url 'app:detail' project.slug %}" class="text-dark">{{project.title}}</a>
+                    <a href="{% url 'app:detail' project.slug %}" class="text-dark">{{project.title | capfirst}}</a>
                 </h4>
                 {% if project.status == "Active" %}
                 <div class="badge badge-success mb-3">{{project.status}}</div>
