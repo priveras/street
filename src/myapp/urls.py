@@ -52,7 +52,7 @@ urlpatterns = [
         login_required(views.send_invite),
         name='send-invite'),
 
-    url(r'^invite$',
+    url(r'^invite/claim$',
         login_required(views.check_invite),
         name='check-invite'),
 
