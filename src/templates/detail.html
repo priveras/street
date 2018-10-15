@@ -133,7 +133,7 @@
             </div> <!-- end card-body-->
 
         </div> <!-- end card-->
-        
+
 
         <div class="card">
             <div class="card-body">
@@ -514,7 +514,7 @@
                 </div>
             </div> <!-- end card-body-->
             <div class="card-footer text-muted">
-                <a class="btn btn-primary float-right" href="{% url 'app:seed' project.slug %}">Access Stage</a>
+                <a class="btn btn-primary float-right" href="{% url 'app:seed' project.slug %}">Status Update</a>
             </div>
         </div>
         {% elif project.stage == 'Seed Launch' %}
@@ -579,7 +579,7 @@
             </div> <!-- end card-body-->
             <div class="card-footer text-muted">
                 <div class="btn-group float-right">
-                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Access Stage</button>
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Status Update</button>
                     <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 37px, 0px);">
                         <a class="dropdown-item" href="{% url 'app:seed' project.slug %}">Seed I to III</a>
                         <a class="dropdown-item" href="{% url 'app:seed-launch' project.slug %}">Seed Launch</a>
@@ -649,7 +649,7 @@
           </div> <!-- end card-body-->
           <div class="card-footer text-muted">
                 <div class="btn-group float-right">
-                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Access Stage</button>
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Status Update</button>
                     <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 37px, 0px);">
                         <a class="dropdown-item" href="{% url 'app:seed' project.slug %}">Seed I to III</a>
                         <a class="dropdown-item" href="{% url 'app:seed-launch' project.slug %}">Seed Launch</a>
@@ -666,10 +666,10 @@
                         <i class="mdi mdi-information-outline" data-toggle="tooltip" data-placement="top" title="" data-original-title="Learn More"></i>
                     </a>
                 </h5>
-                <p><i class="text-muted fa fa-exclamation-triangle"></i> To access this section the project's stage has to be Seed I to III, Seed Launch, or Launch. 
+                <p><i class="text-muted fa fa-exclamation-triangle"></i> To access this section the project's stage has to be Seed I to III, Seed Launch, or Launch.
                 {% if permission %}
-                <a 
-                  style="cursor:pointer" 
+                <a
+                  style="cursor:pointer"
                   class="edit-doc text-primary"
                   data-id="{{ project.id }}"
                   data-name="project"
