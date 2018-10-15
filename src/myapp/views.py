@@ -43,6 +43,15 @@ class DashboardProjectsView(generic.ListView):
         context['projects_list'] = Project.objects.order_by("-created_at")
         context['assumptions'] = Assumption.objects.all()
         context['objectives'] = Objective.objects.all()
+        context['elevators'] = Elevator.objects.all()
+        context['problems'] = Problem.objects.all()
+        context['solutions'] = Solution.objects.all()
+        context['models'] = BusinessModel.objects.all()
+        context['dvf'] = Dvf.objects.all()
+        context['futures'] = Future.objects.all()
+        context['summaries'] = Summary.objects.all()
+        context['links'] = Link.objects.all()
+        context['files'] = File.objects.all()
 
         return context
 
