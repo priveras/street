@@ -22,6 +22,12 @@
 
 <div class="row">
     <div class="col-md-8">
+        {% if project.status == "Draft" %}
+        <div class="alert alert-secondary" role="alert">
+            <p class="alert-heading"><i class="fa fa-info-circle"></i> Draft</p>
+            <p>This project is in "Draft" mode. If this is only for testing purposes, please leave it in draft. If it's a real project, update status to "Active" here: <a class="edit-doc text-primary" style="cursor:pointer" data-id="{{ project.id }}" data-name="project" data-title="Edit Project">Update Status</a></p>
+        </div>
+        {% endif %}
         <!-- project card -->
         <div class="card d-block">
             <div class="card-body">
@@ -205,9 +211,14 @@
                     <a data-toggle="collapse" href="#cardCollpase1" role="button" aria-expanded="false" aria-controls="cardCollpase1"><i class="mdi mdi-minus"></i></a>
                     <a href="#" data-toggle="remove"><i class="mdi mdi-close"></i></a>
                 </div>
-                <h4 class="header-title">Problem</h4>
+                <h4 class="header-title">
+                    Problem
+                    <a href="" class="text-muted" data-toggle="modal" data-target="#problem">
+                        <i class="mdi mdi-information-outline" data-toggle="tooltip" data-placement="top" title="" data-original-title="Learn More"></i>
+                    </a>
+                </h4>
                 <p class="text-muted font-14 mb-2">
-                    Add your problem in this section and keep track of the hypothesis results
+                    Add your problem statement in this section and keep track of the hypothesis results. Need help? <a href="" data-toggle="modal" data-target="#problem">Learn more</a>.
                 </p>
 
                 <div class="table-responsive collapse show" id="cardCollpase1" style="max-height:125px; overflow-y: auto;">
@@ -220,7 +231,6 @@
                             <tr class="text-justify">
                                 <td>
                                     {{problem.text | linebreaks}}
-                                    <br><br>
                                     <small class="text-muted">{{problem.updated_at|date}}</small>
                                 </td>
                                 <td>
@@ -275,9 +285,14 @@
                     <a data-toggle="collapse" href="#cardCollpase2" role="button" aria-expanded="false" aria-controls="cardCollpase1"><i class="mdi mdi-minus"></i></a>
                     <a href="#" data-toggle="remove"><i class="mdi mdi-close"></i></a>
                 </div>
-                <h4 class="header-title">Solution</h4>
+                <h4 class="header-title">
+                    Solution
+                    <a href="" class="text-muted" data-toggle="modal" data-target="#solution">
+                        <i class="mdi mdi-information-outline" data-toggle="tooltip" data-placement="top" title="" data-original-title="Learn More"></i>
+                    </a>
+                </h4>
                 <p class="text-muted font-14 mb-2">
-                    Add your solution in this section and keep track of the hypothesis results
+                    Add your solution statement in this section and keep track of the hypothesis results. Need help? <a href="" data-toggle="modal" data-target="#solution">Learn more</a>.
                 </p>
 
                 <div class="table-responsive collapse show" id="cardCollpase2" style="max-height:125px; overflow-y: auto;">
@@ -290,7 +305,6 @@
                             <tr class="text-justify">
                                 <td>
                                     {{solution.text | linebreaks}}
-                                    <br><br>
                                     <small class="text-muted">{{solution.updated_at|date}}</small>
                                 </td>
                                 <td>
@@ -345,9 +359,14 @@
                     <a data-toggle="collapse" href="#cardCollpase3" role="button" aria-expanded="false" aria-controls="cardCollpase3"><i class="mdi mdi-minus"></i></a>
                     <a href="#" data-toggle="remove"><i class="mdi mdi-close"></i></a>
                 </div>
-                <h4 class="header-title">Business Model</h4>
+                <h4 class="header-title">
+                    Business Model
+                    <a href="" class="text-muted" data-toggle="modal" data-target="#businessmodel">
+                        <i class="mdi mdi-information-outline" data-toggle="tooltip" data-placement="top" title="" data-original-title="Learn More"></i>
+                    </a>
+                </h4>
                 <p class="text-muted font-14 mb-2">
-                    Add your business model in this section and keep track of the hypothesis results
+                    Add your business model statement in this section and keep track of the hypothesis results. Need help? <a href="" data-toggle="modal" data-target="#businessmodel">Learn more</a>.
                 </p>
 
                 <div class="table-responsive collapse show" id="cardCollpase3" style="max-height:125px; overflow-y: auto;">
@@ -359,8 +378,7 @@
                             {% for model in models %}
                             <tr class="text-justify">
                                 <td>
-                                    {{model.text}}
-                                    <br><br>
+                                    {{model.text | linebreaks}}
                                     <small class="text-muted">{{model.updated_at|date}}</small>
                                 </td>
                                 <td>
@@ -436,7 +454,7 @@
                         <img class="mr-3 avatar-sm rounded-circle" src="{{profile.profile_image.url}}" alt="Generic placeholder image">
                         {% endfor %}
                         <div class="media-body">
-                            <h5 class="mt-0">{{comment.user.first_name}} {{comment.user.last_name}}</h5>
+                            <h5 class="mt-0">{{comment.user.first_name}} {{comment.user.last_name}}<small> {{comment.created_at|date}}</small></h5>
                             {{comment.text}}
                         </div>
                     </div>
@@ -689,54 +707,6 @@
                         <i class="dripicons-dots-3"></i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(-142px, 20px, 0px);">
-                        <a href="javascript:void(0);" data-toggle="modal"
-                          data-target="#file-modal" class="dropdown-item add-file">
-                          <i class="mdi mdi-plus-circle mr-1"></i>
-                          Add
-                        </a>
-                    </div>
-                    {% endif %}
-                </div>
-                <h5 class="card-title mb-3">Files</h5>
-                {% if not files %}
-                <p><i class="text-muted fa fa-exclamation-triangle"></i> No files available</p>
-                {% endif %}
-                {% for file in files %}
-                <div class="card mb-1 shadow-none border border-light">
-                    <div class="p-2">
-                        <div class="row align-items-center">
-                            <div class="col-auto">
-                                <i class="mdi mdi-file" style="font-size:20px"></i>
-                            </div>
-                            <div class="col pl-0">
-                                <a href="{{file.file.url}}" target="_blank" class="text-muted font-weight-bold">{{file.title|truncatechars:25}}</a>
-                                <p class="mb-0"></p>
-                            </div>
-                            <div class="col-auto">
-
-                                <a href="/media/{{file.file}}" target="_blank" class="btn btn-link btn-lg text-info">
-                                    <i class="dripicons-download"></i>
-                                </a>
-                                <span aria-hidden="true"
-                                    class="remove"
-                                    data-name="file"
-                                    data-id={{file.id}}>×</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
-
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-body">
-                <div class="dropdown card-widgets">
-                    {% if permission %}
-                    <a href="javascript:void(0);" class="dropdown-toggle arrow-none" data-toggle="dropdown" aria-expanded="false">
-                        <i class="dripicons-dots-3"></i>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(-142px, 20px, 0px);">
                         <a
                           href="javascript: void(0);"
                           data-name="link"
@@ -770,6 +740,54 @@
                                     class="remove"
                                     data-name="link"
                                     data-id={{link.id}}>×</span>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <div class="dropdown card-widgets">
+                    {% if permission %}
+                    <a href="javascript:void(0);" class="dropdown-toggle arrow-none" data-toggle="dropdown" aria-expanded="false">
+                        <i class="dripicons-dots-3"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(-142px, 20px, 0px);">
+                        <a href="javascript:void(0);" data-toggle="modal"
+                          data-target="#file-modal" class="dropdown-item add-file">
+                          <i class="mdi mdi-plus-circle mr-1"></i>
+                          Add
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+                <h5 class="card-title mb-3">Files</h5>
+                {% if not files %}
+                <p><i class="text-muted fa fa-exclamation-triangle"></i> No files available</p>
+                {% endif %}
+                {% for file in files %}
+                <div class="card mb-1 shadow-none border border-light">
+                    <div class="p-2">
+                        <div class="row align-items-center">
+                            <div class="col-auto">
+                                <i class="mdi mdi-file" style="font-size:20px"></i>
+                            </div>
+                            <div class="col pl-0">
+                                <a href="{{file.file.url}}" target="_blank" class="text-muted font-weight-bold">{{file.title|truncatechars:25}}</a>
+                                <p class="mb-0"></p>
+                            </div>
+                            <div class="col-auto">
+
+                                <a href="/media/{{file.file}}" target="_blank" class="btn btn-link btn-lg text-info">
+                                    <i class="dripicons-download"></i>
+                                </a>
+                                <span aria-hidden="true"
+                                    class="remove"
+                                    data-name="file"
+                                    data-id={{file.id}}>×</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1034,6 +1052,72 @@
                     <li>We help ____(consumer X)_____ who ___(problem)___ to ___(solution)___ by ___(how it works)___</li>
                     <li>Our product/technology is like the ___(insert analogy of comparative company)___ of/for ___(insert your category)___. For example, our venture is like Uber for Trucking.</li>
                 </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!--  Modal content for the above example -->
+<div class="modal fade" id="problem" tabindex="-1" role="dialog" aria-labelledby="problem" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myLargeModalLabel">Problem</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body text-justify" id="modal-body">
+                <p>Ideally your Problem should be a detailed description which encompasses various elements you’ve identified (first as Assumptions, then Hypotheses, then Validated, evidence-backed statements).</p>
+                <p>Elements might include:</p>
+                <ul>
+                    <li>A description of your primary user (age range, sex, demographic information)</li>
+                    <li>The underlying needs they’re trying to fulfill</li>
+                    <li>Their current behavior or choices</li>
+                    <li>Their current tension or frustration (pain points)</li>
+                    <li>An identification of what potential pain relievers are for the problem</li>
+                    <li>An estimated size of the problem or need (we often refer to this as the ‘Total Addressable Need’, which is where we try and identify how big the market may be to solve this problem).</li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!--  Modal content for the above example -->
+<div class="modal fade" id="solution" tabindex="-1" role="dialog" aria-labelledby="solution" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myLargeModalLabel">Solution</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body text-justify" id="modal-body">
+                <p>A "Solution" is just another word for a Product or Idea. We frame it as a solution to keep you focused on the user/customer and the problem you’re solving.</p>
+                <p>Here is your opportunity to lay out your idea. Describe what it is and how it works in detail. There’s no real right or wrong way to do this stage – but as usual, try to keep it simple and very clear for anyone to understand.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!--  Modal content for the above example -->
+<div class="modal fade" id="businessmodel" tabindex="-1" role="dialog" aria-labelledby="businessmodel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myLargeModalLabel">Business Model</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body text-justify" id="modal-body">
+                <p>A business model is a company's plan for how it will generate revenues and make a profit. It explains what products or services the business plans to manufacture and market, and how it plans to do so, including what expenses it will incur.</p>
+                <p>To develop it, we use a Business model canvas beacuse it focuses more on how the business actually works. This includes its key channels, resources, customers, partnerships, revenue model and so on.</p>
+                <p>Use this link to create your <a href="https://strategyzer.com/canvas/business-model-canvas" target="_blank">business model canvas</a></p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
