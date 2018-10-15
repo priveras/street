@@ -104,9 +104,9 @@ class DashboardView(generic.ListView):
         context['killed'] = Project.objects.filter(status="Killed")
 
 
-        context['concept_list'] = Project.objects.filter(stage = "Concept")
-        context['scale_list'] = Project.objects.filter(stage = "Scale")
-        context['seed_list'] = Project.objects.filter(stage = "Seed 3") | Project.objects.filter(stage = "Seed 2") | Project.objects.filter(stage = "Seed 1")
+        context['concept_list'] = Project.objects.filter(stage = "Concept").filter(status = "Active")
+        context['scale_list'] = Project.objects.filter(stage = "Scale").filter(status = "Active")
+        context['seed_list'] = Project.objects.filter(stage = "Seed 3") | Project.objects.filter(stage = "Seed 2") | Project.objects.filter(stage = "Seed 1").filter(status = "Active")
         context['seedlaunch_list'] = Project.objects.filter(stage = "Seed Launch")
         context['launch_list'] = Project.objects.filter(stage = "Launch")
 
