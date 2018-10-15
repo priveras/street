@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from pinax.eventlog.models import log
 
 class Resource(models.Model):
     user = models.ForeignKey(User)
@@ -44,6 +45,7 @@ class Profile(models.Model):
     location = models.CharField(max_length=200)
     profile_image = models.FileField(upload_to='images/%Y%m%d', null=True)
 
+
     def __str__(self):
         return str(self.user)
 
@@ -79,13 +81,64 @@ class Project(models.Model):
         (STAGE_SCALE, 'Scale'),
         )
 
+    user = models.ForeignKey(User, blank=True, null=True)
     title = models.CharField(max_length=200, blank=False, null=False)
     slug = models.SlugField(max_length=200, unique=True)
     description = models.TextField(blank=True)
-    stage = models.CharField(choices=STAGES, max_length=200, blank=True)
+    stage = models.CharField(choices=STAGES, max_length=200)
     status = models.CharField(choices=STATUS_ALL, max_length=200)
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(db_index=True, auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+        if not self.id:
+            log(
+                user=self.user, 
+                action='CREATE_PROJECT',
+                obj=self,
+                extra={
+                    "project_slug": self.slug, 
+                    "project": self.title, 
+                    "stage": self.stage,
+                    "description": self.description,
+                    "status": self.status,
+                    "event": "created project"
+                    }
+                )
+        else:
+            log(
+                user=self.user, 
+                action='EDIT_PROJECT',
+                obj=self,
+                extra={
+                    "project_id": self.id, 
+                    "project": self.title, 
+                    "stage": self.stage,
+                    "description": self.description,
+                    "status": self.status,
+                    "event": "edited project"
+                    }
+                )
+
+        super(Project, self).save(args, kwargs)
+
+    def delete(self, *args, **kwargs):
+
+        log(
+            user=self.user, 
+            action='DELETE_PROJECT',
+            obj=self,
+            extra={
+                "project_id": self.id, 
+                "project": self.title, 
+                "stage": self.stage,
+                "description": self.description,
+                "status": self.status,
+                "event": "deleted project"
+                }
+            )
+
+        super(Project, self).delete(args, kwargs)
 
     def __str__(self):
         return str(self.title)
@@ -101,6 +154,51 @@ class Team(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(db_index=True, auto_now_add=True)
 
+    def save(self, *args, **kwargs):
+        if not self.id:
+            log(
+                user=self.user, 
+                action='ADD_TEAM',
+                obj=self,
+                extra={
+                    "project_id": self.project.id, 
+                    "project": self.project.title, 
+                    "permission": self.permission,
+                    "event": "joined project"
+                    }
+                )
+        else:
+            log(
+                user=self.user, 
+                action='EDIT_TEAM',
+                obj=self,
+                extra={
+                    "project_id": self.project.id, 
+                    "project": self.project.title, 
+                    "permission": self.permission,
+                    "event": "permission updated"
+                    }
+                )
+
+        super(Team, self).save(args, kwargs)
+    
+
+    def delete(self, *args, **kwargs):
+
+        log(
+            user=self.user, 
+            action='DELETE_TEAM',
+            obj=self,
+            extra={
+                "project_id": self.project.id, 
+                "project": self.project.title, 
+                "permission": self.permission,
+                "event": "permission updated"
+                }
+            )
+
+        super(Team, self).delete(args, kwargs)
+
     def __str__(self):
         return str(self.user)
 
@@ -110,6 +208,23 @@ class Comment(models.Model):
     text = models.TextField(blank=True)
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(db_index=True, auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+
+        if not self.id:
+            log(
+                user=self.user, 
+                action='ADD_COMMENT',
+                obj=self,
+                extra={
+                    "project_id": self.project.id, 
+                    "project": self.project.title, 
+                    "text": self.text,
+                    "event": "added a comment"
+                    }
+                )
+
+        super(Comment, self).save(args, kwargs)
 
     def __str__(self):
         return str(self.user)
@@ -124,6 +239,27 @@ class Link(models.Model):
 
     def __str__(self):
         return str(self.project)
+
+    def save(self, *args, **kwargs):
+
+        if not self.id:
+            log(
+                user=self.user, 
+                action='ADD_LINK',
+                obj=self,
+                extra={
+                    "project_id": self.project.id, 
+                    "project": self.project.title, 
+                    "title": self.title,
+                    "link": self.link,
+                    "event": "added a link"
+                    }
+                )
+
+        super(Link, self).save(args, kwargs)
+
+    def __str__(self):
+        return str(self.user)
 
 class Dvf(models.Model):
     user = models.ForeignKey(User)
@@ -200,6 +336,45 @@ class Assumption(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(db_index=True, auto_now_add=True)
 
+    def save(self, *args, **kwargs):
+
+        if not self.id:
+            log(
+                user=self.user, 
+                action='ADD_ASSUMPTION',
+                obj=self,
+                extra={
+                    "project_id": self.project.id, 
+                    "project": self.project.title, 
+                    "stage": self.stage,
+                    "dvf": self.dvf,
+                    "text": self.assumption,
+                    "metric": self.metric,
+                    "learnings": self.learnings,
+                    "status": self.status,
+                    "event": "added an assumption"
+                    }
+                )
+        else:
+            log(
+                user=self.user, 
+                action='EDIT_ASSUMPTION',
+                obj=self,
+                extra={
+                    "project_id": self.project.id, 
+                    "project": self.project.title, 
+                    "stage": self.stage,
+                    "dvf": self.dvf,
+                    "text": self.assumption,
+                    "metric": self.metric,
+                    "learnings": self.learnings,
+                    "status": self.status,
+                    "event": "added an assumption"
+                    }
+                )
+
+        super(Assumption, self).save(args, kwargs)
+
     def __str__(self):
         return str(self.project)
 
@@ -274,6 +449,37 @@ class Problem(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(db_index=True, auto_now_add=True)
 
+    def save(self, *args, **kwargs):
+
+        if not self.id:
+            log(
+                user=self.user, 
+                action='ADD_PROBLEM',
+                obj=self,
+                extra={
+                    "project_id": self.project.id,
+                    "project": self.project.title, 
+                    "text": self.text,
+                    "status": self.status,
+                    "event": "added a problem"
+                    }
+                )
+        else:
+            log(
+                user=self.user, 
+                action='EDIT_PROBLEM',
+                obj=self,
+                extra={
+                    "project_id": self.project.id, 
+                    "project": self.project.title, 
+                    "text": self.text,
+                    "status": self.status,
+                    "event": "edited problem"
+                    }
+                )
+
+        super(Problem, self).save(args, kwargs)
+
     def __str__(self):
         return str(self.project)
 
@@ -283,6 +489,51 @@ class Elevator(models.Model):
     text = models.TextField(blank=True)
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(db_index=True, auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+
+        if not self.id:
+            log(
+                user=self.user, 
+                action='ADD_ELEVATOR',
+                obj=self,
+                extra={
+                    "project_id": self.project.id, 
+                    "project": self.project.title, 
+                    "text": self.text,
+                    "event": "added an elevator pitch"
+                    }
+                )
+        else:
+            log(
+                user=self.user, 
+                action='EDIT_ELEVATOR',
+                obj=self,
+                extra={
+                    "project_id": self.project.id, 
+                    "project": self.project.title, 
+                    "text": self.text,
+                    "event": "edited elevator pitch"
+                    }
+                )
+
+        super(Elevator, self).save(args, kwargs)
+
+    def delete(self, *args, **kwargs):
+
+        log(
+            user=self.user, 
+            action='DELETE_ELEVATOR',
+            obj=self,
+            extra={
+                "project_id": self.project.id, 
+                "project": self.project.title, 
+                "text": self.text,
+                "event": "deleted an elevator pitch"
+                }
+            )
+
+        super(Elevator, self).delete(args, kwargs)
 
     def __str__(self):
         return str(self.project)
@@ -299,6 +550,37 @@ class Summary(models.Model):
     text = models.TextField(blank=True)
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(db_index=True, auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+
+        if not self.id:
+            log(
+                user=self.user, 
+                action='ADD_SUMMARY',
+                obj=self,
+                extra={
+                    "project_id": self.project.id, 
+                    "project": self.project.title, 
+                    "text": self.text,
+                    "stage": self.stage,
+                    "event": "added sumary"
+                    }
+                )
+        else:
+            log(
+                user=self.user, 
+                action='EDIT_SUMMARY',
+                obj=self,
+                extra={
+                    "project_id": self.project.id, 
+                    "project": self.project.title, 
+                    "text": self.text,
+                    "stage": self.stage,
+                    "event": "edited summary"
+                    }
+                )
+
+        super(Summary, self).save(args, kwargs)
 
     def __str__(self):
         return str(self.project)
@@ -332,6 +614,37 @@ class Future(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(db_index=True, auto_now_add=True)
 
+    def save(self, *args, **kwargs):
+
+        if not self.id:
+            log(
+                user=self.user, 
+                action='ADD_PRIORITY',
+                obj=self,
+                extra={
+                    "project_id": self.project.id, 
+                    "project": self.project.title, 
+                    "text": self.text,
+                    "stage": self.stage,
+                    "event": "added current priorities"
+                    }
+                )
+        else:
+            log(
+                user=self.user, 
+                action='EDIT_PRIORITY',
+                obj=self,
+                extra={
+                    "project_id": self.project.id, 
+                    "project": self.project.title, 
+                    "text": self.text,
+                    "stage": self.stage,
+                    "event": "edited current priorities"
+                    }
+                )
+
+        super(Future, self).save(args, kwargs)
+
     def __str__(self):
         return str(self.project)
 
@@ -347,6 +660,37 @@ class Solution(models.Model):
     status = models.CharField(choices=status_choices, max_length=200, blank=True)
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(db_index=True, auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+
+        if not self.id:
+            log(
+                user=self.user, 
+                action='ADD_SOLUTION',
+                obj=self,
+                extra={
+                    "project_id": self.project.id, 
+                    "project": self.project.title, 
+                    "text": self.text,
+                    "status": self.status,
+                    "event": "added a solution"
+                    }
+                )
+        else:
+            log(
+                user=self.user, 
+                action='EDIT_SOLUTION',
+                obj=self,
+                extra={
+                    "project_id": self.project.id, 
+                    "project": self.project.title, 
+                    "text": self.text,
+                    "status": self.status,
+                    "event": "edited solution"
+                    }
+                )
+
+        super(Solution, self).save(args, kwargs)
 
     def __str__(self):
         return str(self.project)
@@ -364,6 +708,37 @@ class BusinessModel(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(db_index=True, auto_now_add=True)
 
+    def save(self, *args, **kwargs):
+
+        if not self.id:
+            log(
+                user=self.user, 
+                action='EDIT_BUSINESS_MODEL',
+                obj=self,
+                extra={
+                    "project_id": self.project.id, 
+                    "project": self.project.title, 
+                    "text": self.text,
+                    "status": self.status,
+                    "event": "added a business model"
+                    }
+                )
+        else:
+            log(
+                user=self.user, 
+                action='ADD_BUSINESS_MODEL',
+                obj=self,
+                extra={
+                    "project_id": self.project.id, 
+                    "project": self.project.title, 
+                    "text": self.text,
+                    "status": self.status,
+                    "event": "edited business model"
+                    }
+                )
+
+        super(BusinessModel, self).save(args, kwargs)
+
     def __str__(self):
         return str(self.project)
 
@@ -374,6 +749,24 @@ class File(models.Model):
     file = models.FileField(upload_to='files/%Y%m%d', blank=False, null=False)
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(db_index=True, auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+
+        if not self.id:
+            log(
+                user=self.user, 
+                action='ADD_FILE',
+                obj=self,
+                extra={
+                    "project_id": self.project.id, 
+                    "project": self.project.title, 
+                    "title": self.title,
+                    "file": self.file.url,
+                    "event": "added a file"
+                    }
+                )
+
+        super(File, self).save(args, kwargs)
 
     def __str__(self):
         return str(self.project)

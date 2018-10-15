@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load staticfiles %}
 {% load widget_tweaks %}
+{% load humanize %}
 {% block content %}
 <input type="hidden" id="project" value="{{ project.id }}">
 <!-- start page title -->
@@ -795,50 +796,28 @@
 
             </div>
         </div>
-        <!--<div class="card">
+        <div class="card">
             <div class="card-body">
                 <h4 class="header-title mb-2">Recent Activity</h4>
-
-                <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 460px;"><div class="slimscroll" style="max-height: 171px; overflow: hidden; width: auto; height: 460px;">
+                <div class="slimscroll" style="max-height: 300px;">
                     <div class="timeline-alt pb-0">
-                        <div class="timeline-item">
-                            <i class="mdi mdi-upload bg-info-lighten text-info timeline-icon"></i>
-                            <div class="timeline-item-info">
-                                <a href="#" class="text-info font-weight-bold mb-1 d-block">Updated Problem</a>
-                                <small>Pablo Rivera just updated the project's problem</small>
-                                <p>
-                                    <small class="text-muted">5 minutes ago</small>
-                                </p>
+                        {% for log in logs %}
+                            {% if log.extra.project_id == project.id or log.extra.project_slug == project.slug %}
+                            <div class="timeline-item">
+                                <i class="mdi mdi-upload bg-info-lighten text-info timeline-icon"></i>
+                                <div class="timeline-item-info">
+                                    <p class="text-info font-weight-bold mb-1 d-block">{{log.extra.event|capfirst}}</p>
+                                    <small>{{log.user.first_name}} {{log.user.last_name}} {{log.extra.event}}</small>
+                                    <p>
+                                        <small class="text-muted">{{log.timestamp|naturalday|capfirst}}</small>
+                                    </p>
+                                </div>
                             </div>
-                        </div>
+                            {% endif %}
+                        {% endfor %}
 
-                        <div class="timeline-item">
-                            <i class="mdi mdi-file bg-primary-lighten text-primary timeline-icon"></i>
-                            <div class="timeline-item-info">
-                                <a href="#" class="text-primary font-weight-bold mb-1 d-block">New Assumption</a>
-                                <small>David Bassani added new
-                                    <span class="font-weight-bold">Assumption Dashboard</span>
-                                </small>
-                                <p>
-                                    <small class="text-muted">30 minutes ago</small>
-                                </p>
-                            </div>
-                        </div>
 
-                        <div class="timeline-item">
-                            <i class="mdi mdi-microphone bg-info-lighten text-info timeline-icon"></i>
-                            <div class="timeline-item-info">
-                                <a href="#" class="text-info font-weight-bold mb-1 d-block">Robert Delaney</a>
-                                <small>Send you message
-                                    <span class="font-weight-bold">"Are you there?"</span>
-                                </small>
-                                <p>
-                                    <small class="text-muted">2 hours ago</small>
-                                </p>
-                            </div>
-                        </div>
-
-                        <div class="timeline-item">
+                        <!--<div class="timeline-item">
                             <i class="mdi mdi-upload bg-primary-lighten text-primary timeline-icon"></i>
                             <div class="timeline-item-info">
                                 <a href="#" class="text-primary font-weight-bold mb-1 d-block">Audrey Tobey</a>
@@ -849,61 +828,18 @@
                                     <small class="text-muted">14 hours ago</small>
                                 </p>
                             </div>
-                        </div>
+                        </div>-->
                     </div>
-                </div><div class="slimScrollBar" style="background: rgb(158, 165, 171); width: 8px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 81.225px;"></div><div class="slimScrollRail" style="width: 8px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div></div>
+                    <!-- end timeline -->
+                </div> <!-- end slimscroll -->
             </div>
-        </div>-->
+            <!-- end card-body -->
+        </div>
+        <!-- end card-->
     </div>
 </div>
 <!-- end row -->
-<!--  Modal content for the above example -->
-<div class="modal fade" id="edit-project" tabindex="-1" role="dialog"
-        aria-labelledby="myLargeModalLabel0" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="myLargeModalLabel0">Edit Project</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="form-group mb-3">
-                        <label for="simpleinput">Name</label>
-                        <input type="text" id="simpleinput" class="form-control">
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="example-textarea">Description</label>
-                        <textarea class="form-control" id="example-textarea" rows="3"></textarea>
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="example-select">Stage</label>
-                        <select class="form-control" id="example-select">
-                            <option>Seed I</option>
-                            <option>Seed II</option>
-                            <option>Seed III</option>
-                            <option>Seed Launch</option>
-                            <option>Launch</option>
-                        </select>
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="example-select">Status</label>
-                        <select class="form-control" id="example-select">
-                            <option>Active</option>
-                            <option>Archived</option>
-                            <option>Draft</option>
-                            <option>Killed</option>
-                        </select>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save</button>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+
 
 <div
   class="modal fade"

@@ -21,6 +21,7 @@ from .models import Solution, Metric, File, Profile, Summary, Past, Future
 from .models import Elevator, Tutorial, Progress, Dvf, Link, Zone, Invite, Resource
 from .models import Objective
 from django.http import HttpResponseRedirect
+from pinax.eventlog.models import Log
 
 class LibraryView(generic.ListView):
     template_name = 'library.html'
@@ -143,7 +144,7 @@ class DashboardView(generic.ListView):
         context['zones_lan_seedlaunch'] = Zone.objects.filter(project__stage="Seed Launch").filter(zone="LAN LAS")
         context['zones_lan_launch'] = Zone.objects.filter(project__stage="Launch").filter(zone="LAN LAS")
 
-
+        context['logs'] = Log.objects.all()
 
         return context
 
@@ -163,7 +164,7 @@ class DetailView(generic.DetailView):
         context['team'] = Team.objects.filter(project=self.object).filter(permission="edit")
 
         context['viewers'] = Team.objects.filter(project=self.object).filter(permission="view")
-        context['comments'] = Comment.objects.filter(project=self.object)
+        context['comments'] = Comment.objects.filter(project=self.object).order_by('-created_at')
         context['files'] = File.objects.filter(project=self.object).order_by('-updated_at')
         context['links'] = Link.objects.filter(project=self.object).order_by('-updated_at')
         context['dvf_seed'] = Dvf.objects.filter(project=self.object).filter(stage="seed").order_by('-updated_at')
@@ -179,6 +180,8 @@ class DetailView(generic.DetailView):
         context['seed_summary'] = Summary.objects.filter(project=self.object).filter(stage="seed").order_by('-updated_at')
         context['seedlaunch_summary'] = Summary.objects.filter(project=self.object).filter(stage="seedlaunch").order_by('-updated_at')
         context['launch_summary'] = Summary.objects.filter(project=self.object).filter(stage="launch").order_by('-updated_at')
+
+        context['logs'] = Log.objects.all()
 
         return context
     # def dispatch(self, *args, **kwargs):
@@ -478,6 +481,7 @@ def project_form(request, id=0):
     try:
         p = f.save(commit=False)
         p.slug = slugify(p.title)
+        p.user = request.user
         p.save()
 
         if id==0:

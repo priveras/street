@@ -6,3 +6,4 @@ django-summernote
 django-allauth==0.36.0
 sendgrid==3.6.5
 sendgrid-django==4.2.0
+pinax-eventlog
