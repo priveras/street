@@ -644,7 +644,7 @@ class Summary(models.Model):
                     "project": self.project.title, 
                     "text": self.text,
                     "stage": self.stage,
-                    "event": "added sumary"
+                    "event": "added summary"
                     }
                 )
         else:
@@ -748,7 +748,7 @@ class Future(models.Model):
 
         log(
             user=self.user, 
-            action='DELETE_FUTURE',
+            action='DELETE_PRIORITY',
             obj=self,
             extra={
                 "project_id": self.project.id, 
@@ -846,7 +846,7 @@ class BusinessModel(models.Model):
         if not self.id:
             log(
                 user=self.user, 
-                action='EDIT_BUSINESS_MODEL',
+                action='ADD_BUSINESS_MODEL',
                 obj=self,
                 extra={
                     "project_id": self.project.id, 
@@ -859,7 +859,7 @@ class BusinessModel(models.Model):
         else:
             log(
                 user=self.user, 
-                action='ADD_BUSINESS_MODEL',
+                action='EDIT_BUSINESS_MODEL',
                 obj=self,
                 extra={
                     "project_id": self.project.id, 
