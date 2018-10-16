@@ -161,6 +161,7 @@ class DetailView(generic.DetailView):
                 project__id=self.object.id).exists():
                 raise Http404
 
+        context['recent_activity'] = 'recent_activity.html'
         context['team'] = Team.objects.filter(project=self.object).filter(permission="edit")
 
         context['viewers'] = Team.objects.filter(project=self.object).filter(permission="view")
