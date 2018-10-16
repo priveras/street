@@ -811,7 +811,16 @@
                                     <i class="fa fa-plus-circle bg-info-lighten text-info timeline-icon" style="font-size:8px"></i>
                                     <div class="timeline-item-info">
                                         <p class="text-info font-weight-bold mb-1 d-block">{{log.extra.event|capfirst}}</p>
-                                        <small>{{log.user.first_name}} {{log.user.last_name}} {{log.extra.event}}</small>
+                                        <small>
+                                            {{log.user.first_name}} {{log.user.last_name}} {{log.extra.event}}
+                                            {% if log.extra.text %}
+                                            <span class="font-weight-bold">"{{log.extra.text|truncatechars:40}}"</span>
+                                            {% elif  log.extra.title %}
+                                            <span class="font-weight-bold">"{{log.extra.title|truncatechars:40}}"</span>
+                                            {% elif  log.extra.project_slug or log.extra.permission %}
+                                            <span class="font-weight-bold">"{{log.extra.project|truncatechars:40}}"</span>
+                                            {% endif %}
+                                        </small>
                                         <p>
                                             <small class="text-muted">{{log.timestamp|naturalday|capfirst}}</small>
                                         </p>

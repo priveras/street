@@ -319,6 +319,41 @@ class Dvf(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(db_index=True, auto_now_add=True)
 
+    def save(self, *args, **kwargs):
+        if not self.id:
+            log(
+                user=self.user, 
+                action='ADD_DVF',
+                obj=self,
+                extra={
+                    "project_id": self.project.id, 
+                    "project": self.project.title, 
+                    "stage": self.stage,
+                    "desirability": self.desirability,
+                    "viability": self.viability,
+                    "feasibility": self.feasibility,
+                    "event": "added dvf"
+                    }
+                )
+        else:
+
+            log(
+                user=self.user, 
+                action='EDIT_DVF',
+                obj=self,
+                extra={
+                    "project_id": self.project.id, 
+                    "project": self.project.title, 
+                    "stage": self.stage,
+                    "desirability": self.desirability,
+                    "viability": self.viability,
+                    "feasibility": self.feasibility,
+                    "event": "edited dvf"
+                    }
+                )
+
+        super(Dvf, self).save(args, kwargs)
+
     def __str__(self):
         return str(self.project)
 
