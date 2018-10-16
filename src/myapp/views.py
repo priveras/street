@@ -400,6 +400,7 @@ def model_form(request, name='', project_id=0, id=0):
         if doc is None:
             raise Http404('id not found')
 
+        doc.user = request.user
         doc.delete()
         return JsonResponse({'status': 'ok'})
 

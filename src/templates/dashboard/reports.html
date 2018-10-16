@@ -20,6 +20,15 @@
 </div>
 <!-- start page title -->
 <div class="row">
+  <div class="col-12">
+    <ul>
+    {% for log in logs %}
+      <li>{{log.action}}</li>
+    {% endfor %}
+    </ul>
+  </div>
+</div>
+<div class="row">
     <div class="col-xl-5">
 
         <div class="row">

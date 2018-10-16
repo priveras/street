@@ -49,18 +49,18 @@
                                 </td>
                                 {% if permission %}
                                 <td class="table-action">
+                                        <a href="javascript: void(0);"
+                                            data-name="summary"
+                                            data-id={{sum.id}}
+                                            class="action-icon remove float-right"> <i class="mdi mdi-delete"></i></a>
                                         <a
                                           href="javascript: void(0);"
                                           data-id="{{ sum.id }}"
                                           data-name="summary"
                                           data-title="Status summary"
-                                          class="action-icon edit-doc">
+                                          class="action-icon edit-doc float-right">
                                             <i class="mdi mdi-pencil"></i>
                                         </a>
-                                        <a href="javascript: void(0);"
-                                            data-name="summary"
-                                            data-id={{sum.id}}
-                                            class="action-icon remove"> <i class="mdi mdi-delete"></i></a>
                                 </td>
                                 {% endif %}
                             </tr>
@@ -258,18 +258,18 @@
                                 </td>
                                 {% if permission %}
                                 <td class="table-action">
+                                    <a href="javascript: void(0);"
+                                            data-name="future"
+                                            data-id={{f.id}}
+                                            class="action-icon remove float-right"> <i class="mdi mdi-delete"></i></a>
                                     <a
                                       href="javascript: void(0);"
                                       data-id="{{ f.id }}"
                                       data-name="future"
                                       data-title="Next 2 weeks priorities"
-                                      class="action-icon edit-doc">
+                                      class="action-icon edit-doc float-right">
                                         <i class="mdi mdi-pencil"></i>
                                     </a>
-                                        <a href="javascript: void(0);"
-                                            data-name="future"
-                                            data-id={{f.id}}
-                                            class="action-icon remove"> <i class="mdi mdi-delete"></i></a>
                                 </td>
                                 {% endif %}
                             </tr>
@@ -588,7 +588,8 @@
                     {% else %}
                     <tr>
                         <th>DVF</th>
-                        <th>Objective<th>
+                        <th>Objective</th>
+                        <th>Status</th>
                         <th></th>
                     </tr>
                     {% for objective in objectives %}
@@ -610,18 +611,18 @@
                         </td>
                         {% if permission %}
                         <td class="table-action">
+                            <a href="javascript: void(0);"
+                                data-name="objective"
+                                data-id={{objective.id}}
+                                class="action-icon remove float-right"> <i class="mdi mdi-delete"></i></a>
                             <a
                               href="javascript: void(0);"
                               data-id="{{ objective.id }}"
                               data-name="objective"
                               data-title="Objectives"
-                              class="action-icon edit-doc">
+                              class="action-icon edit-doc float-right">
                                 <i class="mdi mdi-pencil"></i>
                             </a>
-                            <a href="javascript: void(0);"
-                                data-name="objective"
-                                data-id={{objective.id}}
-                                class="action-icon remove"> <i class="mdi mdi-delete"></i></a>
                         </td>
                         {% endif %}
                     </tr>
@@ -726,18 +727,18 @@
                         </td>
                         {% if permission %}
                         <td class="table-action">
+                            <a href="javascript: void(0);"
+                                data-name="assumption"
+                                data-id={{assumption.id}}
+                                class="action-icon remove float-right"> <i class="mdi mdi-delete"></i></a>
                             <a
                               href="javascript: void(0);"
                               data-id="{{ assumption.id }}"
                               data-name="assumption"
                               data-title="Assumptions"
-                              class="action-icon edit-doc">
+                              class="action-icon edit-doc float-right">
                                 <i class="mdi mdi-pencil"></i>
                             </a>
-                            <a href="javascript: void(0);"
-                                data-name="assumption"
-                                data-id={{assumption.id}}
-                                class="action-icon remove"> <i class="mdi mdi-delete"></i></a>
                         </td>
                         {% endif %}
                     </tr>

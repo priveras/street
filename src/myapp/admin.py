@@ -5,7 +5,7 @@ from django.contrib import admin
 from django_summernote.admin import SummernoteModelAdmin
 from .models import Project, Team, Comment, Assumption, Problem, BusinessModel
 from .models import Metric, File, Past, Future, Summary, Solution, Tutorial
-from .models import Profile, Link, Dvf, Progress, Zone, Invite, Resource
+from .models import Profile, Link, Dvf, Progress, Zone, Invite, Resource, Elevator
 
 class ProjectAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('title',)}
@@ -17,6 +17,7 @@ class TutorialAdmin(SummernoteModelAdmin):
 admin.site.register(Tutorial, TutorialAdmin)
 admin.site.register(Project, ProjectAdmin)
 admin.site.register(Team)
+admin.site.register(Elevator)
 admin.site.register(Profile)
 admin.site.register(Comment)
 admin.site.register(Assumption)
