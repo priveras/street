@@ -574,6 +574,9 @@
         </div>
         <h4 class="header-title">
             Objectives
+            <a href="" class="text-muted" data-toggle="modal" data-target="#objectives">
+                <i class="mdi mdi-information-outline" data-toggle="tooltip" data-placement="top" title="" data-original-title="Learn More"></i>
+            </a>
         </h4>
         <p class="text-muted font-14 mb-2">
             Add high level objectives here (i.e. monthly or quarterly)
@@ -713,7 +716,7 @@
                             {% if not assumption.status %}
                             NA
                             {% else %}
-                            
+
                             {% if assumption.status == "Validated" %}
                             <span class="badge badge-success">{{assumption.status}}</span>
                             {% elif assumption.status == "In Progress" %}
@@ -794,21 +797,36 @@
 </div><!-- /.modal -->
 
 <!--  Modal content for the above example -->
-<div class="modal fade" id="elevator" tabindex="-1" role="dialog" aria-labelledby="elevator" aria-hidden="true">
+<div class="modal fade" id="objectives" tabindex="-1" role="dialog" aria-labelledby="elevator" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myLargeModalLabel">Elevator Pitch</h4>
+                <h4 class="modal-title" id="myLargeModalLabel">Objectives</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             </div>
-            <div class="modal-body text-justify" id="modal-body">
-                <p>An elevator pitch is a brief, persuasive speech that you use to spark interest in what your organization does. You can also use them to create interest in a project, idea, or product – or in yourself. A good elevator pitch should last no longer than a short elevator ride of 20 to 30 seconds, hence the name.
-                <br><br>
-                They should be interesting, memorable, and succinct. They also need to explain what makes you – or your organization, product, or idea – unique.</p>
-                <p>This is a good structure to follow:</p>
+            <div class="modal-body" id="modal-body">
+                <p>
+                Seed I: Validate the Problem</p>
                 <ul>
-                    <li>We help ____(consumer X)_____ who ___(problem)___ to ___(solution)___ by ___(how it works)___</li>
-                    <li>Our product/technology is like the ___(insert analogy of comparative company)___ of/for ___(insert your category)___. For example, our venture is like Uber for Trucking.</li>
+                    <li>Seed I: Identify a group of people who experience this problem and want a solution</li>
+                    <li>Seed I: Demonstrate that target customers respond positively to the value proposition</li>
+                    <li>Seed I: Demonstrate we could make money by solving this problem</li>
+                </ul>
+                <br>
+                <p>
+                Seed II: Validate the Solution</p>
+                <ul>
+                    <li>Seed II: Prove initial target customers value the solution</li>
+                    <li>Seed II: Determine what customers need most in a solution so that we can deliver value that's significantly better than current solutions</li>
+                    <li>Seed II: Confirm there is a large market for the solution</li>
+                </ul>
+                <br>
+                <p>
+                Seed III: Validate the Business Model</p>
+                <ul>
+                    <li>Seed III: Determine what it will take (resources, key activities, and milestones) to build this business</li>
+                    <li>Seed III: Prove initial traction with first group of consumers in market</li>
+                    <li>Seed III: Confirm business and financial models are clear and validated at a small scale</li>
                 </ul>
             </div>
             <div class="modal-footer">
