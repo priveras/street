@@ -730,8 +730,103 @@ document.getElementById("kill").innerHTML = z+'%';
             <h4 class="font-weight-light">
             Performance  <hr></hr>
           </h4>
+        </div>
+        <div class="row">
+            <div class="col-xl-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-widgets">
+                            <a href="javascript:;" data-toggle="reload"><i class="mdi mdi-refresh"></i></a>
+                        </div>
+                        <h4 class="header-title">
+                            Projects DVF Heatmap
+                        </h4>
 
+                        <div class="table-responsive crd collapse show" id="cardCollpase4">
+                            <table class="table table-hover table-top mb-0 mt-2">
+                                <tbody>
+                                    <tr>
+                                        <th>Project</th>
+                                        <th>D</th>
+                                        <th>V</th>
+                                        <th>F</th>
+                                    </tr>
+                                    {% for project in projects %}
+                                        {% if project.stage == 'Seed 1' or project.stage == 'Seed 2' or project.stage == 'Seed 3' %}
+                                        <tr>
+                                            <td class="text-left">
+                                                <a href="{% url 'app:detail' project.slug %}" class="text-dark"><h5 class="font-14 mb-1 font-weight-normal">{{project.title}}</h5></a>
+                                            </td>
+                                            <td class="text-center">
+                                                {% if project.dvf.seed.0.desirability == "On Track" %}
+                                                <div class="alert alert-success" role="alert">
+                                                    <i class="dripicons-checkmark"></i>
+                                                </div>
+                                                {% elif project.dvf.0.desirability == "Delayed" %}
+                                                <div class="alert alert-warning" role="alert">
+                                                  <i class="dripicons-warning"></i>
+                                                </div>
+                                                {% elif project.dvf.0.desirability == "At Risk" %}
+                                                <div class="alert alert-danger" role="alert">
+                                                  <i class="dripicons-wrong"></i>
+                                                </div>
+                                                {% else %}
+                                                <div class="alert alert-success" role="alert">
+                                                    <i class="dripicons-checkmark"></i>
+                                                </div>
+                                                {% endif %}
+                                            </td>
+                                            <td class="text-center">
+                                              {% if project.dvf.0.viability == "On Track" %}
+                                              <div class="alert alert-success" role="alert">
+                                                  <i class="dripicons-checkmark"></i>
+                                              </div>
+                                              {% elif project.dvf.0.viability == "Delayed" %}
+                                              <div class="alert alert-warning" role="alert">
+                                                <i class="dripicons-warning"></i>
+                                              </div>
+                                              {% elif project.dvf.0.viability == "At Risk" %}
+                                              <div class="alert alert-danger" role="alert">
+                                                <i class="dripicons-wrong"></i>
+                                              </div>
+                                              {% else %}
+                                              <div class="alert alert-warning" role="alert">
+                                                <i class="dripicons-warning"></i>
+                                              </div>
+                                              {% endif %}
+                                            </td>
+                                            <td class="text-center">
+                                              {% if project.dvf.0.feasibility == "On Track" %}
+                                              <div class="alert alert-success" role="alert">
+                                                  <i class="dripicons-checkmark"></i>
+                                              </div>
+                                              {% elif project.dvf.0.feasibility == "Delayed" %}
+                                              <div class="alert alert-warning" role="alert">
+                                                <i class="dripicons-warning"></i>
+                                              </div>
+                                              {% elif project.dvf.0.feasibility == "At Risk" %}
+                                              <div class="alert alert-danger" role="alert">
+                                                <i class="dripicons-wrong"></i>
+                                              </div>
+                                              {% else %}
+                                              <div class="alert alert-danger" role="alert">
+                                                <i class="dripicons-wrong"></i>
+                                              </div>
+                                              {% endif %}
+                                            </td>
+                                        </tr>
+                                        {% elif project.stage == 'Seed Launch' %}
+                                        {% elif project.stage == 'Launch' %}
+                                        {% else %}
+                                        {% endif %}
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
 
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
