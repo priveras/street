@@ -114,8 +114,7 @@ class DashboardView(generic.ListView):
         context['killed'] = Project.objects.filter(status="Killed")
         context['assumptions_list'] = Assumption.objects.all()
         context['comments_list'] = Comment.objects.all()
-
-
+        context['dvfs'] = Dvf.objects.all()
 
         context['concept_list'] = Project.objects.filter(stage = "Concept").filter(status = "Active")
         context['scale_list'] = Project.objects.filter(stage = "Scale").filter(status = "Active")
@@ -348,7 +347,7 @@ class InfoView(generic.CreateView):
         user.last_name = self.request.POST.get('last_name', '')
         user.save()
 
-        
+
 
         #if there is an existent profile, edit it
         profile = Profile.objects.filter(user=self.request.user).first()

@@ -15,7 +15,6 @@ class Project(models.Model):
     STAGE_SEED_3 = 'Seed 3'
     STAGE_LAUNCH_1 = 'Seed Launch'
     STAGE_LAUNCH_2 = 'Launch'
-    STAGE_SCALE = 'Scale'
 
     STATUS_ALL = (
         (STATUS_ACTIVE, 'Active'),
@@ -31,7 +30,6 @@ class Project(models.Model):
         (STAGE_SEED_3, 'Seed 3'),
         (STAGE_LAUNCH_1, 'Seed Launch'),
         (STAGE_LAUNCH_2, 'Launch'),
-        (STAGE_SCALE, 'Scale'),
         )
 
     user = models.ForeignKey(User, blank=True, null=True)
@@ -46,12 +44,12 @@ class Project(models.Model):
     def save(self, *args, **kwargs):
         if not self.id:
             log(
-                user=self.user, 
+                user=self.user,
                 action='CREATE_PROJECT',
                 obj=self,
                 extra={
-                    "project_slug": self.slug, 
-                    "project": self.title, 
+                    "project_slug": self.slug,
+                    "project": self.title,
                     "stage": self.stage,
                     "description": self.description,
                     "status": self.status,
@@ -60,12 +58,12 @@ class Project(models.Model):
                 )
         else:
             log(
-                user=self.user, 
+                user=self.user,
                 action='EDIT_PROJECT',
                 obj=self,
                 extra={
-                    "project_id": self.id, 
-                    "project": self.title, 
+                    "project_id": self.id,
+                    "project": self.title,
                     "stage": self.stage,
                     "description": self.description,
                     "status": self.status,
@@ -74,6 +72,20 @@ class Project(models.Model):
                 )
 
         super(Project, self).save(args, kwargs)
+
+    def get_stage_group(self):
+        stage_group = None
+        if self.stage in ('Seed 1', 'Seed 2', 'Seed 3'):
+            stage_group = 'seed'
+            return stage_group
+        elif self.stage in ('Seed Launch'):
+            stage_group = 'seedlaunch'
+            return stage_group
+        elif self.stage in ('Launch'):
+            stage_group = 'launch'
+            return stage_group
+        else:
+            return stage_group
 
     def __str__(self):
         return str(self.title)
@@ -89,24 +101,24 @@ class Elevator(models.Model):
 
         if not self.id:
             log(
-                user=self.user, 
+                user=self.user,
                 action='ADD_ELEVATOR',
                 obj=self,
                 extra={
-                    "project_id": self.project.id, 
-                    "project": self.project.title, 
+                    "project_id": self.project.id,
+                    "project": self.project.title,
                     "text": self.text,
                     "event": "added elevator pitch"
                     }
                 )
         else:
             log(
-                user=self.user, 
+                user=self.user,
                 action='EDIT_ELEVATOR',
                 obj=self,
                 extra={
-                    "project_id": self.project.id, 
-                    "project": self.project.title, 
+                    "project_id": self.project.id,
+                    "project": self.project.title,
                     "text": self.text,
                     "event": "edited elevator pitch"
                     }
@@ -117,12 +129,12 @@ class Elevator(models.Model):
     def delete(self, *args, **kwargs):
 
         log(
-            user=self.user, 
+            user=self.user,
             action='DELETE_ELEVATOR',
             obj=self,
             extra={
-                "project_id": self.project.id, 
-                "project": self.project.title, 
+                "project_id": self.project.id,
+                "project": self.project.title,
                 "text": self.text,
                 "event": "deleted elevator pitch"
                 }
@@ -195,24 +207,24 @@ class Team(models.Model):
     def save(self, *args, **kwargs):
         if not self.id:
             log(
-                user=self.user, 
+                user=self.user,
                 action='ADD_TEAM',
                 obj=self,
                 extra={
-                    "project_id": self.project.id, 
-                    "project": self.project.title, 
+                    "project_id": self.project.id,
+                    "project": self.project.title,
                     "permission": self.permission,
                     "event": "joined project"
                     }
                 )
         else:
             log(
-                user=self.user, 
+                user=self.user,
                 action='EDIT_TEAM',
                 obj=self,
                 extra={
-                    "project_id": self.project.id, 
-                    "project": self.project.title, 
+                    "project_id": self.project.id,
+                    "project": self.project.title,
                     "permission": self.permission,
                     "event": "permission updated"
                     }
@@ -234,12 +246,12 @@ class Comment(models.Model):
 
         if not self.id:
             log(
-                user=self.user, 
+                user=self.user,
                 action='ADD_COMMENT',
                 obj=self,
                 extra={
-                    "project_id": self.project.id, 
-                    "project": self.project.title, 
+                    "project_id": self.project.id,
+                    "project": self.project.title,
                     "text": self.text,
                     "event": "added a comment"
                     }
@@ -265,12 +277,12 @@ class Link(models.Model):
 
         if not self.id:
             log(
-                user=self.user, 
+                user=self.user,
                 action='ADD_LINK',
                 obj=self,
                 extra={
-                    "project_id": self.project.id, 
-                    "project": self.project.title, 
+                    "project_id": self.project.id,
+                    "project": self.project.title,
                     "title": self.title,
                     "link": self.link,
                     "event": "added link"
@@ -282,12 +294,12 @@ class Link(models.Model):
     def delete(self, *args, **kwargs):
 
         log(
-            user=self.user, 
+            user=self.user,
             action='DELETE_LINK',
             obj=self,
             extra={
-                "project_id": self.project.id, 
-                "project": self.project.title, 
+                "project_id": self.project.id,
+                "project": self.project.title,
                 "title": self.title,
                 "link": self.link,
                 "event": "deleted link"
@@ -322,12 +334,12 @@ class Dvf(models.Model):
     def save(self, *args, **kwargs):
         if not self.id:
             log(
-                user=self.user, 
+                user=self.user,
                 action='ADD_DVF',
                 obj=self,
                 extra={
-                    "project_id": self.project.id, 
-                    "project": self.project.title, 
+                    "project_id": self.project.id,
+                    "project": self.project.title,
                     "stage": self.stage,
                     "desirability": self.desirability,
                     "viability": self.viability,
@@ -338,12 +350,12 @@ class Dvf(models.Model):
         else:
 
             log(
-                user=self.user, 
+                user=self.user,
                 action='EDIT_DVF',
                 obj=self,
                 extra={
-                    "project_id": self.project.id, 
-                    "project": self.project.title, 
+                    "project_id": self.project.id,
+                    "project": self.project.title,
                     "stage": self.stage,
                     "desirability": self.desirability,
                     "viability": self.viability,
@@ -413,12 +425,12 @@ class Assumption(models.Model):
 
         if not self.id:
             log(
-                user=self.user, 
+                user=self.user,
                 action='ADD_ASSUMPTION',
                 obj=self,
                 extra={
-                    "project_id": self.project.id, 
-                    "project": self.project.title, 
+                    "project_id": self.project.id,
+                    "project": self.project.title,
                     "stage": self.stage,
                     "dvf": self.dvf,
                     "text": self.assumption,
@@ -430,12 +442,12 @@ class Assumption(models.Model):
                 )
         else:
             log(
-                user=self.user, 
+                user=self.user,
                 action='EDIT_ASSUMPTION',
                 obj=self,
                 extra={
-                    "project_id": self.project.id, 
-                    "project": self.project.title, 
+                    "project_id": self.project.id,
+                    "project": self.project.title,
                     "stage": self.stage,
                     "dvf": self.dvf,
                     "text": self.assumption,
@@ -451,12 +463,12 @@ class Assumption(models.Model):
     def delete(self, *args, **kwargs):
 
         log(
-            user=self.user, 
+            user=self.user,
             action='DELETE_ASSUMPTION',
             obj=self,
             extra={
-                "project_id": self.project.id, 
-                "project": self.project.title, 
+                "project_id": self.project.id,
+                "project": self.project.title,
                 "stage": self.stage,
                 "dvf": self.dvf,
                 "text": self.assumption,
@@ -519,6 +531,7 @@ class Objective(models.Model):
     metric = models.TextField(blank=True)
     value = models.TextField(blank=True)
     status_choices = (
+            ('Complete', 'Complete'),
             ('On Track', 'On Track'),
             ('Delayed', 'Delayed'),
             ('At Risk', 'At Risk'),
@@ -531,12 +544,12 @@ class Objective(models.Model):
 
         if not self.id:
             log(
-                user=self.user, 
+                user=self.user,
                 action='ADD_OBJECTIVE',
                 obj=self,
                 extra={
-                    "project_id": self.project.id, 
-                    "project": self.project.title, 
+                    "project_id": self.project.id,
+                    "project": self.project.title,
                     "stage": self.stage,
                     "dvf": self.dvf,
                     "value": self.value,
@@ -547,12 +560,12 @@ class Objective(models.Model):
                 )
         else:
             log(
-                user=self.user, 
+                user=self.user,
                 action='EDIT_OBJECTIVE',
                 obj=self,
                 extra={
-                    "project_id": self.project.id, 
-                    "project": self.project.title, 
+                    "project_id": self.project.id,
+                    "project": self.project.title,
                     "stage": self.stage,
                     "dvf": self.dvf,
                     "value": self.value,
@@ -567,12 +580,12 @@ class Objective(models.Model):
     def delete(self, *args, **kwargs):
 
         log(
-            user=self.user, 
+            user=self.user,
             action='DELETE_OBJECTIVE',
             obj=self,
             extra={
-                "project_id": self.project.id, 
-                "project": self.project.title, 
+                "project_id": self.project.id,
+                "project": self.project.title,
                 "stage": self.stage,
                 "dvf": self.dvf,
                 "value": self.value,
@@ -607,12 +620,12 @@ class Problem(models.Model):
 
         if not self.id:
             log(
-                user=self.user, 
+                user=self.user,
                 action='ADD_PROBLEM',
                 obj=self,
                 extra={
                     "project_id": self.project.id,
-                    "project": self.project.title, 
+                    "project": self.project.title,
                     "text": self.text,
                     "status": self.status,
                     "event": "added a problem"
@@ -620,12 +633,12 @@ class Problem(models.Model):
                 )
         else:
             log(
-                user=self.user, 
+                user=self.user,
                 action='EDIT_PROBLEM',
                 obj=self,
                 extra={
-                    "project_id": self.project.id, 
-                    "project": self.project.title, 
+                    "project_id": self.project.id,
+                    "project": self.project.title,
                     "text": self.text,
                     "status": self.status,
                     "event": "edited problem"
@@ -633,16 +646,16 @@ class Problem(models.Model):
                 )
 
         super(Problem, self).save(args, kwargs)
-    
+
     def delete(self, *args, **kwargs):
 
         log(
-            user=self.user, 
+            user=self.user,
             action='DELETE_PROBLEM',
             obj=self,
             extra={
-                "project_id": self.project.id, 
-                "project": self.project.title, 
+                "project_id": self.project.id,
+                "project": self.project.title,
                 "text": self.text,
                 "status": self.status,
                 "event": "deleted problem"
@@ -671,12 +684,12 @@ class Summary(models.Model):
 
         if not self.id:
             log(
-                user=self.user, 
+                user=self.user,
                 action='ADD_SUMMARY',
                 obj=self,
                 extra={
-                    "project_id": self.project.id, 
-                    "project": self.project.title, 
+                    "project_id": self.project.id,
+                    "project": self.project.title,
                     "text": self.text,
                     "stage": self.stage,
                     "event": "added summary"
@@ -684,12 +697,12 @@ class Summary(models.Model):
                 )
         else:
             log(
-                user=self.user, 
+                user=self.user,
                 action='EDIT_SUMMARY',
                 obj=self,
                 extra={
-                    "project_id": self.project.id, 
-                    "project": self.project.title, 
+                    "project_id": self.project.id,
+                    "project": self.project.title,
                     "text": self.text,
                     "stage": self.stage,
                     "event": "edited summary"
@@ -697,16 +710,16 @@ class Summary(models.Model):
                 )
 
         super(Summary, self).save(args, kwargs)
-    
+
     def delete(self, *args, **kwargs):
 
         log(
-            user=self.user, 
+            user=self.user,
             action='DELETE_SUMMARY',
             obj=self,
             extra={
-                "project_id": self.project.id, 
-                "project": self.project.title, 
+                "project_id": self.project.id,
+                "project": self.project.title,
                 "text": self.text,
                 "stage": self.stage,
                 "event": "deleted summary"
@@ -714,7 +727,7 @@ class Summary(models.Model):
             )
 
         super(Summary, self).delete(args, kwargs)
-    
+
 
     def __str__(self):
         return str(self.project)
@@ -752,12 +765,12 @@ class Future(models.Model):
 
         if not self.id:
             log(
-                user=self.user, 
+                user=self.user,
                 action='ADD_PRIORITY',
                 obj=self,
                 extra={
-                    "project_id": self.project.id, 
-                    "project": self.project.title, 
+                    "project_id": self.project.id,
+                    "project": self.project.title,
                     "text": self.text,
                     "stage": self.stage,
                     "event": "added current priorities"
@@ -765,12 +778,12 @@ class Future(models.Model):
                 )
         else:
             log(
-                user=self.user, 
+                user=self.user,
                 action='EDIT_PRIORITY',
                 obj=self,
                 extra={
-                    "project_id": self.project.id, 
-                    "project": self.project.title, 
+                    "project_id": self.project.id,
+                    "project": self.project.title,
                     "text": self.text,
                     "stage": self.stage,
                     "event": "edited current priorities"
@@ -782,12 +795,12 @@ class Future(models.Model):
     def delete(self, *args, **kwargs):
 
         log(
-            user=self.user, 
+            user=self.user,
             action='DELETE_PRIORITY',
             obj=self,
             extra={
-                "project_id": self.project.id, 
-                "project": self.project.title, 
+                "project_id": self.project.id,
+                "project": self.project.title,
                 "text": self.text,
                 "stage": self.stage,
                 "event": "deleted current priorities"
@@ -816,12 +829,12 @@ class Solution(models.Model):
 
         if not self.id:
             log(
-                user=self.user, 
+                user=self.user,
                 action='ADD_SOLUTION',
                 obj=self,
                 extra={
-                    "project_id": self.project.id, 
-                    "project": self.project.title, 
+                    "project_id": self.project.id,
+                    "project": self.project.title,
                     "text": self.text,
                     "status": self.status,
                     "event": "added a solution"
@@ -829,12 +842,12 @@ class Solution(models.Model):
                 )
         else:
             log(
-                user=self.user, 
+                user=self.user,
                 action='EDIT_SOLUTION',
                 obj=self,
                 extra={
-                    "project_id": self.project.id, 
-                    "project": self.project.title, 
+                    "project_id": self.project.id,
+                    "project": self.project.title,
                     "text": self.text,
                     "status": self.status,
                     "event": "edited solution"
@@ -846,12 +859,12 @@ class Solution(models.Model):
     def delete(self, *args, **kwargs):
 
         log(
-            user=self.user, 
+            user=self.user,
             action='DELETE_SOLUTION',
             obj=self,
             extra={
-                "project_id": self.project.id, 
-                "project": self.project.title, 
+                "project_id": self.project.id,
+                "project": self.project.title,
                 "text": self.text,
                 "status": self.status,
                 "event": "deleted solution"
@@ -880,12 +893,12 @@ class BusinessModel(models.Model):
 
         if not self.id:
             log(
-                user=self.user, 
+                user=self.user,
                 action='ADD_BUSINESS_MODEL',
                 obj=self,
                 extra={
-                    "project_id": self.project.id, 
-                    "project": self.project.title, 
+                    "project_id": self.project.id,
+                    "project": self.project.title,
                     "text": self.text,
                     "status": self.status,
                     "event": "added a business model"
@@ -893,12 +906,12 @@ class BusinessModel(models.Model):
                 )
         else:
             log(
-                user=self.user, 
+                user=self.user,
                 action='EDIT_BUSINESS_MODEL',
                 obj=self,
                 extra={
-                    "project_id": self.project.id, 
-                    "project": self.project.title, 
+                    "project_id": self.project.id,
+                    "project": self.project.title,
                     "text": self.text,
                     "status": self.status,
                     "event": "edited business model"
@@ -910,12 +923,12 @@ class BusinessModel(models.Model):
     def delete(self, *args, **kwargs):
 
         log(
-            user=self.user, 
+            user=self.user,
             action='DELETE_BUSINESS_MODEL',
             obj=self,
             extra={
-                "project_id": self.project.id, 
-                "project": self.project.title, 
+                "project_id": self.project.id,
+                "project": self.project.title,
                 "text": self.text,
                 "status": self.status,
                 "event": "deleted business model"
@@ -939,12 +952,12 @@ class File(models.Model):
 
         if not self.id:
             log(
-                user=self.user, 
+                user=self.user,
                 action='ADD_FILE',
                 obj=self,
                 extra={
-                    "project_id": self.project.id, 
-                    "project": self.project.title, 
+                    "project_id": self.project.id,
+                    "project": self.project.title,
                     "title": self.title,
                     "file": self.file.url,
                     "event": "added a file"
