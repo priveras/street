@@ -112,6 +112,9 @@ class DashboardView(generic.ListView):
         context['users'] = User.objects.order_by('first_name')
         context['actives'] = Project.objects.filter(status="Active")
         context['killed'] = Project.objects.filter(status="Killed")
+        context['assumptions_list'] = Assumption.objects.all()
+        context['comments_list'] = Comment.objects.all()
+
 
 
         context['concept_list'] = Project.objects.filter(stage = "Concept").filter(status = "Active")
