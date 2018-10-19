@@ -145,6 +145,17 @@ class Elevator(models.Model):
     def __str__(self):
         return str(self.project)
 
+    def assumption_count(self):
+        assumption_count = 0
+        if self.assumption:
+            assumption_count +=1
+            return assumption_count
+        else:
+            return assumption_count
+
+    def __str__(self):
+        return str(self.title)
+
 class Resource(models.Model):
     user = models.ForeignKey(User)
     title = models.CharField(max_length=300, blank=True)

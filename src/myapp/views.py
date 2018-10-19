@@ -116,6 +116,18 @@ class DashboardView(generic.ListView):
         context['comments_list'] = Comment.objects.all()
         context['dvfs'] = Dvf.objects.all()
 
+        context['file_proj'] = File.objects.values('project').order_by().annotate(Count('project'))
+        context['businessmodel_proj'] = BusinessModel.objects.values('project').order_by().annotate(Count('project'))
+        context['solution_proj'] = Solution.objects.values('project').order_by().annotate(Count('project'))
+        context['elevator_proj'] = Elevator.objects.values('project').order_by().annotate(Count('project'))
+        context['problem_proj'] = Problem.objects.values('project').order_by().annotate(Count('project'))
+        context['link_proj'] = Link.objects.values('project').order_by().annotate(Count('project'))
+        context['dvf_proj'] = Dvf.objects.values('project').order_by().annotate(Count('project'))
+
+        context['assumption_user'] = Assumption.objects.values('user').order_by().annotate(Count('user'))
+
+
+
         context['concept_list'] = Project.objects.filter(stage = "Concept").filter(status = "Active")
         context['scale_list'] = Project.objects.filter(stage = "Scale").filter(status = "Active")
         context['seed_list'] = Project.objects.filter(stage = "Seed 3") | Project.objects.filter(stage = "Seed 2") | Project.objects.filter(stage = "Seed 1").filter(status = "Active")
