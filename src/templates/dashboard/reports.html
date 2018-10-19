@@ -614,8 +614,29 @@ document.getElementById("kill").innerHTML = z+'%';
                         <i class="mdi mdi-checkbox-multiple-marked-circle widget-icon"></i>
                     </div>
                       <h5 class="text-muted font-weight-normal mt-0" title="Number of Customers"> Report Compliance</h5>
-                      <h3 class="mt-3 mb-3">14%</h3>
+
+                      <h3 class="mt-3 mb-3">
+                        <p id="comply"></p>
+
+<script>
+var a = {{file_proj | length}};
+var b = {{link_proj | length}};
+var c = {{businessmodel_proj | length}};
+var d = {{solution_proj | length}};
+var e = {{elevator_proj | length}};
+var f = {{problem_proj | length}};
+var g = {{dvf_proj | length}};
+
+var h = {{actives | length}};
+
+var z = Math.round( (a+b+c+d+e+f+g) * 100.0 / (h*9.0))
+document.getElementById("comply").innerHTML = z+'%';
+</script>
+
+                      </h3>
+
                       <p class="mb-0 text-muted">
+
                           <span class="text-success mr-2"><i class="mdi mdi-arrow-up-bold"></i> 5.27%</span>
                           <span class="text-nowrap">Since last month</span>
                       </p>
@@ -649,13 +670,13 @@ document.getElementById("kill").innerHTML = z+'%';
                           </div>
                           <h5 class="text-muted font-weight-normal mt-0" title="Number of Customers">Average Assumptions</h5>
                           <h3 class="mt-3 mb-3">
-                            <p id="ass"></p>
+                            <p id="assumption"></p>
 
                           <script>
                           var x = {{assumptions_list | length}};
                           var y = {{actives | length}};
-                          var z = Math.round( x * 100.0 / (y*100))
-                          document.getElementById("ass").innerHTML = z;
+                          var z = Math.round(x*100.0/y)/100
+                          document.getElementById("assumption").innerHTML = z;
                           </script>
 
                           </h3>

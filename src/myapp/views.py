@@ -10,6 +10,7 @@ from django.utils.crypto import get_random_string
 from django.core.mail import send_mail
 from django.template.loader import get_template
 from django.template import Context
+from django.db.models import Count 
 
 from .forms import ProfileForm, SummaryForm, PastForm, FutureForm, ProjectForm
 from .forms import ElevatorForm, ProblemForm, SolutionForm, BusinessModelForm
@@ -41,7 +42,7 @@ class DashboardProjectsView(generic.ListView):
 
     def get_context_data(self, **kwargs):
         context = super(DashboardProjectsView, self).get_context_data(**kwargs)
-        context['projects_list'] = Project.objects.order_by("-created_at")
+        context['projects_list'] = Project.objects.filter(status="Active").order_by("-created_at")
         context['assumptions'] = Assumption.objects.all()
         context['objectives'] = Objective.objects.all()
         context['elevators'] = Elevator.objects.all()
@@ -115,6 +116,18 @@ class DashboardView(generic.ListView):
         context['assumptions_list'] = Assumption.objects.all()
         context['comments_list'] = Comment.objects.all()
         context['dvfs'] = Dvf.objects.all()
+
+        context['file_proj'] = File.objects.values('project').order_by().annotate(Count('project'))
+        context['businessmodel_proj'] = BusinessModel.objects.values('project').order_by().annotate(Count('project'))
+        context['solution_proj'] = Solution.objects.values('project').order_by().annotate(Count('project'))
+        context['elevator_proj'] = Elevator.objects.values('project').order_by().annotate(Count('project'))
+        context['problem_proj'] = Problem.objects.values('project').order_by().annotate(Count('project'))
+        context['link_proj'] = Link.objects.values('project').order_by().annotate(Count('project'))
+        context['dvf_proj'] = Dvf.objects.values('project').order_by().annotate(Count('project'))
+
+        context['assumption_user'] = Assumption.objects.values('user').order_by().annotate(Count('user'))
+
+
 
         context['concept_list'] = Project.objects.filter(stage = "Concept").filter(status = "Active")
         context['scale_list'] = Project.objects.filter(stage = "Scale").filter(status = "Active")
