@@ -73,6 +73,7 @@
                   </div>
 
                   <script>
+
                     var randomScalingFactor = function() {
                       return Math.round(Math.random() * 100);
                     };
@@ -666,43 +667,141 @@ document.getElementById("kill").innerHTML = z+'%';
 <div class="row">
   <div class="col-6">
     <div class="card">
-        <div class="card-body" >
-            <!--<a href="" class="btn btn-sm btn-link float-right mb-3">Export
-                <i class="mdi mdi-download ml-1"></i>
-            </a>-->
-            <h4 class="header-title mt-2">Most Active Businesses</h4>
+      <div class="card-body" >
+          <!--<a href="" class="btn btn-sm btn-link float-right mb-3">Export
+              <i class="mdi mdi-download ml-1"></i>
+          </a>-->
 
 
-            <div class="table-responsive crd collapse show" id="cardCollpase4">
-                <table class="table table-hover table-top mb-0 mt-2">
-                    <tbody>
-                        <tr>
-                            <th>Business</th>
-                            <th># of Edits</th>
-                            <th>Total Assumptions</th>
-                            <th>Total Comments</th>
-                        </tr>
-                        {% for project in projects %}
-                            <tr>
-                                <td class="text-left">
-                                    <a href="{% url 'app:detail' project.slug %}" class="text-dark"><h5 class="font-14 mb-1 font-weight-normal">{{project.title}}</h5></a>
-                                </td>
-                                <td class="text-center">
+          <h4 class="header-title mt-2">Most Active Businesses</h4>
+          <div class="slimscroll" style="max-height: 300px;">
+
+
+
+          <div class="table-responsive">
+          <table id="myTable2" class="table table-centered mb-0">
+            <tbody>
+                <tr>
+                    <th>Business</th>
+                    <th>Total Assumptions</th>
+                    <th>Total Comments</th>
+                    <th>
+                        Other Activity
+                        <a href="" class="text-muted" data-toggle="modal" data-target="#assumptions">
+                            <i class="mdi mdi-information-outline" data-toggle="tooltip" data-placement="top" title="" data-original-title="# of edits, links, files uploaded this week"></i>
+                        </a>
+                    </th>
+                </tr>
+                {% for project in projects %}
+                    <tr>
+                        <td class="text-left">
+                            <a href="{% url 'app:detail' project.slug %}" class="text-dark"><h5 class="font-14 mb-1 font-weight-normal">{{project.title}}</h5></a>
+                        </td>
+                        <td class="text-center">
 {{project.assumption_set.count}}
-                                </td>
-                                <td class="text-center">
-{{project.assumption_set.count}}
-                                </td>
-                                <td class="text-center">
-{{project.comment_set.count}}
-                                </td>
-                            </tr>
+                        </td>
+                        <td class="text-center">
+                          {{project.comment_set.count}}
+                        </td>
+                        <td class="text-center">
+{{project.link_set.count|add:project.file_set.count}}
+                        </td>
+                    </tr>
 
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div> <!-- end card-body-->
+                {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+
+
+          <script>
+            var table, rows, switching, i, x, y, shouldSwitch;
+            table = document.getElementById("myTable2");
+            switching = true;
+            /*Make a loop that will continue until
+            no switching has been done:*/
+            while (switching) {
+              //start by saying: no switching is done:
+              switching = false;
+              rows = table.rows;
+              /*Loop through all table rows (except the
+              first, which contains table headers):*/
+              for (i = 1; i < (rows.length - 1); i++) {
+                //start by saying there should be no switching:
+                shouldSwitch = false;
+                /*Get the two elements you want to compare,
+                one from current row and one from the next:*/
+                x = rows[i].getElementsByTagName("TD")[1];
+                a = rows[i].getElementsByTagName("TD")[2];
+                b = rows[i].getElementsByTagName("TD")[3];
+
+                y = rows[i + 1].getElementsByTagName("TD")[1];
+                c = rows[i + 1].getElementsByTagName("TD")[2];
+                d = rows[i + 1].getElementsByTagName("TD")[3];
+
+                //check if the two rows should switch place:
+                if ((Number(x.innerHTML) + Number(a.innerHTML) + Number(b.innerHTML)) < (Number(y.innerHTML)+Number(c.innerHTML)+Number(d.innerHTML))) {
+                  //if so, mark as a switch and break the loop:
+                  shouldSwitch = true;
+                  break;
+                }
+              }
+              if (shouldSwitch) {
+                /*If a switch has been marked, make the switch
+                and mark that a switch has been done:*/
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching = true;
+              }
+            }
+
+          </script>
+
+          <!-- <div class="table-responsive">
+              <table class="table table-centered mb-0">
+                  <tbody>
+                      <tr>
+                        <th>User</th>
+                        <th>Team</th>
+                        <th>
+                            Points
+                            <a href="" class="text-muted" data-toggle="modal" data-target="#assumptions">
+                                <i class="mdi mdi-information-outline" data-toggle="tooltip" data-placement="top" title="" data-original-title="Assumptions + Comments + Edits"></i>
+                            </a>
+                        </th>
+                        <p class="text-muted font-14 mb-2">
+
+                            </a>
+                            <br>
+                            <a href="" data-toggle="modal" data-target="#metricsdb"></a>
+                        </p>
+
+                      </tr>
+                      {% for project in project_list %}
+                           {% for member in project.team_set.all|slice:":1" %}
+                           {% if member.permission == "edit" %}
+                           <tr>
+
+                                {% for profile in member.user.profile_set.all %}
+                                <td>
+<img src="{{profile.profile_image.url}}" class="rounded-circle avatar-xs" alt="friend">
+{{member.user|capfirst}}                       </td>
+
+                                <td>{{project.title|capfirst}}</td>
+                                <td>{{member.user.assumption_set.count | add:member.user.comment_set.count}}</td>
+
+                                {% endfor %}
+                              </tr>
+                              {% endif %}
+
+                           {% endfor %}
+                      {% endfor %}
+                  </tbody>
+              </table>
+          </div> -->
+      </div> <!-- end card-body-->
+
     </div> <!-- end card-->
   </div>
   <div class="col-6">
@@ -711,10 +810,85 @@ document.getElementById("kill").innerHTML = z+'%';
             <!--<a href="" class="btn btn-sm btn-link float-right mb-3">Export
                 <i class="mdi mdi-download ml-1"></i>
             </a>-->
+
+
             <h4 class="header-title mt-2">Top Contributors</h4>
+            <div class="slimscroll" style="max-height: 290px;">
+
 
 
             <div class="table-responsive">
+            <table id="myTable" class="table table-centered mb-0">
+              <tr>
+                <th id="btn" onclick="sortTable()">User</th>
+                <th>Team</th>
+                <th>
+                    Points
+                    <a href="" class="text-muted" data-toggle="modal" data-target="#assumptions">
+                        <i class="mdi mdi-information-outline" data-toggle="tooltip" data-placement="top" title="" data-original-title="Assumptions + Comments + Edits"></i>
+                    </a>
+                </th>
+              </tr>
+
+{% for project in project_list %}
+{% for member in project.team_set.all %}
+  {% if member.permission == "edit" %}
+
+  <tr>
+    <td>
+<!-- <img src="{{member.user.profile.profile_image.url}}" class="rounded-circle avatar-xs" alt="friend"> -->
+{{member.user|capfirst}}                       </td>
+<td>{{project}}</td>
+<td>{{member.user.assumption_set.count|add:member.user.comment_set.count|add:member.user.comment_set.count}}</td>
+  </tr>
+  {% endif %}
+{% endfor %}
+{% endfor %}
+
+            </table>
+          </div>
+        </div>
+
+
+
+            <script>
+
+              var table, rows, switching, i, x, y, shouldSwitch;
+              table = document.getElementById("myTable");
+              switching = true;
+              /*Make a loop that will continue until
+              no switching has been done:*/
+              while (switching) {
+                //start by saying: no switching is done:
+                switching = false;
+                rows = table.rows;
+                /*Loop through all table rows (except the
+                first, which contains table headers):*/
+                for (i = 1; i < (rows.length - 1); i++) {
+                  //start by saying there should be no switching:
+                  shouldSwitch = false;
+                  /*Get the two elements you want to compare,
+                  one from current row and one from the next:*/
+                  x = rows[i].getElementsByTagName("TD")[2];
+                  y = rows[i + 1].getElementsByTagName("TD")[2];
+                  //check if the two rows should switch place:
+                  if (Number(x.innerHTML) < Number(y.innerHTML)) {
+                    //if so, mark as a switch and break the loop:
+                    shouldSwitch = true;
+                    break;
+                  }
+                }
+                if (shouldSwitch) {
+                  /*If a switch has been marked, make the switch
+                  and mark that a switch has been done:*/
+                  rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                  switching = true;
+                }
+              }
+
+            </script>
+
+            <!-- <div class="table-responsive">
                 <table class="table table-centered mb-0">
                     <tbody>
                         <tr>
@@ -734,26 +908,32 @@ document.getElementById("kill").innerHTML = z+'%';
                           </p>
 
                         </tr>
-                        {% for project in projects %}
-                        <tr>
-                          <td>
-                             {% for member in project.team_set.all %}
-                                  {% for profile in member.user.profile_set.all %}
-                                  <img src="{{profile.profile_image.url}}" class="rounded-circle avatar-xs" alt="friend">
-                                  {% endfor %}
-                             {% endfor %}
-                          </td>
-                          <td>{{project.title|capfirst}}</td>
-                          <td>{{actives | length}}</td>
+                        {% for project in project_list %}
+                             {% for member in project.team_set.all|slice:":1" %}
+                             {% if member.permission == "edit" %}
+                             <tr>
 
-                        </tr>
+                                  {% for profile in member.user.profile_set.all %}
+                                  <td>
+  <img src="{{profile.profile_image.url}}" class="rounded-circle avatar-xs" alt="friend">
+{{member.user|capfirst}}                       </td>
+
+                                  <td>{{project.title|capfirst}}</td>
+                                  <td>{{member.user.assumption_set.count | add:member.user.comment_set.count}}</td>
+
+                                  {% endfor %}
+                                </tr>
+                                {% endif %}
+
+                             {% endfor %}
                         {% endfor %}
                     </tbody>
                 </table>
-            </div> <!-- end table-responsive-->
+            </div> -->
         </div> <!-- end card-body-->
     </div> <!-- end card-->
   </div>
+</div>
 </div>
 <div class="row">
 
@@ -822,7 +1002,7 @@ document.getElementById("kill").innerHTML = z+'%';
     <div class="card">
         <div class="card-body">
             <h4 class="header-title mb-2">Recent Activity</h4>
-            <div class="slimscroll" style="max-height: 300px;">
+            <div class="slimscroll" style="max-height: 290px;">
                 <div class="timeline-alt pb-0">
                     {% for log in logs %}
                       <div class="timeline-item">
