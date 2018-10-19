@@ -10,6 +10,7 @@ from django.utils.crypto import get_random_string
 from django.core.mail import send_mail
 from django.template.loader import get_template
 from django.template import Context
+from django.db.models import Count 
 
 from .forms import ProfileForm, SummaryForm, PastForm, FutureForm, ProjectForm
 from .forms import ElevatorForm, ProblemForm, SolutionForm, BusinessModelForm
