@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from pinax.eventlog.models import log
+from datetime import datetime, timezone
 
 class Project(models.Model):
 
@@ -365,6 +366,10 @@ class Dvf(models.Model):
                 )
 
         super(Dvf, self).save(args, kwargs)
+
+    def time_in_stage(self):
+        now = datetime.now(timezone.utc)
+        return (now - self.created_at).days
 
     def __str__(self):
         return str(self.project)
