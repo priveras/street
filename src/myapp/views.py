@@ -41,7 +41,7 @@ class DashboardProjectsView(generic.ListView):
 
     def get_context_data(self, **kwargs):
         context = super(DashboardProjectsView, self).get_context_data(**kwargs)
-        context['projects_list'] = Project.objects.order_by("-created_at")
+        context['projects_list'] = Project.objects.filter(status="Active").order_by("-created_at")
         context['assumptions'] = Assumption.objects.all()
         context['objectives'] = Objective.objects.all()
         context['elevators'] = Elevator.objects.all()
