@@ -10,7 +10,9 @@ from django.utils.crypto import get_random_string
 from django.core.mail import send_mail
 from django.template.loader import get_template
 from django.template import Context
-from django.db.models import Count 
+from django.db.models import Count
+from datetime import datetime, timezone
+
 
 from .forms import ProfileForm, SummaryForm, PastForm, FutureForm, ProjectForm
 from .forms import ElevatorForm, ProblemForm, SolutionForm, BusinessModelForm
@@ -104,6 +106,10 @@ def learn(request):
 class DashboardView(generic.ListView):
     template_name = 'dashboard/reports.html'
     # context_object_name = 'users_list'
+    current = datetime.now(timezone.utc)
+
+
+
     model = Project
 
     def get_context_data(self, **kwargs):

@@ -138,8 +138,8 @@
                       <h5 class="text-muted font-weight-normal mt-0" title="Number of Customers">Active Businesses</h5>
                       <h3 class="mt-3 mb-3">{{actives.count}}</h3>
                       <p class="mb-0 text-muted">
-                          <span class="text-success mr-2"><i class="mdi mdi-arrow-up-bold"></i> 100%</span>
-                          <span class="text-nowrap">Since last month</span>
+                          <!-- <span class="text-success mr-2"><i class="mdi mdi-arrow-up-bold"></i> 100%</span>
+                          <span class="text-nowrap">Since last month</span> -->
                       </p>
                   </div> <!-- end card-body-->
               </div> <!-- end card-->
@@ -173,94 +173,67 @@ document.getElementById("kill").innerHTML = z+'%';
       </div> <!-- end row -->
 
       <div class="card">
-          <div class="card-body">
-              <div class="dropdown float-right">
-                  <a href="#" class="dropdown-toggle arrow-none card-drop" data-toggle="dropdown" aria-expanded="false">
-                      <i class="mdi mdi-dots-vertical"></i>
-                  </a>
-                  <div class="dropdown-menu dropdown-menu-right">
-                      <!-- item-->
-                      <a href="javascript:void(0);" class="dropdown-item">Sales Report</a>
-                      <!-- item-->
-                      <a href="javascript:void(0);" class="dropdown-item">Export Report</a>
-                      <!-- item-->
-                      <a href="javascript:void(0);" class="dropdown-item">Profit</a>
-                      <!-- item-->
-                      <a href="javascript:void(0);" class="dropdown-item">Action</a>
+        <div class="card-body">
+
+            <h4 class="header-title">Average Time per Stage</h4>
+
+
+
+            <!-- {% for project in projects %}
+          <p>  {{project.current_time}}</p>
+          <p>  {{project.created_at}}</p>
+          <p>  {{project.time_dif}} hello</p>
+
+
+          {% endfor %} -->
+          <br></br>
+            <div class="progress-w-percent">
+              {% for dvf in dvfs|slice:"1" %}
+              <h5 class="mb-1 mt-0 font-weight-normal">Seed I-III: {{dvf.getTimeSeed}} days </h5>
+
+              <span class="text-muted font-13"> </span>
+              <div class="progress-w-percent">
+                  <div class="progress">
+    <div class="progress-bar" role="progressbar" style="width: {{dvf.getTimeSeed}}%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{dvf.getTimeSeed}} days</div>
+    </div>
+              </div>
+              {% endfor %}
+
+              <div class="progress-w-percent">
+                {% for dvf in dvfs|slice:"1" %}
+                <h5 class="mb-1 mt-0 font-weight-normal">Seed Launch: {{dvf.getTimeSeedLaunch}} days </h5>
+                <div class="progress-w-percent">
+                    <div class="progress">
+              <div class="progress-bar" role="progressbar" style="width: {{dvf.getTimeSeedLaunch}}%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{dvf.getTimeSeedLaunch}} days</div>
+              </div>
+                </div>
+                {% endfor %}
+
+                <div class="progress-w-percent">
+                  {% for dvf in dvfs|slice:"1" %}
+                  <h5 class="mb-1 mt-0 font-weight-normal">Launch: {{dvf.getTimeLaunch}} days </h5>
+                  <div class="progress-w-percent">
+                      <div class="progress">
+                <div class="progress-bar" role="progressbar" style="width: {{dvf.getTimeLaunch}}%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{dvf.getTimeSeedLaunch}} days</div>
+                </div>
                   </div>
-              </div>
-              <h4 class="header-title">Average Time in Each Stage</h4>
-
-
-              <div class="btn-group">
-    <div class="btn-group">
-    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-    Zone <span class="caret"></span></button>
-    <ul class="dropdown-menu" role="menu">
-    <li><a href="#">APAC S</a></li>
-    <li><a href="#">APAC N</a></li>
-    <li><a href="#">EU</a></li>
-    <li><a href="#">MAZ</a></li>
-    <li><a href="#">NAZ</a></li>
-    <li><a href="#">LAN/LAS</a></li>
-
-
-
-
-    </ul>
-    </div>
-    <div class="btn-group">
-    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-    Business Model <span class="caret"></span></button>
-    <ul class="dropdown-menu" role="menu">
-    <li><a href="#">Courier</a></li>
-    <li><a href="#">eStore</a></li>
-    <li><a href="#">Subscription</a></li>
+                  {% endfor %}
 
 
 
 
 
-    </ul>
-    </div>
 
 
-    </div>
-              <!-- {% for project in projects %}
-            <p>  {{project.current_time}}</p>
-            <p>  {{project.created_at}}</p>
-            <p>  {{project.time_dif}} hello</p>
+            </div>
 
 
-            {% endfor %} -->
-            <br></br>
-              <h5 class="mb-1 mt-0 font-weight-normal">Seed I-III</h5>
-              <div class="progress-w-percent">
-
-                <div class="progress">
-    <div class="progress-bar" role="progressbar" style="width: 100%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">11 months</div>
-    </div>
-
-              </div>
-              <h5 class="mb-1 mt-0 font-weight-normal">Seed Launch</h5>
-              <div class="progress-w-percent">
 
 
-                  <div class="progress">
-    <div class="progress-bar" role="progressbar" style="width: 70%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">7 months</div>
-    </div>
-              </div>
+        </div> <!-- end card-body-->
 
-              <h5 class="mb-1 mt-0 font-weight-normal">Launch</h5>
-              <div class="progress-w-percent">
-
-
-                  <div class="progress">
-    <div class="progress-bar" role="progressbar" style="width: 85%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">9 months</div>
-    </div>
-              </div>
-
-          </div> <!-- end card-body-->
+    </div> <!-- end card-->
+  </div>
 
       </div> <!-- end card-->
     </div>
@@ -276,8 +249,8 @@ document.getElementById("kill").innerHTML = z+'%';
                           <tr>
                               <th>Zone</th>
                               <th>Seed</th>
-                              <th>SL</th>
-                              <th>Grow</th>
+                              <th>Seed Launch</th>
+                              <th>Launch</th>
                           </tr>
 
                           <tr>
@@ -597,10 +570,11 @@ document.getElementById("kill").innerHTML = z+'%';
                         <i class="mdi mdi-account-multiple widget-icon"></i>
                     </div>
                     <h5 class="text-muted font-weight-normal mt-0" title="Number of Customers">Active <br>Users</h5>
-                    <h3 class="mt-3 mb-3">{{users.count}}</h3>
-                    <p class="mb-0 text-muted">
-                        <span class="text-success mr-2"><i class="mdi mdi-arrow-up-bold"></i> 100%</span>
-                        <span class="text-nowrap">Since last month</span>
+                    <h3> {{assumption_user | length}} </h3>
+
+                        <p class="mb-0 text-muted">
+                        <!-- <span class="text-success mr-2"><i class="mdi mdi-arrow-up-bold"></i> 100%</span>
+                        <span class="text-nowrap">Since last month</span> -->
                     </p>
                 </div> <!-- end card-body-->
           </div>
@@ -637,8 +611,8 @@ document.getElementById("comply").innerHTML = z+'%';
 
                       <p class="mb-0 text-muted">
 
-                          <span class="text-success mr-2"><i class="mdi mdi-arrow-up-bold"></i> 5.27%</span>
-                          <span class="text-nowrap">Since last month</span>
+                          <!-- <span class="text-success mr-2"><i class="mdi mdi-arrow-up-bold"></i> 5.27%</span>
+                          <span class="text-nowrap">Since last month</span> -->
                       </p>
                   </div> <!-- end card-body-->
             </div>
@@ -654,8 +628,8 @@ document.getElementById("comply").innerHTML = z+'%';
                         <h5 class="text-muted font-weight-normal mt-0" title="Number of Customers">Total Comments</h5>
                         <h3 class="mt-3 mb-3">{{comments_list | length}}</h3>
                         <p class="mb-0 text-muted">
-                            <span class="text-success mr-2"><i class="mdi mdi-arrow-up-bold"></i> 6.5%</span>
-                            <span class="text-nowrap">Since last month</span>
+                            <!-- <span class="text-success mr-2"><i class="mdi mdi-arrow-up-bold"></i> 6.5%</span>
+                            <span class="text-nowrap">Since last month</span> -->
                         </p>
                     </div> <!-- end card-body-->
               </div>
@@ -682,8 +656,8 @@ document.getElementById("comply").innerHTML = z+'%';
                           </h3>
 
                           <p class="mb-0 text-muted">
-                              <span class="text-success mr-2"><i class="mdi mdi-arrow-up-bold"></i> 5.27%</span>
-                              <span class="text-nowrap">Since last month</span>
+                              <!-- <span class="text-success mr-2"><i class="mdi mdi-arrow-up-bold"></i> 5.27%</span>
+                              <span class="text-nowrap">Since last month</span> -->
                           </p>
                       </div> <!-- end card-body-->
                 </div>
@@ -868,7 +842,7 @@ document.getElementById("comply").innerHTML = z+'%';
 <!-- <img src="{{member.user.profile.profile_image.url}}" class="rounded-circle avatar-xs" alt="friend"> -->
 {{member.user|capfirst}}                       </td>
 <td>{{project}}</td>
-<td>{{member.user.assumption_set.count|add:member.user.comment_set.count|add:member.user.comment_set.count}}</td>
+<td>{{member.user.assumption_set.count|add:member.user.comment_set.count}}</td>
   </tr>
   {% endif %}
 {% endfor %}
