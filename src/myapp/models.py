@@ -91,6 +91,9 @@ class Project(models.Model):
     def __str__(self):
         return str(self.title)
 
+
+
+
 class Elevator(models.Model):
     user = models.ForeignKey(User)
     project = models.ForeignKey(Project)
@@ -373,6 +376,40 @@ class Dvf(models.Model):
     def time_in_stage(self):
         now = datetime.now(timezone.utc)
         return (now - self.created_at).days
+
+    def getTimeSeed(self):
+      dvf_list_seed = Dvf.objects.filter(stage="seed")
+
+      dvfTotal = 0
+      now = datetime.now(timezone.utc)
+
+      for d in dvf_list_seed:
+          dvfTotal += (now-self.created_at).days
+
+      return dvfTotal
+
+    def getTimeLaunch(self):
+      dvf_list_launch = Dvf.objects.filter(stage="launch")
+
+      dvfTotalx = 0
+      now = datetime.now(timezone.utc)
+
+      for d in dvf_list_launch:
+          dvfTotalx += (now-self.created_at).days
+
+      return dvfTotalx
+
+    def getTimeSeedLaunch(self):
+      dvf_list_seedlaunch = Dvf.objects.filter(stage="seedlaunch")
+
+      dvfTotaly = 0
+      now = datetime.now(timezone.utc)
+
+      for d in dvf_list_seedlaunch:
+          dvfTotaly += (now-self.created_at).days
+
+      return dvfTotaly
+
 
     def __str__(self):
         return str(self.project)
