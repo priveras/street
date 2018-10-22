@@ -373,6 +373,20 @@ class Dvf(models.Model):
 
         super(Dvf, self).save(args, kwargs)
 
+    def get_active_user_count(User):
+        now = datetime.now(timezone.utc)
+        count_active = 0
+        active_user_list = User.objects.all()
+
+        for u in Users:
+            if (now - u.last_login).days > 14:
+                count_active += 1
+
+        return count_active
+
+
+
+
     def time_in_stage(self):
         now = datetime.now(timezone.utc)
         return (now - self.created_at).days
@@ -380,11 +394,12 @@ class Dvf(models.Model):
     def getTimeSeed(self):
       dvf_list_seed = Dvf.objects.filter(stage="seed")
 
+
       dvfTotal = 0
       now = datetime.now(timezone.utc)
 
       for d in dvf_list_seed:
-          dvfTotal += (now-self.created_at).days
+          dvfTotal += ((now-self.created_at).days)/dvf_list_seed.count()
 
       return dvfTotal
 
@@ -395,7 +410,7 @@ class Dvf(models.Model):
       now = datetime.now(timezone.utc)
 
       for d in dvf_list_launch:
-          dvfTotalx += (now-self.created_at).days
+          dvfTotalx += ((now-self.created_at).days)/dvf_list_launch.count()
 
       return dvfTotalx
 
@@ -406,7 +421,7 @@ class Dvf(models.Model):
       now = datetime.now(timezone.utc)
 
       for d in dvf_list_seedlaunch:
-          dvfTotaly += (now-self.created_at).days
+          dvfTotaly += ((now-self.created_at).days)/dvf_list_seedlaunch.count()
 
       return dvfTotaly
 
