@@ -573,8 +573,8 @@ class Objective(models.Model):
             ('feasibility', 'Feasibility'),
             )
     dvf = models.CharField(choices=dvf_choices, max_length=200, blank=True)
-    metric = models.TextField(blank=True)
     value = models.TextField(blank=True)
+    evidence = models.TextField(blank=True)
     status_choices = (
             ('Complete', 'Complete'),
             ('On Track', 'On Track'),
