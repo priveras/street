@@ -645,9 +645,6 @@ class Objective(models.Model):
     def __str__(self):
         return str(self.project)
 
-    def __str__(self):
-        return str(self.project)
-
 class Problem(models.Model):
     user = models.ForeignKey(User)
     project = models.ForeignKey(Project)

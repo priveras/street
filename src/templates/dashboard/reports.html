@@ -2,6 +2,7 @@
 {% load staticfiles %}
 {% load humanize %}
 {% block content %}
+{% load analytics_tags %}
 <!-- start page title -->
 <div class="row">
     <div class="col-12">
@@ -488,7 +489,11 @@ document.getElementById("kill").innerHTML = z+'%';
                                                       <div class="badge badge-primary mb-3">{{project.stage}}</div>
                                                   </td>
                                                   <td>
-                                                  <h5 class="font-14 mb-1 font-weight-normal text-center"> / {{project.objective_set.count}}</h5>
+                                                  {% for objective in objectives_status %}
+                                                      {% if objective.project == project.id and objective.status == 'Complete' %}
+                                                          <h5 class="font-14 mb-1 font-weight-normal text-center">{{objective.project__count}} / {{project.objective_set.count}}</h5>
+                                                      {% endif %}
+                                                  {% endfor %}
                                                   </td>
                                                   <td>
                                                       {% if dvf.desirability == "On Track" %}
