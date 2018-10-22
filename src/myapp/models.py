@@ -79,10 +79,10 @@ class Project(models.Model):
         if self.stage in ('Seed 1', 'Seed 2', 'Seed 3'):
             stage_group = 'seed'
             return stage_group
-        elif self.stage in ('Seed Launch'):
+        elif self.stage == 'Seed Launch':
             stage_group = 'seedlaunch'
             return stage_group
-        elif self.stage in ('Launch'):
+        elif self.stage == 'Launch':
             stage_group = 'launch'
             return stage_group
         else:
@@ -574,7 +574,7 @@ class Objective(models.Model):
             )
     dvf = models.CharField(choices=dvf_choices, max_length=200, blank=True)
     value = models.TextField(blank=True)
-    evidence = models.TextField(blank=True)
+    metric = models.TextField(blank=True)
     status_choices = (
             ('Complete', 'Complete'),
             ('On Track', 'On Track'),

@@ -120,7 +120,7 @@ class DashboardView(generic.ListView):
         context['assumptions_list'] = Assumption.objects.all()
         context['comments_list'] = Comment.objects.all()
         context['dvfs'] = Dvf.objects.all()
-        context['objectives_status'] = Objective.objects.values('project','status').annotate(Count('project'))
+        context['completed_obj'] = Objective.objects.filter(status='Complete').values('project','status').annotate(Count('project'))
 
         context['file_proj'] = File.objects.values('project').order_by().annotate(Count('project'))
         context['businessmodel_proj'] = BusinessModel.objects.values('project').order_by().annotate(Count('project'))

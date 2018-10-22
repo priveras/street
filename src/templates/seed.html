@@ -591,11 +591,15 @@
                     {% else %}
                     <tr>
                         <th>Objective</th>
+                        <th>Evidence</th>
                         <th>Status</th>
                         <th></th>
                     </tr>
                     {% for objective in objectives %}
                     <tr class="text-justify">
+                        <td>
+                            {{objective.value}}
+                        </td>
                         <td>
                             {{objective.metric}}
                         </td>
@@ -797,7 +801,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myLargeModalLabel">Objectives</h4>
+                <h4 class="modal-title" id="myLargeModalLabel">Seed I-III Objectives</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             </div>
             <div class="modal-body" id="modal-body">

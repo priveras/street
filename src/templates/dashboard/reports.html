@@ -454,7 +454,7 @@ document.getElementById("kill").innerHTML = z+'%';
             </h4>
           </div>
           <div class="row">
-              <div class="col-xl-8">
+              <div class="col-xl-10">
                   <div class="card">
                       <div class="card-body">
                           <div class="card-widgets">
@@ -487,12 +487,13 @@ document.getElementById("kill").innerHTML = z+'%';
                                                   <td class="text-left">
                                                       <div class="badge badge-primary mb-3">{{project.stage}}</div>
                                                   </td>
-                                                  <td>
-                                                      {% for objective in objectives_status %}
-                                                          {% if objective.project == project.id and objective.status == 'Complete' %}
-                                                              <h5 class="font-14 mb-1 font-weight-normal text-center">{{objective.project__count}} / {{project.objective_set.count}}</h5>
+                                                  <td class="text-center">
+                                                      {% for objective in completed_obj %}
+                                                          {% if objective.project == project.id %}
+                                                              {{objective.project__count}}
                                                           {% endif %}
                                                       {% endfor %}
+                                                      / {{project.objective_set.count}}
                                                   </td>
                                                   <td>
                                                       {% if dvf.desirability == "On Track" %}

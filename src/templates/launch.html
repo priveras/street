@@ -570,6 +570,9 @@
         </div>
         <h4 class="header-title">
             Objectives
+            <a href="" class="text-muted" data-toggle="modal" data-target="#objectives">
+                <i class="mdi mdi-information-outline" data-toggle="tooltip" data-placement="top" title="" data-original-title="Learn More"></i>
+            </a>
         </h4>
         <p class="text-muted font-14 mb-2">
             Add high level objectives here (i.e. monthly or quarterly)
@@ -584,13 +587,18 @@
                     {% else %}
                     <tr>
                         <th>DVF</th>
-                        <th>Objective<th>
+                        <th>Objective</th>
+                        <th>Evidence</th>
+                        <th>Status</th>
                         <th></th>
                     </tr>
                     {% for objective in objectives %}
                     <tr class="text-justify">
                         <td>
                             <span class="badge badge-light">{{objective.dvf|capfirst}}</span>
+                        </td>
+                        <td>
+                            {{objective.value}}
                         </td>
                         <td>
                             {{objective.metric}}
@@ -762,7 +770,39 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-
+<!--  Modal content for the above example -->
+<div class="modal fade" id="objectives" tabindex="-1" role="dialog" aria-labelledby="elevator" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myLargeModalLabel">Launch Objectives</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <p>
+                Desirability</p>
+                <ul>
+                    <li>Scale the customer base</li>
+                </ul>
+                <br>
+                <p>
+                Viability</p>
+                <ul>
+                    <li>Efficiently acquire and retain customers</li>
+                </ul>
+                <br>
+                <p>
+                Feasibility</p>
+                <ul>
+                    <li>Maintain consistent execution of value proposition as operations sale</li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 <!--  Modal content for the above example -->
 <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog"
