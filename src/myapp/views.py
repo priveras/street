@@ -10,7 +10,7 @@ from django.utils.crypto import get_random_string
 from django.core.mail import send_mail
 from django.template.loader import get_template
 from django.template import Context
-from django.db.models import Count 
+from django.db.models import Count
 
 from .forms import ProfileForm, SummaryForm, PastForm, FutureForm, ProjectForm
 from .forms import ElevatorForm, ProblemForm, SolutionForm, BusinessModelForm
@@ -116,6 +116,7 @@ class DashboardView(generic.ListView):
         context['assumptions_list'] = Assumption.objects.all()
         context['comments_list'] = Comment.objects.all()
         context['dvfs'] = Dvf.objects.all()
+        context['objectives'] = Objective.objects.all()
 
         context['file_proj'] = File.objects.values('project').order_by().annotate(Count('project'))
         context['businessmodel_proj'] = BusinessModel.objects.values('project').order_by().annotate(Count('project'))

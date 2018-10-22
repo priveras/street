@@ -600,7 +600,7 @@
                             {{objective.metric}}
                         </td>
                         <td>
-                            {% if objective.status == "On Track" %}
+                            {% if objective.status == "On Track" or objective.status == "Complete" %}
                             <span class="badge badge-success">{{objective.status}}</span>
                             {% elif objective.status == "Delayed" %}
                             <span class="badge badge-warning">{{objective.status}}</span>
