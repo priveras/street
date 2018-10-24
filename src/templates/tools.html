@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load humanize %}
+{% block content %}
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">BOX OS</a></li>
+                    <li class="breadcrumb-item active">Library</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Tools</h4>
+        </div>
+    </div>
+</div>     
+<!-- end page title --> 
+
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="text-center">
+            <h3 class="">OS Tools</h3>
+            <p class="text-muted mt-3">In this section, you can find some of our favorite tools to run tasks such as AB testing, <br>developing a brand and logo, creating landing pages, and more.
+        </div>
+    </div><!-- end col -->
+</div><!-- end row -->
+
+<div class="row pt-5">
+    <div class="col-sm-1"></div>
+    <div class="col-sm-10">
+        <div class="row">
+        
+        
+            <div class="card-columns">
+                {% for tool in tools_list %}
+                <div class="card">
+                    <!-- project-thumbnail -->
+                    <div class="card-img-top" style="background-image:url('{{tool.image.url}}'); height:150px; background-size:cover; background-position:center"></div>
+                    <div class="card-img-overlay">
+                        <div class="badge badge-secondary p-1">{{tool.category}}</div>
+                    </div>
+
+                    <div class="card-body position-relative">
+                        <!-- project title-->
+                        <h4 class="mt-0">
+                            <a href="{{tool.link}}" target="_blank" class="text-dark">{{tool.title}}</a>
+                            <a href="{{tool.link}}" target="_blank"><i class="mdi mdi-open-in-new float-right"></i></a>
+                        </h4>
+                        <p class="text-justify">{{tool.excerpt}}</p>
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+        
+        </div>
+    </div>
+</div>
+<!-- end row -->
+{% endblock %}
