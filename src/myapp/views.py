@@ -192,6 +192,13 @@ class DetailView(generic.DetailView):
                 project__id=self.object.id).exists():
                 raise Http404
 
+        permission = Team.objects.filter(project=self.object).filter(user=self.request.user).filter(permission="edit")
+
+        if permission or self.request.user.is_superuser:
+            context['permission'] = True
+        else:
+            permission = False
+
         context['recent_activity'] = 'recent_activity.html'
         context['team'] = Team.objects.filter(project=self.object).filter(permission="edit")
 
@@ -202,7 +209,6 @@ class DetailView(generic.DetailView):
         context['dvf_seed'] = Dvf.objects.filter(project=self.object).filter(stage="seed").order_by('-updated_at')
         context['dvf_seedlaunch'] = Dvf.objects.filter(project=self.object).filter(stage="seedlaunch").order_by('-updated_at')
         context['dvf_launch'] = Dvf.objects.filter(project=self.object).filter(stage="launch").order_by('-updated_at')
-        context['permission'] = Team.objects.filter(project=self.object).filter(user=self.request.user).filter(permission="edit")
         context['fileform'] = FileForm()
 
         context['elevators'] = Elevator.objects.filter(project=self.object).order_by('-updated_at')

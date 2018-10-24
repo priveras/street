@@ -43,7 +43,7 @@
                             {% for sum in summary %}
                             <tr class="text-justify">
                                 <td>
-                                    {{sum.text}}
+                                    {{sum.text|linebreaks}}
                                     <br><br>
                                     <small class="text-muted">{{sum.updated_at|date}}</small>
                                 </td>
@@ -252,7 +252,7 @@
                             {% for f in future %}
                             <tr class="text-justify">
                                 <td>
-                                    {{f.text}}
+                                    {{f.text|linebreaks}}
                                     <br><br>
                                     <small class="text-muted">{{f.updated_at|date}}</small>
                                 </td>

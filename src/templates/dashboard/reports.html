@@ -137,9 +137,11 @@
                       </div>
                       <h5 class="text-muted font-weight-normal mt-0" title="Number of Customers">Active Businesses</h5>
                       <h3 class="mt-3 mb-3">{{actives.count}}</h3>
-                      <p class="mb-0 text-muted">
                           <!-- <span class="text-success mr-2"><i class="mdi mdi-arrow-up-bold"></i> 100%</span>
                           <span class="text-nowrap">Since last month</span> -->
+                      <p class="mb-0 text-muted">
+                          <span class="text-success mr-2"><i class="mdi mdi-arrow-up-bold"></i> 90%</span>
+                          <span class="text-nowrap">YTD</span>
                       </p>
                   </div> <!-- end card-body-->
               </div> <!-- end card-->
@@ -691,10 +693,7 @@ document.getElementById("comply").innerHTML = z+'%';
                     <th>Total Assumptions</th>
                     <th>Total Comments</th>
                     <th>
-                        Other Activity
-                        <a href="" class="text-muted" data-toggle="modal" data-target="#assumptions">
-                            <i class="mdi mdi-information-outline" data-toggle="tooltip" data-placement="top" title="" data-original-title="# of edits, links, files uploaded this week"></i>
-                        </a>
+                        Other Activity<i class="mdi mdi-information-outline" data-toggle="tooltip" data-placement="top" title="" data-original-title="# of edits, links, files uploaded this week"></i>
                     </th>
                 </tr>
                 {% for project in projects %}
@@ -829,9 +828,9 @@ document.getElementById("comply").innerHTML = z+'%';
                 <th>Team</th>
                 <th>
                     Points
-                    <a href="" class="text-muted" data-toggle="modal" data-target="#assumptions">
-                        <i class="mdi mdi-information-outline" data-toggle="tooltip" data-placement="top" title="" data-original-title="Assumptions + Comments + Edits"></i>
-                    </a>
+                </th>
+                <th>
+                  <i class="mdi mdi-information-outline" data-toggle="tooltip" data-placement="top" title="" data-original-title="Assumptions + Comments + Edits"></i>
                 </th>
               </tr>
 

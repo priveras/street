@@ -40,6 +40,8 @@ admin.site.register(Link)
 admin.site.register(Dvf)
 admin.site.register(Progress)
 admin.site.register(Invite)
-admin.site.register(Resource)
+@admin.register(Resource)
+class ResourceAdmin(ImportExportModelAdmin):
+    pass
 admin.site.register(Objective)
 admin.site.register(Tool)
