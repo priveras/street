@@ -79,10 +79,10 @@ class Project(models.Model):
         if self.stage in ('Seed 1', 'Seed 2', 'Seed 3'):
             stage_group = 'seed'
             return stage_group
-        elif self.stage in ('Seed Launch'):
+        elif self.stage == 'Seed Launch':
             stage_group = 'seedlaunch'
             return stage_group
-        elif self.stage in ('Launch'):
+        elif self.stage == 'Launch':
             stage_group = 'launch'
             return stage_group
         else:
@@ -148,14 +148,6 @@ class Elevator(models.Model):
 
     def __str__(self):
         return str(self.project)
-
-    def assumption_count(self):
-        assumption_count = 0
-        if self.assumption:
-            assumption_count +=1
-            return assumption_count
-        else:
-            return assumption_count
 
     def __str__(self):
         return str(self.title)
@@ -395,6 +387,20 @@ class Dvf(models.Model):
 
         super(Dvf, self).save(args, kwargs)
 
+    def get_active_user_count(User):
+        now = datetime.now(timezone.utc)
+        count_active = 0
+        active_user_list = User.objects.all()
+
+        for u in Users:
+            if (now - u.last_login).days > 14:
+                count_active += 1
+
+        return count_active
+
+
+
+
     def time_in_stage(self):
         now = datetime.now(timezone.utc)
         return (now - self.created_at).days
@@ -402,11 +408,12 @@ class Dvf(models.Model):
     def getTimeSeed(self):
       dvf_list_seed = Dvf.objects.filter(stage="seed")
 
+
       dvfTotal = 0
       now = datetime.now(timezone.utc)
 
       for d in dvf_list_seed:
-          dvfTotal += (now-self.created_at).days
+          dvfTotal += ((now-self.created_at).days)/dvf_list_seed.count()
 
       return dvfTotal
 
@@ -417,7 +424,7 @@ class Dvf(models.Model):
       now = datetime.now(timezone.utc)
 
       for d in dvf_list_launch:
-          dvfTotalx += (now-self.created_at).days
+          dvfTotalx += ((now-self.created_at).days)/dvf_list_launch.count()
 
       return dvfTotalx
 
@@ -428,7 +435,7 @@ class Dvf(models.Model):
       now = datetime.now(timezone.utc)
 
       for d in dvf_list_seedlaunch:
-          dvfTotaly += (now-self.created_at).days
+          dvfTotaly += ((now-self.created_at).days)/dvf_list_seedlaunch.count()
 
       return dvfTotaly
 
@@ -595,8 +602,8 @@ class Objective(models.Model):
             ('feasibility', 'Feasibility'),
             )
     dvf = models.CharField(choices=dvf_choices, max_length=200, blank=True)
-    metric = models.TextField(blank=True)
     value = models.TextField(blank=True)
+    metric = models.TextField(blank=True)
     status_choices = (
             ('Complete', 'Complete'),
             ('On Track', 'On Track'),
@@ -663,9 +670,6 @@ class Objective(models.Model):
             )
 
         super(Objective, self).delete(args, kwargs)
-
-    def __str__(self):
-        return str(self.project)
 
     def __str__(self):
         return str(self.project)

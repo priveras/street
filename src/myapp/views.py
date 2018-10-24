@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.db.models import Q
 from django.shortcuts import render, redirect, Http404
 from django.views.decorators.csrf import csrf_exempt
-from datetime import date
+from datetime import date, datetime, timezone
 from django.http import JsonResponse
 from django.utils.text import slugify
 from django.utils.crypto import get_random_string
@@ -11,8 +11,6 @@ from django.core.mail import send_mail
 from django.template.loader import get_template
 from django.template import Context
 from django.db.models import Count
-from datetime import datetime, timezone
-
 
 from .forms import ProfileForm, SummaryForm, PastForm, FutureForm, ProjectForm
 from .forms import ElevatorForm, ProblemForm, SolutionForm, BusinessModelForm
@@ -133,6 +131,7 @@ class DashboardView(generic.ListView):
         context['assumptions_list'] = Assumption.objects.all()
         context['comments_list'] = Comment.objects.all()
         context['dvfs'] = Dvf.objects.all()
+        context['completed_obj'] = Objective.objects.filter(status='Complete').values('project','status').annotate(Count('project'))
 
         context['file_proj'] = File.objects.values('project').order_by().annotate(Count('project'))
         context['businessmodel_proj'] = BusinessModel.objects.values('project').order_by().annotate(Count('project'))

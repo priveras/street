@@ -591,16 +591,20 @@
                     {% else %}
                     <tr>
                         <th>Objective</th>
+                        <th>Evidence</th>
                         <th>Status</th>
                         <th></th>
                     </tr>
                     {% for objective in objectives %}
                     <tr class="text-justify">
                         <td>
+                            {{objective.value}}
+                        </td>
+                        <td>
                             {{objective.metric}}
                         </td>
                         <td>
-                            {% if objective.status == "On Track" %}
+                            {% if objective.status == "On Track" or objective.status == "Complete" %}
                             <span class="badge badge-success">{{objective.status}}</span>
                             {% elif objective.status == "Delayed" %}
                             <span class="badge badge-warning">{{objective.status}}</span>
@@ -797,7 +801,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myLargeModalLabel">Objectives</h4>
+                <h4 class="modal-title" id="myLargeModalLabel">Seed I-III Objectives</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             </div>
             <div class="modal-body" id="modal-body">

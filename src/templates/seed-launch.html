@@ -569,6 +569,9 @@
         </div>
         <h4 class="header-title">
             Objectives
+            <a href="" class="text-muted" data-toggle="modal" data-target="#objectives">
+                <i class="mdi mdi-information-outline" data-toggle="tooltip" data-placement="top" title="" data-original-title="Learn More"></i>
+            </a>
         </h4>
         <p class="text-muted font-14 mb-2">
             Add high level objectives here (i.e. monthly or quarterly)
@@ -583,7 +586,9 @@
                     {% else %}
                     <tr>
                         <th>DVF</th>
-                        <th>Objective<th>
+                        <th>Objective</th>
+                        <th>Evidence</th>
+                        <th>Status</th>
                         <th></th>
                     </tr>
                     {% for objective in objectives %}
@@ -592,10 +597,13 @@
                             <span class="badge badge-light">{{objective.dvf|capfirst}}</span>
                         </td>
                         <td>
+                            {{objective.value}}
+                        </td>
+                        <td>
                             {{objective.metric}}
                         </td>
                         <td>
-                            {% if objective.status == "On Track" %}
+                            {% if objective.status == "On Track" or objective.status == "Complete" %}
                             <span class="badge badge-success">{{objective.status}}</span>
                             {% elif objective.status == "Delayed" %}
                             <span class="badge badge-warning">{{objective.status}}</span>
@@ -761,7 +769,39 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-
+<!--  Modal content for the above example -->
+<div class="modal fade" id="objectives" tabindex="-1" role="dialog" aria-labelledby="elevator" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myLargeModalLabel">Seed Launch Objectives</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <p>
+                Desirability</p>
+                <ul>
+                    <li>Demonstrate customers are interested in and willing to pay for the solution</li>
+                </ul>
+                <br>
+                <p>
+                Viability</p>
+                <ul>
+                    <li>Prove that the financial model is achievable</li>
+                </ul>
+                <br>
+                <p>
+                Feasibility</p>
+                <ul>
+                    <li>Demonstrate ability to consistently deliver on value proposition</li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 <!--  Modal content for the above example -->
 <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog"

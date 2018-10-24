@@ -78,7 +78,7 @@ class BusinessModelForm(forms.ModelForm):
 class ObjectiveForm(forms.ModelForm):
     class Meta:
         model = Objective
-        exclude = ['created_at', 'updated_at', 'user', 'project', 'value']
+        exclude = ['created_at', 'updated_at', 'user', 'project']
 
 class AssumptionForm(forms.ModelForm):
     class Meta:
