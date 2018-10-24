@@ -173,6 +173,20 @@ class Resource(models.Model):
     def __str__(self):
         return str(self.title)
 
+class Tool(models.Model):
+    user = models.ForeignKey(User)
+    title = models.CharField(max_length=300)
+    excerpt = models.TextField(blank=True)
+    image = models.FileField(upload_to='images/tools/%Y%m%d', null=True)
+    link = models.CharField(max_length=300)
+    category = models.CharField(max_length=500)
+    featured = models.BooleanField(default=False)
+    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(db_index=True, auto_now_add=True)
+
+    def __str__(self):
+        return str(self.title)
+
 class Progress(models.Model):
     user = models.ForeignKey(User, unique=True)
     zx_dashboard = models.BooleanField(default=False, blank=True)

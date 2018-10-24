@@ -19,6 +19,7 @@ urlpatterns = [
     url(r'^learn/$', login_required(views.learn), name='learn'),
     url(r'^faq/$', login_required(views.FaqView.as_view()), name='faq'),
     url(r'^library/$', login_required(views.LibraryView.as_view()), name='library'),
+    url(r'^tools/$', login_required(views.ToolsView.as_view()), name='tools'),
 
     url(r'^api/project/form$',
         login_required(views.project_form),

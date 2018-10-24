@@ -21,7 +21,7 @@ from .forms import InviteForm, ObjectiveForm
 
 from .models import Project, Team, Comment, Assumption, Problem, BusinessModel
 from .models import Solution, Metric, File, Profile, Summary, Past, Future
-from .models import Elevator, Tutorial, Progress, Dvf, Link, Zone, Invite, Resource
+from .models import Elevator, Tutorial, Progress, Dvf, Link, Zone, Invite, Resource, Tool
 from .models import Objective
 from django.http import HttpResponseRedirect
 from pinax.eventlog.models import Log
@@ -34,6 +34,17 @@ class LibraryView(generic.ListView):
     def get_context_data(self, **kwargs):
         context = super(LibraryView, self).get_context_data(**kwargs)
         context['resources_list'] = Resource.objects.all()
+
+        return context
+
+class ToolsView(generic.ListView):
+    template_name = 'tools.html'
+    context_object_name = 'tools_list'
+    model = Tool
+
+    def get_context_data(self, **kwargs):
+        context = super(ToolsView, self).get_context_data(**kwargs)
+        context['tools_list'] = Tool.objects.all()
 
         return context
 
