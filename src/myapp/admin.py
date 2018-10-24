@@ -20,15 +20,13 @@ admin.site.register(Tutorial, TutorialAdmin)
 @admin.register(Project)
 class ProjectAdmin(ImportExportModelAdmin):
     pass
-
-
-
-
 admin.site.register(Team)
 admin.site.register(Elevator)
 admin.site.register(Profile)
 admin.site.register(Comment)
-admin.site.register(Assumption)
+@admin.register(Assumption)
+class AssumptionAdmin(ImportExportModelAdmin):
+    pass
 admin.site.register(Problem)
 admin.site.register(BusinessModel)
 admin.site.register(Solution)
