@@ -7,16 +7,23 @@ from .models import Project, Team, Comment, Assumption, Problem, BusinessModel
 from .models import Metric, File, Past, Future, Summary, Solution, Tutorial
 from .models import Profile, Link, Dvf, Progress, Zone, Invite, Resource, Elevator, Tool
 from .models import Objective
+from import_export.admin import ImportExportModelAdmin
 
-class ProjectAdmin(admin.ModelAdmin):
-    prepopulated_fields = {'slug': ('title',)}
+#class ProjectAdmin(admin.ModelAdmin):
+    #prepopulated_fields = {'slug': ('title',)}
 
 class TutorialAdmin(SummernoteModelAdmin):
     summernote_fields = ('content',)
 
 
 admin.site.register(Tutorial, TutorialAdmin)
-admin.site.register(Project, ProjectAdmin)
+@admin.register(Project)
+class ProjectAdmin(ImportExportModelAdmin):
+    pass
+
+
+
+
 admin.site.register(Team)
 admin.site.register(Elevator)
 admin.site.register(Profile)
