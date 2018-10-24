@@ -570,7 +570,9 @@ document.getElementById("kill").innerHTML = z+'%';
                         <i class="mdi mdi-account-multiple widget-icon"></i>
                     </div>
                     <h5 class="text-muted font-weight-normal mt-0" title="Number of Customers">Active <br>Users</h5>
-                    <h3> {{assumption_user | length}} </h3>
+                    <h3> {% for user in users|slice:"1" %}
+                      {{user.get_active_user_count}}
+                    {% endfor %}</h3>
 
                         <p class="mb-0 text-muted">
                         <!-- <span class="text-success mr-2"><i class="mdi mdi-arrow-up-bold"></i> 100%</span>
@@ -833,9 +835,7 @@ document.getElementById("comply").innerHTML = z+'%';
                 </th>
               </tr>
 
-              {% for user in users|slice:"1" %}
-                {{user.get_active_user_count}}
-              {% endfor %}
+
 
 {% for project in project_list %}
 {% for member in project.team_set.all %}

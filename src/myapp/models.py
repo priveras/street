@@ -378,7 +378,7 @@ class Dvf(models.Model):
         count_active = 0
         active_user_list = User.objects.all()
 
-        for u in Users:
+        for u in active_user_list:
             if (now - u.last_login).days > 14:
                 count_active += 1
 
