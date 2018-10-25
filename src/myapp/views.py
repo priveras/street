@@ -48,6 +48,7 @@ def analytics(request):
         'assumptions_inprogress': Assumption.objects.filter(status='In Progress').count(),
         'assumptions_invalidated': Assumption.objects.filter(status='Invalidated').count(),
         'activity': Log.objects.count(),
+        'activity_recent': Log.objects.order_by('-timestamp')[:50],
 
     }
 
