@@ -30,7 +30,7 @@
                         <h5 class="text-muted font-weight-normal mt-0" title="Number of Customers">Active Projects</h5>
                         <h3 class="mt-3 mb-3">{{projects_active}}</h3>
                         <p class="mb-0 text-muted">
-                            <span class="text-success mr-2"><i class="mdi mdi-arrow-up-bold"></i> 5.27%</span>
+                            <span class="text-success mr-2"><i class="mdi mdi-arrow-up-bold"></i> {{projects_month.count}}</span>
                             <span class="text-nowrap">Since last month</span>  
                         </p>
                     </div> <!-- end card-body-->
@@ -46,7 +46,7 @@
                         <h5 class="text-muted font-weight-normal mt-0" title="Number of Orders">Users</h5>
                         <h3 class="mt-3 mb-3">{{users}}</h3>
                         <p class="mb-0 text-muted">
-                            <span class="text-danger mr-2"><i class="mdi mdi-arrow-down-bold"></i> 1.08%</span>
+                            <span class="text-success mr-2"><i class="mdi mdi-arrow-up-bold"></i> {{users_month.count}}</span>
                             <span class="text-nowrap">Since last month</span>
                         </p>
                     </div> <!-- end card-body-->
@@ -64,7 +64,7 @@
                         <h5 class="text-muted font-weight-normal mt-0" title="Average Revenue">Assumptions</h5>
                         <h3 class="mt-3 mb-3">{{assumptions}}</h3>
                         <p class="mb-0 text-muted">
-                            <span class="text-danger mr-2"><i class="mdi mdi-arrow-down-bold"></i> 7.00%</span>
+                            <span class="text-success mr-2"><i class="mdi mdi-arrow-up-bold"></i> {{assumptions_month.count}}</span>
                             <span class="text-nowrap">Since last month</span>
                         </p>
                     </div> <!-- end card-body-->
@@ -80,7 +80,7 @@
                         <h5 class="text-muted font-weight-normal mt-0" title="Growth">User Actions</h5>
                         <h3 class="mt-3 mb-3">{{activity}}</h3>
                         <p class="mb-0 text-muted">
-                            <span class="text-success mr-2"><i class="mdi mdi-arrow-up-bold"></i> 4.87%</span>
+                            <span class="text-success mr-2"><i class="mdi mdi-arrow-up-bold"></i> {{activity_month.count}}</span>
                             <span class="text-nowrap">Since last month</span>
                         </p>
                     </div> <!-- end card-body-->
@@ -93,13 +93,13 @@
                     <div class="card-body">
                         <h4 class="header-title mb-3">Users ({{users_list.count}})</h4>
 
-                        <div class="inbox-widget slimscroll" style="max-height: 290px;">
+                        <div class="inbox-widget slimscroll" style="max-height: 400px;">
                             {% for u in users_list %}
                             <div class="inbox-item">
                                 {% if u.profile_set.all %}
                                     {% for profile in u.profile_set.all %}
                                     <div class="inbox-item-img">
-                                        <img src="{{profile.profile_image.url}}" class="rounded-circle" alt="">
+                                        <div style="height:40px; width:40px; background-image: url('{{profile.profile_image.url}}'); background-size:cover; border-radius:40px"></div>
                                     </div>
                                     {% endfor %}
                                 {% else %}

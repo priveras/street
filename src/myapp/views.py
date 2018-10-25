@@ -23,23 +23,30 @@ from .models import Elevator, Tutorial, Progress, Dvf, Link, Zone, Invite, Resou
 from .models import Objective
 from django.http import HttpResponseRedirect
 from pinax.eventlog.models import Log
+from datetime import datetime, timedelta
+import datetime as dt
 
 def analytics(request):
-    tutorial = Tutorial.objects.order_by('created_at')
-    progress = Progress.objects.filter(user=request.user).first()
-    activity = Log.objects.count()
+
+
+    how_many_days = 30
+    today = dt.date.today()
     
     context = {
+        'projects_month': Project.objects.filter(created_at__gte=datetime.now()-timedelta(days=how_many_days)).filter(status="Active"),
+        'users_month': User.objects.filter(date_joined__gte=datetime.now()-timedelta(days=how_many_days)),
+        'assumptions_month': Assumption.objects.filter(created_at__gte=datetime.now()-timedelta(days=how_many_days)),
+        'activity_month': Log.objects.filter(timestamp__gte=datetime.now()-timedelta(days=how_many_days)),
         'projects_active' : Project.objects.filter(status='Active').count(),
         'projects_draft' : Project.objects.filter(status='Draft').count(),
         'projects_killed' : Project.objects.filter(status='Killed').count(),
-        'users': Profile.objects.count(),
+        'users': User.objects.count(),
         'users_list': User.objects.order_by('-date_joined'),
         'assumptions': Assumption.objects.count(),
         'assumptions_validated': Assumption.objects.filter(status='Validated').count(),
         'assumptions_inprogress': Assumption.objects.filter(status='In Progress').count(),
         'assumptions_invalidated': Assumption.objects.filter(status='Invalidated').count(),
-        'activity': activity,
+        'activity': Log.objects.count(),
 
     }
 
