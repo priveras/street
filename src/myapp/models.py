@@ -97,7 +97,7 @@ class Project(models.Model):
 class Elevator(models.Model):
     user = models.ForeignKey(User)
     project = models.ForeignKey(Project)
-    text = models.TextField(blank=True)
+    text = models.TextField()
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(db_index=True, auto_now_add=True)
 
@@ -221,7 +221,7 @@ class Team(models.Model):
             ('edit', 'Edit'),
             ('view', 'View'),
             )
-    permission = models.CharField(choices=permission_choices, max_length=200, blank=True)
+    permission = models.CharField(choices=permission_choices, max_length=200)
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(db_index=True, auto_now_add=True)
 
@@ -259,7 +259,7 @@ class Team(models.Model):
 class Comment(models.Model):
     project = models.ForeignKey(Project)
     user = models.ForeignKey(User)
-    text = models.TextField(blank=True)
+    text = models.TextField()
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(db_index=True, auto_now_add=True)
 
@@ -286,8 +286,8 @@ class Comment(models.Model):
 class Link(models.Model):
     project = models.ForeignKey(Project)
     user = models.ForeignKey(User)
-    title = models.CharField(max_length=500, null=False, blank=False)
-    link = models.URLField(null=False, blank=False)
+    title = models.CharField(max_length=500, null=False)
+    link = models.URLField(null=False)
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(db_index=True, auto_now_add=True)
 
@@ -340,15 +340,15 @@ class Dvf(models.Model):
             ('seedlaunch', 'Seed Launch'),
             ('launch', 'Launch'),
             )
-    stage = models.CharField(choices=stage_choices, max_length=200, blank=True)
+    stage = models.CharField(choices=stage_choices, max_length=200)
     status_choices = (
             ('On Track', 'On Track'),
             ('Delayed', 'Delayed'),
             ('At Risk', 'At Risk'),
             )
-    desirability = models.CharField(choices=status_choices, max_length=200, blank=True)
-    viability = models.CharField(choices=status_choices, max_length=200, blank=True)
-    feasibility = models.CharField(choices=status_choices, max_length=200, blank=True)
+    desirability = models.CharField(choices=status_choices, max_length=200)
+    viability = models.CharField(choices=status_choices, max_length=200)
+    feasibility = models.CharField(choices=status_choices, max_length=200)
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(db_index=True, auto_now_add=True)
 
@@ -504,14 +504,14 @@ class Assumption(models.Model):
             ('seedlaunch', 'Seed Launch'),
             ('launch', 'Launch'),
             )
-    stage = models.CharField(choices=stage_choices, max_length=200, blank=True)
+    stage = models.CharField(choices=stage_choices, max_length=200)
     dvf_choices = (
             ('desirability', 'Desirability'),
             ('viability', 'Viability'),
             ('feasibility', 'Feasibility'),
             )
-    dvf = models.CharField(choices=dvf_choices, max_length=200, blank=True)
-    assumption = models.TextField(blank=True)
+    dvf = models.CharField(choices=dvf_choices, max_length=200)
+    assumption = models.TextField()
     metric = models.TextField(blank=True)
     learnings = models.TextField(blank=True)
     status_choices = (
@@ -520,7 +520,7 @@ class Assumption(models.Model):
             ('Invalidated', 'Invalidated'),
             ('Inconclusive', 'Inconclusive'),
             )
-    status = models.CharField(choices=status_choices, max_length=200, blank=True)
+    status = models.CharField(choices=status_choices, max_length=200)
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(db_index=True, auto_now_add=True)
 
@@ -557,7 +557,7 @@ class Assumption(models.Model):
                     "metric": self.metric,
                     "learnings": self.learnings,
                     "status": self.status,
-                    "event": "added assumption"
+                    "event": "edited assumption"
                     }
                 )
 
@@ -595,21 +595,21 @@ class Metric(models.Model):
             ('seedlaunch', 'Seed Launch'),
             ('launch', 'Launch'),
             )
-    stage = models.CharField(choices=stage_choices, max_length=200, blank=True)
+    stage = models.CharField(choices=stage_choices, max_length=200)
     dvf_choices = (
             ('desirability', 'Desirability'),
             ('viability', 'Viability'),
             ('feasibility', 'Feasibility'),
             )
-    dvf = models.CharField(choices=dvf_choices, max_length=200, blank=True)
-    metric = models.TextField(blank=True)
+    dvf = models.CharField(choices=dvf_choices, max_length=200)
+    metric = models.TextField()
     value = models.TextField(blank=True)
     status_choices = (
             ('On Track', 'On Track'),
             ('Delayed', 'Delayed'),
             ('At Risk', 'At Risk'),
             )
-    status = models.CharField(choices=status_choices, max_length=200, blank=True)
+    status = models.CharField(choices=status_choices, max_length=200)
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(db_index=True, auto_now_add=True)
 
@@ -706,13 +706,13 @@ class Objective(models.Model):
 class Problem(models.Model):
     user = models.ForeignKey(User)
     project = models.ForeignKey(Project)
-    text = models.TextField(blank=True)
+    text = models.TextField()
     status_choices = (
             ('Validated', 'Validated'),
             ('In Progress', 'In Progress'),
             ('Invalidated', 'Invalidated'),
             )
-    status = models.CharField(choices=status_choices, max_length=200, blank=True)
+    status = models.CharField(choices=status_choices, max_length=200)
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(db_index=True, auto_now_add=True)
 
@@ -775,8 +775,8 @@ class Summary(models.Model):
             ('seedlaunch', 'Seed Launch'),
             ('launch', 'Launch'),
             )
-    stage = models.CharField(choices=stage_choices, max_length=200, blank=True)
-    text = models.TextField(blank=True)
+    stage = models.CharField(choices=stage_choices, max_length=200)
+    text = models.TextField()
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(db_index=True, auto_now_add=True)
 
@@ -856,8 +856,8 @@ class Future(models.Model):
             ('seedlaunch', 'Seed Launch'),
             ('launch', 'Launch'),
             )
-    stage = models.CharField(choices=stage_choices, max_length=200, blank=True)
-    text = models.TextField(blank=True)
+    stage = models.CharField(choices=stage_choices, max_length=200)
+    text = models.TextField()
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(db_index=True, auto_now_add=True)
 
@@ -915,13 +915,13 @@ class Future(models.Model):
 class Solution(models.Model):
     user = models.ForeignKey(User)
     project = models.ForeignKey(Project)
-    text = models.TextField(blank=True)
+    text = models.TextField()
     status_choices = (
             ('Validated', 'Validated'),
             ('In Progress', 'In Progress'),
             ('Invalidated', 'Invalidated'),
             )
-    status = models.CharField(choices=status_choices, max_length=200, blank=True)
+    status = models.CharField(choices=status_choices, max_length=200)
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(db_index=True, auto_now_add=True)
 
@@ -979,13 +979,13 @@ class Solution(models.Model):
 class BusinessModel(models.Model):
     user = models.ForeignKey(User)
     project = models.ForeignKey(Project)
-    text = models.TextField(blank=True)
+    text = models.TextField()
     status_choices = (
             ('Validated', 'Validated'),
             ('In Progress', 'In Progress'),
             ('Invalidated', 'Invalidated'),
             )
-    status = models.CharField(choices=status_choices, max_length=200, blank=True)
+    status = models.CharField(choices=status_choices, max_length=200)
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(db_index=True, auto_now_add=True)
 
