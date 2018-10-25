@@ -87,7 +87,46 @@
                 </div> <!-- end card-->
             </div> <!-- end col-->
         </div> <!-- end row -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="header-title mb-3">New Users</h4>
 
+                        <div class="inbox-widget">
+                            {% for u in users_list %}
+                            <div class="inbox-item">
+                                {% if u.profile_set.all %}
+                                    {% for profile in u.profile_set.all %}
+                                    <div class="inbox-item-img">
+                                        <img src="{{profile.profile_image.url}}" class="rounded-circle" alt="">
+                                    </div>
+                                    {% endfor %}
+                                {% else %}
+                                    <div class="inbox-item-img">
+                                        <div class="rounded-circle text-center bg-primary" style="height:40px; width40px">
+                                            <i class="fa fa-user text-white mt-2"></i>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                <p class="inbox-item-author">
+                                    {% if u.first_name %}
+                                        {{u.first_name}} {{u.last_name}}
+                                    {% else %}
+                                        {{u.username}}
+                                    {% endif %}
+                                </p>
+                                <p class="inbox-item-text">{{u.email}}</p>
+                                <p class="inbox-item-date">
+                                    <a href="#" class="btn btn-sm btn-link text-info font-13"> Reply </a>
+                                </p>
+                            </div>
+                            {% endfor %}
+                        </div> <!-- end inbox-widget -->
+                    </div> <!-- end card-body-->
+                </div>
+            </div>
+        </div>
     </div>
     <div class="col-xl-3">
         <div class="card">

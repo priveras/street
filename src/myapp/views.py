@@ -34,6 +34,7 @@ def analytics(request):
         'projects_draft' : Project.objects.filter(status='Draft').count(),
         'projects_killed' : Project.objects.filter(status='Killed').count(),
         'users': Profile.objects.count(),
+        'users_list': User.objects.order_by('-date_joined')[:10],
         'assumptions': Assumption.objects.count(),
         'assumptions_validated': Assumption.objects.filter(status='Validated').count(),
         'assumptions_inprogress': Assumption.objects.filter(status='In Progress').count(),
