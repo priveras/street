@@ -92,12 +92,10 @@ class Project(models.Model):
         return str(self.title)
 
 
-
-
 class Elevator(models.Model):
     user = models.ForeignKey(User)
     project = models.ForeignKey(Project)
-    text = models.TextField(blank=True)
+    text = models.TextField()
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(db_index=True, auto_now_add=True)
 
@@ -155,10 +153,10 @@ class Elevator(models.Model):
 class Resource(models.Model):
     user = models.ForeignKey(User)
     title = models.CharField(max_length=300, blank=True)
-    excerpt = models.TextField(blank=True)
+    excerpt = models.TextField()
     link = models.CharField(max_length=300, blank=True)
     file = models.FileField(upload_to='files/%Y%m%d', blank=True)
-    featured = models.BooleanField(default=False, blank=True)
+    featured = models.BooleanField(default=False)
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(db_index=True, auto_now_add=True)
 
@@ -397,9 +395,6 @@ class Dvf(models.Model):
                 count_active += 1
 
         return count_active
-
-
-
 
     def time_in_stage(self):
         now = datetime.now(timezone.utc)

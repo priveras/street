@@ -255,8 +255,15 @@ class SeedView(generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(SeedView, self).get_context_data(**kwargs)
+
+        permission = Team.objects.filter(project=self.object).filter(user=self.request.user).filter(permission="edit")
+
+        if permission or self.request.user.is_superuser:
+            context['permission'] = True
+        else:
+            permission = False
+
         context['team'] = Team.objects.filter(project=self.object)
-        context['permission'] = Team.objects.filter(project=self.object).filter(user=self.request.user).filter(permission="edit")
         context['comments'] = Comment.objects.filter(project=self.object)
         context['assumptions'] = Assumption.objects.filter(project=self.object).filter(stage="seed").order_by('dvf')
         context['objectives'] = Objective.objects.filter(project=self.object).filter(stage="seed").order_by('dvf')
@@ -273,6 +280,14 @@ class SeedLaunchView(generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(SeedLaunchView, self).get_context_data(**kwargs)
+
+        permission = Team.objects.filter(project=self.object).filter(user=self.request.user).filter(permission="edit")
+
+        if permission or self.request.user.is_superuser:
+            context['permission'] = True
+        else:
+            permission = False
+
         context['team'] = Team.objects.filter(project=self.object)
         context['comments'] = Comment.objects.filter(project=self.object)
         context['assumptions'] = Assumption.objects.filter(project=self.object).filter(stage="seedlaunch").order_by('dvf')
@@ -280,7 +295,6 @@ class SeedLaunchView(generic.DetailView):
         context['summary'] = Summary.objects.filter(project=self.object).filter(stage="seedlaunch").order_by('-updated_at')
         context['past'] = Past.objects.filter(project=self.object).filter(stage="seedlaunch").order_by('-updated_at')
         context['future'] = Future.objects.filter(project=self.object).filter(stage="seedlaunch").order_by('-updated_at')
-        context['permission'] = Team.objects.filter(project=self.object).filter(user=self.request.user).filter(permission="edit")
         context['dvf_seedlaunch'] = Dvf.objects.filter(project=self.object).filter(stage="seedlaunch").order_by('-updated_at')
 
         return context
