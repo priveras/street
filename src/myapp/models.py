@@ -97,7 +97,7 @@ class Project(models.Model):
 class Elevator(models.Model):
     user = models.ForeignKey(User)
     project = models.ForeignKey(Project)
-    text = models.TextField(blank=True)
+    text = models.TextField()
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(db_index=True, auto_now_add=True)
 
@@ -208,6 +208,8 @@ class Profile(models.Model):
     job_title = models.CharField(max_length=200)
     location = models.CharField(max_length=200)
     profile_image = models.FileField(upload_to='images/%Y%m%d', null=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(db_index=True, auto_now_add=True)
 
 
     def __str__(self):
@@ -221,7 +223,7 @@ class Team(models.Model):
             ('edit', 'Edit'),
             ('view', 'View'),
             )
-    permission = models.CharField(choices=permission_choices, max_length=200, blank=True)
+    permission = models.CharField(choices=permission_choices, max_length=200)
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(db_index=True, auto_now_add=True)
 
@@ -259,7 +261,7 @@ class Team(models.Model):
 class Comment(models.Model):
     project = models.ForeignKey(Project)
     user = models.ForeignKey(User)
-    text = models.TextField(blank=True)
+    text = models.TextField()
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(db_index=True, auto_now_add=True)
 
@@ -286,8 +288,8 @@ class Comment(models.Model):
 class Link(models.Model):
     project = models.ForeignKey(Project)
     user = models.ForeignKey(User)
-    title = models.CharField(max_length=500, null=False, blank=False)
-    link = models.URLField(null=False, blank=False)
+    title = models.CharField(max_length=500, null=False)
+    link = models.URLField(null=False)
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(db_index=True, auto_now_add=True)
 
@@ -340,15 +342,15 @@ class Dvf(models.Model):
             ('seedlaunch', 'Seed Launch'),
             ('launch', 'Launch'),
             )
-    stage = models.CharField(choices=stage_choices, max_length=200, blank=True)
+    stage = models.CharField(choices=stage_choices, max_length=200)
     status_choices = (
             ('On Track', 'On Track'),
             ('Delayed', 'Delayed'),
             ('At Risk', 'At Risk'),
             )
-    desirability = models.CharField(choices=status_choices, max_length=200, blank=True)
-    viability = models.CharField(choices=status_choices, max_length=200, blank=True)
-    feasibility = models.CharField(choices=status_choices, max_length=200, blank=True)
+    desirability = models.CharField(choices=status_choices, max_length=200)
+    viability = models.CharField(choices=status_choices, max_length=200)
+    feasibility = models.CharField(choices=status_choices, max_length=200)
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(db_index=True, auto_now_add=True)
 
@@ -399,45 +401,74 @@ class Dvf(models.Model):
         return count_active
 
 
-
-
     def time_in_stage(self):
         now = datetime.now(timezone.utc)
         return (now - self.created_at).days
 
     def getTimeSeed(self):
-      dvf_list_seed = Dvf.objects.filter(stage="seed")
+        dvf_list_seed = Dvf.objects.filter(stage="seed")
+        dvfTotal = 0
+        now = datetime.now(timezone.utc)
+        dvf_seed_count = 0
+        dvf_seed_count_biz = 0
 
+        for d in dvf_list_seed:
+            if d.project.stage in ('Seed 1', 'Seed 2', 'Seed 3'):
+                dvf_seed_count += 1
+                dvf_seed_count_biz += 1
+                dvfTotal += ((now-d.created_at).days)
 
-      dvfTotal = 0
-      now = datetime.now(timezone.utc)
+        if (dvf_seed_count == 0):
+            dvf_seed_count = 0
 
-      for d in dvf_list_seed:
-          dvfTotal += ((now-self.created_at).days)/dvf_list_seed.count()
+        else:
+            dvf_seed_count = dvfTotal/dvf_seed_count
 
-      return dvfTotal
-
-    def getTimeLaunch(self):
-      dvf_list_launch = Dvf.objects.filter(stage="launch")
-
-      dvfTotalx = 0
-      now = datetime.now(timezone.utc)
-
-      for d in dvf_list_launch:
-          dvfTotalx += ((now-self.created_at).days)/dvf_list_launch.count()
-
-      return dvfTotalx
+        return dvf_seed_count
 
     def getTimeSeedLaunch(self):
-      dvf_list_seedlaunch = Dvf.objects.filter(stage="seedlaunch")
+        dvf_list_seedlaunch = Dvf.objects.filter(stage="seedlaunch")
+        seedlaunch_total = 0
+        time_diff = datetime.now(timezone.utc)
+        dvf_sl_count = 0
+        sl_biz = 0
 
-      dvfTotaly = 0
-      now = datetime.now(timezone.utc)
+        for d in dvf_list_seedlaunch:
+            if d.project.stage in ('Seed Launch'):
+                seedlaunch_total += 1
+                dvf_sl_count += 1
+                sl_biz += ((time_diff-d.created_at).days)
 
-      for d in dvf_list_seedlaunch:
-          dvfTotaly += ((now-self.created_at).days)/dvf_list_seedlaunch.count()
+        if (sl_biz == 0):
+            sl_biz = 0
 
-      return dvfTotaly
+        else:
+            sl_biz = seedlaunch_total/(sl_biz)
+
+        return sl_biz
+
+    def getTimeLaunch(self):
+        dvf_list_launch = Dvf.objects.filter(stage="launch")
+        launch_total = 0
+        time_diffs = datetime.now(timezone.utc)
+        dvf_l_count = 0
+        l_biz = 0
+
+        for d in dvf_list_launch:
+            if d.project.stage in ('Launch'):
+                launch_total += 1
+                dvf_l_count += 1
+                l_biz += ((time_diffs-d.created_at).days)
+
+        if (dvf_l_count == 0):
+            dvf_l_count = 0
+
+        else:
+            l_biz = dvf_l_count/l_biz
+
+        return l_biz
+
+    
 
 
     def __str__(self):
@@ -475,14 +506,14 @@ class Assumption(models.Model):
             ('seedlaunch', 'Seed Launch'),
             ('launch', 'Launch'),
             )
-    stage = models.CharField(choices=stage_choices, max_length=200, blank=True)
+    stage = models.CharField(choices=stage_choices, max_length=200)
     dvf_choices = (
             ('desirability', 'Desirability'),
             ('viability', 'Viability'),
             ('feasibility', 'Feasibility'),
             )
-    dvf = models.CharField(choices=dvf_choices, max_length=200, blank=True)
-    assumption = models.TextField(blank=True)
+    dvf = models.CharField(choices=dvf_choices, max_length=200)
+    assumption = models.TextField()
     metric = models.TextField(blank=True)
     learnings = models.TextField(blank=True)
     status_choices = (
@@ -491,7 +522,7 @@ class Assumption(models.Model):
             ('Invalidated', 'Invalidated'),
             ('Inconclusive', 'Inconclusive'),
             )
-    status = models.CharField(choices=status_choices, max_length=200, blank=True)
+    status = models.CharField(choices=status_choices, max_length=200)
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(db_index=True, auto_now_add=True)
 
@@ -528,7 +559,7 @@ class Assumption(models.Model):
                     "metric": self.metric,
                     "learnings": self.learnings,
                     "status": self.status,
-                    "event": "added assumption"
+                    "event": "edited assumption"
                     }
                 )
 
@@ -566,21 +597,21 @@ class Metric(models.Model):
             ('seedlaunch', 'Seed Launch'),
             ('launch', 'Launch'),
             )
-    stage = models.CharField(choices=stage_choices, max_length=200, blank=True)
+    stage = models.CharField(choices=stage_choices, max_length=200)
     dvf_choices = (
             ('desirability', 'Desirability'),
             ('viability', 'Viability'),
             ('feasibility', 'Feasibility'),
             )
-    dvf = models.CharField(choices=dvf_choices, max_length=200, blank=True)
-    metric = models.TextField(blank=True)
+    dvf = models.CharField(choices=dvf_choices, max_length=200)
+    metric = models.TextField()
     value = models.TextField(blank=True)
     status_choices = (
             ('On Track', 'On Track'),
             ('Delayed', 'Delayed'),
             ('At Risk', 'At Risk'),
             )
-    status = models.CharField(choices=status_choices, max_length=200, blank=True)
+    status = models.CharField(choices=status_choices, max_length=200)
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(db_index=True, auto_now_add=True)
 
@@ -677,13 +708,13 @@ class Objective(models.Model):
 class Problem(models.Model):
     user = models.ForeignKey(User)
     project = models.ForeignKey(Project)
-    text = models.TextField(blank=True)
+    text = models.TextField()
     status_choices = (
             ('Validated', 'Validated'),
             ('In Progress', 'In Progress'),
             ('Invalidated', 'Invalidated'),
             )
-    status = models.CharField(choices=status_choices, max_length=200, blank=True)
+    status = models.CharField(choices=status_choices, max_length=200)
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(db_index=True, auto_now_add=True)
 
@@ -746,8 +777,8 @@ class Summary(models.Model):
             ('seedlaunch', 'Seed Launch'),
             ('launch', 'Launch'),
             )
-    stage = models.CharField(choices=stage_choices, max_length=200, blank=True)
-    text = models.TextField(blank=True)
+    stage = models.CharField(choices=stage_choices, max_length=200)
+    text = models.TextField()
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(db_index=True, auto_now_add=True)
 
@@ -827,8 +858,8 @@ class Future(models.Model):
             ('seedlaunch', 'Seed Launch'),
             ('launch', 'Launch'),
             )
-    stage = models.CharField(choices=stage_choices, max_length=200, blank=True)
-    text = models.TextField(blank=True)
+    stage = models.CharField(choices=stage_choices, max_length=200)
+    text = models.TextField()
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(db_index=True, auto_now_add=True)
 
@@ -886,13 +917,13 @@ class Future(models.Model):
 class Solution(models.Model):
     user = models.ForeignKey(User)
     project = models.ForeignKey(Project)
-    text = models.TextField(blank=True)
+    text = models.TextField()
     status_choices = (
             ('Validated', 'Validated'),
             ('In Progress', 'In Progress'),
             ('Invalidated', 'Invalidated'),
             )
-    status = models.CharField(choices=status_choices, max_length=200, blank=True)
+    status = models.CharField(choices=status_choices, max_length=200)
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(db_index=True, auto_now_add=True)
 
@@ -950,13 +981,13 @@ class Solution(models.Model):
 class BusinessModel(models.Model):
     user = models.ForeignKey(User)
     project = models.ForeignKey(Project)
-    text = models.TextField(blank=True)
+    text = models.TextField()
     status_choices = (
             ('Validated', 'Validated'),
             ('In Progress', 'In Progress'),
             ('Invalidated', 'Invalidated'),
             )
-    status = models.CharField(choices=status_choices, max_length=200, blank=True)
+    status = models.CharField(choices=status_choices, max_length=200)
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(db_index=True, auto_now_add=True)
 
