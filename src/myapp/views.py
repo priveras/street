@@ -33,10 +33,11 @@ def analytics(request):
     today = dt.date.today()
     
     context = {
-        'projects_month': Project.objects.filter(created_at__gte=datetime.now()-timedelta(days=how_many_days)).filter(status="Active"),
+        'projects_month': Project.objects.filter(created_at__gte=datetime.now()-timedelta(days=how_many_days)),
         'users_month': User.objects.filter(date_joined__gte=datetime.now()-timedelta(days=how_many_days)),
         'assumptions_month': Assumption.objects.filter(created_at__gte=datetime.now()-timedelta(days=how_many_days)),
         'activity_month': Log.objects.filter(timestamp__gte=datetime.now()-timedelta(days=how_many_days)),
+        'projects' : Project.objects.all(),
         'projects_active' : Project.objects.filter(status='Active').count(),
         'projects_draft' : Project.objects.filter(status='Draft').count(),
         'projects_killed' : Project.objects.filter(status='Killed').count(),
