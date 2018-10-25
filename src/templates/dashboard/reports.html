@@ -843,7 +843,7 @@ document.getElementById("comply").innerHTML = z+'%';
   <tr>
     <td>
 <!-- <img src="{{member.user.profile.profile_image.url}}" class="rounded-circle avatar-xs" alt="friend">  -->
-{{member.user|capfirst}}                       </td>
+{{member.user.first_name}} {{member.user.last_name}}                        </td>
 <td>{{project}}</td>
 <td>{{member.user.assumption_set.count|add:member.user.comment_set.count}}</td>
   </tr>

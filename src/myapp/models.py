@@ -92,10 +92,12 @@ class Project(models.Model):
         return str(self.title)
 
 
+
+
 class Elevator(models.Model):
     user = models.ForeignKey(User)
     project = models.ForeignKey(Project)
-    text = models.TextField()
+    text = models.TextField(blank=True)
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(db_index=True, auto_now_add=True)
 
@@ -153,10 +155,10 @@ class Elevator(models.Model):
 class Resource(models.Model):
     user = models.ForeignKey(User)
     title = models.CharField(max_length=300, blank=True)
-    excerpt = models.TextField()
+    excerpt = models.TextField(blank=True)
     link = models.CharField(max_length=300, blank=True)
     file = models.FileField(upload_to='files/%Y%m%d', blank=True)
-    featured = models.BooleanField(default=False)
+    featured = models.BooleanField(default=False, blank=True)
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(db_index=True, auto_now_add=True)
 
@@ -396,43 +398,75 @@ class Dvf(models.Model):
 
         return count_active
 
+
     def time_in_stage(self):
         now = datetime.now(timezone.utc)
         return (now - self.created_at).days
 
     def getTimeSeed(self):
-      dvf_list_seed = Dvf.objects.filter(stage="seed")
+        dvf_list_seed = Dvf.objects.filter(stage="seed")
+        dvfTotal = 0
+        now = datetime.now(timezone.utc)
+        dvf_seed_count = 0
+        dvf_seed_count_biz = 0
 
+        for d in dvf_list_seed:
+            if d.project.stage in ('Seed 1', 'Seed 2', 'Seed 3'):
+                dvf_seed_count += 1
+                dvf_seed_count_biz += 1
+                dvfTotal += ((now-d.created_at).days)
 
-      dvfTotal = 0
-      now = datetime.now(timezone.utc)
+        if (dvf_seed_count == 0):
+            dvf_seed_count = 0
 
-      for d in dvf_list_seed:
-          dvfTotal += ((now-self.created_at).days)/dvf_list_seed.count()
+        else:
+            dvf_seed_count = dvfTotal/dvf_seed_count
 
-      return dvfTotal
-
-    def getTimeLaunch(self):
-      dvf_list_launch = Dvf.objects.filter(stage="launch")
-
-      dvfTotalx = 0
-      now = datetime.now(timezone.utc)
-
-      for d in dvf_list_launch:
-          dvfTotalx += ((now-self.created_at).days)/dvf_list_launch.count()
-
-      return dvfTotalx
+        return dvf_seed_count
 
     def getTimeSeedLaunch(self):
-      dvf_list_seedlaunch = Dvf.objects.filter(stage="seedlaunch")
+        dvf_list_seedlaunch = Dvf.objects.filter(stage="seedlaunch")
+        seedlaunch_total = 0
+        time_diff = datetime.now(timezone.utc)
+        dvf_sl_count = 0
+        sl_biz = 0
 
-      dvfTotaly = 0
-      now = datetime.now(timezone.utc)
+        for d in dvf_list_seedlaunch:
+            if d.project.stage in ('Seed Launch'):
+                seedlaunch_total += 1
+                dvf_sl_count += 1
+                sl_biz += ((time_diff-d.created_at).days)
 
-      for d in dvf_list_seedlaunch:
-          dvfTotaly += ((now-self.created_at).days)/dvf_list_seedlaunch.count()
+        if (sl_biz == 0):
+            sl_biz = 0
 
-      return dvfTotaly
+        else:
+            sl_biz = seedlaunch_total/(sl_biz)
+
+        return sl_biz
+
+    def getTimeLaunch(self):
+        dvf_list_launch = Dvf.objects.filter(stage="launch")
+        launch_total = 0
+        time_diffs = datetime.now(timezone.utc)
+        dvf_l_count = 0
+        l_biz = 0
+
+        for d in dvf_list_launch:
+            if d.project.stage in ('Launch'):
+                launch_total += 1
+                dvf_l_count += 1
+                l_biz += ((time_diffs-d.created_at).days)
+
+        if (dvf_l_count == 0):
+            dvf_l_count = 0
+
+        else:
+            l_biz = dvf_l_count/l_biz
+
+        return l_biz
+
+    
 
 
     def __str__(self):
@@ -523,7 +557,7 @@ class Assumption(models.Model):
                     "metric": self.metric,
                     "learnings": self.learnings,
                     "status": self.status,
-                    "event": "edited assumption"
+                    "event": "added assumption"
                     }
                 )
 
