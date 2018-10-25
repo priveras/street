@@ -91,9 +91,9 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="header-title mb-3">New Users</h4>
+                        <h4 class="header-title mb-3">Users ({{users_list.count}})</h4>
 
-                        <div class="inbox-widget">
+                        <div class="inbox-widget slimscroll" style="max-height: 290px;">
                             {% for u in users_list %}
                             <div class="inbox-item">
                                 {% if u.profile_set.all %}
@@ -118,7 +118,7 @@
                                 </p>
                                 <p class="inbox-item-text">{{u.email}}</p>
                                 <p class="inbox-item-date">
-                                    <a href="#" class="btn btn-sm btn-link text-info font-13"> Reply </a>
+                                    <a href="mailto:{{u.email}}" class="btn btn-sm btn-link text-info font-13"> Contact </a>
                                 </p>
                             </div>
                             {% endfor %}
