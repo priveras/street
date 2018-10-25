@@ -17,6 +17,7 @@ urlpatterns = [
     url(r'^dashboard/projects/$', login_required(views.DashboardProjectsView.as_view()), name='dashboard-projects'),
     url(r'^accounts/info/$', login_required(views.InfoView.as_view()), name='info'),
     url(r'^learn/$', login_required(views.learn), name='learn'),
+    url(r'^analytics/$', login_required(views.analytics), name='analytics'),
     url(r'^faq/$', login_required(views.FaqView.as_view()), name='faq'),
     url(r'^library/$', login_required(views.LibraryView.as_view()), name='library'),
     url(r'^tools/$', login_required(views.ToolsView.as_view()), name='tools'),

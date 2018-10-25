@@ -528,7 +528,7 @@ class Assumption(models.Model):
                     "metric": self.metric,
                     "learnings": self.learnings,
                     "status": self.status,
-                    "event": "added assumption"
+                    "event": "edited assumption"
                     }
                 )
 

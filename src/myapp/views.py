@@ -24,6 +24,26 @@ from .models import Objective
 from django.http import HttpResponseRedirect
 from pinax.eventlog.models import Log
 
+def analytics(request):
+    tutorial = Tutorial.objects.order_by('created_at')
+    progress = Progress.objects.filter(user=request.user).first()
+    activity = Log.objects.count()
+    
+    context = {
+        'projects_active' : Project.objects.filter(status='Active').count(),
+        'projects_draft' : Project.objects.filter(status='Draft').count(),
+        'projects_killed' : Project.objects.filter(status='Killed').count(),
+        'users': Profile.objects.count(),
+        'assumptions': Assumption.objects.count(),
+        'assumptions_validated': Assumption.objects.filter(status='Validated').count(),
+        'assumptions_inprogress': Assumption.objects.filter(status='In Progress').count(),
+        'assumptions_invalidated': Assumption.objects.filter(status='Invalidated').count(),
+        'activity': activity,
+
+    }
+
+    return render(request, 'dashboard/analytics.html', context)
+
 class LibraryView(generic.ListView):
     template_name = 'library.html'
     context_object_name = 'resources_list'
@@ -53,7 +73,7 @@ class DashboardProjectsView(generic.ListView):
 
     def get_context_data(self, **kwargs):
         context = super(DashboardProjectsView, self).get_context_data(**kwargs)
-        context['projects_list'] = Project.objects.filter(status="Active").order_by("-created_at")
+        context['projects_list'] = Project.objects.filter(status="Active").order_by("title")
         context['assumptions'] = Assumption.objects.all()
         context['objectives'] = Objective.objects.all()
         context['elevators'] = Elevator.objects.all()

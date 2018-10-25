@@ -12,7 +12,7 @@
                 <ol class="breadcrumb m-0">
                     <li class="breadcrumb-item"><a href="javascript: void(0);">BOX OS</a></li>
                     <li class="breadcrumb-item"><a href="{% url 'app:home' %}">Projects</a></li>
-                    <li class="breadcrumb-item active">{{project.title}}</li>
+                    <li class="breadcrumb-item active">{{project.title|capfirst}}</li>
                 </ol>
             </div>
             <h4 class="page-title">Project Details</h4>
@@ -65,7 +65,7 @@
                 </div>
                 <!-- project title-->
                 <h3 class="mt-0">
-                    {{project.title}}
+                    {{project.title|capfirst}}
                 </h3>
                 {% if project.status == "Active" %}
                 <div class="badge badge-success mb-3">{{project.status}}</div>

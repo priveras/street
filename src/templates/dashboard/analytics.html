@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+{% block content %}
+<input type="hidden" id="project" value="{{ project.id }}">
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">BOX OS</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'app:home' %}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Analytics</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Dashboard Analytics</h4>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xl-6">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card widget-flat">
+                    <div class="card-body">
+                        <div class="float-right">
+                            <i class="mdi mdi-account-multiple widget-icon"></i>
+                        </div>
+                        <h5 class="text-muted font-weight-normal mt-0" title="Number of Customers">Active Projects</h5>
+                        <h3 class="mt-3 mb-3">{{projects_active}}</h3>
+                        <p class="mb-0 text-muted">
+                            <span class="text-success mr-2"><i class="mdi mdi-arrow-up-bold"></i> 5.27%</span>
+                            <span class="text-nowrap">Since last month</span>  
+                        </p>
+                    </div> <!-- end card-body-->
+                </div> <!-- end card-->
+            </div> <!-- end col-->
+
+            <div class="col-lg-6">
+                <div class="card widget-flat">
+                    <div class="card-body">
+                        <div class="float-right">
+                            <i class="mdi mdi-cart-plus widget-icon"></i>
+                        </div>
+                        <h5 class="text-muted font-weight-normal mt-0" title="Number of Orders">Users</h5>
+                        <h3 class="mt-3 mb-3">{{users}}</h3>
+                        <p class="mb-0 text-muted">
+                            <span class="text-danger mr-2"><i class="mdi mdi-arrow-down-bold"></i> 1.08%</span>
+                            <span class="text-nowrap">Since last month</span>
+                        </p>
+                    </div> <!-- end card-body-->
+                </div> <!-- end card-->
+            </div> <!-- end col-->
+        </div> <!-- end row -->
+
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card widget-flat">
+                    <div class="card-body">
+                        <div class="float-right">
+                            <i class="mdi mdi-currency-usd widget-icon"></i>
+                        </div>
+                        <h5 class="text-muted font-weight-normal mt-0" title="Average Revenue">Assumptions</h5>
+                        <h3 class="mt-3 mb-3">{{assumptions}}</h3>
+                        <p class="mb-0 text-muted">
+                            <span class="text-danger mr-2"><i class="mdi mdi-arrow-down-bold"></i> 7.00%</span>
+                            <span class="text-nowrap">Since last month</span>
+                        </p>
+                    </div> <!-- end card-body-->
+                </div> <!-- end card-->
+            </div> <!-- end col-->
+
+            <div class="col-lg-6">
+                <div class="card widget-flat">
+                    <div class="card-body">
+                        <div class="float-right">
+                            <i class="mdi mdi-pulse widget-icon"></i>
+                        </div>
+                        <h5 class="text-muted font-weight-normal mt-0" title="Growth">User Actions</h5>
+                        <h3 class="mt-3 mb-3">{{activity}}</h3>
+                        <p class="mb-0 text-muted">
+                            <span class="text-success mr-2"><i class="mdi mdi-arrow-up-bold"></i> 4.87%</span>
+                            <span class="text-nowrap">Since last month</span>
+                        </p>
+                    </div> <!-- end card-body-->
+                </div> <!-- end card-->
+            </div> <!-- end col-->
+        </div> <!-- end row -->
+
+    </div>
+    <div class="col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title">Projects</h4>
+                <div class="mb-1 mt-4 chartjs-chart" style="height: 201px; max-width: 180px;">
+                    <!--<canvas id="average-sales" width="360" class="chartjs-render-monitor" height="402" style="display: block; height: 201px; width: 180px;"></canvas>-->
+                    <canvas id="projectsChart" width="400" height="400"></canvas>
+                </div>
+
+                <div class="chart-widget-list">
+                    <p>
+                        <i class="mdi mdi-square text-primary"></i> Active
+                        <span class="float-right">{{projects_active}}</span>
+                    </p>
+                    <p>
+                        <i class="mdi mdi-square text-muted"></i> Draft
+                        <span class="float-right">{{projects_draft}}</span>
+                    </p>
+                    <p>
+                        <i class="mdi mdi-square text-danger"></i> Killed
+                        <span class="float-right">{{projects_killed}}</span>
+                    </p>
+                </div>
+            </div> <!-- end card-body-->
+        </div> <!-- end card-->
+    </div>
+    <div class="col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title">Assumptions</h4>
+                <div class="mb-1 mt-4 chartjs-chart" style="height: 201px; max-width: 180px;">
+                    <!--<canvas id="average-sales" width="360" class="chartjs-render-monitor" height="402" style="display: block; height: 201px; width: 180px;"></canvas>-->
+                    <canvas id="assumptionsChart" width="400" height="400"></canvas>
+                </div>
+
+                <div class="chart-widget-list">
+                    <p>
+                        <i class="mdi mdi-square text-success"></i> Validated
+                        <span class="float-right">{{assumptions_validated}}</span>
+                    </p>
+                    <p>
+                        <i class="mdi mdi-square text-warning"></i> In Progress
+                        <span class="float-right">{{assumptions_inprogress}}</span>
+                    </p>
+                    <p>
+                        <i class="mdi mdi-square text-danger"></i> Invalidated
+                        <span class="float-right">{{assumptions_invalidated}}</span>
+                    </p>
+                </div>
+            </div> <!-- end card-body-->
+        </div> <!-- end card-->
+    </div>
+</div>
+{% endblock %}
+{% block js %}
+<script>
+var ctx = document.getElementById("assumptionsChart").getContext('2d');
+var assumptionsChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+        labels: ["Validated", "In Progress", "Invalidated"],
+        datasets: [{
+            data: [{{assumptions_validated}}, {{assumptions_inprogress}}, {{assumptions_invalidated}}],
+            backgroundColor: ["#0acf97", "#ffbc00", "#fa5c7c"],
+            borderColor: "transparent",
+            borderWidth: "3"
+        }]
+    },
+    options: {
+        legend: {
+            display: false,
+        }
+    }
+});
+
+var ctxp = document.getElementById("projectsChart").getContext('2d');
+var projectsChart = new Chart(ctxp, {
+    type: 'doughnut',
+    data: {
+        labels: ["Active", "Draft", "Killed"],
+        datasets: [{
+            data: [{{projects_active}}, {{projects_draft}}, {{projects_killed}}],
+            backgroundColor: ["#727cf5", "#98a6ad", "#fa5c7c"],
+            borderColor: "transparent",
+            borderWidth: "3"
+        }]
+    },
+    options: {
+        legend: {
+            display: false,
+        }
+    }
+});
+
+</script>
+<script src="{% static 'assets/js/vendor/Chart.bundle.min.js' %}"></script>
+{% endblock %}
