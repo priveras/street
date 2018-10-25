@@ -5,7 +5,7 @@
 		define("ApexCharts", [], factory);
 	else if(typeof exports === 'object')
 		exports["ApexCharts"] = factory();
-	else 
+	else
 		root["ApexCharts"] = factory();
 })(this, function() {
 return /******/ (function(modules) { // webpackBootstrap
@@ -6485,7 +6485,7 @@ var Options = function () {
             offsetY: 0,
             hollow: {
               margin: 5,
-              size: '50%',
+              size: '15%',
               background: 'transparent',
               image: undefined,
               imageWidth: 150,
