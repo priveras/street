@@ -8,22 +8,15 @@ from .models import Metric, File, Past, Future, Summary, Solution, Tutorial
 from .models import Profile, Link, Dvf, Progress, Zone, Invite, Resource, Elevator, Tool
 from .models import Objective
 from import_export.admin import ImportExportModelAdmin
-from django.contrib.auth.models import User
 
 #class ProjectAdmin(admin.ModelAdmin):
     #prepopulated_fields = {'slug': ('title',)}
-
-admin.site.unregister(User)
-@admin.register(User)
-class UserAdmin(ImportExportModelAdmin):
-    pass
 
 class TutorialAdmin(SummernoteModelAdmin):
     summernote_fields = ('content',)
 
 
 admin.site.register(Tutorial, TutorialAdmin)
-
 @admin.register(Project)
 class ProjectAdmin(ImportExportModelAdmin):
     pass
