@@ -132,57 +132,103 @@
             </div>
         </div>
     </div>
-    <div class="col-xl-3">
-        <div class="card">
-            <div class="card-body">
-                <h4 class="header-title">Projects</h4>
-                <div class="mb-1 mt-4 chartjs-chart" style="height: 201px; max-width: 180px;">
-                    <!--<canvas id="average-sales" width="360" class="chartjs-render-monitor" height="402" style="display: block; height: 201px; width: 180px;"></canvas>-->
-                    <canvas id="projectsChart" width="400" height="400"></canvas>
-                </div>
+    <div class="col-xl-6">
+        <div class="row">
+            <div class="col-xl-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="header-title">Projects</h4>
+                        <div class="mb-1 mt-4 chartjs-chart" style="height: 201px; max-width: 180px;">
+                            <!--<canvas id="average-sales" width="360" class="chartjs-render-monitor" height="402" style="display: block; height: 201px; width: 180px;"></canvas>-->
+                            <canvas id="projectsChart" width="400" height="400"></canvas>
+                        </div>
 
-                <div class="chart-widget-list">
-                    <p>
-                        <i class="mdi mdi-square text-primary"></i> Active
-                        <span class="float-right">{{projects_active}}</span>
-                    </p>
-                    <p>
-                        <i class="mdi mdi-square text-muted"></i> Draft
-                        <span class="float-right">{{projects_draft}}</span>
-                    </p>
-                    <p>
-                        <i class="mdi mdi-square text-danger"></i> Killed
-                        <span class="float-right">{{projects_killed}}</span>
-                    </p>
-                </div>
-            </div> <!-- end card-body-->
-        </div> <!-- end card-->
-    </div>
-    <div class="col-xl-3">
-        <div class="card">
-            <div class="card-body">
-                <h4 class="header-title">Assumptions</h4>
-                <div class="mb-1 mt-4 chartjs-chart" style="height: 201px; max-width: 180px;">
-                    <!--<canvas id="average-sales" width="360" class="chartjs-render-monitor" height="402" style="display: block; height: 201px; width: 180px;"></canvas>-->
-                    <canvas id="assumptionsChart" width="400" height="400"></canvas>
-                </div>
+                        <div class="chart-widget-list">
+                            <p>
+                                <i class="mdi mdi-square text-primary"></i> Active
+                                <span class="float-right">{{projects_active}}</span>
+                            </p>
+                            <p>
+                                <i class="mdi mdi-square text-muted"></i> Draft
+                                <span class="float-right">{{projects_draft}}</span>
+                            </p>
+                            <p>
+                                <i class="mdi mdi-square text-danger"></i> Killed
+                                <span class="float-right">{{projects_killed}}</span>
+                            </p>
+                        </div>
+                    </div> <!-- end card-body-->
+                </div> <!-- end card-->
+            </div>
+            <div class="col-xl-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="header-title">Assumptions</h4>
+                        <div class="mb-1 mt-4 chartjs-chart" style="height: 201px; max-width: 180px;">
+                            <!--<canvas id="average-sales" width="360" class="chartjs-render-monitor" height="402" style="display: block; height: 201px; width: 180px;"></canvas>-->
+                            <canvas id="assumptionsChart" width="400" height="400"></canvas>
+                        </div>
 
-                <div class="chart-widget-list">
-                    <p>
-                        <i class="mdi mdi-square text-success"></i> Validated
-                        <span class="float-right">{{assumptions_validated}}</span>
-                    </p>
-                    <p>
-                        <i class="mdi mdi-square text-warning"></i> In Progress
-                        <span class="float-right">{{assumptions_inprogress}}</span>
-                    </p>
-                    <p>
-                        <i class="mdi mdi-square text-danger"></i> Invalidated
-                        <span class="float-right">{{assumptions_invalidated}}</span>
-                    </p>
+                        <div class="chart-widget-list">
+                            <p>
+                                <i class="mdi mdi-square text-success"></i> Validated
+                                <span class="float-right">{{assumptions_validated}}</span>
+                            </p>
+                            <p>
+                                <i class="mdi mdi-square text-warning"></i> In Progress
+                                <span class="float-right">{{assumptions_inprogress}}</span>
+                            </p>
+                            <p>
+                                <i class="mdi mdi-square text-danger"></i> Invalidated
+                                <span class="float-right">{{assumptions_invalidated}}</span>
+                            </p>
+                        </div>
+                    </div> <!-- end card-body-->
+                </div> <!-- end card-->
+            </div>
+        </div>
+        <!--<div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="header-title mb-3">Top Contributors</h4>
+
+                        <div class="inbox-widget slimscroll" style="max-height: 400px;">
+                            {{contributors}}
+                            {% for u in contributors %}
+                            <div class="inbox-item">
+                                {% if u.user.profile_set.all %}
+                                    {% for profile in u.profile_set.all %}
+                                    <div class="inbox-item-img">
+                                        <div style="height:40px; width:40px; background-image: url('{{profile.profile_image.url}}'); background-size:cover; border-radius:40px"></div>
+                                    </div>
+                                    {% endfor %}
+                                {% else %}
+                                    <div class="inbox-item-img">
+                                        <div class="rounded-circle text-center bg-primary" style="height:40px; width40px">
+                                            <i class="fa fa-user text-white mt-2"></i>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                <p class="inbox-item-author">
+                                    {{u.user}}
+                                    {% if u.user.first_name %}
+                                        {{u.first_name}} {{u.last_name}}
+                                    {% else %}
+                                        {{u.username}}
+                                    {% endif %}
+                                </p>
+                                <p class="inbox-item-text">{{u.email}}</p>
+                                <p class="inbox-item-date">
+                                    <a href="mailto:{{u.email}}" class="btn btn-sm btn-link text-info font-13"> Contact </a>
+                                </p>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
                 </div>
-            </div> <!-- end card-body-->
-        </div> <!-- end card-->
+            </div>-->
+        </div>
     </div>
 </div>
 {% endblock %}
