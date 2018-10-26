@@ -19,6 +19,13 @@
 <!-- end page title -->
 
 {% verbatim %}
+<style>
+  [v-cloak] { display:none; }
+  .label-success {
+    margin-right: 3px;
+  }
+</style>
+
 <div id="tools">
 
 <div class="row">
@@ -32,20 +39,13 @@
     <div class="col-md-6 text-center">
         <p class="mb-1 mt-3 font-weight-bold text-muted"><i class="fa fa-search"></i> Search</p>
 
-        <input type="text" v-model="search" name="search" autocomplete="off" maxlength="200" class="form-control" rows="2" required="" id="id_title" autofocus>
+        <input type="text" ref="search" v-model="search" placeholder="Search" name="search" autocomplete="off" maxlength="200" class="form-control" rows="2" required="" id="id_title" autofocus>
 
-        <!--<select class="select2 form-control select2-multiple" data-toggle="select2" multiple="multiple" data-placeholder="Choose ...">
-            <optgroup label="Category">
-                <option value="AK">AB Testing</option>
-                <option value="HI">Landing Page</option>
-            </optgroup>
-            <optgroup label="Title">
-                <option value="CA">Optimizely</option>
-                <option value="NV">Mailchimp</option>
-                <option value="OR">Shopify</option>
-            </optgroup>
+        <select v-model="cat" class="select2 form-control select2-multiple"
+                data-placeholder="Choose ..." style="margin-top:13px;">
+           <option v-for="cat in cats" v-bind:value="cat">{{cat}}</option>
+           <option value="other">other</option>
         </select>
-        -->
     </div> <!-- end col -->
 </div><!-- end row -->
 
@@ -83,5 +83,5 @@
 
 {% block js %}
 <script src="https://unpkg.com/vue-resource@1.3.1/dist/vue-resource.min.js"></script>
-  <script src="/static/assets/js/tools.vue.js"></script>
+<script src="/static/assets/js/tools.vue.js"></script>
 {% endblock %}
