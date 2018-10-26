@@ -4,13 +4,14 @@ from django.db.models import Q
 from django.shortcuts import render, redirect, Http404
 from django.views.decorators.csrf import csrf_exempt
 from datetime import date, datetime, timezone
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.utils.text import slugify
 from django.utils.crypto import get_random_string
 from django.core.mail import send_mail
 from django.template.loader import get_template
 from django.template import Context
 from django.db.models import Count
+from django.core import serializers
 
 from .forms import ProfileForm, SummaryForm, PastForm, FutureForm, ProjectForm
 from .forms import ElevatorForm, ProblemForm, SolutionForm, BusinessModelForm
@@ -31,7 +32,7 @@ def analytics(request):
 
     how_many_days = 30
     today = dt.date.today()
-    
+
     context = {
         'contributors': Log.objects.values('user').annotate(total=Count('user_id')).order_by('-total'),
         'projects_month': Project.objects.filter(created_at__gte=datetime.now()-timedelta(days=how_many_days)),
@@ -744,3 +745,8 @@ def check_invite(request):
     invite.save()
 
     return redirect('/')
+
+def tools(request):
+    items = Tool.objects.all()
+    data = serializers.serialize("json", items, use_natural_foreign_keys=True)
+    return HttpResponse(data, content_type="application/json")

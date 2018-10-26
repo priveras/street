@@ -61,4 +61,8 @@ urlpatterns = [
     url(r'^api/leave/(?P<project_id>[0-9]+)',
         login_required(views.leave_project),
         name='leave-project'),
+
+    url(r'^api/tools',
+        login_required(views.tools),
+        name='api-tools'),
 ]
