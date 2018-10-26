@@ -33,6 +33,7 @@ def analytics(request):
     today = dt.date.today()
     
     context = {
+        'contributors': Log.objects.values('user').annotate(total=Count('user_id')).order_by('-total'),
         'projects_month': Project.objects.filter(created_at__gte=datetime.now()-timedelta(days=how_many_days)),
         'users_month': User.objects.filter(date_joined__gte=datetime.now()-timedelta(days=how_many_days)),
         'assumptions_month': Assumption.objects.filter(created_at__gte=datetime.now()-timedelta(days=how_many_days)),
