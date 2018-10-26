@@ -2,6 +2,14 @@
 {% load staticfiles %}
 {% load humanize %}
 {% block content %}
+
+<style>
+  [v-cloak] { display:none; }
+  .label-success {
+    margin-right: 3px;
+  }
+</style>
+
 <!-- start page title -->
 <div class="row">
     <div class="col-12">
@@ -19,14 +27,7 @@
 <!-- end page title -->
 
 {% verbatim %}
-<style>
-  [v-cloak] { display:none; }
-  .label-success {
-    margin-right: 3px;
-  }
-</style>
-
-<div id="tools">
+<div id="tools" v-cloak>
 
 <div class="row">
     <div class="col-sm-12">
