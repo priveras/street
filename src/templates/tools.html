@@ -15,9 +15,11 @@
             <h4 class="page-title">Tools</h4>
         </div>
     </div>
-</div>     
-<!-- end page title --> 
+</div>
+<!-- end page title -->
 
+{% verbatim %}
+<div id="tools">
 
 <div class="row">
     <div class="col-sm-12">
@@ -30,7 +32,9 @@
     <div class="col-md-6 text-center">
         <p class="mb-1 mt-3 font-weight-bold text-muted"><i class="fa fa-search"></i> Search</p>
 
-        <select class="select2 form-control select2-multiple" data-toggle="select2" multiple="multiple" data-placeholder="Choose ...">
+        <input type="text" v-model="search" name="search" autocomplete="off" maxlength="200" class="form-control" rows="2" required="" id="id_title" autofocus>
+
+        <!--<select class="select2 form-control select2-multiple" data-toggle="select2" multiple="multiple" data-placeholder="Choose ...">
             <optgroup label="Category">
                 <option value="AK">AB Testing</option>
                 <option value="HI">Landing Page</option>
@@ -41,6 +45,7 @@
                 <option value="OR">Shopify</option>
             </optgroup>
         </select>
+        -->
     </div> <!-- end col -->
 </div><!-- end row -->
 
@@ -49,28 +54,34 @@
     <div class="col-sm-10">
         <div class="row mb-5">
             <div class="card-columns">
-                {% for tool in tools_list %}
-                <div class="card">
+                <div class="card" v-for="tool in filteredList()">
                     <!-- project-thumbnail -->
-                    <div class="card-img-top" style="background-image:url('{{tool.image.url}}'); height:150px; background-size:cover; background-position:center"></div>
+                    <div class="card-img-top"
+                    v-bind:style="{'background-image':'url(/media/' + tool.fields.image + ')', height:'150px', 'background-size':'cover', 'background-position':'center'}"></div>
                     <div class="card-img-overlay">
-                        <div class="badge badge-secondary p-1">{{tool.category}}</div>
+                        <div class="badge badge-secondary p-1">{{tool.fields.category}}</div>
                     </div>
 
                     <div class="card-body position-relative">
                         <!-- project title-->
                         <h4 class="mt-0">
-                            <a href="{{tool.link}}" target="_blank" class="text-dark">{{tool.title}}</a>
-                            <a href="{{tool.link}}" target="_blank"><i class="mdi mdi-open-in-new float-right"></i></a>
+                            <a v-bind:href="tool.fields.link" target="_blank" class="text-dark">{{tool.fields.title}}</a>
+                            <a v-bind:href="tool.fields.link" target="_blank"><i class="mdi mdi-open-in-new float-right"></i></a>
                         </h4>
-                        <p class="text-justify">{{tool.excerpt}}</p>
+                        <p class="text-justify">{{tool.fields.excerpt}}</p>
                     </div>
                 </div>
-            {% endfor %}
             </div>
-        
+
         </div>
     </div>
 </div>
+</div>
+{% endverbatim %}
 <!-- end row -->
+{% endblock %}
+
+{% block js %}
+<script src="https://unpkg.com/vue-resource@1.3.1/dist/vue-resource.min.js"></script>
+  <script src="/static/assets/js/tools.vue.js"></script>
 {% endblock %}
