@@ -67,6 +67,20 @@ class LibraryView(generic.ListView):
 
         return context
 
+class AssumptionsView(generic.ListView):
+    template_name = 'dashboard/assumptions.html'
+    context_object_name = 'assumptions_list'
+    model = Tool
+
+    def get_context_data(self, **kwargs):
+        context = super(AssumptionsView, self).get_context_data(**kwargs)
+        context['assumptions_list'] = Assumption.objects.order_by('-created_at')
+        context['assumptions_validated'] = Assumption.objects.filter(status='Validated').count()
+        context['assumptions_inprogress'] = Assumption.objects.filter(status='In Progress').count()
+        context['assumptions_invalidated'] = Assumption.objects.filter(status='Invalidated').count()
+
+        return context
+
 class ToolsView(generic.ListView):
     template_name = 'tools.html'
     context_object_name = 'tools_list'
@@ -85,7 +99,7 @@ class DashboardProjectsView(generic.ListView):
 
     def get_context_data(self, **kwargs):
         context = super(DashboardProjectsView, self).get_context_data(**kwargs)
-        context['projects_list'] = Project.objects.filter(status="Active").order_by("title")
+        context['projects_list'] = Project.objects.order_by("-created_at")
         context['assumptions'] = Assumption.objects.all()
         context['objectives'] = Objective.objects.all()
         context['elevators'] = Elevator.objects.all()
@@ -751,5 +765,10 @@ def check_invite(request):
 
 def tools(request):
     items = Tool.objects.all()
+    data = serializers.serialize("json", items, use_natural_foreign_keys=True)
+    return HttpResponse(data, content_type="application/json")
+
+def assumptions(request):
+    items = Assumption.objects.all()
     data = serializers.serialize("json", items, use_natural_foreign_keys=True)
     return HttpResponse(data, content_type="application/json")

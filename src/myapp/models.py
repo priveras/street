@@ -523,6 +523,13 @@ class Assumption(models.Model):
             ('Inconclusive', 'Inconclusive'),
             )
     status = models.CharField(choices=status_choices, max_length=200)
+    scale_choices = (
+            ('high', 'High'),
+            ('medium', 'Medium'),
+            ('low', 'Low'),
+            )
+    uncertainty = models.CharField(choices=scale_choices, max_length=200, blank=True)
+    critical = models.CharField(choices=scale_choices, max_length=200, blank=True)
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(db_index=True, auto_now_add=True)
 
@@ -542,6 +549,8 @@ class Assumption(models.Model):
                     "metric": self.metric,
                     "learnings": self.learnings,
                     "status": self.status,
+                    "uncertainty": self.uncertainty,
+                    "critical": self.critical,
                     "event": "added assumption"
                     }
                 )

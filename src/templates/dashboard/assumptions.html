@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load humanize %}
+{% block content %}
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">BOX OS</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'app:home' %}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Assumptions</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Assumptions</h4>
+        </div>
+    </div>
+</div>
+<!-- end page title -->
+<div class="row">
+    <div class="col-xl-6">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title">Assumptions ({{assumptions_list.count}})</h4>
+                <div class="mb-1 mt-4 chartjs-chart" style="height: 201px; max-width: 180px;">
+                    <!--<canvas id="average-sales" width="360" class="chartjs-render-monitor" height="402" style="display: block; height: 201px; width: 180px;"></canvas>-->
+                    <canvas id="assumptionsChart" width="400" height="400"></canvas>
+                </div>
+
+                <div class="chart-widget-list">
+                    <p>
+                        <i class="mdi mdi-square text-success"></i> Validated
+                        <span class="float-right">{{assumptions_validated}}</span>
+                    </p>
+                    <p>
+                        <i class="mdi mdi-square text-warning"></i> In Progress
+                        <span class="float-right">{{assumptions_inprogress}}</span>
+                    </p>
+                    <p>
+                        <i class="mdi mdi-square text-danger"></i> Invalidated
+                        <span class="float-right">{{assumptions_invalidated}}</span>
+                    </p>
+                </div>
+            </div> <!-- end card-body-->
+        </div> <!-- end card-->
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+                <h4 class="header-title">Assumptions Log</h4>
+                <p class="text-muted font-14 mb-4">
+                    Here you can see all the assumptions logged into the Box OS. Use this as a tool for insights that can help answer questions for your project.
+                </p>
+
+
+                <table id="basic-datatable" class="table responsive" width="100%">
+                    <thead>
+                        <tr>
+                            <th>DVF</th>
+                            <th>Assumption</th>
+                            <th>Metric</th>
+                            <th>Learnings</th>
+                            <th>Status</th>
+                            <th>Project</th>
+                    </thead>
+                
+                
+                    <tbody>
+                        {% for assumption in assumptions_list %}
+                        {% if assumption.project.status == 'Active' %}
+                        <tr>
+                            <td>
+                                <span class="badge badge-light">{{assumption.dvf|capfirst}}</span>
+                                <br>
+                                <small>{{assumption.updated_at|date:'M d, y'}}</small>
+                            </td>
+                            <td>
+                                {% if not assumption.assumption %}
+                                -
+                                {% else %}
+                                {{assumption.assumption}}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if not assumption.metric %}
+                                -
+                                {% else %}
+                                {{assumption.metric}}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if not assumption.learnings %}
+                                -
+                                {% else %}
+                                {{assumption.learnings}}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if not assumption.status %}
+                                -
+                                {% else %}
+
+                                    {% if assumption.status == "Validated" %}
+                                    <span class="badge badge-success">{{assumption.status}}</span>
+                                    {% elif assumption.status == "In Progress" %}
+                                    <span class="badge badge-warning" style="color:white">{{assumption.status}}</span>
+                                    {% elif assumption.status == "Inconclusive" %}
+                                    <span class="badge badge-light">{{assumption.status}}</span>
+                                    {% else %}
+                                    <span class="badge badge-danger">{{assumption.status}}</span>
+                                    {% endif %}
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{% url 'app:detail' assumption.project.slug%}">{{assumption.project}}</a>
+                            </td>
+                        </tr>
+                        {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+                
+            </div> <!-- end card body-->
+        </div> <!-- end card -->
+    </div><!-- end col-->
+    </div>
+    <!-- end row-->
+{% endblock %}
+{% block js %}
+<!-- third party js -->
+<script src="{% static 'assets/js/vendor/jquery.dataTables.js' %}"></script>
+<script src="{% static 'assets/js/vendor/dataTables.bootstrap4.js' %}"></script>
+<script src="{% static 'assets/js/vendor/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'assets/js/vendor/responsive.bootstrap4.min.js' %}"></script>
+<script src="{% static 'assets/js/vendor/dataTables.buttons.min.js' %}"></script>
+<script src="{% static 'assets/js/vendor/buttons.bootstrap4.min.js' %}"></script>
+<script src="{% static 'assets/js/vendor/buttons.html5.min.js' %}"></script>
+<script src="{% static 'assets/js/vendor/buttons.flash.min.js' %}"></script>
+<script src="{% static 'assets/js/vendor/buttons.print.min.js' %}"></script>
+<script src="{% static 'assets/js/vendor/dataTables.keyTable.min.js' %}"></script>
+<script src="{% static 'assets/js/vendor/dataTables.select.min.js' %}"></script>
+<!-- third party js ends -->
+
+<!-- demo app -->
+<script src="{% static 'assets/js/pages/demo.datatable-init.js' %}"></script>
+<!-- end demo js-->
+
+<script>
+var ctx = document.getElementById("assumptionsChart").getContext('2d');
+var assumptionsChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+        labels: ["Validated", "In Progress", "Invalidated"],
+        datasets: [{
+            data: [{{assumptions_validated}}, {{assumptions_inprogress}}, {{assumptions_invalidated}}],
+            backgroundColor: ["#0acf97", "#ffbc00", "#fa5c7c"],
+            borderColor: "transparent",
+            borderWidth: "3"
+        }]
+    },
+    options: {
+        legend: {
+            display: false,
+        }
+    }
+});
+
+var ctxp = document.getElementById("projectsChart").getContext('2d');
+var projectsChart = new Chart(ctxp, {
+    type: 'doughnut',
+    data: {
+        labels: ["Active", "Draft", "Killed"],
+        datasets: [{
+            data: [{{projects_active}}, {{projects_draft}}, {{projects_killed}}],
+            backgroundColor: ["#727cf5", "#98a6ad", "#fa5c7c"],
+            borderColor: "transparent",
+            borderWidth: "3"
+        }]
+    },
+    options: {
+        legend: {
+            display: false,
+        }
+    }
+});
+
+</script>
+<script src="{% static 'assets/js/vendor/Chart.bundle.min.js' %}"></script>
+
+{% endblock %}

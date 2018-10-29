@@ -21,6 +21,7 @@ urlpatterns = [
     url(r'^faq/$', login_required(views.FaqView.as_view()), name='faq'),
     url(r'^library/$', login_required(views.LibraryView.as_view()), name='library'),
     url(r'^tools/$', login_required(views.ToolsView.as_view()), name='tools'),
+    url(r'^dashboard/assumptions/$', login_required(views.AssumptionsView.as_view()), name='dashboard-assumptions'),
 
     url(r'^api/project/form$',
         login_required(views.project_form),
@@ -64,5 +65,9 @@ urlpatterns = [
 
     url(r'^api/tools',
         login_required(views.tools),
+        name='api-tools'),
+
+    url(r'^api/assumptions',
+        login_required(views.assumptions),
         name='api-tools'),
 ]
