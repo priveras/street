@@ -1,7 +1,7 @@
 (function(Vue) {
     "use strict";
 
-    var initSelect = 'Choose a category ...';
+    var initSelect = 'All categories...';
 
     new Vue({
         el: '#tools',

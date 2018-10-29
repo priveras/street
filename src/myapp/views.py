@@ -67,6 +67,17 @@ class LibraryView(generic.ListView):
 
         return context
 
+class AssumptionsView(generic.ListView):
+    template_name = 'dashboard/assumptions.html'
+    context_object_name = 'assumptions_list'
+    model = Tool
+
+    def get_context_data(self, **kwargs):
+        context = super(AssumptionsView, self).get_context_data(**kwargs)
+        context['assumptions_list'] = Assumption.objects.all()
+
+        return context
+
 class ToolsView(generic.ListView):
     template_name = 'tools.html'
     context_object_name = 'tools_list'
@@ -748,5 +759,10 @@ def check_invite(request):
 
 def tools(request):
     items = Tool.objects.all()
+    data = serializers.serialize("json", items, use_natural_foreign_keys=True)
+    return HttpResponse(data, content_type="application/json")
+
+def assumptions(request):
+    items = Assumption.objects.all()
     data = serializers.serialize("json", items, use_natural_foreign_keys=True)
     return HttpResponse(data, content_type="application/json")
