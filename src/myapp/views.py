@@ -78,6 +78,15 @@ class AssumptionsView(generic.ListView):
         context['assumptions_validated'] = Assumption.objects.filter(status='Validated').count()
         context['assumptions_inprogress'] = Assumption.objects.filter(status='In Progress').count()
         context['assumptions_invalidated'] = Assumption.objects.filter(status='Invalidated').count()
+        context['d_validated'] = Assumption.objects.filter(status='Validated').filter(dvf='desirability').count()
+        context['d_inprogress'] = Assumption.objects.filter(status='In Progress').filter(dvf='desirability').count()
+        context['d_invalidated'] = Assumption.objects.filter(status='Invalidated').filter(dvf='desirability').count()
+        context['v_validated'] = Assumption.objects.filter(status='Validated').filter(dvf='viability').count()
+        context['v_inprogress'] = Assumption.objects.filter(status='In Progress').filter(dvf='viability').count()
+        context['v_invalidated'] = Assumption.objects.filter(status='Invalidated').filter(dvf='viability').count()
+        context['f_validated'] = Assumption.objects.filter(status='Validated').filter(dvf='feasibility').count()
+        context['f_inprogress'] = Assumption.objects.filter(status='In Progress').filter(dvf='feasibility').count()
+        context['f_invalidated'] = Assumption.objects.filter(status='Invalidated').filter(dvf='feasibility').count()
 
         return context
 

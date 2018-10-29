@@ -45,6 +45,16 @@
             </div> <!-- end card-body-->
         </div> <!-- end card-->
     </div>
+    <div class="col-xl-6">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title">Assumptions by DVF</h4>
+                <div id="dvfchart"></div>
+            </div>
+            <!-- end card body-->
+        </div>
+        <!-- end card -->
+    </div>
 </div>
 <div class="row">
     <div class="col-12">
@@ -169,26 +179,58 @@ var assumptionsChart = new Chart(ctx, {
     }
 });
 
-var ctxp = document.getElementById("projectsChart").getContext('2d');
-var projectsChart = new Chart(ctxp, {
-    type: 'doughnut',
-    data: {
-        labels: ["Active", "Draft", "Killed"],
-        datasets: [{
-            data: [{{projects_active}}, {{projects_draft}}, {{projects_killed}}],
-            backgroundColor: ["#727cf5", "#98a6ad", "#fa5c7c"],
-            borderColor: "transparent",
-            borderWidth: "3"
-        }]
-    },
-    options: {
-        legend: {
-            display: false,
-        }
-    }
-});
-
 </script>
 <script src="{% static 'assets/js/vendor/Chart.bundle.min.js' %}"></script>
+<script src="{% static 'assets/js/vendor/apexcharts.min.js' %}"></script>
+<script type="text/javascript">
+    var options = {
+            chart: {
+                height: 335,
+                type: 'bar',
+                stacked: true,
+            },
+            responsive: [{
+                breakpoint: 700,
+                options: {
+                    legend: {
+                        position: 'bottom',
+                        offsetX: -10,
+                        offsetY: 0
+                    }
+                }
+            }],
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                },
+            },
+            colors:['#0acf97', '#ffbc00', '#fa5c7c'],
+            series: [{
+                name: 'Validated',
+                data: [{{d_validated}}, {{v_validated}}, {{f_validated}}]
+            },{
+                name: 'In Progress',
+                data: [{{d_inprogress}}, {{v_inprogress}}, {{f_inprogress}}]
+            },{
+                name: 'Invalidated',
+                data: [{{d_invalidated}}, {{v_invalidated}}, {{f_invalidated}}]
+            }],
+            xaxis: {
+                categories: ['Desirability', 'Viability', 'Feasibility'],
+            },
+            legend: {
+                position: 'bottom',
+            },
+            fill: {
+                opacity: 1
+            },
+        }
 
+       var chart = new ApexCharts(
+            document.querySelector("#dvfchart"),
+            options
+        );
+        
+        chart.render();
+</script>
 {% endblock %}
