@@ -680,7 +680,8 @@
                         <th>How to Test</th>
                         <th>Learnings</th>
                         <th>Status</th>
-                        <th></th>
+                        <th>How Uncertain</th>
+                        <th>How Critical</th>
                     </tr>
                     {% for assumption in assumptions %}
                     <tr class="text-justify">
@@ -691,28 +692,28 @@
                         </td>
                         <td>
                             {% if not assumption.assumption %}
-                            NA
+                            -
                             {% else %}
                             {{assumption.assumption}}
                             {% endif %}
                         </td>
                         <td>
                             {% if not assumption.metric %}
-                            NA
+                            -
                             {% else %}
                             {{assumption.metric}}
                             {% endif %}
                         </td>
                         <td>
                             {% if not assumption.learnings %}
-                            NA
+                            -
                             {% else %}
                             {{assumption.learnings}}
                             {% endif %}
                         </td>
                         <td>
                             {% if not assumption.status %}
-                            NA
+                            -
                             {% else %}
 
                             {% if assumption.status == "Validated" %}
@@ -724,6 +725,24 @@
                             {% else %}
                             <span class="badge badge-danger">{{assumption.status}}</span>
                             {% endif %}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if not assumption.uncertainty %}
+                            -
+                            {% else %}
+
+                                <span class="badge badge-light">{{assumption.uncertainty|capfirst}}</span>
+
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if not assumption.critical %}
+                            -
+                            {% else %}
+
+                                <span class="badge badge-light">{{assumption.critical|capfirst}}</span>
+                                
                             {% endif %}
                         </td>
                         {% if permission %}

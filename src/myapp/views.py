@@ -74,7 +74,10 @@ class AssumptionsView(generic.ListView):
 
     def get_context_data(self, **kwargs):
         context = super(AssumptionsView, self).get_context_data(**kwargs)
-        context['assumptions_list'] = Assumption.objects.all()
+        context['assumptions_list'] = Assumption.objects.order_by('-created_at')
+        context['assumptions_validated'] = Assumption.objects.filter(status='Validated').count()
+        context['assumptions_inprogress'] = Assumption.objects.filter(status='In Progress').count()
+        context['assumptions_invalidated'] = Assumption.objects.filter(status='Invalidated').count()
 
         return context
 
@@ -96,7 +99,7 @@ class DashboardProjectsView(generic.ListView):
 
     def get_context_data(self, **kwargs):
         context = super(DashboardProjectsView, self).get_context_data(**kwargs)
-        context['projects_list'] = Project.objects.filter(status="Active").order_by("title")
+        context['projects_list'] = Project.objects.order_by("-created_at")
         context['assumptions'] = Assumption.objects.all()
         context['objectives'] = Objective.objects.all()
         context['elevators'] = Elevator.objects.all()
