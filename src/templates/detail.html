@@ -1204,10 +1204,14 @@ $(function() {
 
   $('.call-dynamic-form').click(function(){
     var self = $(this);
+    var dataName = self.attr('data-name');
+
     $('#myLargeModalLabel').text(self.attr('data-title'));
-    $.get('/api/model/form/' + self.attr('data-name') + '/project/' + $('#project').val(), function(form) {
+    $.get('/api/model/form/' + dataName + '/project/' + $('#project').val(), function(form) {
       $('#modal-body').html(form);
-      $('#id_stage').val('seed');
+      if(dataName != 'project') {
+        $('#id_stage').val('seed');
+      }
       $('#bs-example-modal-lg').modal('toggle')
     });
   });
@@ -1236,11 +1240,14 @@ $(function() {
     $('#myLargeModalLabel').text(self.attr('data-title'));
     $('#bs-example-modal-lg').modal('show');
 
-    var path = self.attr('data-name') + '/project/' + $('#project').val() + '/id/' + self.attr('data-id');
+    var dataName = self.attr('data-name');
+    var path = dataName + '/project/' + $('#project').val() + '/id/' + self.attr('data-id');
 
     $.get('/api/model/form/' + path, function(form) {
       $('#modal-body').html(form);
-      $('#id_stage').val('seed');
+      if(dataName != 'project') {
+        $('#id_stage').val('seed');
+      }
     });
   });
 
