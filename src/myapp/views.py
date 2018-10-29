@@ -16,7 +16,7 @@ from django.core import serializers
 from .forms import ProfileForm, SummaryForm, PastForm, FutureForm, ProjectForm
 from .forms import ElevatorForm, ProblemForm, SolutionForm, BusinessModelForm
 from .forms import AssumptionForm, CommentForm, FileForm, DvfForm, LinkForm
-from .forms import InviteForm, ObjectiveForm
+from .forms import InviteForm, ObjectiveForm, ProjectFormCreate
 
 from .models import Project, Team, Comment, Assumption, Problem, BusinessModel
 from .models import Solution, Metric, File, Profile, Summary, Past, Future
@@ -542,7 +542,7 @@ def project_form(request, id=0):
     method = request.method
 
     if id == 0:
-        f = ProjectForm() if method == 'GET' else ProjectForm(data=request.POST)
+        f = ProjectFormCreate() if method == 'GET' else ProjectFormCreate(data=request.POST)
     else:
         try:
             instance = Project.objects.get(pk=id)
@@ -553,6 +553,7 @@ def project_form(request, id=0):
         'form': f,
         'id': id,
         'showstage': True,
+        'hidestatus': True if id == 0 else False,
         'error': '',
     }
 
@@ -566,6 +567,8 @@ def project_form(request, id=0):
     try:
         p = f.save(commit=False)
         p.slug = slugify(p.title)
+        if id == 0:
+            p.status = 'Draft'
         p.user = request.user
         p.save()
 
