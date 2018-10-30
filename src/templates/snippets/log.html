@@ -13,7 +13,7 @@
                       <i class="fa fa-plus-circle bg-info-lighten text-info timeline-icon" style="font-size:8px"></i>
                       <div class="timeline-item-info">
                           <p class="text-info font-weight-bold mb-1 d-block">{{log.extra.event|capfirst}}</p>
-                          <small>{{log.user.first_name}} {{log.user.last_name}} {{log.extra.event}} "<span class="font-weight-bold">{{log.extra.project}}</span>" (Stage "{{log.extra.stage}}", Status "{{log.extra.status}}") </small>
+                          <small>{{log.user.first_name}} {{log.user.last_name}} {{log.extra.event}} "<span class="font-weight-bold">{{log.extra.project}}</span>" (Stage "{{log.extra.stage}}", Status "{{log.extra.status}}") {{log.extra.description|truncatechars:40}}</small>
                           <p>
                               <small class="text-muted">{{log.timestamp|naturalday|capfirst}}</small>
                           </p>
