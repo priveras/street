@@ -367,7 +367,7 @@ class Dvf(models.Model):
                     "desirability": self.desirability,
                     "viability": self.viability,
                     "feasibility": self.feasibility,
-                    "event": "added dvf"
+                    "event": "added DVF"
                     }
                 )
         else:
@@ -635,13 +635,13 @@ class Objective(models.Model):
             ('seedlaunch', 'Seed Launch'),
             ('launch', 'Launch'),
             )
-    stage = models.CharField(choices=stage_choices, max_length=200, blank=True)
+    stage = models.CharField(choices=stage_choices, max_length=200)
     dvf_choices = (
             ('desirability', 'Desirability'),
             ('viability', 'Viability'),
             ('feasibility', 'Feasibility'),
             )
-    dvf = models.CharField(choices=dvf_choices, max_length=200, blank=True)
+    dvf = models.CharField(choices=dvf_choices, max_length=200)
     value = models.TextField(blank=True)
     metric = models.TextField(blank=True)
     status_choices = (
@@ -650,7 +650,7 @@ class Objective(models.Model):
             ('Delayed', 'Delayed'),
             ('At Risk', 'At Risk'),
             )
-    status = models.CharField(choices=status_choices, max_length=200, blank=True)
+    status = models.CharField(choices=status_choices, max_length=200)
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(db_index=True, auto_now_add=True)
 
@@ -685,7 +685,7 @@ class Objective(models.Model):
                     "value": self.value,
                     "metric": self.metric,
                     "status": self.status,
-                    "event": "added objective"
+                    "event": "edited objective"
                     }
                 )
 

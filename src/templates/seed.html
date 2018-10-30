@@ -588,6 +588,7 @@
                     <p><i class="text-muted fa fa-exclamation-triangle"></i> No data available</p>
                     {% else %}
                     <tr>
+                        <th>DVF</th>
                         <th>Objective</th>
                         <th>Evidence</th>
                         <th>Status</th>
@@ -595,6 +596,11 @@
                     </tr>
                     {% for objective in objectives %}
                     <tr class="text-justify">
+                        <td>
+                            <span class="badge badge-light">{{objective.dvf|capfirst}}</span>
+                            <br>
+                            <small>{{objective.updated_at|date:'M d, y'}}</small>
+                        </td>
                         <td>
                             {{objective.value}}
                         </td>
@@ -682,6 +688,7 @@
                         <th>Status</th>
                         <th>How Uncertain</th>
                         <th>How Critical</th>
+                        <th></th>
                     </tr>
                     {% for assumption in assumptions %}
                     <tr class="text-justify">
@@ -694,21 +701,21 @@
                             {% if not assumption.assumption %}
                             -
                             {% else %}
-                            {{assumption.assumption}}
+                            {{assumption.assumption|capfirst}}
                             {% endif %}
                         </td>
                         <td>
                             {% if not assumption.metric %}
                             -
                             {% else %}
-                            {{assumption.metric}}
+                            {{assumption.metric|capfirst}}
                             {% endif %}
                         </td>
                         <td>
                             {% if not assumption.learnings %}
                             -
                             {% else %}
-                            {{assumption.learnings}}
+                            {{assumption.learnings|capfirst}}
                             {% endif %}
                         </td>
                         <td>

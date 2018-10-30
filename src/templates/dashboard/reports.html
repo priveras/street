@@ -1005,74 +1005,7 @@ document.getElementById("comply").innerHTML = z+'%';
 </div>
 <div class="row">
   <div class="col-12">
-    <div class="card">
-        <div class="card-body">
-            <h4 class="header-title mb-2">Recent Activity</h4>
-            <div class="slimscroll" style="max-height: 290px;">
-                <div class="timeline-alt pb-0">
-                    {% for log in logs %}
-                      <div class="timeline-item">
-
-
-                          {% if log.action == 'CREATE_PROJECT' or log.action == 'ADD_TEAM' or log.action == 'ADD_ELEVATOR' or log.action == 'ADD_PROBLEM' or log.action == 'ADD_SOLUTION' or log.action == 'ADD_BUSINESS_MODEL' or log.action == 'ADD_SUMMARY' or log.action == 'ADD_PRIORITY' or log.action == 'ADD_OBJECTIVE' or log.action == 'ADD_ASSUMPTION' or log.action == 'ADD_LINK' or log.action == 'ADD_FILE' or log.action == 'ADD_COMMENT'  %}
-
-                          <i class="fa fa-plus-circle bg-info-lighten text-info timeline-icon" style="font-size:8px"></i>
-                          <div class="timeline-item-info">
-                              <p class="text-info font-weight-bold mb-1 d-block">{{log.extra.event|capfirst}}</p>
-                              <small>
-                                  {{log.user.first_name}} {{log.user.last_name}} {{log.extra.event}}
-                                  {% if log.extra.text %}
-                                  <span class="font-weight-bold">"{{log.extra.text|truncatechars:40}}"</span>
-                                  {% elif  log.extra.title %}
-                                  <span class="font-weight-bold">"{{log.extra.title|truncatechars:40}}"</span>
-                                  {% elif  log.extra.project_slug or log.extra.permission %}
-                                  <span class="font-weight-bold">"{{log.extra.project|truncatechars:40}}"</span>
-                                  {% endif %}
-                              </small>
-                              <p>
-                                  <small class="text-muted">{{log.timestamp|naturalday|capfirst}}</small>
-                              </p>
-                          </div>
-                          {% elif log.action == 'EDIT_PROJECT' or log.action == 'EDIT_TEAM' or log.action == 'EDIT_ELEVATOR' or log.action == 'EDIT_PROBLEM' or log.action == 'EDIT_SOLUTION' or log.action == 'EDIT_BUSINESS_MODEL' or log.action == 'EDIT_SUMMARY' or log.action == 'EDIT_PRIORITY' or log.action == 'EDIT_OBJECTIVE' or log.action == 'EDIT_ASSUMPTION' or log.action == 'EDIT_LINK' or log.action == 'EDIT_FILE' or log.action == 'EDIT_COMMENT' %}
-
-                          <i class="fa fa-pencil-alt bg-primary-lighten text-primary timeline-icon"></i>
-                          <div class="timeline-item-info">
-                              <p class="text-primary font-weight-bold mb-1 d-block">{{log.extra.event|capfirst}}</p>
-                              <small>{{log.user.first_name}} {{log.user.last_name}} {{log.extra.event}}</small>
-                              <p>
-                                  <small class="text-muted">{{log.timestamp|naturalday|capfirst}}</small>
-                              </p>
-                          </div>
-                          {% elif log.action == 'DELETE_PROJECT' or log.action == 'DELETE_TEAM' or log.action == 'DELETE_ELEVATOR' or log.action == 'DELETE_PROBLEM' or log.action == 'DELETE_SOLUTION' or log.action == 'DELETE_BUSINESS_MODEL' or log.action == 'DELETE_SUMMARY' or log.action == 'DELETE_PRIORITY' or log.action == 'DELETE_OBJECTIVE' or log.action == 'DELETE_ASSUMPTION' or log.action == 'DELETE_LINK' or log.action == 'DELETE_FILE' or log.action == 'DELETE_COMMENT' %}
-
-                          <i class="fa fa-trash bg-danger-lighten text-danger timeline-icon"></i>
-                          <div class="timeline-item-info">
-                              <p class="text-danger font-weight-bold mb-1 d-block">{{log.extra.event|capfirst}}</p>
-                              <small>{{log.user.first_name}} {{log.user.last_name}} {{log.extra.event}}</small>
-                              <p>
-                                  <small class="text-muted">{{log.timestamp|naturalday|capfirst}}</small>
-                              </p>
-                          </div>
-                          {% else %}
-
-                          <i class="mdi mdi-upload bg-secondary-lighten text-muted timeline-icon"></i>
-                          <div class="timeline-item-info">
-                              <p class="text-muted font-weight-bold mb-1 d-block">{{log.extra.event|capfirst}}</p>
-                              <small>{{log.user.first_name}} {{log.user.last_name}} {{log.extra.event}}</small>
-                              <p>
-                                  <small class="text-muted">{{log.timestamp|naturalday|capfirst}}</small>
-                              </p>
-                          </div>
-                          {% endif %}
-                      </div>
-                    {% endfor %}
-                </div>
-                <!-- end timeline -->
-            </div> <!-- end slimscroll -->
-        </div>
-        <!-- end card-body -->
-    </div>
-    <!-- end card-->
+    {% include 'snippets/log.html' %}
   </div>
 </div>
 <!-- end row -->
