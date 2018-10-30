@@ -211,6 +211,31 @@ class Profile(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(db_index=True, auto_now_add=True)
 
+    def save(self, *args, **kwargs):
+        if not self.id:
+            log(
+                user=self.user,
+                action='CREATE_PROFILE',
+                obj=self,
+                extra={
+                    "job_title": self.job_title,
+                    "location": self.location,
+                    "event": "joined BOX OS"
+                    }
+                )
+        else:
+            log(
+                user=self.user,
+                action='EDIT_PROFILE',
+                obj=self,
+                extra={
+                    "job_title": self.job_title,
+                    "location": self.location,
+                    "event": "edited profile"
+                    }
+                )
+
+        super(Profile, self).save(args, kwargs)
 
     def __str__(self):
         return str(self.user)

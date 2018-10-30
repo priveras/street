@@ -33,7 +33,7 @@
         <span aria-hidden="true">×</span>
     </button>
     <p class="alert-heading"><i class="fa fa-exclamation-triangle"></i> Important</p>
-    <p>The BOX OS project is still on its Beta Version. If you have problems using this tool, please let us know at <a href="mailto:pablo.rivera@zx-ventures.com">pablo.rivera@zx-ventures.com</a></p>
+    <p>The BOX OS project is still on its Beta Version. If you have problems using this tool, send us a message through the live chat on the bottom right corner.</p>
 </div>
 {% endif %}
 
@@ -92,7 +92,9 @@
                 <div class="badge badge-primary mb-3">{{project.stage}}</div>
 
                 {% if project.description %}
-                <p style="min-height:57px" class="text-muted font-13 mb-3 text-justify">{{project.description|truncatechars:120}} <a href="{% url 'app:detail' project.slug %}" class="font-weight-bold text-muted">view more</a>
+                <p style="min-height:57px" class="text-muted font-13 mb-3 text-justify">{{project.description|truncatechars:120}} 
+                    <br>
+                    <a href="{% url 'app:detail' project.slug %}" class="font-weight-bold text-muted">view more</a>
                 </p>
                 {% else %}
                 <p style="min-height:57px" class="text-muted font-13 mb-3 text-justify">You haven't added a description for your project yet.

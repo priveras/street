@@ -13,10 +13,7 @@
                       <i class="fa fa-plus-circle bg-info-lighten text-info timeline-icon" style="font-size:8px"></i>
                       <div class="timeline-item-info">
                           <p class="text-info font-weight-bold mb-1 d-block">{{log.extra.event|capfirst}}</p>
-                          <small>
-                              {{log.user.first_name}} {{log.user.last_name}} {{log.extra.event}}
-                              <span class="font-weight-bold">"{{log.extra.project|truncatechars:40}}"</span>
-                          </small>
+                          <small>{{log.user.first_name}} {{log.user.last_name}} {{log.extra.event}} "<span class="font-weight-bold">{{log.extra.project}}</span>" (Stage "{{log.extra.stage}}", Status "{{log.extra.status}}") </small>
                           <p>
                               <small class="text-muted">{{log.timestamp|naturalday|capfirst}}</small>
                           </p>
@@ -205,7 +202,49 @@
                       </div>
 
 
-                      {% elif log.action == 'EDIT_PROJECT' or log.action == 'EDIT_TEAM' or log.action == 'EDIT_ELEVATOR' or log.action == 'EDIT_PROBLEM' or log.action == 'EDIT_SOLUTION' or log.action == 'EDIT_BUSINESS_MODEL' or log.action == 'EDIT_SUMMARY' or log.action == 'EDIT_PRIORITY' or log.action == 'EDIT_OBJECTIVE' or log.action == 'EDIT_ASSUMPTION' or log.action == 'EDIT_LINK' or log.action == 'EDIT_FILE' or log.action == 'EDIT_COMMENT' %}
+                      {% elif log.action == 'EDIT_PROJECT' %}
+
+                      <i class="fa fa-pencil-alt bg-primary-lighten text-primary timeline-icon"></i>
+                      <div class="timeline-item-info">
+                          <p class="text-primary font-weight-bold mb-1 d-block">{{log.extra.event|capfirst}}</p>
+                          <small>{{log.user.first_name}} {{log.user.last_name}} {{log.extra.event}} "<span class="font-weight-bold">{{log.extra.project}}</span>" (Stage "{{log.extra.stage}}", Status "{{log.extra.status}}") </small>
+                          <p>
+                              <small class="text-muted">{{log.timestamp|naturalday|capfirst}}</small>
+                          </p>
+                      </div>
+
+                      {% elif log.action == 'EDIT_TEAM' %}
+
+                      <i class="fa fa-pencil-alt bg-primary-lighten text-primary timeline-icon"></i>
+                      <div class="timeline-item-info">
+                          <p class="text-primary font-weight-bold mb-1 d-block">{{log.extra.event|capfirst}}</p>
+                          <small>{{log.user.first_name}} {{log.user.last_name}} {{log.extra.event}} "<span class="font-weight-bold">{{log.extra.project}}</span></small>
+                          <p>
+                              <small class="text-muted">{{log.timestamp|naturalday|capfirst}}</small>
+                          </p>
+                      </div>
+
+                      {% elif log.action == 'EDIT_ELEVATOR' %}
+
+                      {% elif log.action == 'EDIT_PROBLEM' %}
+
+                      {% elif log.action == 'EDIT_SOLUTION' %}
+
+                      {% elif log.action == 'EDIT_BUSINESS_MODEL' %}
+
+                      {% elif log.action == 'EDIT_SUMMARY' %}
+
+                      {% elif log.action == 'EDIT_PRIORITY' %}
+
+                      {% elif log.action == 'EDIT_OBJECTIVE' %}
+
+                      {% elif log.action == 'EDIT_ASSUMPTION' %}
+
+                      {% elif log.action == 'EDIT_LINK' %}
+
+                      {% elif log.action == 'EDIT_FILE' %}
+
+                      {% elif log.action == 'EDIT_COMMENT' %}
 
                         <i class="fa fa-pencil-alt bg-primary-lighten text-primary timeline-icon"></i>
                         <div class="timeline-item-info">
