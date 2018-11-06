@@ -20,8 +20,6 @@
 
 </div>
 <!-- start page title -->
-
-
 <div class="row">
     <div class="col-12">
         <div class="font-weight-light">
@@ -466,7 +464,7 @@ document.getElementById("kill").innerHTML = z+'%';
                                       <tr>
                                           <th>Project</th>
                                           <th>Stage</th>
-                                          <th>Objectives</th>
+                                          <th>Stage Objective Completion</th>
                                           <th>D</th>
                                           <th>V</th>
                                           <th>F</th>
@@ -483,13 +481,16 @@ document.getElementById("kill").innerHTML = z+'%';
                                                   <td class="text-left">
                                                       <div class="badge badge-primary mb-3">{{project.stage}}</div>
                                                   </td>
-                                                  <td class="text-center">
-                                                      {% for objective in completed_obj %}
-                                                          {% if objective.project == project.id %}
-                                                              {{objective.project__count}}
-                                                          {% endif %}
+                                                  <td class="text-center" style="font-size:110%; font-weight:bold">
+                                                      {% for comp_obj in completed_obj %}
+                                                          {% for total_obj in stage_obj %}
+                                                              {% if comp_obj.project == project.id and comp_obj.stage == stage %}
+                                                                  {% if total_obj.project == project.id and total_obj.stage == stage %}
+                                                                      {% widthratio comp_obj.project__count total_obj.project__count 100 %} %
+                                                                  {% endif %}
+                                                              {% endif %}
+                                                          {% endfor %}
                                                       {% endfor %}
-                                                      / {{project.objective_set.count}}
                                                   </td>
                                                   <td>
                                                       {% if dvf.desirability == "On Track" %}
