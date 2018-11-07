@@ -809,13 +809,13 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td><b>YTD</b></td>
+                                <td><b>Total</b></td>
                                 <td><b>{{wallets_budget_ytd.total_budget}}</b></td>
                                 <td><b>{{wallets_actual_ytd.total_actual}}</b></td>
                             </tr>
                             {% for wallet in wallets %}
                             <tr>
-                                <td>{{wallet.period}}</td>
+                                <td>{{wallet.get_period_display}}</td>
                                 <td>{{wallet.amount_budget}}</td>
                                 <td>{{wallet.amount_actual}}</td>
                                 <td class="table-action">
@@ -1248,7 +1248,7 @@ $(function() {
                 data: [{{wallets.3.amount_budget}}, {{wallets.2.amount_budget}}, {{wallets.1.amount_budget}}, {{wallets.0.amount_budget}}, {{wallets_budget_ytd.total_budget}}]
             }, ],
             xaxis: {
-                categories: ['{{wallets.3.period}}','{{wallets.2.period}}','{{wallets.1.period}}', '{{wallets.0.period}}', 'YTD'],
+                categories: ['{{wallets.3.get_period_display}}','{{wallets.2.get_period_display}}','{{wallets.1.get_period_display}}', '{{wallets.0.get_period_display}}', 'Total'],
             },
             yaxis: {
                 title: {

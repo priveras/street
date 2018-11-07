@@ -1130,7 +1130,17 @@ class Invite(models.Model):
 class Wallet(models.Model):
     user = models.ForeignKey(User, blank=True, null=True)
     project = models.ForeignKey(Project)
-    period = models.CharField(max_length=200)
+    period_choices = (
+            ('1', '1Q18'),
+            ('2', '2Q18'),
+            ('3', '3Q18'),
+            ('4', '4Q18'),
+            ('5', '1Q19'),
+            ('6', '2Q19'),
+            ('7', '3Q19'),
+            ('8', '4Q19'),
+            )
+    period = models.CharField(choices=period_choices, max_length=200)
     amount_budget = models.FloatField(default=0)
     amount_actual = models.FloatField(default=0)
     updated_at = models.DateTimeField(auto_now=True)
