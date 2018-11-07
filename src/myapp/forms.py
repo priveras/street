@@ -2,6 +2,7 @@ from django import forms
 from .models import Profile, Project, Summary, Past, Future, Elevator
 from .models import Problem, Solution, BusinessModel, Assumption, Objective
 from .models import Comment, File, Dvf, Link, Invite, Wallet
+from django.utils.translation import ugettext_lazy as _
 
 class WalletForm(forms.ModelForm):
     class Meta:
@@ -88,11 +89,23 @@ class BusinessModelForm(forms.ModelForm):
 class ObjectiveForm(forms.ModelForm):
     class Meta:
         model = Objective
+        labels = {
+            'dvf': _('Stage'),
+            'value': _('Objective'),
+            'metric': _('Evidence'),
+        }
         exclude = ['created_at', 'updated_at', 'user', 'project']
 
 class AssumptionForm(forms.ModelForm):
     class Meta:
         model = Assumption
+        labels = {
+            'objective_id': _('Objective ID'),
+            'assumption': _('What to Test'),
+            'metric': _('How to Test'),
+            'uncertainty': _('How Uncertain'),
+            'critical': _('How Critical'),
+        }
         exclude = ['created_at', 'updated_at', 'user', 'project']
 
 class LinkForm(forms.ModelForm):

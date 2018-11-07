@@ -586,7 +586,6 @@
                     <p><i class="text-muted fa fa-exclamation-triangle"></i> No data available</p>
                     {% else %}
                     <tr>
-                        <th>DVF</th>
                         <th>Objective</th>
                         <th>Evidence</th>
                         <th>Status</th>
@@ -594,9 +593,6 @@
                     </tr>
                     {% for objective in objectives %}
                     <tr class="text-justify">
-                        <td>
-                            <span class="badge badge-light">{{objective.dvf|capfirst}}</span>
-                        </td>
                         <td>
                             {{objective.value}}
                         </td>

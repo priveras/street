@@ -493,7 +493,7 @@ class Dvf(models.Model):
 
         return l_biz
 
-    
+
 
 
     def __str__(self):
@@ -538,6 +538,7 @@ class Assumption(models.Model):
             ('feasibility', 'Feasibility'),
             )
     dvf = models.CharField(choices=dvf_choices, max_length=200)
+    objective_id = models.TextField(blank=True)
     assumption = models.TextField()
     metric = models.TextField(blank=True)
     learnings = models.TextField(blank=True)
@@ -661,10 +662,11 @@ class Objective(models.Model):
             ('launch', 'Launch'),
             )
     stage = models.CharField(choices=stage_choices, max_length=200)
+    id = models.AutoField(primary_key=True)
     dvf_choices = (
-            ('desirability', 'Desirability'),
-            ('viability', 'Viability'),
-            ('feasibility', 'Feasibility'),
+            ('problem', 'Problem'),
+            ('solution', 'Solution'),
+            ('business model', 'Business Model'),
             )
     dvf = models.CharField(choices=dvf_choices, max_length=200)
     value = models.TextField(blank=True)

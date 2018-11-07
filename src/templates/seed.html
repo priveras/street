@@ -588,7 +588,8 @@
                     <p><i class="text-muted fa fa-exclamation-triangle"></i> No data available</p>
                     {% else %}
                     <tr>
-                        <th>DVF</th>
+                        <th>Stage</th>
+                        <th>ID</th>
                         <th>Objective</th>
                         <th>Evidence</th>
                         <th>Status</th>
@@ -600,6 +601,9 @@
                             <span class="badge badge-light">{{objective.dvf|capfirst}}</span>
                             <br>
                             <small>{{objective.updated_at|date:'M d, y'}}</small>
+                        </td>
+                        <td>
+                            {{objective.id}}
                         </td>
                         <td>
                             {{objective.value}}
@@ -682,6 +686,7 @@
                     {% else %}
                     <tr>
                         <th></th>
+                        <th>Objective ID</th>
                         <th>What to Test</th>
                         <th>How to Test</th>
                         <th>Learnings</th>
@@ -696,6 +701,13 @@
                             <span class="badge badge-light">{{assumption.dvf|capfirst}}</span>
                             <br>
                             <small>{{assumption.updated_at|date:'M d, y'}}</small>
+                        </td>
+                        <td>
+                            {% if not assumption.objective_id %}
+                            -
+                            {% else %}
+                            {{assumption.objective_id}}
+                            {% endif %}
                         </td>
                         <td>
                             {% if not assumption.assumption %}
@@ -749,7 +761,7 @@
                             {% else %}
 
                                 <span class="badge badge-light">{{assumption.critical|capfirst}}</span>
-                                
+
                             {% endif %}
                         </td>
                         {% if permission %}
