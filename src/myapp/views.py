@@ -278,13 +278,15 @@ class DetailView(generic.DetailView):
 
         context['logs'] = Log.objects.all()
 
-        wallets = Wallet.objects.filter(project=self.object).order_by('-period')[:4]
+        wallet = Wallet.objects.filter(project=self.object).order_by('-period')[:4]
+
+        wallets = Wallet.objects.filter(project=self.object).order_by('-period')
 
         context['wallets'] = wallets
 
-        context['wallets_actual_ytd'] = wallets.aggregate(total_actual=Sum('amount_actual'))
+        context['wallets_actual_ytd'] = wallet.aggregate(total_actual=Sum('amount_actual'))
 
-        context['wallets_budget_ytd'] = wallets.aggregate(total_budget=Sum('amount_budget'))
+        context['wallets_budget_ytd'] = wallet.aggregate(total_budget=Sum('amount_budget'))
 
         return context
     # def dispatch(self, *args, **kwargs):

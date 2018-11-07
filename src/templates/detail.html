@@ -796,8 +796,9 @@
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title mb-3">Wallet</h5>
+                {% if wallets %}
                 <div id="wallet"></div>
-                <div class="table-responsive-sm text-center">
+                <div class="table-responsive-sm collapse show text-center" style="max-height:300px; overflow-y: auto;">
                     <table class="table table-centered mb-0">
                         <thead>
                             <tr>
@@ -809,7 +810,7 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td><b>Total</b></td>
+                                <td><b>L12M</b></td>
                                 <td><b>{{wallets_budget_ytd.total_budget}}</b></td>
                                 <td><b>{{wallets_actual_ytd.total_actual}}</b></td>
                             </tr>
@@ -833,6 +834,9 @@
                         </tbody>
                     </table>
                 </div>
+                {% else %}
+                <p><i class="text-muted fa fa-exclamation-triangle"></i> No wallet data</p>
+                {% endif %}
             </div>
             {% if permission %}
             <div class="card-footer text-muted">
@@ -1248,7 +1252,7 @@ $(function() {
                 data: [{{wallets.3.amount_budget}}, {{wallets.2.amount_budget}}, {{wallets.1.amount_budget}}, {{wallets.0.amount_budget}}, {{wallets_budget_ytd.total_budget}}]
             }, ],
             xaxis: {
-                categories: ['{{wallets.3.get_period_display}}','{{wallets.2.get_period_display}}','{{wallets.1.get_period_display}}', '{{wallets.0.get_period_display}}', 'Total'],
+                categories: ['{{wallets.3.get_period_display}}','{{wallets.2.get_period_display}}','{{wallets.1.get_period_display}}', '{{wallets.0.get_period_display}}', 'L12M'],
             },
             yaxis: {
                 title: {
