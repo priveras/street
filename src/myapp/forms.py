@@ -1,7 +1,12 @@
 from django import forms
 from .models import Profile, Project, Summary, Past, Future, Elevator
 from .models import Problem, Solution, BusinessModel, Assumption, Objective
-from .models import Comment, File, Dvf, Link, Invite
+from .models import Comment, File, Dvf, Link, Invite, Wallet
+
+class WalletForm(forms.ModelForm):
+    class Meta:
+        model = Wallet
+        exclude = ['user', 'created_at', 'updated_at', 'project']
 
 class CommentForm(forms.ModelForm):
     class Meta:

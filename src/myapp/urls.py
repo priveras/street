@@ -67,7 +67,7 @@ urlpatterns = [
         login_required(views.tools),
         name='api-tools'),
 
-    url(r'^api/assumptions',
-        login_required(views.assumptions),
-        name='api-tools'),
+    url(r'^api/library',
+        login_required(views.library),
+        name='api-library'),
 ]

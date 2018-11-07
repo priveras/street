@@ -38,15 +38,18 @@
     </div><!-- end col -->
     <div class="col-md-3"></div>
     <div class="col-md-6 text-center">
-        <p class="mb-1 mt-3 font-weight-bold text-muted"><i class="fa fa-search"></i> Search</p>
-
-        <input type="text" ref="search" v-model="search" placeholder="Search" name="search" autocomplete="off" maxlength="200" class="form-control" rows="2" required="" id="id_title" autofocus>
-
-        <select v-model="cat" class="select2 form-control select2-multiple"
-                data-placeholder="Choose ..." style="margin-top:13px;">
-           <option v-for="cat in cats" v-bind:value="cat">{{cat}}</option>
-           <option value="other">Other</option>
-        </select>
+        <div class="form-row mt-3">
+            <div class="form-group col-md-6">
+                <input type="text" ref="search" v-model="search" placeholder="Search" name="search" autocomplete="off" maxlength="200" class="form-control" rows="2" required="" id="id_title" autofocus>
+            </div>
+            <div class="form-group col-md-6">
+                <select v-model="cat" class="select2 form-control select2-multiple"
+                data-placeholder="Choose ...">
+                   <option v-for="cat in cats" v-bind:value="cat">{{cat}}</option>
+                   <option value="other">Other</option>
+                </select>
+            </div>
+        </div>
     </div> <!-- end col -->
 </div><!-- end row -->
 

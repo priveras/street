@@ -5,7 +5,7 @@ from django.contrib import admin
 from django_summernote.admin import SummernoteModelAdmin
 from .models import Project, Team, Comment, Assumption, Problem, BusinessModel
 from .models import Metric, File, Past, Future, Summary, Solution, Tutorial
-from .models import Profile, Link, Dvf, Progress, Zone, Invite, Resource, Elevator, Tool
+from .models import Profile, Link, Dvf, Progress, Zone, Invite, Resource, Elevator, Tool, Wallet
 from .models import Objective
 from import_export.admin import ImportExportModelAdmin
 
@@ -37,6 +37,7 @@ admin.site.register(Past)
 admin.site.register(Future)
 admin.site.register(Summary)
 admin.site.register(Link)
+admin.site.register(Wallet)
 admin.site.register(Dvf)
 admin.site.register(Progress)
 admin.site.register(Invite)

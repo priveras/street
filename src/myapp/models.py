@@ -1124,3 +1124,44 @@ class Invite(models.Model):
 
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(db_index=True, auto_now_add=True)
+
+class Wallet(models.Model):
+    user = models.ForeignKey(User, blank=True, null=True)
+    project = models.ForeignKey(Project)
+    period = models.CharField(max_length=200)
+    amount_budget = models.FloatField(blank=True, null=True)
+    amount_actual = models.FloatField(blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(db_index=True, auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+        if not self.id:
+            log(
+                user=self.user,
+                action='ADD_COMMENT',
+                obj=self,
+                extra={
+                    "project_id": self.project.id,
+                    "project": self.project.title,
+                    "amount_budget": self.amount_budget,
+                    "amount_actual": self.amount_actual,
+                    "period": self.period,
+                    "event": "added wallet"
+                    }
+                )
+        else:
+            log(
+                user=self.user,
+                action='EDIT_WALLET',
+                obj=self,
+                extra={
+                    "project_id": self.project.id,
+                    "project": self.project.title,
+                    "amount_budget": self.amount_budget,
+                    "amount_actual": self.amount_actual,
+                    "period": self.period,
+                    "event": "added wallet"
+                    }
+                )
+
+        super(Wallet, self).save(args, kwargs)

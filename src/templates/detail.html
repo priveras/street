@@ -795,6 +795,48 @@
         </div>
         <div class="card">
             <div class="card-body">
+                <h5 class="card-title mb-3">Wallet</h5>
+                <div id="wallet"></div>
+                <div class="table-responsive-sm text-center">
+                    <table class="table table-centered mb-0">
+                        <thead>
+                            <tr>
+                                <th>Period</th>
+                                <th>Budget</th>
+                                <th>Actual</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><b>YTD</b></td>
+                                <td><b>{{wallets_budget_ytd.total_budget}}</b></td>
+                                <td><b>{{wallets_actual_ytd.total_actual}}</b></td>
+                            </tr>
+                            {% for wallet in wallets %}
+                            <tr>
+                                <td>{{wallet.period}}</td>
+                                <td>{{wallet.amount_budget}}</td>
+                                <td>{{wallet.amount_actual}}</td>
+                                <td class="table-action">
+                                    <a
+                                      href="javascript: void(0);"
+                                      data-id="{{ wallet.id }}"
+                                      data-name="wallet"
+                                      data-title="Wallet"
+                                      class="action-icon edit-doc float-right">
+                                        <i class="mdi mdi-pencil"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
                 <h4 class="header-title mb-2">Recent Activity</h4>
                 <div class="slimscroll" style="max-height: 300px;">
                     <div class="timeline-alt pb-0">
@@ -1164,5 +1206,63 @@ $(function() {
   });
 
 });
+</script>
+<script src="{% static 'assets/js/vendor/Chart.bundle.min.js' %}"></script>
+<script src="{% static 'assets/js/vendor/apexcharts.min.js' %}"></script>
+<script type="text/javascript">
+    var options = {
+            chart: {
+                height: 350,
+                type: 'bar',
+            },
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                    endingShape: 'rounded',
+                    columnWidth: '55%',
+                },
+            },
+            dataLabels: {
+                enabled: false
+            },
+            stroke: {
+                show: true,
+                width: 2,
+                colors: ['transparent']
+            },
+            series: [{
+                name: 'Actual',
+                data: [{{wallets.3.amount_actual}}, {{wallets.2.amount_actual}}, {{wallets.1.amount_actual}}, {{wallets.0.amount_actual}}, {{wallets_actual_ytd.total_actual}}]
+            }, {
+                name: 'Budget',
+                data: [{{wallets.3.amount_budget}}, {{wallets.2.amount_budget}}, {{wallets.1.amount_budget}}, {{wallets.0.amount_budget}}, {{wallets_budget_ytd.total_budget}}]
+            }, ],
+            xaxis: {
+                categories: ['{{wallets.3.period}}','{{wallets.2.period}}','{{wallets.1.period}}', '{{wallets.0.period}}', 'YTD'],
+            },
+            yaxis: {
+                title: {
+                    text: '$ (thousands)'
+                }
+            },
+            fill: {
+                opacity: 1
+
+            },
+            tooltip: {
+                y: {
+                    formatter: function (val) {
+                        return "$ " + val + " thousands"
+                    }
+                }
+            }
+        }
+
+        var chart = new ApexCharts(
+            document.querySelector("#wallet"),
+            options
+        );
+
+        chart.render();
 </script>
 {% endblock %}

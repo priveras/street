@@ -15,17 +15,18 @@ from django.core import serializers
 
 from .forms import ProfileForm, SummaryForm, PastForm, FutureForm, ProjectForm
 from .forms import ElevatorForm, ProblemForm, SolutionForm, BusinessModelForm
-from .forms import AssumptionForm, CommentForm, FileForm, DvfForm, LinkForm
+from .forms import AssumptionForm, CommentForm, FileForm, DvfForm, LinkForm, WalletForm
 from .forms import InviteForm, ObjectiveForm, ProjectFormCreate
 
 from .models import Project, Team, Comment, Assumption, Problem, BusinessModel
 from .models import Solution, Metric, File, Profile, Summary, Past, Future
-from .models import Elevator, Tutorial, Progress, Dvf, Link, Zone, Invite, Resource, Tool
+from .models import Elevator, Tutorial, Progress, Dvf, Link, Zone, Invite, Resource, Tool, Wallet
 from .models import Objective
 from django.http import HttpResponseRedirect
 from pinax.eventlog.models import Log
 from datetime import datetime, timedelta
 import datetime as dt
+from django.db.models import Sum
 
 def analytics(request):
 
@@ -275,6 +276,9 @@ class DetailView(generic.DetailView):
         context['launch_summary'] = Summary.objects.filter(project=self.object).filter(stage="launch").order_by('-updated_at')
 
         context['logs'] = Log.objects.all()
+        context['wallets'] = Wallet.objects.filter(project=self.object).order_by('-period')[:4]
+        context['wallets_actual_ytd'] = Wallet.objects.filter(project=self.object).aggregate(total_actual=Sum('amount_actual'))
+        context['wallets_budget_ytd'] = Wallet.objects.filter(project=self.object).aggregate(total_budget=Sum('amount_budget'))
 
         return context
     # def dispatch(self, *args, **kwargs):
@@ -478,6 +482,7 @@ def model_form(request, name='', project_id=0, id=0):
         'project': ProjectForm,
         'file': FileForm,
         'objective':ObjectiveForm,
+        'wallet': WalletForm
     }
 
     instances = {
@@ -494,6 +499,7 @@ def model_form(request, name='', project_id=0, id=0):
         'project': Project,
         'file': File,
         'objective': Objective,
+        'wallet': Wallet
     }
 
     method = request.method
@@ -777,7 +783,7 @@ def tools(request):
     data = serializers.serialize("json", items, use_natural_foreign_keys=True)
     return HttpResponse(data, content_type="application/json")
 
-def assumptions(request):
-    items = Assumption.objects.all()
+def library(request):
+    items = Resource.objects.all()
     data = serializers.serialize("json", items, use_natural_foreign_keys=True)
     return HttpResponse(data, content_type="application/json")
