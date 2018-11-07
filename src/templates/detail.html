@@ -15,7 +15,7 @@
                     <li class="breadcrumb-item active">{{project.title|capfirst}}</li>
                 </ol>
             </div>
-            <h4 class="page-title">Project Details</h4>
+            <h4 class="page-title">{{project.title|capfirst}}</h4>
         </div>
     </div>
 </div>
@@ -23,10 +23,29 @@
 
 <div class="row">
     <div class="col-md-8">
+        <!--<div class="alert alert-success" role="alert">
+            <p class="alert-heading"><i class="dripicons-checkmark"></i> Welcome to your new project!</p>
+            <i class="dripicons-success"></i> You don't have an <strong>Elevator Pitch</strong>. First recommended step is to have one, add it below.
+        </div>-->
         {% if project.status == "Draft" %}
         <div class="alert alert-secondary" role="alert">
             <p class="alert-heading"><i class="fa fa-info-circle"></i> Draft</p>
             <p>This project is in "Draft" mode. If this is only for testing purposes, please leave it in draft. If it's a real project, update status to "Active" here: <a class="edit-doc text-primary" style="cursor:pointer" data-id="{{ project.id }}" data-name="project" data-title="Edit Project">Update Status</a></p>
+        </div>
+        {% endif %}
+        {% if project.stage == 'Concept' %}
+        <div class="alert alert-warning" role="alert">
+            <i class="dripicons-warning"></i> Hey <strong>FYI</strong>, concept projects can't add assumptions or objectives. Change your project's stage to add more info. 
+            {% if permission %}
+            <a
+              style="cursor:pointer"
+              class="edit-doc text-primary"
+              data-id="{{ project.id }}"
+              data-name="project"
+              data-title="Edit Project"
+              >Click to edit
+            </a>
+            {% endif %}
         </div>
         {% endif %}
         <!-- project card -->
@@ -141,7 +160,11 @@
 
         </div> <!-- end card-->
 
-
+        {% if not elevators %}
+        <div class="alert alert-warning" role="alert">
+            <i class="dripicons-warning"></i> You don't have an <strong>Elevator Pitch</strong>. First recommended step is to have one, add it below.
+        </div>
+        {% endif %}
         <div class="card">
             <div class="card-body">
                 <div class="card-widgets">
@@ -204,6 +227,13 @@
             </div>
             {% endif %}
         </div>
+        {% if not problems %}
+            {% if elevators %}
+            <div class="alert alert-warning" role="alert">
+                <i class="dripicons-warning"></i> You don't have a <strong>Problem Statement</strong>. Add one below.
+            </div>
+            {% endif %}
+        {% endif %}
         <div class="card">
             <div class="card-body">
                 <div class="card-widgets">
@@ -277,7 +307,13 @@
             {% endif %}
         </div>
 
-
+        {% if not solutions %}
+            {% if elevators and problems %}
+            <div class="alert alert-warning" role="alert">
+                <i class="dripicons-warning"></i> You don't have a <strong>Solution Statement</strong>. Add one below.
+            </div>
+            {% endif %}
+        {% endif %}
         <div class="card">
             <div class="card-body">
                 <div class="card-widgets">
@@ -350,6 +386,14 @@
             </div>
             {% endif %}
         </div>
+
+        {% if not models %}
+            {% if elevators and problems and solutions %}
+            <div class="alert alert-warning" role="alert">
+                <i class="dripicons-warning"></i> You don't have a <strong>Business Model</strong>. Add one below.
+            </div>
+            {% endif %}
+        {% endif %}
 
         <div class="card">
             <div class="card-body">
