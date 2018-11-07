@@ -7,6 +7,11 @@ from django.utils.translation import ugettext_lazy as _
 class WalletForm(forms.ModelForm):
     class Meta:
         model = Wallet
+        labels = {
+            'period': _('Period (ie: 1Q18)'),
+            'amount_budget': _('Budget ($ Thousands)'),
+            'amount_actual': _('Actual ($ Thousands)'),
+        }
         exclude = ['user', 'created_at', 'updated_at', 'project']
 
 class CommentForm(forms.ModelForm):
