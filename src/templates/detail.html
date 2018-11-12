@@ -15,7 +15,7 @@
                     <li class="breadcrumb-item active">{{project.title|capfirst}}</li>
                 </ol>
             </div>
-            <h4 class="page-title">{{project.title|capfirst}}</h4>
+            <h4 class="page-title">Project Details </h4>
         </div>
     </div>
 </div>
@@ -23,31 +23,6 @@
 
 <div class="row">
     <div class="col-md-8">
-        <!--<div class="alert alert-success" role="alert">
-            <p class="alert-heading"><i class="dripicons-checkmark"></i> Welcome to your new project!</p>
-            <i class="dripicons-success"></i> You don't have an <strong>Elevator Pitch</strong>. First recommended step is to have one, add it below.
-        </div>-->
-        {% if project.status == "Draft" %}
-        <div class="alert alert-secondary" role="alert">
-            <p class="alert-heading"><i class="fa fa-info-circle"></i> Draft</p>
-            <p>This project is in "Draft" mode. If this is only for testing purposes, please leave it in draft. If it's a real project, update status to "Active" here: <a class="edit-doc text-primary" style="cursor:pointer" data-id="{{ project.id }}" data-name="project" data-title="Edit Project">Update Status</a></p>
-        </div>
-        {% endif %}
-        {% if project.stage == 'Concept' %}
-        <div class="alert alert-warning" role="alert">
-            <i class="dripicons-warning"></i> Hey <strong>FYI</strong>, concept projects can't add assumptions or objectives. Change your project's stage to add more info. 
-            {% if permission %}
-            <a
-              style="cursor:pointer"
-              class="edit-doc text-primary"
-              data-id="{{ project.id }}"
-              data-name="project"
-              data-title="Edit Project"
-              >Click to edit
-            </a>
-            {% endif %}
-        </div>
-        {% endif %}
         <!-- project card -->
         <div class="card d-block">
             <div class="card-body">
@@ -159,12 +134,11 @@
             </div> <!-- end card-body-->
 
         </div> <!-- end card-->
-
-        {% if not elevators %}
+        <h4>Objective-First Framework</h4>
+        <br>
         <div class="alert alert-warning" role="alert">
-            <i class="dripicons-warning"></i> You don't have an <strong>Elevator Pitch</strong>. First recommended step is to have one, add it below.
+            <i class="dripicons-warning"></i> You don't have any <strong>objectives</strong>. The key to a succesfull user acquisition strategy is to define clear and measurable objectives. Develop below.
         </div>
-        {% endif %}
         <div class="card">
             <div class="card-body">
                 <div class="card-widgets">
@@ -172,20 +146,20 @@
                     <a href="#" data-toggle="remove"><i class="mdi mdi-close"></i></a>
                 </div>
                 <h4 class="header-title">
-                    Elevator Pitch
+                    Objective-First Framework
                     <a href="" class="text-muted" data-toggle="modal" data-target="#elevator">
                         <i class="mdi mdi-information-outline" data-toggle="tooltip" data-placement="top" title="" data-original-title="Learn More"></i>
                     </a>
                 </h4>
                 <p class="text-muted font-14 mb-2">
-                    Add your elevator pitch in this section. Need help? <a href="" data-toggle="modal" data-target="#elevator">Learn more</a>.
+                    Add your objectives using the Objective-First Framework in this section. Have questions? <a href="" data-toggle="modal" data-target="#elevator">Learn more</a>.
                 </p>
 
                 <div class="table-responsive collapse show" id="cardCollpase4" style="max-height:125px; overflow-y: auto;">
                     <table class="table table-top mb-0">
                         <tbody>
                             {% if not elevators %}
-                            <p><i class="text-muted fa fa-exclamation-triangle"></i> No data available</p>
+                            <p><i class="text-warning fa fa-exclamation-triangle"></i> No data available</p>
                             {% endif %}
                             {% for elevator in elevators %}
                             <tr class="text-justify">
@@ -227,64 +201,56 @@
             </div>
             {% endif %}
         </div>
-        {% if not problems %}
-            {% if elevators %}
-            <div class="alert alert-warning" role="alert">
-                <i class="dripicons-warning"></i> You don't have a <strong>Problem Statement</strong>. Add one below.
-            </div>
-            {% endif %}
+
+
+        <h4>Business & Customer Strategy</h4>
+        <br>
+        {% if not elevators %}
+        <div class="alert alert-warning" role="alert">
+            <i class="dripicons-warning"></i> You don't have an <strong>Elevator Pitch</strong>. The first step of the User Acquisition journey is to have a clear understanding of what the value proposition is. Develop it below.
+        </div>
         {% endif %}
         <div class="card">
             <div class="card-body">
                 <div class="card-widgets">
-                
-                    <a data-toggle="collapse" href="#cardCollpase1" role="button" aria-expanded="false" aria-controls="cardCollpase1"><i class="mdi mdi-minus"></i></a>
+                    <a data-toggle="collapse" href="#cardCollpase4" role="button" aria-expanded="false" aria-controls="cardCollpase1"><i class="mdi mdi-minus"></i></a>
                     <a href="#" data-toggle="remove"><i class="mdi mdi-close"></i></a>
                 </div>
                 <h4 class="header-title">
-                    Problem
-                    <a href="" class="text-muted" data-toggle="modal" data-target="#problem">
+                    Elevator Pitch
+                    <a href="" class="text-muted" data-toggle="modal" data-target="#elevator">
                         <i class="mdi mdi-information-outline" data-toggle="tooltip" data-placement="top" title="" data-original-title="Learn More"></i>
                     </a>
                 </h4>
                 <p class="text-muted font-14 mb-2">
-                    Add your problem statement in this section and keep track of the hypothesis results. Need help? <a href="" data-toggle="modal" data-target="#problem">Learn more</a>.
+                    Add your elevator pitch in this section. Have questions? <a href="" data-toggle="modal" data-target="#elevator">Learn more</a>.
                 </p>
 
-                <div class="table-responsive collapse show" id="cardCollpase1" style="max-height:125px; overflow-y: auto;">
+                <div class="table-responsive collapse show" id="cardCollpase4" style="max-height:125px; overflow-y: auto;">
                     <table class="table table-top mb-0">
                         <tbody>
-                            {% if not problems %}
-                            <p><i class="text-muted fa fa-exclamation-triangle"></i> No data available</p>
+                            {% if not elevators %}
+                            <p><i class="text-warning fa fa-exclamation-triangle"></i> No data available</p>
                             {% endif %}
-                            {% for problem in problems %}
+                            {% for elevator in elevators %}
                             <tr class="text-justify">
                                 <td>
-                                    {{problem.text | linebreaks}}
-                                    <small class="text-muted">{{problem.updated_at|date}}</small>
-                                </td>
-                                <td>
-                                    {% if problem.status == "Validated" %}
-                                    <span class="badge badge-success float-right">{{problem.status}}</span>
-                                    {% elif problem.status == "In Progress" %}
-                                    <span class="badge badge-warning float-right" style="color:white">{{problem.status}}</span>
-                                    {% else %}
-                                    <span class="badge badge-danger float-right">{{problem.status}}</span>
-                                    {% endif %}
+                                    {{elevator.text | linebreaks}}
+                                    <!--<small class="text-muted">{{elevator.updated_at|date}}</small>-->
                                 </td>
                                 {% if permission %}
                                 <td class="table-action">
                                     <a
                                       href="javascript: void(0);"
-                                      data-id="{{ problem.id }}"
-                                      data-name="problem"
-                                      data-title="Problem"
+                                      data-id="{{ elevator.id }}"
+                                      data-name="elevator"
+                                      data-title="Elevator pitch"
                                       class="action-icon edit-doc float-right">
                                         <i class="mdi mdi-pencil"></i>
                                     </a>
                                     <a href="javascript: void(0);"
-                                        data-name="problem"
-                                        data-id={{problem.id}}
+                                        data-name="elevator"
+                                        data-id={{elevator.id}}
                                         class="action-icon remove float-right"> <i class="mdi mdi-delete"></i></a>
                                 </td>
                                 {% endif %}
@@ -299,18 +265,97 @@
             <div class="card-footer text-muted">
                 <button type="button"
                         class="btn btn-outline-primary btn-sm float-right call-dynamic-form"
-                        data-name="problem"
-                        data-title="Problem"
+                        data-toggle="modal"
+                        data-name="elevator"
+                        data-title="Elevator pitch"
+                        data-target="#bs-example-modal-lg">Add New</button>
+            </div>
+            {% endif %}
+        </div>
+        {% if not primarys %}
+            {% if elevators %}
+            <div class="alert alert-warning" role="alert">
+                <i class="dripicons-warning"></i> You don't have a <strong>Primary Persona</strong>. Remember a Primary Persona is who you think your primary revenue driver is. Add one below.
+            </div>
+            {% endif %}
+        {% endif %}
+        <div class="card">
+            <div class="card-body">
+                <div class="card-widgets">
+                
+                    <a data-toggle="collapse" href="#cardCollpase1" role="button" aria-expanded="false" aria-controls="cardCollpase1"><i class="mdi mdi-minus"></i></a>
+                    <a href="#" data-toggle="remove"><i class="mdi mdi-close"></i></a>
+                </div>
+                <h4 class="header-title">
+                    Primary Persona
+                    <a href="" class="text-muted" data-toggle="modal" data-target="#primary">
+                        <i class="mdi mdi-information-outline" data-toggle="tooltip" data-placement="top" title="" data-original-title="Learn More"></i>
+                    </a>
+                </h4>
+                <p class="text-muted font-14 mb-2">
+                    Add your primary persona in this section. Have questions? <a href="" data-toggle="modal" data-target="#primary">Learn more</a>.
+                </p>
+
+                <div class="table-responsive collapse show" id="cardCollpase1">
+                    <table class="table table-top mb-0">
+                        <tbody>
+                            {% if not primarys %}
+                            <p><i class="text-muted fa fa-exclamation-triangle"></i> No data available</p>
+                            {% endif %}
+                            {% for primary in primarys %}
+                            <tr class="text-justify">
+                                <td>
+                                    {{primary.text | linebreaks}}
+                                    <!--<small class="text-muted">{{primary.updated_at|date}}</small>-->
+                                </td>
+                                <td>
+                                    {% if primary.status == "Validated" %}
+                                    <span class="badge badge-success float-right">{{primary.status}}</span>
+                                    {% elif primary.status == "Testing" %}
+                                    <span class="badge badge-warning float-right" style="color:white">{{primary.status}}</span>
+                                    {% else %}
+                                    <span class="badge badge-danger float-right">{{primary.status}}</span>
+                                    {% endif %}
+                                </td>
+                                {% if permission %}
+                                <td class="table-action">
+                                    <a
+                                      href="javascript: void(0);"
+                                      data-id="{{ primary.id }}"
+                                      data-name="primary"
+                                      data-title="Primary"
+                                      class="action-icon edit-doc float-right">
+                                        <i class="mdi mdi-pencil"></i>
+                                    </a>
+                                    <a href="javascript: void(0);"
+                                        data-name="primary"
+                                        data-id={{primary.id}}
+                                        class="action-icon remove float-right"> <i class="mdi mdi-delete"></i></a>
+                                </td>
+                                {% endif %}
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+            {% if permission %}
+            <div class="card-footer text-muted">
+                <button type="button"
+                        class="btn btn-outline-primary btn-sm float-right call-dynamic-form"
+                        data-name="primary"
+                        data-title="Add Primary Persona"
                         data-toggle="modal"
                         data-target="#bs-example-modal-lg">Add New</button>
             </div>
             {% endif %}
         </div>
 
-        {% if not solutions %}
-            {% if elevators and problems %}
+        {% if not secondarys %}
+            {% if elevators and primarys %}
             <div class="alert alert-warning" role="alert">
-                <i class="dripicons-warning"></i> You don't have a <strong>Solution Statement</strong>. Add one below.
+                <i class="dripicons-warning"></i> You don't have a <strong>Secondary Persona</strong>. Remember a Secondary Persona are others that drive revenue but are more infrequent or sub-revenue generators. Add one below.
             </div>
             {% endif %}
         {% endif %}
@@ -321,49 +366,49 @@
                     <a href="#" data-toggle="remove"><i class="mdi mdi-close"></i></a>
                 </div>
                 <h4 class="header-title">
-                    Solution
-                    <a href="" class="text-muted" data-toggle="modal" data-target="#solution">
+                    Secondary Persona
+                    <a href="" class="text-muted" data-toggle="modal" data-target="#secondary">
                         <i class="mdi mdi-information-outline" data-toggle="tooltip" data-placement="top" title="" data-original-title="Learn More"></i>
                     </a>
                 </h4>
                 <p class="text-muted font-14 mb-2">
-                    Add your solution statement in this section and keep track of the hypothesis results. Need help? <a href="" data-toggle="modal" data-target="#solution">Learn more</a>.
+                    Add your secondary statement in this section. Need help? <a href="" data-toggle="modal" data-target="#secondary">Learn more</a>.
                 </p>
 
                 <div class="table-responsive collapse show" id="cardCollpase2" style="max-height:125px; overflow-y: auto;">
                     <table class="table table-top mb-0">
                         <tbody>
-                            {% if not solutions %}
+                            {% if not secondarys %}
                             <p><i class="text-muted fa fa-exclamation-triangle"></i> No data available</p>
                             {% endif %}
-                            {% for solution in solutions %}
+                            {% for secondary in secondarys %}
                             <tr class="text-justify">
                                 <td>
-                                    {{solution.text | linebreaks}}
-                                    <small class="text-muted">{{solution.updated_at|date}}</small>
+                                    {{secondary.text | linebreaks}}
+                                    <!--<small class="text-muted">{{secondary.updated_at|date}}</small>-->
                                 </td>
                                 <td>
-                                    {% if solution.status == "Validated" %}
-                                    <span class="badge badge-success float-right">{{solution.status}}</span>
-                                    {% elif solution.status == "In Progress" %}
-                                    <span class="badge badge-warning float-right" style="color:white">{{solution.status}}</span>
+                                    {% if secondary.status == "Validated" %}
+                                    <span class="badge badge-success float-right">{{secondary.status}}</span>
+                                    {% elif secondary.status == "In Progress" %}
+                                    <span class="badge badge-warning float-right" style="color:white">{{secondary.status}}</span>
                                     {% else %}
-                                    <span class="badge badge-danger float-right">{{solution.status}}</span>
+                                    <span class="badge badge-danger float-right">{{secondary.status}}</span>
                                     {% endif %}
                                 </td>
                                 {% if permission %}
                                 <td class="table-action">
                                     <a
                                       href="javascript: void(0);"
-                                      data-id="{{ solution.id }}"
-                                      data-name="solution"
-                                      data-title="Solution"
+                                      data-id="{{ secondary.id }}"
+                                      data-name="secondary"
+                                      data-title="Secondary Persona"
                                       class="action-icon edit-doc float-right">
                                         <i class="mdi mdi-pencil"></i>
                                     </a>
                                     <a href="javascript: void(0);"
-                                        data-name="solution"
-                                        data-id={{solution.id}}
+                                        data-name="secondary"
+                                        data-id={{secondary.id}}
                                         class="action-icon remove float-right"> <i class="mdi mdi-delete"></i></a>
                                 </td>
                                 {% endif %}
@@ -378,8 +423,8 @@
             <div class="card-footer text-muted">
                 <button
                         type="button"
-                        data-name="solution"
-                        data-title="Solution"
+                        data-name="secondary"
+                        data-title="Secondary Persona"
                         data-toggle="modal"
                         data-target="#bs-example-modal-lg"
                         class="btn btn-outline-primary btn-sm float-right call-dynamic-form">Add New</button>
@@ -387,10 +432,10 @@
             {% endif %}
         </div>
 
-        {% if not models %}
-            {% if elevators and problems and solutions %}
+        {% if not empathys %}
+            {% if elevators and primarys and secondarys %}
             <div class="alert alert-warning" role="alert">
-                <i class="dripicons-warning"></i> You don't have a <strong>Business Model</strong>. Add one below.
+                <i class="dripicons-warning"></i> You don't have an <strong>Empathy Map</strong>. Remember an Empathy Map makes the persona a bit more human. Add one below.
             </div>
             {% endif %}
         {% endif %}
@@ -402,49 +447,40 @@
                     <a href="#" data-toggle="remove"><i class="mdi mdi-close"></i></a>
                 </div>
                 <h4 class="header-title">
-                    Business Model
-                    <a href="" class="text-muted" data-toggle="modal" data-target="#businessmodel">
+                    Empathy Map
+                    <a href="" class="text-muted" data-toggle="modal" data-target="#empathy">
                         <i class="mdi mdi-information-outline" data-toggle="tooltip" data-placement="top" title="" data-original-title="Learn More"></i>
                     </a>
                 </h4>
                 <p class="text-muted font-14 mb-2">
-                    Add your business model statement in this section and keep track of the hypothesis results. Need help? <a href="" data-toggle="modal" data-target="#businessmodel">Learn more</a>.
+                    Add your empathy map statement in this section. Need help? <a href="" data-toggle="modal" data-target="#secondary">Learn more</a>.
                 </p>
 
                 <div class="table-responsive collapse show" id="cardCollpase3" style="max-height:125px; overflow-y: auto;">
                     <table class="table table-top mb-0">
                         <tbody>
-                            {% if not models %}
+                            {% if not empathys %}
                             <p><i class="text-muted fa fa-exclamation-triangle"></i> No data available</p>
                             {% endif %}
-                            {% for model in models %}
+                            {% for empathy in empathys %}
                             <tr class="text-justify">
                                 <td>
-                                    {{model.text | linebreaks}}
-                                    <small class="text-muted">{{model.updated_at|date}}</small>
-                                </td>
-                                <td>
-                                    {% if model.status == "Validated" %}
-                                    <span class="badge badge-success float-right">{{model.status}}</span>
-                                    {% elif model.status == "In Progress" %}
-                                    <span class="badge badge-warning float-right" style="color:white">{{model.status}}</span>
-                                    {% else %}
-                                    <span class="badge badge-danger float-right">{{model.status}}</span>
-                                    {% endif %}
+                                    {{empathy.description | linebreaks}}
+                                    <!--<small class="text-muted">{{model.updated_at|date}}</small>-->
                                 </td>
                                 {% if permission %}
                                 <td class="table-action">
                                     <a
                                       href="javascript: void(0);"
-                                      data-id="{{ model.id }}"
-                                      data-name="business_model"
-                                      data-title="Business model"
+                                      data-id="{{ empathy.id }}"
+                                      data-name="empathy"
+                                      data-title="Empathy Map"
                                       class="action-icon edit-doc float-right">
                                         <i class="mdi mdi-pencil"></i>
                                     </a>
                                     <a href="javascript: void(0);"
-                                        data-name="business_model"
-                                        data-id={{model.id}}
+                                        data-name="empathy"
+                                        data-id={{empathy.id}}
                                         class="action-icon remove float-right"> <i class="mdi mdi-delete"></i></a>
                                 </td>
                                 {% endif %}
@@ -459,288 +495,17 @@
             <div class="card-footer text-muted">
                 <button
                         type="button"
-                        data-name="business_model"
-                        data-title="Business model"
+                        data-name="empathy"
+                        data-title="Empathy Map"
                         data-toggle="modal"
                         data-target="#bs-example-modal-lg"
                         class="btn btn-outline-primary btn-sm float-right call-dynamic-form">Add New</button>
             </div>
             {% endif %}
         </div>
-        <div class="card">
-            <div class="card-body">
-                <h4 class="mt-0 mb-3">Comments ({{project.comment_set.count }})</h4>
-                    <form id="comment-form" method="POST">
-                        <input type="hidden" name="project" value="{{ project.id }}" />
-                        {% csrf_token %}
-                        <textarea
-                            class="form-control form-control-light mb-2"
-                            id="example-textarea"
-                            rows="3"
-                            name="text"
-                            placeholder="Write message..."
-                            ></textarea>
-                        <div class="text-right">
-                            <!--<div class="btn-group mb-2">
-                                <button type="button" class="btn btn-link btn-sm text-muted font-18"><i class="dripicons-paperclip"></i></button>
-                            </div>-->
-                            <div class="btn-group mb-2 ml-2">
-                                <button type="button" class="btn btn-primary btn-sm submit">Submit</button>
-                            </div>
-                        </div>
-                    </form>
-                    {% for comment in comments %}
-
-                    <div class="media mt-2">
-                        {% for profile in comment.user.profile_set.all %}
-                        <img class="mr-3 avatar-sm rounded-circle" src="{{profile.profile_image.url}}" alt="Generic placeholder image">
-                        {% endfor %}
-                        <div class="media-body text-justify">
-                            <h5 class="mt-0">{{comment.user.first_name}} {{comment.user.last_name}}<small> {{comment.created_at|date}}</small></h5>
-                            {{comment.text}}
-                        </div>
-                    </div>
-
-                    {% endfor %}
-            </div> <!-- end card-body-->
-        </div>
-        <!-- end card-->
     </div> <!-- end col -->
 
     <div class="col-md-4">
-        {% if project.stage == 'Seed 1' or project.stage == 'Seed 2' or project.stage == 'Seed 3' %}
-        <div class="card">
-            <div class="card-body">
-                    <h4 class="header-title">
-                        <a href="{% url 'app:seed' project.slug %}">Seed I to III</a>
-                        <a href="" class="text-muted" data-toggle="modal" data-target="#seed">
-                            <i class="mdi mdi-information-outline" data-toggle="tooltip" data-placement="top" title="" data-original-title="Learn More"></i>
-                        </a>
-                    </h4>
-                <div class="timeline-alt pb-0">
-                    <div class="timeline-item">
-                        {% if dvf_seed.0.desirability == "On Track" %}
-                        <i class="bg-success-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_seed.0.desirability}}"></i>
-                        {% elif dvf_seed.0.desirability == "Delayed" %}
-                        <i class="bg-warning-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_seed.0.desirability}}"></i>
-                        {% elif dvf_seed.0.desirability == "At Risk" %}
-                        <i class="bg-danger-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_seed.0.desirability}}"></i>
-                        {% else %}
-                        <i class="bg-secondary-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="No data"></i>
-                        {% endif %}
-                        <div class="timeline-item-info">
-                            <a href="#" class="mb-1 d-block" style="color:#6c757d">Desirabilty</a>
-                            <p></p>
-                        </div>
-                    </div>
-
-                    <div class="timeline-item">
-                        {% if dvf_seed.0.viability == "On Track" %}
-                        <i class="bg-success-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_seed.0.viability}}"></i>
-                        {% elif dvf_seed.0.viability == "Delayed" %}
-                        <i class="bg-warning-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_seed.0.viability}}"></i>
-                        {% elif dvf_seed.0.viability == "At Risk" %}
-                        <i class="bg-danger-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_seed.0.viability}}"></i>
-                        {% else %}
-                        <i class="bg-secondary-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="No data"></i>
-                        {% endif %}
-                        <div class="timeline-item-info">
-                            <a href="#" class="mb-1 d-block" style="color:#6c757d">Viability</a>
-                            <p></p>
-                        </div>
-                    </div>
-
-                    <div class="timeline-item">
-                        {% if dvf_seed.0.feasibility == "On Track" %}
-                        <i class="bg-success-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_seed.0.feasibility}}"></i>
-                        {% elif dvf_seed.0.feasibility == "Delayed" %}
-                        <i class="bg-warning-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_seed.0.feasibility}}"></i>
-                        {% elif dvf_seed.0.feasibility == "At Risk" %}
-                        <i class="bg-danger-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_seed.0.feasibility}}"></i>
-                        {% else %}
-                        <i class="bg-secondary-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="No data"></i>
-                        {% endif %}
-                        <div class="timeline-item-info">
-                            <a href="#" class="mb-1 d-block" style="color:#6c757d">Feasibility</a>
-                            <p>
-                                {% if dvf_seed.0.created_at %}
-                                <small class="text-muted">Since: {{dvf_seed.0.created_at|date}}</small>
-                                {% else %}
-                                <small class="text-muted">NA</small>
-                                {% endif %}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div> <!-- end card-body-->
-            <div class="card-footer text-muted">
-                <a class="btn btn-primary float-right" href="{% url 'app:seed' project.slug %}">Stage Status Update</a>
-            </div>
-        </div>
-        {% elif project.stage == 'Seed Launch' %}
-        <div class="card">
-            <div class="card-body">
-                <a href="{% url 'app:seed-launch' project.slug %}"><h4 class="header-title">Seed Launch</h4></a>
-                <div class="timeline-alt pb-0">
-                    <div class="timeline-item">
-                        {% if dvf_seedlaunch.0.desirability == "On Track" %}
-                        <i class="bg-success-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_seedlaunch.0.desirability}}"></i>
-                        {% elif dvf_seedlaunch.0.desirability == "Delayed" %}
-                        <i class="bg-warning-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_seedlaunch.0.desirability}}"></i>
-                        {% elif dvf_seedlaunch.0.desirability == "At Risk" %}
-                        <i class="bg-danger-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_seedlaunch.0.desirability}}"></i>
-                        {% else %}
-                        <i class="bg-secondary-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="No data"></i>
-                        {% endif %}
-                        <div class="timeline-item-info">
-                            <a href="#" class="mb-1 d-block" style="color:#6c757d">Desirabilty</a>
-                            <p></p>
-                        </div>
-                    </div>
-
-                    <div class="timeline-item">
-                        {% if dvf_seedlaunch.0.viability == "On Track" %}
-                        <i class="bg-success-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_seedlaunch.0.viability}}"></i>
-                        {% elif dvf_seedlaunch.0.viability == "Delayed" %}
-                        <i class="bg-warning-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_seedlaunch.0.viability}}"></i>
-                        {% elif dvf_seedlaunch.0.viability == "At Risk" %}
-                        <i class="bg-danger-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_seedlaunch.0.viability}}"></i>
-                        {% else %}
-                        <i class="bg-secondary-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="No data"></i>
-                        {% endif %}
-                        <div class="timeline-item-info">
-                            <a href="#" class="mb-1 d-block" style="color:#6c757d">Viability</a>
-                            <p></p>
-                        </div>
-                    </div>
-
-                    <div class="timeline-item">
-                        {% if dvf_seedlaunch.0.feasibility == "On Track" %}
-                        <i class="bg-success-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_seedlaunch.0.feasibility}}"></i>
-                        {% elif dvf_seedlaunch.0.feasibility == "Delayed" %}
-                        <i class="bg-warning-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_seedlaunch.0.feasibility}}"></i>
-                        {% elif dvf_seedlaunch.0.feasibility == "At Risk" %}
-                        <i class="bg-danger-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_seedlaunch.0.feasibility}}"></i>
-                        {% else %}
-                        <i class="bg-secondary-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="No data"></i>
-                        {% endif %}
-                        <div class="timeline-item-info">
-                            <a href="#" class="mb-1 d-block" style="color:#6c757d">Feasibility</a>
-                            <p>
-                                {% if dvf_seedlaunch.0.created_at %}
-                                <small class="text-muted">Since: {{dvf_seedlaunch.0.created_at|date}}</small>
-                                {% else %}
-                                <small class="text-muted">NA</small>
-                                {% endif %}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div> <!-- end card-body-->
-            <div class="card-footer text-muted">
-                <div class="btn-group float-right">
-                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Status Update</button>
-                    <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 37px, 0px);">
-                        <a class="dropdown-item" href="{% url 'app:seed' project.slug %}">Seed I to III</a>
-                        <a class="dropdown-item" href="{% url 'app:seed-launch' project.slug %}">Seed Launch</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        {% elif project.stage == 'Launch' %}
-        <div class="card">
-          <div class="card-body">
-              <a href="{% url 'app:launch' project.slug %}"><h4 class="header-title">Launch</h4></a>
-              <div class="timeline-alt pb-0">
-                  <div class="timeline-item">
-                      {% if dvf_launch.0.desirability == "On Track" %}
-                      <i class="bg-success-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_launch.0.desirability}}"></i>
-                      {% elif dvf_launch.0.desirability == "Delayed" %}
-                      <i class="bg-warning-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_launch.0.desirability}}"></i>
-                      {% elif dvf_launch.0.desirability == "At Risk" %}
-                      <i class="bg-danger-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_launch.0.desirability}}"></i>
-                      {% else %}
-                      <i class="bg-secondary-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="No data"></i>
-                      {% endif %}
-                      <div class="timeline-item-info">
-                          <a href="#" class="mb-1 d-block" style="color:#6c757d">Desirabilty</a>
-                          <p></p>
-                      </div>
-                  </div>
-
-                  <div class="timeline-item">
-                      {% if dvf_launch.0.viability == "On Track" %}
-                      <i class="bg-success-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_launch.0.viability}}"></i>
-                      {% elif dvf_launch.0.viability == "Delayed" %}
-                      <i class="bg-warning-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_launch.0.viability}}"></i>
-                      {% elif dvf_launch.0.viability == "At Risk" %}
-                      <i class="bg-danger-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_launch.0.viability}}"></i>
-                      {% else %}
-                      <i class="bg-secondary-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="No data"></i>
-                      {% endif %}
-                      <div class="timeline-item-info">
-                          <a href="#" class="mb-1 d-block" style="color:#6c757d">Viability</a>
-                          <p></p>
-                      </div>
-                  </div>
-
-                  <div class="timeline-item">
-                      {% if dvf_launch.0.feasibility == "On Track" %}
-                      <i class="bg-success-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_launch.0.feasibility}}"></i>
-                      {% elif dvf_launch.0.feasibility == "Delayed" %}
-                      <i class="bg-warning-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_launch.0.feasibility}}"></i>
-                      {% elif dvf_launch.0.feasibility == "At Risk" %}
-                      <i class="bg-danger-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{dvf_launch.0.feasibility}}"></i>
-                      {% else %}
-                      <i class="bg-secondary-lighten text-info timeline-icon" data-toggle="tooltip" data-placement="top" title="" data-original-title="No data"></i>
-                      {% endif %}
-                      <div class="timeline-item-info">
-                          <a href="#" class="mb-1 d-block" style="color:#6c757d">Feasibility</a>
-                          <p>
-                              {% if dvf_launch.0.updated_at %}
-                              <small class="text-muted">{{dvf_launch.0.updated_at|date}}</small>
-                              {% else %}
-                              <small class="text-muted">NA</small>
-                              {% endif %}
-                          </p>
-                      </div>
-                  </div>
-              </div>
-          </div> <!-- end card-body-->
-          <div class="card-footer text-muted">
-                <div class="btn-group float-right">
-                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Status Update</button>
-                    <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 37px, 0px);">
-                        <a class="dropdown-item" href="{% url 'app:seed' project.slug %}">Seed I to III</a>
-                        <a class="dropdown-item" href="{% url 'app:seed-launch' project.slug %}">Seed Launch</a>
-                        <a class="dropdown-item" href="{% url 'app:launch' project.slug %}">Launch</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        {% else %}
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title mb-3">Stage
-                    <a href="" class="text-muted" data-toggle="modal" data-target="#seed">
-                        <i class="mdi mdi-information-outline" data-toggle="tooltip" data-placement="top" title="" data-original-title="Learn More"></i>
-                    </a>
-                </h5>
-                <p><i class="text-muted fa fa-exclamation-triangle"></i> To access this section the project's stage has to be Seed I to III, Seed Launch, or Launch.
-                {% if permission %}
-                <a
-                  style="cursor:pointer"
-                  class="edit-doc text-primary"
-                  data-id="{{ project.id }}"
-                  data-name="project"
-                  data-title="Edit Project"
-                  >Click to edit
-                </a>
-                {% endif %}
-                </p>
-            </div>
-        </div>
-        {% endif %}
         <div class="card">
             <div class="card-body">
                 <div class="dropdown card-widgets">
@@ -837,7 +602,7 @@
 
             </div>
         </div>
-        <div class="card">
+        <!--<div class="card">
             <div class="card-body">
                 <h5 class="card-title mb-3">Wallet</h5>
                 {% if wallets %}
@@ -892,7 +657,46 @@
                         data-target="#bs-example-modal-lg">Add New</button>
             </div>
             {% endif %}
+        </div>-->
+        <!-- end card-->
+        <div class="card">
+            <div class="card-body">
+                <h4 class="mt-0 mb-3">Comments ({{project.comment_set.count }})</h4>
+                    <form id="comment-form" method="POST">
+                        <input type="hidden" name="project" value="{{ project.id }}" />
+                        {% csrf_token %}
+                        <textarea
+                            class="form-control form-control-light mb-2"
+                            id="example-textarea"
+                            rows="3"
+                            name="text"
+                            placeholder="Write message..."
+                            ></textarea>
+                        <div class="text-right">
+                            <!--<div class="btn-group mb-2">
+                                <button type="button" class="btn btn-link btn-sm text-muted font-18"><i class="dripicons-paperclip"></i></button>
+                            </div>-->
+                            <div class="btn-group mb-2 ml-2">
+                                <button type="button" class="btn btn-primary btn-sm submit">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                    {% for comment in comments %}
+
+                    <div class="media mt-2">
+                        {% for profile in comment.user.profile_set.all %}
+                        <img class="mr-3 avatar-sm rounded-circle" src="{{profile.profile_image.url}}" alt="Generic placeholder image">
+                        {% endfor %}
+                        <div class="media-body text-justify">
+                            <h5 class="mt-0">{{comment.user.first_name}} {{comment.user.last_name}}<small> {{comment.created_at|date}}</small></h5>
+                            {{comment.text}}
+                        </div>
+                    </div>
+
+                    {% endfor %}
+            </div> <!-- end card-body-->
         </div>
+        <!-- end card-->
         <div class="card">
             <div class="card-body">
                 <h4 class="header-title mb-2">Recent Activity</h4>
@@ -903,7 +707,7 @@
                                 <div class="timeline-item">
 
 
-                                    {% if log.action == 'CREATE_PROJECT' or log.action == 'ADD_TEAM' or log.action == 'ADD_ELEVATOR' or log.action == 'ADD_PROBLEM' or log.action == 'ADD_SOLUTION' or log.action == 'ADD_BUSINESS_MODEL' or log.action == 'ADD_SUMMARY' or log.action == 'ADD_PRIORITY' or log.action == 'ADD_OBJECTIVE' or log.action == 'ADD_ASSUMPTION' or log.action == 'ADD_LINK' or log.action == 'ADD_FILE' or log.action == 'ADD_COMMENT'  %}
+                                    {% if log.action == 'CREATE_PROJECT' or log.action == 'ADD_TEAM' or log.action == 'ADD_ELEVATOR' or log.action == 'ADD_primary' or log.action == 'ADD_secondary' or log.action == 'ADD_BUSINESS_MODEL' or log.action == 'ADD_SUMMARY' or log.action == 'ADD_PRIORITY' or log.action == 'ADD_OBJECTIVE' or log.action == 'ADD_ASSUMPTION' or log.action == 'ADD_LINK' or log.action == 'ADD_FILE' or log.action == 'ADD_COMMENT'  %}
 
                                     <i class="fa fa-plus-circle bg-info-lighten text-info timeline-icon" style="font-size:8px"></i>
                                     <div class="timeline-item-info">
@@ -922,7 +726,7 @@
                                             <small class="text-muted">{{log.timestamp|naturalday|capfirst}}</small>
                                         </p>
                                     </div>
-                                    {% elif log.action == 'EDIT_PROJECT' or log.action == 'EDIT_TEAM' or log.action == 'EDIT_ELEVATOR' or log.action == 'EDIT_PROBLEM' or log.action == 'EDIT_SOLUTION' or log.action == 'EDIT_BUSINESS_MODEL' or log.action == 'EDIT_SUMMARY' or log.action == 'EDIT_PRIORITY' or log.action == 'EDIT_OBJECTIVE' or log.action == 'EDIT_ASSUMPTION' or log.action == 'EDIT_LINK' or log.action == 'EDIT_FILE' or log.action == 'EDIT_COMMENT' %}
+                                    {% elif log.action == 'EDIT_PROJECT' or log.action == 'EDIT_TEAM' or log.action == 'EDIT_ELEVATOR' or log.action == 'EDIT_primary' or log.action == 'EDIT_secondary' or log.action == 'EDIT_BUSINESS_MODEL' or log.action == 'EDIT_SUMMARY' or log.action == 'EDIT_PRIORITY' or log.action == 'EDIT_OBJECTIVE' or log.action == 'EDIT_ASSUMPTION' or log.action == 'EDIT_LINK' or log.action == 'EDIT_FILE' or log.action == 'EDIT_COMMENT' %}
 
                                     <i class="fa fa-pencil-alt bg-primary-lighten text-primary timeline-icon"></i>
                                     <div class="timeline-item-info">
@@ -932,7 +736,7 @@
                                             <small class="text-muted">{{log.timestamp|naturalday|capfirst}}</small>
                                         </p>
                                     </div>
-                                    {% elif log.action == 'DELETE_PROJECT' or log.action == 'DELETE_TEAM' or log.action == 'DELETE_ELEVATOR' or log.action == 'DELETE_PROBLEM' or log.action == 'DELETE_SOLUTION' or log.action == 'DELETE_BUSINESS_MODEL' or log.action == 'DELETE_SUMMARY' or log.action == 'DELETE_PRIORITY' or log.action == 'DELETE_OBJECTIVE' or log.action == 'DELETE_ASSUMPTION' or log.action == 'DELETE_LINK' or log.action == 'DELETE_FILE' or log.action == 'DELETE_COMMENT' %}
+                                    {% elif log.action == 'DELETE_PROJECT' or log.action == 'DELETE_TEAM' or log.action == 'DELETE_ELEVATOR' or log.action == 'DELETE_primary' or log.action == 'DELETE_secondary' or log.action == 'DELETE_BUSINESS_MODEL' or log.action == 'DELETE_SUMMARY' or log.action == 'DELETE_PRIORITY' or log.action == 'DELETE_OBJECTIVE' or log.action == 'DELETE_ASSUMPTION' or log.action == 'DELETE_LINK' or log.action == 'DELETE_FILE' or log.action == 'DELETE_COMMENT' %}
 
                                     <i class="fa fa-trash bg-danger-lighten text-danger timeline-icon"></i>
                                     <div class="timeline-item-info">
@@ -976,7 +780,6 @@
             </div>
             <!-- end card-body -->
         </div>
-        <!-- end card-->
     </div>
 </div>
 <!-- end row -->
@@ -1032,7 +835,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myLargeModalLabel">Problem</h4>
+                <h4 class="modal-title" id="myLargeModalLabel">primary</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             </div>
             <div class="modal-body" id="modal-body">

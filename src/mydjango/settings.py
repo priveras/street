@@ -156,7 +156,7 @@ MEDIA_URL = '/media/'
 STATIC_ROOT = './static/'
 MEDIA_ROOT = './media/'
 
-LOGIN_REDIRECT_URL = '/projects/'
+LOGIN_REDIRECT_URL = '/home/'
 
 import os
 

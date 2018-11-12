@@ -3,19 +3,38 @@ from django.contrib.auth.models import User
 from pinax.eventlog.models import log
 from datetime import datetime, timezone
 
+
+class Billing(models.Model):
+    _SILVER = 'silver'
+    _GOLD = 'gold'
+    _PLATINUM = 'platinum'
+
+    CHOICES = (
+        (_SILVER, _SILVER),
+        (_GOLD, _GOLD),
+        (_PLATINUM, _PLATINUM),
+    )
+
+    user = models.ForeignKey(User)
+    plan = models.CharField(choices=CHOICES, max_length=20)
+    priority = models.IntegerField(default=1)
+    token = models.CharField(max_length=100)
+    customer = models.CharField(max_length=100)
+    status = models.IntegerField(default=1)
+    valid_until = models.DateTimeField(null=True, blank=True)
+    created_at = models.DateTimeField(db_index=True, auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
+
+
+    def __str__(self):
+        return str(self.user)
+
 class Project(models.Model):
 
     STATUS_ACTIVE = 'Active'
     STATUS_ARCHIVED = 'Archived'
     STATUS_KILLED = 'Killed'
     STATUS_DRAFT = 'Draft'
-
-    STAGE_CONCEPT = 'Concept'
-    STAGE_SEED_1 = 'Seed 1'
-    STAGE_SEED_2 = 'Seed 2'
-    STAGE_SEED_3 = 'Seed 3'
-    STAGE_LAUNCH_1 = 'Seed Launch'
-    STAGE_LAUNCH_2 = 'Launch'
 
     STATUS_ALL = (
         (STATUS_ACTIVE, 'Active'),
@@ -24,20 +43,10 @@ class Project(models.Model):
         (STATUS_DRAFT, 'Draft'),
         )
 
-    STAGES = (
-        (STAGE_CONCEPT, 'Concept'),
-        (STAGE_SEED_1, 'Seed 1'),
-        (STAGE_SEED_2, 'Seed 2'),
-        (STAGE_SEED_3, 'Seed 3'),
-        (STAGE_LAUNCH_1, 'Seed Launch'),
-        (STAGE_LAUNCH_2, 'Launch'),
-        )
-
     user = models.ForeignKey(User, blank=True, null=True)
     title = models.CharField(max_length=200, blank=False, null=False)
     slug = models.SlugField(max_length=200, unique=True)
     description = models.TextField(blank=True)
-    stage = models.CharField(choices=STAGES, max_length=200)
     status = models.CharField(choices=STATUS_ALL, max_length=200)
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(db_index=True, auto_now_add=True)
@@ -51,7 +60,6 @@ class Project(models.Model):
                 extra={
                     "project_slug": self.slug,
                     "project": self.title,
-                    "stage": self.stage,
                     "description": self.description,
                     "status": self.status,
                     "event": "created project"
@@ -65,7 +73,6 @@ class Project(models.Model):
                 extra={
                     "project_id": self.id,
                     "project": self.title,
-                    "stage": self.stage,
                     "description": self.description,
                     "status": self.status,
                     "event": "edited project"
@@ -74,25 +81,8 @@ class Project(models.Model):
 
         super(Project, self).save(args, kwargs)
 
-    def get_stage_group(self):
-        stage_group = None
-        if self.stage in ('Seed 1', 'Seed 2', 'Seed 3'):
-            stage_group = 'seed'
-            return stage_group
-        elif self.stage == 'Seed Launch':
-            stage_group = 'seedlaunch'
-            return stage_group
-        elif self.stage == 'Launch':
-            stage_group = 'launch'
-            return stage_group
-        else:
-            return stage_group
-
     def __str__(self):
         return str(self.title)
-
-
-
 
 class Elevator(models.Model):
     user = models.ForeignKey(User)
@@ -181,17 +171,15 @@ class Tool(models.Model):
 
 class Progress(models.Model):
     user = models.ForeignKey(User, unique=True)
-    zx_dashboard = models.BooleanField(default=False, blank=True)
-    os_model = models.BooleanField(default=False, blank=True)
-    assumptions = models.BooleanField(default=False, blank=True)
+    intro = models.BooleanField(default=False, blank=True)
     elevator_pitch = models.BooleanField(default=False, blank=True)
-    problem = models.BooleanField(default=False, blank=True)
-    solution = models.BooleanField(default=False, blank=True)
-    business_model = models.BooleanField(default=False, blank=True)
-    checkpoint = models.BooleanField(default=False, blank=True)
-    assumption_list = models.BooleanField(default=False, blank=True)
-    traction = models.BooleanField(default=False, blank=True)
-    dashboard = models.BooleanField(default=False, blank=True)
+    customer_persona = models.BooleanField(default=False, blank=True)
+    empathy_map = models.BooleanField(default=False, blank=True)
+    obj = models.BooleanField(default=False, blank=True)
+    seo = models.BooleanField(default=False, blank=True)
+    google = models.BooleanField(default=False, blank=True)
+    content = models.BooleanField(default=False, blank=True)
+    tech = models.BooleanField(default=False, blank=True)
     next_steps = models.BooleanField(default=False, blank=True)
 
     def __str__(self):
@@ -199,6 +187,7 @@ class Progress(models.Model):
 
 
 class Tutorial(models.Model):
+    title = models.CharField(max_length=300)
     content = models.TextField(blank=True)
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(db_index=True, auto_now_add=True)
@@ -207,6 +196,7 @@ class Profile(models.Model):
     user = models.ForeignKey(User, unique=True)
     job_title = models.CharField(max_length=200)
     location = models.CharField(max_length=200)
+    company = models.CharField(max_length=200)
     profile_image = models.FileField(upload_to='images/%Y%m%d', null=True)
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(db_index=True, auto_now_add=True)
@@ -220,7 +210,8 @@ class Profile(models.Model):
                 extra={
                     "job_title": self.job_title,
                     "location": self.location,
-                    "event": "joined BOX OS"
+                    "company": self.company,
+                    "event": "joined UA Framework"
                     }
                 )
         else:
@@ -231,6 +222,7 @@ class Profile(models.Model):
                 extra={
                     "job_title": self.job_title,
                     "location": self.location,
+                    "company": self.company,
                     "event": "edited profile"
                     }
                 )
@@ -741,13 +733,13 @@ class Objective(models.Model):
     def __str__(self):
         return str(self.project)
 
-class Problem(models.Model):
+class Primary(models.Model):
     user = models.ForeignKey(User)
     project = models.ForeignKey(Project)
     text = models.TextField()
     status_choices = (
             ('Validated', 'Validated'),
-            ('In Progress', 'In Progress'),
+            ('Testing', 'Testing'),
             ('Invalidated', 'Invalidated'),
             )
     status = models.CharField(choices=status_choices, max_length=200)
@@ -759,14 +751,14 @@ class Problem(models.Model):
         if not self.id:
             log(
                 user=self.user,
-                action='ADD_PROBLEM',
+                action='ADD_PRIMARY',
                 obj=self,
                 extra={
                     "project_id": self.project.id,
                     "project": self.project.title,
                     "text": self.text,
                     "status": self.status,
-                    "event": "added a problem"
+                    "event": "added a primary persona"
                     }
                 )
         else:
@@ -779,28 +771,28 @@ class Problem(models.Model):
                     "project": self.project.title,
                     "text": self.text,
                     "status": self.status,
-                    "event": "edited problem"
+                    "event": "edited primary persona"
                     }
                 )
 
-        super(Problem, self).save(args, kwargs)
+        super(Primary, self).save(args, kwargs)
 
     def delete(self, *args, **kwargs):
 
         log(
             user=self.user,
-            action='DELETE_PROBLEM',
+            action='DELETE_PRIMARY',
             obj=self,
             extra={
                 "project_id": self.project.id,
                 "project": self.project.title,
                 "text": self.text,
                 "status": self.status,
-                "event": "deleted problem"
+                "event": "deleted primary persona"
                 }
             )
 
-        super(Problem, self).delete(args, kwargs)
+        super(Primary, self).delete(args, kwargs)
 
     def __str__(self):
         return str(self.project)
@@ -950,13 +942,13 @@ class Future(models.Model):
     def __str__(self):
         return str(self.project)
 
-class Solution(models.Model):
+class Secondary(models.Model):
     user = models.ForeignKey(User)
     project = models.ForeignKey(Project)
     text = models.TextField()
     status_choices = (
             ('Validated', 'Validated'),
-            ('In Progress', 'In Progress'),
+            ('Testing', 'Testing'),
             ('Invalidated', 'Invalidated'),
             )
     status = models.CharField(choices=status_choices, max_length=200)
@@ -968,62 +960,60 @@ class Solution(models.Model):
         if not self.id:
             log(
                 user=self.user,
-                action='ADD_SOLUTION',
+                action='ADD_SECONDARY',
                 obj=self,
                 extra={
                     "project_id": self.project.id,
                     "project": self.project.title,
                     "text": self.text,
                     "status": self.status,
-                    "event": "added a solution"
+                    "event": "added a secondary persona"
                     }
                 )
         else:
             log(
                 user=self.user,
-                action='EDIT_SOLUTION',
+                action='EDIT_SECONDARY',
                 obj=self,
                 extra={
                     "project_id": self.project.id,
                     "project": self.project.title,
                     "text": self.text,
                     "status": self.status,
-                    "event": "edited solution"
+                    "event": "edited secondary persona"
                     }
                 )
 
-        super(Solution, self).save(args, kwargs)
+        super(Secondary, self).save(args, kwargs)
 
     def delete(self, *args, **kwargs):
 
         log(
             user=self.user,
-            action='DELETE_SOLUTION',
+            action='DELETE_SECONDARY',
             obj=self,
             extra={
                 "project_id": self.project.id,
                 "project": self.project.title,
                 "text": self.text,
                 "status": self.status,
-                "event": "deleted solution"
+                "event": "deleted secondary persona"
                 }
             )
 
-        super(Solution, self).delete(args, kwargs)
+        super(Secondary, self).delete(args, kwargs)
 
     def __str__(self):
         return str(self.project)
 
-class BusinessModel(models.Model):
+class Empathy(models.Model):
     user = models.ForeignKey(User)
     project = models.ForeignKey(Project)
-    text = models.TextField()
-    status_choices = (
-            ('Validated', 'Validated'),
-            ('In Progress', 'In Progress'),
-            ('Invalidated', 'Invalidated'),
-            )
-    status = models.CharField(choices=status_choices, max_length=200)
+    description = models.TextField()
+    think = models.TextField()
+    see = models.TextField()
+    say = models.TextField()
+    hear = models.TextField()
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(db_index=True, auto_now_add=True)
 
@@ -1032,48 +1022,57 @@ class BusinessModel(models.Model):
         if not self.id:
             log(
                 user=self.user,
-                action='ADD_BUSINESS_MODEL',
+                action='ADD_EMPATHY_MAP',
                 obj=self,
                 extra={
                     "project_id": self.project.id,
                     "project": self.project.title,
-                    "text": self.text,
-                    "status": self.status,
-                    "event": "added a business model"
+                    "text": self.description,
+                    "text": self.think,
+                    "text": self.see,
+                    "text": self.say,
+                    "text": self.hear,
+                    "event": "added empathy map"
                     }
                 )
         else:
             log(
                 user=self.user,
-                action='EDIT_BUSINESS_MODEL',
+                action='EDIT_EMPATHY_MAP',
                 obj=self,
                 extra={
                     "project_id": self.project.id,
                     "project": self.project.title,
-                    "text": self.text,
-                    "status": self.status,
-                    "event": "edited business model"
+                    "text": self.description,
+                    "text": self.think,
+                    "text": self.see,
+                    "text": self.say,
+                    "text": self.hear,
+                    "event": "edited empathy map"
                     }
                 )
 
-        super(BusinessModel, self).save(args, kwargs)
+        super(Empathy, self).save(args, kwargs)
 
     def delete(self, *args, **kwargs):
 
         log(
             user=self.user,
-            action='DELETE_BUSINESS_MODEL',
+            action='DELETE_EMPATHY_MAP',
             obj=self,
             extra={
                 "project_id": self.project.id,
                 "project": self.project.title,
-                "text": self.text,
-                "status": self.status,
-                "event": "deleted business model"
+                "text": self.description,
+                "text": self.think,
+                "text": self.see,
+                "text": self.say,
+                "text": self.hear,
+                "event": "deleted empathy map"
                 }
             )
 
-        super(BusinessModel, self).delete(args, kwargs)
+        super(Empathy, self).delete(args, kwargs)
 
     def __str__(self):
         return str(self.project)

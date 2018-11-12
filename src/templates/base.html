@@ -3,7 +3,7 @@
     {% load staticfiles %}
     <head>
         <meta charset="utf-8" />
-        <title>BOX OS by ZX Explore</title>
+        <title>User Acquisition Framework</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta content="BOX OS helps manage early stage businesses by leveraging start-up processes and mechanics" name="description" />
         <meta content="Coderthemes" name="author" />
@@ -12,7 +12,7 @@
 
         <!-- App css -->
         <link href="{% static 'assets/css/icons.min.css' %}" rel="stylesheet" type="text/css" />
-        <link href="{% static 'assets/css/app.min.css' %}" rel="stylesheet" type="text/css" />
+        <link href="{% static 'assets/css/app.css' %}" rel="stylesheet" type="text/css" />
 
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 
@@ -84,10 +84,16 @@
                                         <span>My Account</span>
                                     </a>
                                     <!-- item-->
-                                    <a href="javascript:void(0);" class="dropdown-item notify-item" data-toggle="modal" data-target="#video">
+                                    <!-- item-->
+                                    <a href="{% url 'app:subscribe' %}" class="dropdown-item notify-item">
+                                        <i class="fa fa-star"></i>
+                                        <span>Subscribe</span>
+                                    </a>
+                                    <!-- item-->
+                                    <!--<a href="javascript:void(0);" class="dropdown-item notify-item" data-toggle="modal" data-target="#video">
                                         <i class="mdi mdi-school"></i>
                                         <span>Tutorial</span>
-                                    </a>
+                                    </a>-->
 
                                     <!-- item-->
                                     <a href="{% url 'app:faq' %}" class="dropdown-item notify-item">
@@ -131,7 +137,7 @@
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-md-6">
-                                2018 © ZX Ventures
+                                2018 © Attomik
                             </div>
                             <div class="col-md-6">
                                 <div class="text-md-right footer-links d-none d-md-block">

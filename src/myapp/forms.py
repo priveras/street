@@ -1,8 +1,18 @@
 from django import forms
 from .models import Profile, Project, Summary, Past, Future, Elevator
-from .models import Problem, Solution, BusinessModel, Assumption, Objective
-from .models import Comment, File, Dvf, Link, Invite, Wallet
+from .models import Primary, Secondary, Empathy, Assumption, Objective
+from .models import Comment, File, Dvf, Link, Invite, Wallet, Billing
 from django.utils.translation import ugettext_lazy as _
+
+class BillingForm(forms.ModelForm):
+    class Meta:
+        model = Billing
+        exclude = [
+            'user',
+            'status',
+            'created_at',
+            'updated_at',
+            ]
 
 class WalletForm(forms.ModelForm):
     class Meta:
@@ -74,21 +84,21 @@ class ElevatorForm(forms.ModelForm):
         exclude = ['created_at', 'updated_at', 'user', 'project']
 
 
-class ProblemForm(forms.ModelForm):
+class PrimaryForm(forms.ModelForm):
     class Meta:
-        model = Problem
+        model = Primary
         exclude = ['created_at', 'updated_at', 'user', 'project']
 
 
-class SolutionForm(forms.ModelForm):
+class SecondaryForm(forms.ModelForm):
     class Meta:
-        model = Solution
+        model = Secondary
         exclude = ['created_at', 'updated_at', 'user', 'project']
 
 
-class BusinessModelForm(forms.ModelForm):
+class EmpathyForm(forms.ModelForm):
     class Meta:
-        model = BusinessModel
+        model = Empathy
         exclude = ['created_at', 'updated_at', 'user', 'project']
 
 class ObjectiveForm(forms.ModelForm):

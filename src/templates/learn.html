@@ -7,21 +7,70 @@
         <div class="page-title-box">
             <div class="page-title-right">
                 <ol class="breadcrumb m-0">
-                    <li class="breadcrumb-item"><a href="javascript: void(0);">BOX OS</a></li>
-                    <li class="breadcrumb-item"><a href="{% url 'app:home' %}">Learn</a></li>
-                    <li class="breadcrumb-item active">Learn the OS</li>
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">UA Framework</a></li>
+                    <li class="breadcrumb-item active">The Academy</li>
                 </ol>
             </div>
-            <h4 class="page-title">Learn</h4>
+            <h4 class="page-title">The Academy</h4>
         </div>
     </div>
 </div>
+{% if not billing %}
+<div class="row">
+    <div class="col-8">
+        <div class="alert alert-warning" role="alert">
+            <i class="dripicons-warning"></i> To access <b>"The Academy"</b> content, you need to subscribe first. To review the subscription options, <a href="{% url 'app:subscribe' %}">click here</a> .
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h3>This is what you'll learn in the Academy</h3>
+                <p class="lead">The content on each of the sections will give you a clear understanding fo how digital marketing works and how to acquire users.</p>
+                <hr>
+                <a href="{% url 'app:subscribe' %}"><div class="btn btn-success" style="width:100%"> Subscribe Now</div></a>
+                <hr>
+                <h4>1. Business & Customer Strategy</h4>
+                <p>Start the User Acquisition journey by setting up a clear business and customar strategy.</p>
+
+                <h4>2. Objective First Framework</h4>
+                <p>Set better objectives by using this common method that will help you optimize your campaigns.</p>
+
+                <h4>3. Search Engine Optimization</h4>
+                Here you will learn why SEO matters and how to optimize for search engines so you can drive more organic traffic.
+
+                <h4>4. Paid Advertising</h4>
+                <p>Learn how google paid search works and how to optimize your campaigns to get the most value out of your advertisement budget.</p>
+
+                <h4>5. Content Marketing</h4>
+                <p>Learn why good content makes a difference and what are some best practices you can start doing to improve engagement.</p>
+
+                <h4>6. Convertion Rate Optimization</h4>
+                <p>In this section you will learn the basics of improving your convertion rate and the importance of AB testing.</p>
+
+                <h4>7. Customer Engagement & Retention</h4>
+                <p>Learn how to engage better with your users and how to convert them into recurring customers.</p>
+
+                <h4>8. Analytics</h4>
+                <p>One of the most important things to have a succesfull User Acquisition Strategy is to gather data and understand it. Here you will learn how to get the most out of Google Analytics.</p>
+
+                <h4>9. Facebook Deep Dive</h4>
+                <p>In this section you'll learn the importance of Facebook Marketing, how to setup campaigns and best practices for better performance.</p>
+
+                <h4>10. Storytelling and Budget Planning</h4>
+                <p>Here you will learn how to define your User Acquisition budget.</p>
+                <hr>
+                <a href="{% url 'app:subscribe' %}"><div class="btn btn-success" style="width:100%"> Subscribe Now</div></a>
+            </div> <!-- end card-body-->
+        </div>
+    </div>
+</div>
+{% else %}
+
 <div class="row">
     <div class="col-12">
         <div class="card">
             <div class="card-body">
 
-                <h4 class="header-title mb-3">Learn the OS</h4>
+                <h4 class="header-title mb-3">Learn the User Acquisition Framework</h4>
 
                 <div class="row">
                     <div class="col-sm-3 mb-2 mb-sm-0">
@@ -30,8 +79,8 @@
                                     id="v-pills-home-tab" data-toggle="pill"
                                     href="#v-pills-1" role="tab" aria-controls="v-pills-home" aria-selected="true">
                                 <i class="mdi mdi-home-variant d-lg-none d-block mr-1"></i>
-                                <span class="d-none d-lg-block block-zx_dashboard">BOX OS
-                                    {% if progress.zx_dashboard %}
+                                <span class="d-none d-lg-block block-zx_dashboard">Intro
+                                    {% if progress.intro %}
                                     <i class="mdi mdi-check-circle text-success float-right"></i>
                                     {% endif %}
                                 </span>
@@ -40,8 +89,8 @@
                                     id="v-pills-profile-tab" data-toggle="pill"
                                     href="#v-pills-2" role="tab" aria-controls="v-pills-profile" aria-selected="false">
                                 <i class="mdi mdi-account-circle d-lg-none d-block mr-1"></i>
-                                <span class="d-none d-lg-block block-os_model">OS Model
-                                    {% if progress.os_model %}
+                                <span class="d-none d-lg-block block-os_model">Elevator Pitch
+                                    {% if progress.elevator_pitch %}
                                     <i class="mdi mdi-check-circle text-success float-right"></i>
                                     {% endif %}
                                 </span>
@@ -50,72 +99,56 @@
                                     id="v-pills-settings-tab" data-toggle="pill"
                                     href="#v-pills-3" role="tab" aria-controls="v-pills-settings" aria-selected="false">
                                 <i class="mdi mdi-settings-outline d-lg-none d-block mr-1"></i>
-                                <span class="d-none d-lg-block block-assumptions">Assumptions
-                                    {% if progress.assumptions %}
+                                <span class="d-none d-lg-block block-assumptions">Customer Persona
+                                    {% if progress.customer_persona %}
                                     <i class="mdi mdi-check-circle text-success float-right"></i>
                                     {% endif %}
                                 </span>
                             </a>
                             <a class="nav-link" data-id="nav-4" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-4" role="tab" aria-controls="v-pills-settings" aria-selected="false">
                                 <i class="mdi mdi-settings-outline d-lg-none d-block mr-1"></i>
-                                <span class="d-none d-lg-block block-elevator_pitch">Elevator Pitch
-                                    {% if progress.elevator_pitch %}
+                                <span class="d-none d-lg-block block-elevator_pitch">Empathy Map
+                                    {% if progress.empathy_map %}
                                     <i class="mdi mdi-check-circle text-success float-right"></i>
                                     {% endif %}
                                 </span>
                             </a>
                             <a class="nav-link" data-id="nav-5" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-5" role="tab" aria-controls="v-pills-settings" aria-selected="false">
                                 <i class="mdi mdi-settings-outline d-lg-none d-block mr-1"></i>
-                                <span class="d-none d-lg-block block-problem">Problem
-                                    {% if progress.problem %}
+                                <span class="d-none d-lg-block block-problem">Obj. First Framework
+                                    {% if progress.obj %}
                                     <i class="mdi mdi-check-circle text-success float-right"></i>
                                     {% endif %}
                                 </span>
                             </a>
                             <a class="nav-link" data-id="nav-6" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-6" role="tab" aria-controls="v-pills-settings" aria-selected="false">
                                 <i class="mdi mdi-settings-outline d-lg-none d-block mr-1"></i>
-                                <span class="d-none d-lg-block block-solution">Solution
-                                    {% if progress.solution %}
+                                <span class="d-none d-lg-block block-solution">SEO
+                                    {% if progress.seo %}
                                     <i class="mdi mdi-check-circle text-success float-right"></i>
                                     {% endif %}
                                 </span>
                             </a>
                             <a class="nav-link" data-id="nav-7" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-7" role="tab" aria-controls="v-pills-settings" aria-selected="false">
                                 <i class="mdi mdi-settings-outline d-lg-none d-block mr-1"></i>
-                                <span class="d-none d-lg-block block-business_model">Business Model
-                                    {% if progress.business_model %}
+                                <span class="d-none d-lg-block block-business_model">How Google Works
+                                    {% if progress.google %}
                                     <i class="mdi mdi-check-circle text-success float-right"></i>
                                     {% endif %}
                                 </span>
                             </a>
                             <a class="nav-link" data-id="nav-8" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-8" role="tab" aria-controls="v-pills-settings" aria-selected="false">
                                 <i class="mdi mdi-settings-outline d-lg-none d-block mr-1"></i>
-                                <span class="d-none d-lg-block block-checkpoint">Checkpoint
-                                    {% if progress.checkpoint %}
+                                <span class="d-none d-lg-block block-checkpoint">Content for SEO
+                                    {% if progress.content %}
                                     <i class="mdi mdi-check-circle text-success float-right"></i>
                                     {% endif %}
                                 </span>
                             </a>
                             <a class="nav-link" data-id="nav-9" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-9" role="tab" aria-controls="v-pills-settings" aria-selected="false">
                                 <i class="mdi mdi-settings-outline d-lg-none d-block mr-1"></i>
-                                <span class="d-none d-lg-block block-assumption_list">Assumption List
-                                    {% if progress.assumption_list %}
-                                    <i class="mdi mdi-check-circle text-success float-right"></i>
-                                    {% endif %}
-                                </span>
-                            </a>
-                            <a class="nav-link" data-id="nav-10" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-10" role="tab" aria-controls="v-pills-settings" aria-selected="false">
-                                <i class="mdi mdi-settings-outline d-lg-none d-block mr-1"></i>
-                                <span class="d-none d-lg-block block-traction">Traction
-                                    {% if progress.traction %}
-                                    <i class="mdi mdi-check-circle text-success float-right"></i>
-                                    {% endif %}
-                                </span>
-                            </a>
-                            <a class="nav-link" data-id="nav-11" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-11" role="tab" aria-controls="v-pills-settings" aria-selected="false">
-                                <i class="mdi mdi-settings-outline d-lg-none d-block mr-1"></i>
-                                <span class="d-none d-lg-block block-dashboard">Dashboard
-                                    {% if progress.dashboard %}
+                                <span class="d-none d-lg-block block-assumption_list">Tech for SEO
+                                    {% if progress.tech %}
                                     <i class="mdi mdi-check-circle text-success float-right"></i>
                                     {% endif %}
                                 </span>
@@ -205,6 +238,9 @@
         </div>
     </div>
 </div>
+
+{% endif %}
+
 {% endblock %}
 
 {% block js %}

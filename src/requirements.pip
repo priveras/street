@@ -8,3 +8,4 @@ sendgrid==3.6.5
 sendgrid-django==4.2.0
 pinax-eventlog
 django-import-export
+stripe==1.82.1

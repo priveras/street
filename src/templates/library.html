@@ -16,7 +16,7 @@
         <div class="page-title-box">
             <div class="page-title-right">
                 <ol class="breadcrumb m-0">
-                    <li class="breadcrumb-item"><a href="javascript: void(0);">BOX OS</a></li>
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">UA Framework</a></li>
                     <li class="breadcrumb-item active">Library</li>
                 </ol>
             </div>
@@ -26,6 +26,76 @@
 </div>
 <!-- end page title -->
 
+{% if not billing %}
+<div class="row">
+
+    <div class="col-sm-12">
+        <div class="text-center">
+            <h3 class="">Library</h3>
+            <p class="text-muted mt-3">In this section, you can find all the resources and tools that will help you develop further your user acquisition strategy.<br> We recommend you take a look at all of them.
+        </div>
+    </div><!-- end col -->
+    <div class="col-md-3"></div>
+    <div class="col-md-6 text-center">
+        <div class="alert alert-warning" role="alert">
+            <i class="dripicons-warning"></i> To access the <b>Library</b> content, you need to subscribe first. To review the subscription options, <a href="{% url 'app:subscribe' %}">click here</a> .
+        </div>
+        <a href="{% url 'app:subscribe' %}"><div class="btn btn-success" style="width:100%"> Subscribe Now</div></a>
+    </div> <!-- end col -->
+</div>
+<div class="row">
+    <div class="col-sm-1"></div>
+    <div class="col-sm-10">
+        <div class="row mb-5 mt-5">
+            <div class="col-sm-6" v-for="resource in filteredList()">
+                <div>
+                    <div class="faq-question-q-box">
+                        <i class="fa fa-file"></i>
+                    </div>
+                    <h4 class="faq-question" data-wow-delay=".1s">
+                        <a class="text-secondary" target="_blank">Amazing Marketing Resource</a>
+                    </h4>
+                    <p class="faq-answer mb-4 text-justify">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. </p>
+                </div>
+            </div>
+            <div class="col-sm-6" v-for="resource in filteredList()">
+                <div>
+                    <div class="faq-question-q-box">
+                        <i class="fa fa-file"></i>
+                    </div>
+                    <h4 class="faq-question" data-wow-delay=".1s">
+                        <a class="text-secondary" target="_blank">User Acquisition Use Cases</a>
+                    </h4>
+                    <p class="faq-answer mb-4 text-justify">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. </p>
+                </div>
+            </div>
+            <div class="col-sm-6" v-for="resource in filteredList()">
+                <div>
+                    <div class="faq-question-q-box">
+                        <i class="fa fa-file"></i>
+                    </div>
+                    <h4 class="faq-question" data-wow-delay=".1s">
+                        <a class="text-secondary" target="_blank">Digital Marketing Resource</a>
+                    </h4>
+                    <p class="faq-answer mb-4 text-justify">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. </p>
+                </div>
+            </div>
+            <div class="col-sm-6" v-for="resource in filteredList()">
+                <div>
+                    <div class="faq-question-q-box">
+                        <i class="fa fa-file"></i>
+                    </div>
+                    <h4 class="faq-question" data-wow-delay=".1s">
+                        <a class="text-secondary" target="_blank">Growth Hacking</a>
+                    </h4>
+                    <p class="faq-answer mb-4 text-justify">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% else %}
+
 {% verbatim %}
 <div id="library" v-cloak>
 
@@ -33,7 +103,7 @@
     <div class="col-sm-12">
         <div class="text-center">
             <h3 class="">Library</h3>
-            <p class="text-muted mt-3">In this section, you can find all the resources and tools that will help you move your project through the OS.<br> We recommend you take a look at all of them.
+            <p class="text-muted mt-3">In this section, you can find all the resources and tools that will help you develop further your user acquisition strategy.<br> We recommend you take a look at all of them.
         </div>
     </div><!-- end col -->
     <div class="col-md-3"></div>
@@ -75,6 +145,8 @@
 </div>
 {% endverbatim %}
 <!-- end row -->
+
+{% endif %}
 {% endblock %}
 
 {% block js %}

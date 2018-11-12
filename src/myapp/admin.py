@@ -3,9 +3,9 @@ from __future__ import unicode_literals
 
 from django.contrib import admin
 from django_summernote.admin import SummernoteModelAdmin
-from .models import Project, Team, Comment, Assumption, Problem, BusinessModel
-from .models import Metric, File, Past, Future, Summary, Solution, Tutorial
-from .models import Profile, Link, Dvf, Progress, Zone, Invite, Resource, Elevator, Tool, Wallet
+from .models import Project, Team, Comment, Assumption, Primary, Empathy
+from .models import Metric, File, Past, Future, Summary, Secondary, Tutorial
+from .models import Profile, Link, Dvf, Progress, Zone, Invite, Resource, Elevator, Tool, Wallet, Billing
 from .models import Objective
 from import_export.admin import ImportExportModelAdmin
 
@@ -27,9 +27,10 @@ admin.site.register(Comment)
 @admin.register(Assumption)
 class AssumptionAdmin(ImportExportModelAdmin):
     pass
-admin.site.register(Problem)
-admin.site.register(BusinessModel)
-admin.site.register(Solution)
+admin.site.register(Primary)
+admin.site.register(Empathy)
+admin.site.register(Billing)
+admin.site.register(Secondary)
 admin.site.register(Zone)
 admin.site.register(Metric)
 admin.site.register(File)

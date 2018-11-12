@@ -6,12 +6,13 @@ from . import views
 
 app_name = 'app'
 urlpatterns = [
-    url(r'^$', login_required(views.index), name='index'),
+    url(r'^$', views.IndexView.as_view(), name='index'),
     url(r'^project/(?P<slug>[^\.]+)/$', login_required(views.DetailView.as_view()), name='detail'),
     url(r'^seed/(?P<slug>[^\.]+)/$', login_required(views.SeedView.as_view()), name='seed'),
     url(r'^seed-launch/(?P<slug>[^\.]+)/$', login_required(views.SeedLaunchView.as_view()), name='seed-launch'),
     url(r'^launch/(?P<slug>[^\.]+)/$', login_required(views.LaunchView.as_view()), name='launch'),
-    url(r'^projects/$', login_required(views.HomeView.as_view()), name='home'),
+    url(r'^projects/$', login_required(views.ProjectsView.as_view()), name='projects'),
+    url(r'^home/$', login_required(views.HomeView.as_view()), name='home'),
     url(r'^adminpanel/$', login_required(views.AdminpanelView.as_view()), name='adminpanel'),
     url(r'^dashboard/$', login_required(views.DashboardView.as_view()), name='dashboard'),
     url(r'^dashboard/projects/$', login_required(views.DashboardProjectsView.as_view()), name='dashboard-projects'),
@@ -19,9 +20,18 @@ urlpatterns = [
     url(r'^learn/$', login_required(views.learn), name='learn'),
     url(r'^analytics/$', login_required(views.analytics), name='analytics'),
     url(r'^faq/$', login_required(views.FaqView.as_view()), name='faq'),
+    url(r'^subscribe/$', login_required(views.SubscribeView.as_view()), name='subscribe'),
     url(r'^library/$', login_required(views.LibraryView.as_view()), name='library'),
     url(r'^tools/$', login_required(views.ToolsView.as_view()), name='tools'),
     url(r'^dashboard/assumptions/$', login_required(views.AssumptionsView.as_view()), name='dashboard-assumptions'),
+    
+    url(r'^accounts/billing/charge$', login_required(views.upgrade_plan), name='billing-charge'),
+    url(r'^accounts/billing/cancel$',
+        login_required(views.cancel_subscription),
+        name='delete-billing'),
+    url(r'^accounts/has/subscription$',
+        login_required(views.has_subscription),
+        name='has-billing'),
 
     url(r'^api/project/form$',
         login_required(views.project_form),

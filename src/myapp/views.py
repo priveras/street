@@ -14,19 +14,214 @@ from django.db.models import Count
 from django.core import serializers
 
 from .forms import ProfileForm, SummaryForm, PastForm, FutureForm, ProjectForm
-from .forms import ElevatorForm, ProblemForm, SolutionForm, BusinessModelForm
+from .forms import ElevatorForm, PrimaryForm, SecondaryForm, EmpathyForm
 from .forms import AssumptionForm, CommentForm, FileForm, DvfForm, LinkForm, WalletForm
-from .forms import InviteForm, ObjectiveForm, ProjectFormCreate
+from .forms import InviteForm, ObjectiveForm, ProjectFormCreate, BillingForm
 
-from .models import Project, Team, Comment, Assumption, Problem, BusinessModel
-from .models import Solution, Metric, File, Profile, Summary, Past, Future
-from .models import Elevator, Tutorial, Progress, Dvf, Link, Zone, Invite, Resource, Tool, Wallet
+from .models import Project, Team, Comment, Assumption, Primary, Empathy
+from .models import Secondary, Metric, File, Profile, Summary, Past, Future
+from .models import Elevator, Tutorial, Progress, Dvf, Link, Zone, Invite, Resource, Tool, Wallet, Billing
 from .models import Objective
 from django.http import HttpResponseRedirect
 from pinax.eventlog.models import Log
 from datetime import datetime, timedelta
 import datetime as dt
 from django.db.models import Sum
+import stripe
+
+STRIPE_KEY = 'sk_test_KxcqRkSXKZfpetM4zEFs9N56'
+
+@csrf_exempt
+def billing_charge(request):
+    if request.method != 'POST':
+        raise Http404
+
+    billing = _last_available_payment(request)
+    if billing:
+        return redirect('/home/')
+
+    stripe.api_key = STRIPE_KEY
+    try:
+        customer = stripe.Customer.create(
+            email=request.user.email,
+            source=request.POST.get('stripeToken', '')
+        )
+    except:
+        return JsonResponse({'error': 'card declined'}, status=400)
+
+    try:
+        subscription = stripe.Subscription.create(
+            customer=customer.id,
+            items=[{'plan': 'plan_DwbO6Z1gkqT2wd'}],
+        )
+    except:
+        return JsonResponse({'error': 'can not create a subscription'}, status=400)
+
+    priorities = {
+        'silver': 1,
+        'gold': 2,
+        'platinum': 3,
+    }
+
+    plan = request.GET.get('plan', None)
+
+    form = BillingForm(data={
+        'token': subscription.id,
+        'customer': customer.id,
+        'plan': plan,
+        'priority': priorities.get(plan, 0),
+    })
+
+    if not form.is_valid():
+        return JsonResponse(form.errors, status=400)
+
+    doc = form.save(commit=False)
+    doc.user = request.user
+    doc.status = 1
+    doc.save()
+
+    # return JsonResponse({'status': 'created'}, status=201)
+    return redirect('/home/')
+
+@csrf_exempt
+def upgrade_plan(request):
+    if request.method != 'POST':
+        raise Http404
+
+    billing = _last_available_payment(request)
+    if billing is None:
+        return billing_charge(request)
+
+    stripe.api_key = STRIPE_KEY
+    try:
+        subscription = stripe.Subscription.create(
+            customer=billing.customer,
+            items=[{'plan': 'plan_DwbO6Z1gkqT2wd'}],
+        )
+    except:
+        return JsonResponse({'error': 'can not create a subscription'}, status=400)
+
+    priorities = {
+        'silver': 1,
+        'gold': 2,
+        'platinum': 3,
+    }
+
+    plan = request.GET.get('plan', None)
+
+    form = BillingForm(data={
+        'token': subscription.id,
+        'customer': billing.customer,
+        'plan': plan,
+        'priority': priorities.get(plan, 0),
+    })
+
+    if not form.is_valid():
+        return JsonResponse(form.errors, status=400)
+
+    doc = form.save(commit=False)
+    doc.user = request.user
+    doc.status = 1
+    doc.save()
+
+    # cancel previous subscripion
+    cancel_subscription(request, billing)
+
+    # return JsonResponse({'status': 'created'}, status=201)
+    return redirect('/accounts/profile')
+
+def _last_available_payment(request):
+    payment = Billing.objects.filter(user=request.user, status=1).first()
+    if payment is None:
+        # check if the last payment canceled is still available
+        payment = Billing.objects.filter(
+            user=request.user,
+            status=0,
+            valid_until__gte=datetime.now()
+        ).order_by('-priority').first()
+
+    return payment
+
+
+def accept_project(request, slug='', extra=0):
+    payment = _last_available_payment(request)
+    if payment is None:
+        return 'payment is unavailable'
+
+    # if action is edit, returns
+    if slug:
+        return None
+
+    plans = {
+        'silver': 1,
+        'gold': 3,
+        'platinum': 10000,
+    }
+
+    total = Project.objects.filter(user_id=request.user.id).count()
+    if total >= plans.get(payment.plan, 0) + extra:
+        return '{} exeded the limit of {} projects'.format(payment.plan, plans.get(payment.plan, 0))
+    return None
+
+
+def has_subscription(request):
+    payment = _last_available_payment(request)
+    if payment is None or payment.status == 0:
+        return JsonResponse({'error': 'Subscription not available'}, status=400)
+    return JsonResponse({'success': 'payment available'})
+
+
+@csrf_exempt
+def cancel_subscription(request, payment=None):
+    if request.method != 'POST':
+        raise Http404
+
+    # if no payment was provided try to get it from db
+    if payment is None:
+        payment = _last_available_payment(request)
+
+    # if there is not payment returns
+    if payment is None:
+        return JsonResponse({'error': 'Subscription not available'}, status=400)
+    if payment.status == 0:
+        return JsonResponse({'error': 'Subscription already cancelled'}, status=400)
+
+    try:
+        stripe.api_key = STRIPE_KEY
+        subscription = stripe.Subscription.retrieve(payment.token)
+        subscription.delete(at_period_end=True)
+    except:
+        return JsonResponse({'error': 'unable to cancel plan'}, status=400)
+
+    period_end = subscription.current_period_end
+    payment.valid_until = datetime.fromtimestamp(period_end)
+    payment.status = 0
+    payment.save()
+    return JsonResponse({'status': 'ok'})
+
+class IndexView(generic.TemplateView):
+    template_name = "front/index.html"
+
+class SubscribeView(generic.TemplateView):
+    template_name = "subscribe.html"
+
+    # def dispatch(self, request, *args, **kwargs):
+    #     billing = _last_available_payment(request)
+    #     if billing:
+    #         return redirect('/accounts/profile')
+    #     return super(BillingView, self).dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(SubscribeView, self).get_context_data(**kwargs)
+
+        #billing = _last_available_payment(self.request)
+        #if billing is not None:
+            #context['billing'] = billing
+
+
+        payment = Billing.objects.filter(user=self.request.user).first()
+        context['cardrequired'] = payment is None
+        return context
 
 def analytics(request):
 
@@ -65,6 +260,7 @@ class LibraryView(generic.ListView):
     def get_context_data(self, **kwargs):
         context = super(LibraryView, self).get_context_data(**kwargs)
         context['resources_list'] = Resource.objects.all()
+        context['billing'] = Billing.objects.filter(user=self.request.user).first()
 
         return context
 
@@ -99,6 +295,7 @@ class ToolsView(generic.ListView):
     def get_context_data(self, **kwargs):
         context = super(ToolsView, self).get_context_data(**kwargs)
         context['tools_list'] = Tool.objects.all()
+        context['billing'] = Billing.objects.filter(user=self.request.user).first()
 
         return context
 
@@ -113,7 +310,7 @@ class DashboardProjectsView(generic.ListView):
         context['assumptions'] = Assumption.objects.all()
         context['objectives'] = Objective.objects.all()
         context['elevators'] = Elevator.objects.all()
-        context['problems'] = Problem.objects.all()
+        context['problems'] = Primary.objects.all()
         context['solutions'] = Solution.objects.all()
         context['models'] = BusinessModel.objects.all()
         context['dvf'] = Dvf.objects.all()
@@ -123,9 +320,6 @@ class DashboardProjectsView(generic.ListView):
         context['files'] = File.objects.all()
 
         return context
-
-def index(request):
-    return HttpResponseRedirect('/projects/')
 
 # Error Pages
 def server_error(request):
@@ -148,24 +342,25 @@ def learn(request):
         doc = Progress()
 
     saved = [
-        doc.zx_dashboard,
-        doc.os_model,
-        doc.assumptions,
+        doc.intro,
         doc.elevator_pitch,
-        doc.problem,
-        doc.solution,
-        doc.business_model,
-        doc.checkpoint,
-        doc.assumption_list,
-        doc.traction,
-        doc.dashboard,
+        doc.customer_persona,
+        doc.empathy_map,
+        doc.obj,
+        doc.seo,
+        doc.google,
+        doc.content,
+        doc.tech,
         doc.next_steps,
     ]
+
+    billing = Billing.objects.filter(user=request.user).first()
 
     return render(request, 'learn.html', {
         'tutorial': tutorial,
         'progress': progress,
         'saved': saved,
+        'billing': billing
     })
 
 class DashboardView(generic.ListView):
@@ -188,7 +383,6 @@ class DashboardView(generic.ListView):
         context['comments_list'] = Comment.objects.all()
         context['dvfs'] = Dvf.objects.all()
         context['completed_obj'] = Objective.objects.filter(status='Complete').values('project','stage','status').annotate(Count('project'))
-        context['stage_obj'] = Objective.objects.values('project','stage').annotate(Count('project'))
 
         context['file_proj'] = File.objects.values('project').order_by().annotate(Count('project'))
         context['businessmodel_proj'] = BusinessModel.objects.values('project').order_by().annotate(Count('project'))
@@ -263,18 +457,12 @@ class DetailView(generic.DetailView):
         context['comments'] = Comment.objects.filter(project=self.object).order_by('-created_at')
         context['files'] = File.objects.filter(project=self.object).order_by('-updated_at')
         context['links'] = Link.objects.filter(project=self.object).order_by('-updated_at')
-        context['dvf_seed'] = Dvf.objects.filter(project=self.object).filter(stage="seed").order_by('-updated_at')
-        context['dvf_seedlaunch'] = Dvf.objects.filter(project=self.object).filter(stage="seedlaunch").order_by('-updated_at')
-        context['dvf_launch'] = Dvf.objects.filter(project=self.object).filter(stage="launch").order_by('-updated_at')
         context['fileform'] = FileForm()
 
         context['elevators'] = Elevator.objects.filter(project=self.object).order_by('-updated_at')
-        context['problems'] = Problem.objects.filter(project=self.object).order_by('-updated_at')
-        context['solutions'] = Solution.objects.filter(project=self.object).order_by('-updated_at')
-        context['models'] = BusinessModel.objects.filter(project=self.object).order_by('-updated_at')
-        context['seed_summary'] = Summary.objects.filter(project=self.object).filter(stage="seed").order_by('-updated_at')
-        context['seedlaunch_summary'] = Summary.objects.filter(project=self.object).filter(stage="seedlaunch").order_by('-updated_at')
-        context['launch_summary'] = Summary.objects.filter(project=self.object).filter(stage="launch").order_by('-updated_at')
+        context['primarys'] = Primary.objects.filter(project=self.object).order_by('-updated_at')
+        context['secondarys'] = Secondary.objects.filter(project=self.object).order_by('-updated_at')
+        context['empathys'] = Empathy.objects.filter(project=self.object).order_by('-updated_at')
 
         context['logs'] = Log.objects.all()
 
@@ -380,8 +568,54 @@ class HomeView(generic.ListView):
         else:
             alert = False
 
+
+        x = 0
+        progress = Progress.objects.filter(user=self.request.user).first()
+
+        if progress.intro:
+            x += 10
+        if progress.elevator_pitch:
+            x += 10
+        if progress.customer_persona:
+            x += 10
+        if progress.empathy_map:
+            x += 10
+        if progress.seo:
+            x += 10
+        if progress.google:
+            x += 10
+        if progress.content:
+            x += 10
+        if progress.tech:
+            x += 10
+        if progress.next_steps:
+            x += 10
+
         context['projects_list'] = Project.objects.filter(team__user=self.request.user).order_by('title')
         context['alert'] = alert
+        context['progress'] = x
+
+        return context
+
+class ProjectsView(generic.ListView):
+    template_name = 'projects.html'
+    context_object_name = 'projects_list'
+    model = Project
+
+
+    def get_context_data(self, **kwargs):
+        context = super(ProjectsView, self).get_context_data(**kwargs)
+
+        self.request.session['session_var_name'] = "Value"
+
+        if date.today() == self.request.user.date_joined.date():
+            alert = True
+        else:
+            alert = False
+
+        context['projects_list'] = Project.objects.filter(team__user=self.request.user).order_by('title')
+        context['alert'] = alert
+        context['billing'] = Billing.objects.filter(user=self.request.user).first()
 
         return context
 
@@ -481,9 +715,9 @@ def model_form(request, name='', project_id=0, id=0):
         'past': PastForm,
         'future': FutureForm,
         'elevator': ElevatorForm,
-        'problem': ProblemForm,
-        'solution': SolutionForm,
-        'business_model': BusinessModelForm,
+        'primary': PrimaryForm,
+        'secondary': SecondaryForm,
+        'empathy': EmpathyForm,
         'assumption': AssumptionForm,
         'dvf': DvfForm,
         'link': LinkForm,
@@ -498,9 +732,9 @@ def model_form(request, name='', project_id=0, id=0):
         'past': Past,
         'future': Future,
         'elevator': Elevator,
-        'problem': Problem,
-        'solution': Solution,
-        'business_model': BusinessModel,
+        'primary': Primary,
+        'secondary': Secondary,
+        'empathy': Empathy,
         'assumption': Assumption,
         'dvf': Dvf,
         'link': Link,
@@ -553,9 +787,6 @@ def model_form(request, name='', project_id=0, id=0):
         'id': id,
     }
 
-    if name == 'project':
-        context['showstage'] = True
-
     if method == 'GET':
         return render(request, 'form.html', context)
 
@@ -589,7 +820,6 @@ def project_form(request, id=0):
     context = {
         'form': f,
         'id': id,
-        'showstage': True,
         'hidestatus': True if id == 0 else False,
         'error': '',
     }
@@ -662,27 +892,21 @@ def save_learn_progress(request, section=0, value=0):
     opt = True if value == 1 else False
 
     if section == 0:
-        doc.zx_dashboard = opt
+        doc.intro = opt
     elif section == 1:
-        doc.os_model = opt
-    elif section == 2:
-        doc.assumptions = opt
-    elif section == 3:
         doc.elevator_pitch = opt
+    elif section == 2:
+        doc.customer_persona = opt
+    elif section == 3:
+        doc.empathy_map = opt
     elif section == 4:
-        doc.problem = opt
+        doc.seo = opt
     elif section == 5:
-        doc.solution = opt
+        doc.google = opt
     elif section == 6:
-        doc.business_model = opt
+        doc.content = opt
     elif section == 7:
-        doc.checkpoint = opt
-    elif section == 8:
-        doc.assumption_list = opt
-    elif section == 9:
-        doc.traction = opt
-    elif section == 10:
-        doc.dashboard = opt
+        doc.tech = opt
     elif section == 11:
         doc.next_steps = opt
 

@@ -16,8 +16,8 @@
         <div class="page-title-box">
             <div class="page-title-right">
                 <ol class="breadcrumb m-0">
-                    <li class="breadcrumb-item"><a href="javascript: void(0);">BOX OS</a></li>
-                    <li class="breadcrumb-item active">Library</li>
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">UA Framework</a></li>
+                    <li class="breadcrumb-item active">Tools</li>
                 </ol>
             </div>
             <h4 class="page-title">Tools</h4>
@@ -25,6 +25,21 @@
     </div>
 </div>
 <!-- end page title -->
+
+{% if not billing %}
+<div class="row">
+    <div class="card">
+        <div class="card-body">
+            <a href="{% url 'app:subscribe'  %}"><div class="btn btn-success">Subscribe To Access This Content</div></a>
+            <br><br>
+            <h3>Find Amazing Tools</h3>
+            <p class="lead">In this section you can find amazing tools that can help you execute your strategies.</p>
+            <hr>
+            <h4 class="text-primary">AB Testing - Email Marketing - SEO - Landing Pages - Design - Freelancers - And More</h4>
+        </div> <!-- end card-body-->
+    </div>
+</div>
+{% else %}
 
 {% verbatim %}
 <div id="tools" v-cloak>
@@ -82,6 +97,7 @@
 </div>
 </div>
 {% endverbatim %}
+{% endif %}
 <!-- end row -->
 {% endblock %}
 
