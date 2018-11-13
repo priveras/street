@@ -199,7 +199,7 @@ class Profile(models.Model):
     company = models.CharField(max_length=200)
     profile_image = models.FileField(upload_to='images/%Y%m%d', null=True)
     updated_at = models.DateTimeField(auto_now=True)
-    created_at = models.DateTimeField(db_index=True, auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def save(self, *args, **kwargs):
         if not self.id:
