@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% load staticfiles %}
+  <!-- Title -->
+  <title>UA Framework | Learn User Acquisition and Digital Marketing </title>
+
+  <!-- Required Meta Tags Always Come First -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Favicon -->
+  <link rel="shortcut icon" href="{% static 'front/favicon.ico' %}">
+
+  <!-- Google Fonts -->
+  <link href="//fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
+
+  <!-- CSS Implementing Plugins -->
+  <link rel="stylesheet" href="{% static 'front/assets/vendor/font-awesome/css/fontawesome-all.min.css' %}">
+  <link rel="stylesheet" href="{% static 'front/assets/vendor/animate.css/animate.min.css' %}">
+  <link rel="stylesheet" href="{% static 'front/assets/vendor/hs-megamenu/src/hs.megamenu.css' %}">
+  <link rel="stylesheet" href="{% static 'front/assets/vendor/fancybox/jquery.fancybox.css' %}">
+
+  <!-- CSS Front Template -->
+  <link rel="stylesheet" href="{% static 'front/assets/css/theme.css' %}">
+</head>
+<body id="homeSection">
+  <!-- ========== HEADER ========== -->
+  <header id="header" class="u-header u-header--white-bg-on-scroll u-header--bg-transparent u-header--sticky-top-md"
+          data-header-fix-moment="500"
+          data-header-fix-effect="slide">
+    <div class="u-header__section">
+      <div id="logoAndNav" class="container">
+        <!-- Nav -->
+        <nav class="navbar navbar-expand-md u-header__navbar u-header__navbar--no-space">
+          <!-- Logo -->
+          <a class="navbar-brand u-header__navbar-brand u-header__navbar-brand-center" href="{% url 'app:index' %}" aria-label="Front">
+            
+            <span class="u-header__navbar-brand-text">UA</span>
+          </a>
+          <!-- End Logo -->
+
+          <!-- Responsive Toggle Button -->
+          <button type="button" class="navbar-toggler btn u-hamburger"
+                  aria-label="Toggle navigation"
+                  aria-expanded="false"
+                  aria-controls="navBar"
+                  data-toggle="collapse"
+                  data-target="#navBar">
+            <span id="hamburgerTrigger" class="u-hamburger__box">
+              <span class="u-hamburger__inner"></span>
+            </span>
+          </button>
+          <!-- End Responsive Toggle Button -->
+
+          <!-- Navigation -->
+          <div id="navBar" class="collapse navbar-collapse u-header__navbar-collapse">
+            <ul class="js-scroll-nav js-mega-menu navbar-nav align-items-md-center u-header__navbar-nav">
+              <li class="nav-item u-header__nav-item">
+                <a class="nav-link u-header__nav-link" href="#homeSection">Home</a>
+              </li>
+              <li class="nav-item u-header__nav-item">
+                <a class="nav-link u-header__nav-link" href="#featuresSection">Features</a>
+              </li>
+              <li class="nav-item u-header__nav-item">
+                <a class="nav-link u-header__nav-link" href="#learnSection">Learn</a>
+              </li>
+              <li class="nav-item u-header__nav-item">
+                <a class="nav-link u-header__nav-link" href="#pricingSection">Pricing</a>
+              </li>
+
+              <!-- Docs -->
+              <li class="nav-item hs-has-mega-menu u-header__nav-item"
+                  data-event="hover"
+                  data-animation-in="slideInUp"
+                  data-animation-out="fadeOut"
+                  data-max-width="260px"
+                  data-position="right">
+                <a id="docsMegaMenu" class="nav-link u-header__nav-link u-header__nav-link-toggle" href="{% url 'app:syllabus' %}" aria-haspopup="true" aria-expanded="false">Academy</a>
+
+                <!-- Docs - Submenu -->
+                <div class="hs-mega-menu u-header__sub-menu" aria-labelledby="docsMegaMenu" style="min-width: 330px;">
+                  <!-- Promo Item -->
+                  <div class="u-header__promo-item">
+                    <a class="u-header__promo-link" href="{% url 'app:syllabus' %}">
+                      <div class="media align-items-center">
+                        <img class="js-svg-injector u-header__promo-icon" src="{% static 'front/assets/svg/icons/icon-2.svg' %}" alt="SVG">
+                        <div class="media-body">
+                          <span class="u-header__promo-title">
+                            Sylabus
+                            <span class="badge badge-primary badge-pill ml-1">v2.0</span>
+                          </span>
+                          <small class="u-header__promo-text">What you'll learn</small>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                  <!-- End Promo Item -->
+
+                  <!-- Promo Item -->
+                  <!--<div class="u-header__promo-item">
+                    <a class="u-header__promo-link" href="../../starter/index.html">
+                      <div class="media align-items-center">
+                        <img class="js-svg-injector u-header__promo-icon" src="{% static 'front/assets/svg/icons/icon-1.svg' %}" alt="SVG">
+                        <div class="media-body">
+                          <span class="u-header__promo-title">Get started</span>
+                          <small class="u-header__promo-text">Components and snippets</small>
+                        </div>
+                      </div>
+                    </a>
+                  </div>-->
+                  <!-- End Promo Item -->
+
+                  <div class="u-header__promo-footer">
+                    <!-- List -->
+                    <div class="row no-gutters">
+                      <div class="col-6">
+                        <div class="u-header__promo-footer-item">
+                          <small class="text-muted d-block">Check what's new</small>
+                          <a class="small" href="../../documentation/getting-started/changelog.html">
+                            Changelog
+                          </a>
+                        </div>
+                      </div>
+                      <div class="col-6 u-header__promo-footer-ver-divider">
+                        <div class="u-header__promo-footer-item">
+                          <small class="text-muted d-block">Have a question?</small>
+                          <a class="small" href="http://htmlstream.com/contact-us">
+                            Contact us
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- End List -->
+                  </div>
+                </div>
+                <!-- End Docs - Submenu -->
+              </li>
+              <!-- End Docs -->
+
+              <li class="nav-item u-header__nav-last-item">
+                <a class="btn btn-primary btn-sm btn-pill transition-3d-hover" href="{% url 'account_login' %}" target="_blank">Log In</a>
+              </li>
+            </ul>
+          </div>
+          <!-- End Navigation -->
+        </nav>
+        <!-- End Nav -->
+      </div>
+    </div>
+  </header>
+  <!-- ========== END HEADER ========== -->
+  {% block content %}
+  {% endblock %}
+    <!-- ========== FOOTER ========== -->
+  <footer id="stickyBlockEndPoint" class="border-top">
+    <div class="container space-2">
+      <div class="row">
+        <!--<div class="col-sm-3 col-lg-2 order-sm-2 mb-4 mb-sm-0 ml-lg-auto">
+          <h4 class="h6 font-weight-semi-bold">About</h4>
+          <ul class="list-group list-group-flush list-group-borderless mb-0">
+            <li><a class="list-group-item list-group-item-action" href="../pages/about-agency.html">About</a></li>
+            <li><a class="list-group-item list-group-item-action" href="../pages/careers.html">Careers <span class="badge badge-success badge-pill ml-1">We're hiring</span></a></li>
+          </ul>
+        </div>-->
+
+        <div class="col-sm-3 col-lg-2 order-sm-2 mb-4 mb-sm-0 ml-lg-auto">
+          <h4 class="h6 font-weight-semi-bold">Resources</h4>
+
+          <!-- List Group -->
+          <ul class="list-group list-group-flush list-group-borderless mb-0">
+            <li><a class="list-group-item list-group-item-action" href="../pages/help.html">Need help?</a></li>
+            <li><a class="list-group-item list-group-item-action" href="../pages/terms.html">Terms of Service</a></li>
+            <li><a class="list-group-item list-group-item-action" href="../pages/privacy.html">Privacy Policy</a></li>
+          </ul>
+          <!-- End List Group -->
+        </div>
+
+        <div class="col-sm-6 col-lg-4 order-sm-1">
+          <!-- Logo -->
+          <a class="d-inline-flex align-items-center mb-2" href="index.html" aria-label="Front">
+            <span class="brand brand-primary">UA Framework</span>
+          </a>
+          <!-- End Logo -->
+
+          <div class="mb-4">
+            <p class="small text-muted">&copy; Attomik. UA Framework is an <a href="http://attomik.com" target="_blank">Attomik</a> project</p>
+          </div>
+
+          <!-- Social Networks -->
+          <ul class="list-inline mb-0">
+            <li class="list-inline-item mx-0">
+              <a class="btn btn-sm btn-icon btn-soft-secondary rounded-circle" href="https://www.facebook.com/attomikdigital">
+                <span class="fab fa-facebook-f btn-icon__inner"></span>
+              </a>
+            </li>
+            <li class="list-inline-item mx-0">
+              <a class="btn btn-sm btn-icon btn-soft-secondary rounded-circle" href="#">
+                <span class="fab fa-twitter btn-icon__inner"></span>
+              </a>
+            </li>
+          </ul>
+          <!-- End Social Networks -->
+        </div>
+      </div>
+    </div>
+  </footer>
+  <!-- ========== END FOOTER ========== -->
+
+  <!-- Go to Top -->
+  <a class="js-go-to u-go-to" href="#"
+    data-position='{"bottom": 15, "right": 15 }'
+    data-type="fixed"
+    data-offset-top="400"
+    data-compensation="#header"
+    data-show-effect="slideInUp"
+    data-hide-effect="slideOutDown">
+    <span class="fas fa-arrow-up u-go-to__inner"></span>
+  </a>
+  <!-- End Go to Top -->
+
+  <!-- JS Global Compulsory -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="{% static 'front/assets/vendor/jquery-migrate/dist/jquery-migrate.min.js' %}"></script>
+  <script src="{% static 'front/assets/vendor/popper.js/dist/umd/popper.min.js' %}"></script>
+  <script src="{% static 'front/assets/vendor/bootstrap/bootstrap.min.js' %}"></script>
+
+  <!-- JS Implementing Plugins -->
+  <script src="{% static 'front/assets/vendor/hs-megamenu/src/hs.megamenu.js' %}"></script>
+  <script src="{% static 'front/assets/vendor/svg-injector/dist/svg-injector.min.js' %}"></script>
+  <script src="{% static 'front/assets/vendor/appear.js' %}"></script>
+  <script src="{% static 'front/assets/vendor/fancybox/jquery.fancybox.min.js' %}"></script>
+
+  <!-- JS Front -->
+  <script src="{% static 'front/assets/js/hs.core.js' %}"></script>
+  <script src="{% static 'front/assets/js/components/hs.header.js' %}"></script>
+  <script src="{% static 'front/assets/js/components/hs.scroll-nav.js' %}"></script>
+  <script src="{% static 'front/assets/js/components/hs.svg-injector.js' %}"></script>
+  <script src="{% static 'front/assets/js/components/hs.fancybox.js' %}"></script>
+  <script src="{% static 'front/assets/js/components/hs.sticky-block.js' %}"></script>
+  <script src="{% static 'front/assets/js/components/hs.go-to.js' %}"></script>
+
+  <!-- JS Plugins Init. -->
+  <script>
+    $(window).on('load', function () {
+      // initialization of HSMegaMenu component
+      $('.js-mega-menu').HSMegaMenu({
+        event: 'hover',
+        pageContainer: $('.container'),
+        breakpoint: 767.98,
+        hideTimeOut: 0
+      });
+
+      // initialization of svg injector module
+      $.HSCore.components.HSSVGIngector.init('.js-svg-injector');
+
+      // initialization of HSScrollNav component
+      $.HSCore.components.HSScrollNav.init($('.js-scroll-nav'), {
+        duration: 700
+      });
+    });
+
+    $(document).on('ready', function () {
+      // initialization of header
+      $.HSCore.components.HSHeader.init($('#header'));
+
+      // initialization of fancybox
+      $.HSCore.components.HSFancyBox.init('.js-fancybox');
+
+      // initialization of sticky blocks
+      setTimeout(function () {
+        $.HSCore.components.HSStickyBlock.init('.js-sticky-block');
+      }, 300);
+
+      // initialization of go to
+      $.HSCore.components.HSGoTo.init('.js-go-to');
+    });
+  </script>
+</body>
+</html>

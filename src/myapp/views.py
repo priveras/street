@@ -202,6 +202,16 @@ def cancel_subscription(request, payment=None):
 class IndexView(generic.TemplateView):
     template_name = "front/index.html"
 
+class SyllabusView(generic.TemplateView):
+    template_name = "front/syllabus.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(SyllabusView, self).get_context_data(**kwargs)
+
+        tutorial = Tutorial.objects.all()
+        context['tutorial'] = tutorial
+        return context
+
 class SubscribeView(generic.TemplateView):
     template_name = "subscribe.html"
 
