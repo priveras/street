@@ -1,0 +1,113 @@
+{% load humanize %}
+{% load staticfiles %}
+<!-- Card -->
+<div class="card">
+  <div class="card-body">
+    
+    <div id="post_{{post.id}}">
+      <!-- Header -->
+      <div class="mb-3">
+        <div class="row align-items-center">
+          <div class="col-auto">
+            
+            <!-- Avatar -->
+            <a href="#!" class="avatar">
+              {% for profile in post.user.profile_set.all %}
+                {% if profile.image %}
+                <img src="{{profile.image.url}}" alt="..." class="avatar-img rounded-circle">
+                {% else %}
+                <img src="{% static 'assets/img/logo.png' %}" alt="..." class="avatar-img rounded-circle">
+                {% endif %}
+              {% endfor %}
+            </a>
+
+          </div>
+          <div class="col ml--2">
+
+            <!-- Title -->
+            <h4 class="card-title mb-1">
+              {{post.user.first_name}} {{post.user.last_name}}
+            </h4>
+
+            <!-- Time -->
+            <p class="card-text small text-muted">
+              <span class="fe fe-clock"></span> <time datetime="2018-05-24">{{post.created_at|naturaltime|capfirst}}</time>
+            </p>
+            
+          </div>
+          {% if user == post.user %}
+          <div class="col-auto">
+            
+            <!-- Dropdown -->
+            <div class="dropdown">
+              <a href="#!" class="dropdown-ellipses dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fe fe-more-vertical"></i>
+              </a>
+              <div class="dropdown-menu dropdown-menu-right">
+                <a href="#!" class="dropdown-item" data-toggle="modal" data-target="#editPost">
+                  <i class="fe fe-edit"></i> Edit
+                </a>
+                <a href="#!" class="dropdown-item" data-toggle="modal" data-target="#deletePost">
+                  <i class="fe fe-trash"></i> Delete
+                </a>
+              </div>
+            </div>
+            
+          </div>
+          {% endif %}
+        </div> <!-- / .row -->
+      </div>
+
+      <!-- Text -->
+      <p class="mb-5">
+        {{post.text|urlize}}
+      </p>
+
+      <!-- Image -->
+      {% if post.image %}
+      <p class="text-center mb-5">
+        <img src="{{post.image.url}}" alt="..." class="img-fluid rounded">
+      </p>
+      {% endif %}
+
+      <!-- Comments -->
+
+    {% for comment in post.comments.all %}
+
+      {% include  post_comment %}
+
+    {% endfor %}
+
+    </div>
+
+    <!-- Divider -->
+    <hr>
+
+    <!-- Form -->
+    <div class="row align-items-start">
+      <div class="col-auto">
+
+        <!-- Avatar -->
+        <div class="avatar avatar-sm">
+          {% for profile in user.profile_set.all %}
+            {% if profile.image %}
+            <img src="{{profile.image.url}}" alt="..." class="avatar-img rounded-circle">
+            {% else %}
+            <img src="{% static 'assets/img/logo.png' %}" alt="..." class="avatar-img rounded-circle">
+            {% endif %}
+          {% endfor %}
+        </div>
+
+      </div>
+      <div class="col ml--2">
+
+        <!-- Input -->
+        <form class="comment-form" data-postid="{{post.id}}">
+          <label class="sr-only">Leave a comment...</label>
+          <input class="comment-text form-control" placeholder="Leave a comment">
+        </form>
+      </div>
+    </div> <!-- / .row -->
+
+  </div>
+</div>    

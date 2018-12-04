@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block navigation %}
+  {% include 'navigation.html' %}
+{% endblock %}
+
+{% load widget_tweaks %}
+{% block content %}
+<div class="main-content">
+
+  <div class="container-fluid">
+    <div class="row justify-content-center">
+      <div class="col-12 col-lg-10 col-xl-8">
+        
+        <!-- Header -->
+        <div class="header mt-md-5">
+          <div class="header-body">
+            <div class="row align-items-center">
+              <div class="col">
+                
+                <!-- Pretitle -->
+                <h6 class="header-pretitle">
+                  Jobs
+                </h6>
+
+                <!-- Title -->
+                <h1 class="header-title">
+                  Create Job Post
+                </h1>
+
+              </div>
+            </div> <!-- / .row -->
+        
+          </div>
+        </div>
+        {% if form.errors %}
+          <ul>
+            {% for field in form %}
+                {% if field.errors %}
+                    <li><strong class="text-danger">{{ field.label_tag }}</strong> {{ field.errors }}</li>
+                {% endif %}
+            {% endfor %}
+          </ul>
+        </div>
+        {% endif %}
+        <form action="" method="POST" enctype="multipart/form-data" class="mb-5">
+          {% csrf_token %}
+          <div class="row">
+            <div class="col-12 col-md-6">
+              
+              <!-- Email address -->
+              <div class="form-group">
+
+                <!-- Label -->
+                <label class="mb-1">
+                  Job Title
+                </label>
+
+                <!-- Input -->
+                {% render_field form.title|attr:"placeholder:Managing Director"|attr:"type:text" class="form-control required" %}
+              </div>
+
+            </div>
+            <div class="col-12 col-md-6">
+              
+              <!-- Email address -->
+              <div class="form-group">
+
+                <!-- Label -->
+                <label class="mb-1">
+                  Company
+                </label>
+
+                <!-- Input -->
+                {% render_field form.company|attr:"placeholder:Company X"|attr:"type:text" class="form-control required" %}
+
+              </div>
+
+            </div>
+            <div class="col-12">
+              
+              <!-- Birthday -->
+              <div class="form-group">
+
+                <!-- Label -->
+                <label>
+                  Short Description
+                </label>
+
+                <!-- Input -->
+                {% render_field form.excerpt|attr:"placeholder:Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa."|attr:"type:text"|attr:"rows:2"|attr:"maxlength:200" class="form-control required" %}
+              </div>
+
+            </div>
+            <div class="col-12">
+              
+              <!-- Email address -->
+              <div class="form-group">
+
+                <!-- Label -->
+                <label class="mb-1">
+                  Link
+                </label>
+
+                <!-- Input -->
+                {% render_field form.link|attr:"placeholder:http://"|attr:"type:text"|attr:"rows:4" class="form-control required" %}
+              </div>
+
+            </div>
+            <div class="col-6">
+              
+              <!-- Birthday -->
+              <div class="form-group">
+
+                <!-- Label -->
+                <label>
+                  Company Logo Image <small class="text-muted">No larger than 1200px * 600px. </small>
+                </label>
+                {% render_field form.image class="form-control-file required" %}
+
+              </div>
+
+            </div>
+          </div> <!-- / .row -->
+
+          <!-- Divider -->
+          <hr class="mt-4 mb-5">
+
+
+          <button type="submit" class="btn btn-primary w-100">
+            Save Info
+          </button>
+
+        </form>
+
+      </div>
+    </div> <!-- / .row -->
+  </div>
+</div>
+{% endblock %}

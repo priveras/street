@@ -1,0 +1,172 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block navigation %}
+  {% include 'navigation.html' %}
+{% endblock %}
+
+{% block content %}
+<!-- MAIN CONTENT
+================================================== -->
+<div class="main-content">
+  
+  {% include 'header.html' %}
+
+  <!-- CONTENT -->
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        
+        <!-- Files -->
+        <div class="card" data-toggle="lists" data-lists-values='["name"]'>
+          <div class="card-header">
+            <div class="row align-items-center">
+              <div class="col">
+                
+                <!-- Title -->
+                <h4 class="card-header-title">
+                  Files
+                </h4>
+
+              </div>
+              <div class="col-auto">
+                
+                <!-- Dropdown -->
+                <div class="dropdown">
+
+                  <!-- Toggle -->
+                  <a href="#!" class="small text-muted dropdown-toggle" data-toggle="dropdown">
+                    Sort order
+                  </a>
+
+                  <!-- Menu -->
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item sort" data-sort="name" href="#!">
+                      Asc
+                    </a>
+                    <a class="dropdown-item sort" data-sort="name" href="#!">
+                      Desc
+                    </a>
+                  </div>
+
+                </div>
+
+              </div>
+            </div> <!-- / .row -->
+          </div>
+          <div class="card-header">
+            <div class="row">
+              <div class="col-12">
+                
+                <!-- Form -->
+                <form>
+                  <div class="input-group input-group-flush input-group-merge">
+                    <input type="search" class="form-control form-control-prepended search" placeholder="Search">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text">
+                        <span class="fe fe-search"></span>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+
+              </div>
+            </div> <!-- / .row -->
+          </div>
+          <div class="card-body">
+
+            <!-- List -->
+            <ul class="list-group list-group-lg list-group-flush list my--4">
+
+              {% for resource in resources %}
+              <li class="list-group-item px-0">
+                
+                <div class="row align-items-center">
+                  <div class="col-auto">
+                    
+                    <!-- Avatar -->
+                    {% if resource.file %}
+                    <a href="#!" class="avatar avatar-lg">
+                      <span class="avatar-title rounded bg-white text-secondary">
+                        <span class="fe fe-folder"></span>
+                      </span>
+                    </a>
+                    {% else %}
+                    <a href="#!" class="avatar avatar-lg">
+                      <span class="avatar-title rounded bg-white text-secondary">
+                        <span class="fe fe-link"></span>
+                      </span>
+                    </a>
+                    {% endif %}
+
+                  </div>
+                  <div class="col ml--2">
+
+                    <!-- Title -->
+                    <h4 class="card-title mb-1 name">
+                      {{resource.title}}
+                    </h4>
+
+                    <!-- Text -->
+                    <p class="card-text small text-muted mb-1">
+                      2.5kb SVG
+                    </p>
+
+                    <!-- Time -->
+                    <p class="card-text small text-muted">
+                      Uploaded by {{resource.user.first_name}} {{resource.user.last_name}} on <time datetime="2018-01-03">Jan 3, 2018</time>
+                    </p>
+                    
+                  </div>
+                  <div class="col-auto">
+                    
+                    <!-- Button -->
+                    {% if resource.file %}
+                    <a href="{{resource.file}}" class="btn btn-sm btn-white d-none d-md-inline-block">
+                      Download
+                    </a>
+                    {% endif %}
+                    {% if resource.link %}
+                    <a href="{{resource.link}}" target="_blank" class="btn btn-sm btn-white d-none d-md-inline-block">
+                      Link
+                    </a>
+                    {% endif %}
+
+                  </div>
+                  <div class="col-auto">
+                    
+                    <!-- Dropdown -->
+                    <div class="dropdown">
+                      <a href="#!" class="dropdown-ellipses dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fe fe-more-vertical"></i>
+                      </a>
+                      <div class="dropdown-menu dropdown-menu-right">
+                        <a href="#!" class="dropdown-item">
+                          Action
+                        </a>
+                        <a href="#!" class="dropdown-item">
+                          Another action
+                        </a>
+                        <a href="#!" class="dropdown-item">
+                          Something else here
+                        </a>
+                      </div>
+                    </div>
+
+                  </div>
+                </div> <!-- / .row -->
+
+              </li>
+
+              {% endfor %}
+            </ul>
+
+          </div>
+        </div>
+
+      </div>
+    </div> <!-- / .row -->
+  </div>
+  
+</div> <!-- / .main-content -->
+{% endblock %}

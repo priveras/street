@@ -1,0 +1,364 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load humanize %}
+
+{% block navigation %}
+  {% include 'navigation.html' %}
+{% endblock %}
+
+{% block content %}
+<!-- MAIN CONTENT
+================================================== -->
+<div class="main-content">
+  
+  {% include 'navbar.html' %}
+
+  <!-- CONTENT -->
+  <div class="container-fluid mt-5 mb-5">
+    <div class="row">
+      <div class="col-12 col-xl-8">
+      	<div class="row align-items-center">
+          <div class="col-auto">
+
+            <div class="avatar avatar-xxl header-avatar-top">
+
+            {% for profile in member.profile_set.all %}
+            <img src="{{ profile.image.url }}" class="avatar-img rounded-circle">
+            {% endfor %}
+
+            </div>
+
+
+          </div>
+          <div class="col ml--3 ml-md--2">
+            
+            <!-- Pretitle -->
+            <h6 class="header-pretitle">
+              Member
+            </h6>
+
+            <!-- Title -->
+            <h1 class="header-title">
+              {{member.first_name}} {{member.last_name}}
+            </h1>
+            <h4>
+              {% for profile in member.profile_set.all %}
+            	{{profile.job_title}} at <a href="{{profile.link}}">{{profile.company}}</a>
+              {% endfor %}
+            </h4>
+
+          </div>
+          {% if user != userp %}
+          <div class="col-auto">
+            <a href="mailto:pablo.rivera@zx-ventures.com?cc=tom.allison@zx-ventures.com, david.bassani@zx-ventures.com&subject=Requesing%20an%20Intro&body=Hi! I'm {{user.first_name}} {{user.last_name}}, can you help me get an intro with {{userp.first_name}} {{userp.last_name}}? Thanks!" class="btn btn-success btn-sm">Get an Intro</a>
+          </div>
+          {% endif %}
+          
+        </div>
+        <!-- Card -->
+        <div class="card mt-5">
+          <div class="card-body">
+            <h2>Info:</h2>
+
+            <hr>
+            {% for profile in member.profile_set.all %}
+            <!-- Text -->
+            <p class="mb-3 text-justify">
+              <b>Role:</b> {{profile.description}}
+            </p>
+            <p class="mb-3 text-justify">
+              <b>Bio:</b> {{profile.bio}}
+            </p>
+            <p class="card-text">
+              <b>Team Responsibilities: </b>
+              {% for profile in member.profile_set.all %}
+                {% for activity in profile.activities %}
+                  <span class="badge badge-soft-secondary">{{activity}}</span>
+                {% endfor %}
+              {% endfor %}
+            </p>
+            {% if account.extra_data.positions.position.title %}
+            <p class="mb-3 text-justify">
+              <b>Position:</b><br>
+              {{account.extra_data.positions.position.title}} at {{account.extra_data.positions.position.company.name}}
+              <br>
+              <span class="badge badge-soft-secondary">
+                {{account.extra_data.positions.position.company.industry}}
+              </span>
+              <span class="badge badge-soft-secondary">
+                {{account.extra_data.positions.position.location.name}}
+              </span>
+              <br><br>
+              {{account.extra_data.positions.position.summary}}
+            </p>
+            {% endif %}
+            {% endfor %}
+
+
+          </div>
+        </div>
+
+        {% if posts %}
+        
+          {% for post in posts %}
+          <!-- Card -->
+          <div class="card mt-5">
+            <div class="card-body">
+              <h2>Latest posts by {{userp.first_name|capfirst}}</h2>
+              <hr>
+              <!-- Header -->
+              <div class="mb-3">
+                <div class="row align-items-center">
+                  <div class="col-auto">
+            
+                    <!-- Avatar -->
+                    <a href="#!" class="avatar">
+                      {% for profile in post.user.profile_set.all %}
+                        {% if profile.image %}
+                        <img src="{{profile.image.url}}" alt="..." class="avatar-img rounded-circle">
+                        {% else %}
+                        <img src="{% static 'assets/img/logo.png' %}" alt="..." class="avatar-img rounded-circle">
+                        {% endif %}
+                      {% endfor %}
+                    </a>
+
+                  </div>
+                  <div class="col ml--2">
+
+                    <!-- Title -->
+                    <h4 class="card-title mb-1">
+                      {{post.user.first_name}} {{post.user.last_name}}
+                    </h4>
+
+                    <!-- Time -->
+                    <p class="card-text small text-muted">
+                      <span class="fe fe-clock"></span> <time>{{post.created_at|naturaltime|capfirst}}</time>
+                    </p>
+                    
+                  </div>
+                  <div class="col-auto">
+                    
+                    <!-- Dropdown -->
+                    <div class="dropdown">
+                      <a href="#!" class="dropdown-ellipses dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fe fe-more-vertical"></i>
+                      </a>
+                      <div class="dropdown-menu dropdown-menu-right">
+                        <a href="#!" class="dropdown-item">
+                          Action
+                        </a>
+                        <a href="#!" class="dropdown-item">
+                          Another action
+                        </a>
+                        <a href="#!" class="dropdown-item">
+                          Something else here
+                        </a>
+                      </div>
+                    </div>
+                    
+                  </div>
+                </div> <!-- / .row -->
+              </div>
+
+              <!-- Text -->
+              <p class="mb-3 text-justify">
+                {{post.text|urlize|linebreaks}}
+              </p>
+
+              <!-- Image -->
+              {% if post.image %}
+              <p class="text-center mb-3">
+                <img src="{{post.image.url}}" alt="..." class="img-fluid rounded">
+              </p>
+              {% endif %}
+
+            </div>
+          </div>
+          {% endfor %}
+        {% else %}
+          <!-- Card -->
+          <div class="card mt-5">
+            <div class="card-body">
+              <h2>Latest news</h2>
+              <hr>
+
+              <!-- Text -->
+              <p class="mb-3 text-justify">
+                No recent news posted from {{member.first_name}} {{member.last_name}}...
+              </p>
+
+            </div>
+          </div>
+        {% endif %}
+
+      </div>
+      <div class="col-12 col-xl-4">
+        <div class="card">
+          <div class="card-body">
+
+            <div class="row align-items-center">
+              <div class="col">
+                
+                <!-- Title -->
+                <h5 class="mb-0">
+                  Company
+                </h5>
+
+              </div>
+              <div class="col-auto">
+                {% for profile in member.profile_set.all %}
+                <a href="{{profile.link}}"><span class="small text-muted" datetime="1988-10-24">
+                  
+                  {{profile.company}}
+                  
+                </span></a>
+                {% endfor %}
+              </div>
+            </div> <!-- / .row -->
+
+            <!-- Divider -->
+            <hr>
+
+            <div class="row align-items-center">
+              <div class="col">
+                
+                <!-- Title -->
+                <h5 class="mb-0">
+                  Job Title
+                </h5>
+
+              </div>
+              <div class="col-auto">
+                
+                <small class="text-muted">
+                  {% for profile in member.profile_set.all %}
+                  {{profile.job_title}}
+                  {% endfor %}
+                </small>
+
+              </div>
+            </div> <!-- / .row -->
+
+            <!-- Divider -->
+            <hr>
+
+            <div class="row align-items-center">
+              <div class="col">
+                
+                <!-- Title -->
+                <h5 class="mb-0">
+                  Location
+                </h5>
+
+              </div>
+              <div class="col-auto">
+                
+                <small class="text-muted">
+                  {% for profile in member.profile_set.all %}
+                  {{profile.location|capfirst}}
+                  {% endfor %}
+                </small>
+
+              </div>
+            </div> <!-- / .row -->
+
+            <hr>
+
+            <div class="row align-items-center">
+              <div class="col">
+                
+                <!-- Title -->
+                <h5 class="mb-0">
+                  Linkedin Profile
+                </h5>
+
+              </div>
+              <div class="col-auto">
+                {% for profile in member.profile_set.all %}
+                <a href="{{profile.linkedin}}" target="_blank">
+                <small>
+                  {{profile.linkedin|truncatechars:20}}
+                </small>
+                </a>
+                {% endfor %}
+
+              </div>
+            </div> <!-- / .row -->
+
+            {% for profile in member.profile_set.all %}
+              {% if profile.twitter %}
+              <hr>
+
+              <div class="row align-items-center">
+                <div class="col">
+                  
+                  <!-- Title -->
+                  <h5 class="mb-0">
+                    Twitter
+                  </h5>
+
+                </div>
+                <div class="col-auto">
+                  {% for profile in member.profile_set.all %}
+                  <a href="http://twitter.com/{{profile.twitter}}" target="_blank">
+                  <small>
+                    {{profile.twitter}}
+                  </small>
+                  </a>
+                  {% endfor %}
+
+                </div>
+              </div> <!-- / .row -->
+              {% endif %}
+            {% endfor %}
+
+            <hr>
+
+            <div class="row align-items-center">
+              <div class="col">
+                
+                <!-- Title -->
+                <h5 class="mb-0">
+                  Team Size
+                </h5>
+
+              </div>
+              <div class="col-auto">
+                {% for profile in member.profile_set.all %}
+                <small>
+                  {{profile.team}}
+                </small>
+                {% endfor %}
+
+              </div>
+            </div> <!-- / .row -->
+
+            {% if user.is_superuser %}
+
+            <hr>
+
+            <div class="row align-items-center">
+              <div class="col">
+                
+                <!-- Title -->
+                <h5 class="mb-0">
+                  Joined
+                </h5>
+
+              </div>
+              <div class="col-auto">
+                <small>
+                  {{member.date_joined|date}}
+                </small>
+
+              </div>
+            </div> <!-- / .row -->
+            {% endif %}
+
+          </div>
+        </div>
+      </div>
+    </div> <!-- / .row -->
+  </div> <!-- / .container-fluid -->
+</div> <!-- / .main-content -->
+{% endblock %}

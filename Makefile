@@ -17,13 +17,13 @@ restart:
 	docker-compose stop && docker-compose start
 
 shell-nginx:
-	docker exec -ti nzua bash
+	docker exec -ti nzplatformvc bash
 
 shell-web:
-	docker exec -ti dzua bash
+	docker exec -ti dzplatformvc bash
 
 shell-db:
-	docker exec -ti pzua bash
+	docker exec -ti pzplatformvc bash
 
 log-nginx:
 	docker-compose logs nginx  
@@ -35,4 +35,4 @@ log-db:
 	docker-compose logs db
 
 collectstatic:
-	docker exec dzos /bin/sh -c "python manage.py collectstatic --noinput"  
+	docker exec dzplatformvc /bin/sh -c "python manage.py collectstatic --noinput"  

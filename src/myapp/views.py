@@ -1,237 +1,246 @@
 from django.views import generic
 from django.contrib.auth.models import User
-from django.db.models import Q
-from django.shortcuts import render, redirect, Http404
+from django.shortcuts import render, redirect, Http404, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from datetime import date, datetime, timezone
 from django.http import JsonResponse, HttpResponse
-from django.utils.text import slugify
-from django.utils.crypto import get_random_string
-from django.core.mail import send_mail
-from django.template.loader import get_template
 from django.template import Context
-from django.db.models import Count
 from django.core import serializers
+from .forms import ProfileForm, PostForm, CommentForm, JobForm
 
-from .forms import ProfileForm, SummaryForm, PastForm, FutureForm, ProjectForm
-from .forms import ElevatorForm, PrimaryForm, SecondaryForm, EmpathyForm
-from .forms import AssumptionForm, CommentForm, FileForm, DvfForm, LinkForm, WalletForm
-from .forms import InviteForm, ObjectiveForm, ProjectFormCreate, BillingForm
-
-from .models import Project, Team, Comment, Assumption, Primary, Empathy
-from .models import Secondary, Metric, File, Profile, Summary, Past, Future
-from .models import Elevator, Tutorial, Progress, Dvf, Link, Zone, Invite, Resource, Tool, Wallet, Billing
-from .models import Objective
+from .models import Resource, Post, Profile, Comment, Job, Event
 from django.http import HttpResponseRedirect
-from pinax.eventlog.models import Log
-from datetime import datetime, timedelta
-import datetime as dt
-from django.db.models import Sum
-import stripe
 
-STRIPE_KEY = 'sk_test_KxcqRkSXKZfpetM4zEFs9N56'
+class EventsView(generic.ListView):
+    template_name = 'events.html'
+    context_object_name = 'events'
+    model = Event
 
-@csrf_exempt
-def billing_charge(request):
-    if request.method != 'POST':
-        raise Http404
 
-    billing = _last_available_payment(request)
-    if billing:
+    def get_context_data(self, **kwargs):
+        context = super(EventsView, self).get_context_data(**kwargs)
+        context['events'] = Event.objects.order_by('-created_at')
+
+        return context
+
+def profile(request, username):
+    member = get_object_or_404(User, username=username)
+    posts = Post.objects.filter(user=member).order_by('-created_at')[:10]
+
+    return render(request,
+                  'profile.html',
+                  {
+                      'member': member,
+                      'posts': posts,
+                  })
+
+def index(request):
+    return HttpResponseRedirect('/home/')
+
+def home(
+    request,
+    template='home.html',
+    page_template='home_page.html'):
+
+    if date.today() == request.user.date_joined.date():
+        alert = True
+    else:
+        alert = False
+
+    context = {
+        'posts': Post.objects.order_by('-created_at'),
+        'resources': Resource.objects.order_by('-created_at')[:3],
+        'members': User.objects.order_by('-date_joined').filter(profile__isnull=False)[:10],
+        'post_block': 'post_block.html',
+        'post_comment': 'post_comment.html',
+    }
+
+    if request.is_ajax():
+        template = page_template
+    return render(request, template, context)
+
+class JobsCreateView(generic.CreateView):
+    model = Job
+    form_class = JobForm
+    template_name = 'jobs_create.html'
+
+    def form_valid(self, form):
+        p = form.save(commit=False)
+        p.user = self.request.user
+        p.save()
+        return redirect('/jobs/')
+
+class JobsUpdateView(generic.UpdateView):
+    model = Job
+    form_class = JobForm
+    template_name = 'jobs_create.html'
+
+    def user_passes_test(self, request):
+        if request.user.is_authenticated():
+            self.object = self.get_object()
+            return self.object.user == request.user
+        return False
+
+    def dispatch(self, request, *args, **kwargs):
+        if not self.user_passes_test(request):
+            return HttpResponseRedirect('/')
+        return super(JobsUpdateView, self).dispatch(
+            request, *args, **kwargs)
+
+    def form_valid(self, form):
+        p = form.save(commit=False)
+        p.user = self.request.user
+        p.save()
+        return redirect('/jobs/')
+
+class InfoView(generic.CreateView):
+    model = Profile
+    form_class = ProfileForm
+    template_name = 'registration/info.html'
+
+    def form_valid(self, form):
+
+        p = form.save(commit=False)
+        p.user = self.request.user
+        p.status = 'Pending'
+
+        user = self.request.user
+        user.first_name = self.request.POST.get('first_name', '')
+        user.last_name = self.request.POST.get('last_name', '')
+        user.save()
+
+        p.save()
         return redirect('/home/')
 
-    stripe.api_key = STRIPE_KEY
-    try:
-        customer = stripe.Customer.create(
-            email=request.user.email,
-            source=request.POST.get('stripeToken', '')
-        )
-    except:
-        return JsonResponse({'error': 'card declined'}, status=400)
+class InfoUpdateView(generic.UpdateView):
+    model = Profile
+    form_class = ProfileForm
+    template_name = 'registration/info.html'
 
-    try:
-        subscription = stripe.Subscription.create(
-            customer=customer.id,
-            items=[{'plan': 'plan_DwbO6Z1gkqT2wd'}],
-        )
-    except:
-        return JsonResponse({'error': 'can not create a subscription'}, status=400)
+    def user_passes_test(self, request):
+        if request.user.is_authenticated():
+            self.object = self.get_object()
+            return self.object.user == request.user
+        return False
 
-    priorities = {
-        'silver': 1,
-        'gold': 2,
-        'platinum': 3,
-    }
+    def dispatch(self, request, *args, **kwargs):
+        if not self.user_passes_test(request):
+            return HttpResponseRedirect('/')
+        return super(InfoUpdateView, self).dispatch(
+            request, *args, **kwargs)
 
-    plan = request.GET.get('plan', None)
+    def form_valid(self, form):
+        p = form.save(commit=False)
+        p.user = self.request.user
+        p.status = 'Active'
 
-    form = BillingForm(data={
-        'token': subscription.id,
-        'customer': customer.id,
-        'plan': plan,
-        'priority': priorities.get(plan, 0),
-    })
+        user = self.request.user
+        user.first_name = self.request.POST.get('first_name', '')
+        user.last_name = self.request.POST.get('last_name', '')
+        user.save()
 
-    if not form.is_valid():
-        return JsonResponse(form.errors, status=400)
-
-    doc = form.save(commit=False)
-    doc.user = request.user
-    doc.status = 1
-    doc.save()
-
-    # return JsonResponse({'status': 'created'}, status=201)
-    return redirect('/home/')
+        p.save()
+        return redirect('/home/')
 
 @csrf_exempt
-def upgrade_plan(request):
+def post_create(request):
+    template = 'post_block.html'
     if request.method != 'POST':
-        raise Http404
+        resp = JsonResponse({'error':'method not allowed'})
+        resp.status_code = 400
+        return  resp
 
-    billing = _last_available_payment(request)
-    if billing is None:
-        return billing_charge(request)
+    if not request.user.is_authenticated:
+        resp = JsonResponse({'error':'user is not authenticated'})
+        resp.status_code = 400
+        return  resp
 
-    stripe.api_key = STRIPE_KEY
-    try:
-        subscription = stripe.Subscription.create(
-            customer=billing.customer,
-            items=[{'plan': 'plan_DwbO6Z1gkqT2wd'}],
-        )
-    except:
-        return JsonResponse({'error': 'can not create a subscription'}, status=400)
+    p = PostForm(request.POST)
+    if not p.is_valid():
+        resp = JsonResponse(p.errors)
+        resp.status_code = 400
+        return resp
 
-    priorities = {
-        'silver': 1,
-        'gold': 2,
-        'platinum': 3,
-    }
+    post = p.save(commit=False)
+    post.user = request.user
+    post.save()
 
-    plan = request.GET.get('plan', None)
+    context = {
+            'post': post,
+            'post_comment': 'post_comment.html',
+            }
 
-    form = BillingForm(data={
-        'token': subscription.id,
-        'customer': billing.customer,
-        'plan': plan,
-        'priority': priorities.get(plan, 0),
-    })
-
-    if not form.is_valid():
-        return JsonResponse(form.errors, status=400)
-
-    doc = form.save(commit=False)
-    doc.user = request.user
-    doc.status = 1
-    doc.save()
-
-    # cancel previous subscripion
-    cancel_subscription(request, billing)
-
-    # return JsonResponse({'status': 'created'}, status=201)
-    return redirect('/accounts/profile')
-
-def _last_available_payment(request):
-    payment = Billing.objects.filter(user=request.user, status=1).first()
-    if payment is None:
-        # check if the last payment canceled is still available
-        payment = Billing.objects.filter(
-            user=request.user,
-            status=0,
-            valid_until__gte=datetime.now()
-        ).order_by('-priority').first()
-
-    return payment
-
-
-def accept_project(request, slug='', extra=0):
-    payment = _last_available_payment(request)
-    if payment is None:
-        return 'payment is unavailable'
-
-    # if action is edit, returns
-    if slug:
-        return None
-
-    plans = {
-        'silver': 1,
-        'gold': 3,
-        'platinum': 10000,
-    }
-
-    total = Project.objects.filter(user_id=request.user.id).count()
-    if total >= plans.get(payment.plan, 0) + extra:
-        return '{} exeded the limit of {} projects'.format(payment.plan, plans.get(payment.plan, 0))
-    return None
-
-
-def has_subscription(request):
-    payment = _last_available_payment(request)
-    if payment is None or payment.status == 0:
-        return JsonResponse({'error': 'Subscription not available'}, status=400)
-    return JsonResponse({'success': 'payment available'})
-
+    return render(request, template, context)
 
 @csrf_exempt
-def cancel_subscription(request, payment=None):
+def comment_create(request):
+    template = 'post_comment.html'
     if request.method != 'POST':
-        raise Http404
+        resp = JsonResponse({'error':'method not allowed'})
+        resp.status_code = 400
+        return  resp
 
-    # if no payment was provided try to get it from db
-    if payment is None:
-        payment = _last_available_payment(request)
+    if not request.user.is_authenticated:
+        resp = JsonResponse({'error':'user is not authenticated'})
+        resp.status_code = 400
+        return  resp
 
-    # if there is not payment returns
-    if payment is None:
-        return JsonResponse({'error': 'Subscription not available'}, status=400)
-    if payment.status == 0:
-        return JsonResponse({'error': 'Subscription already cancelled'}, status=400)
+    f = CommentForm(request.POST)
+    if not f.is_valid():
+        resp = JsonResponse(f.errors)
+        resp.status_code = 400
+        return resp
 
-    try:
-        stripe.api_key = STRIPE_KEY
-        subscription = stripe.Subscription.retrieve(payment.token)
-        subscription.delete(at_period_end=True)
-    except:
-        return JsonResponse({'error': 'unable to cancel plan'}, status=400)
+    comment = f.save(commit=False)
+    comment.user = request.user
+    comment.save()
 
-    period_end = subscription.current_period_end
-    payment.valid_until = datetime.fromtimestamp(period_end)
-    payment.status = 0
-    payment.save()
-    return JsonResponse({'status': 'ok'})
+    context = {'comment': comment}
+    return render(request, template, context)
+
+
+class MembersView(generic.ListView):
+    template_name = 'members.html'
+    context_object_name = 'members'
+    model = User
+
+
+    def get_context_data(self, **kwargs):
+        context = super(MembersView, self).get_context_data(**kwargs)
+        context['members'] = User.objects.order_by('first_name')
+
+        return context
+
+
+class ResourcesView(generic.ListView):
+    template_name = 'resources.html'
+    context_object_name = 'resources'
+    model = Resource
+
+
+    def get_context_data(self, **kwargs):
+        context = super(ResourcesView, self).get_context_data(**kwargs)
+        context['resources'] = Resource.objects.order_by('-created_at')
+
+        return context
+
+class JobsView(generic.ListView):
+    template_name = 'jobs.html'
+    context_object_name = 'jobs'
+    model = Job
+
+
+    def get_context_data(self, **kwargs):
+        context = super(JobsView, self).get_context_data(**kwargs)
+        context['jobs'] = Job.objects.order_by('-created_at')
+
+        return context
+
+class StatusView(generic.TemplateView):
+    template_name = "status.html"
 
 class IndexView(generic.TemplateView):
     template_name = "front/index.html"
-
-class SyllabusView(generic.TemplateView):
-    template_name = "front/syllabus.html"
-
-    def get_context_data(self, **kwargs):
-        context = super(SyllabusView, self).get_context_data(**kwargs)
-
-        tutorial = Tutorial.objects.all()
-        context['tutorial'] = tutorial
-        return context
-
-class SubscribeView(generic.TemplateView):
-    template_name = "subscribe.html"
-
-    # def dispatch(self, request, *args, **kwargs):
-    #     billing = _last_available_payment(request)
-    #     if billing:
-    #         return redirect('/accounts/profile')
-    #     return super(BillingView, self).dispatch(request, *args, **kwargs)
-
-    def get_context_data(self, **kwargs):
-        context = super(SubscribeView, self).get_context_data(**kwargs)
-
-        #billing = _last_available_payment(self.request)
-        #if billing is not None:
-            #context['billing'] = billing
-
-
-        payment = Billing.objects.filter(user=self.request.user).first()
-        context['cardrequired'] = payment is None
-        return context
 
 def analytics(request):
 
@@ -262,75 +271,6 @@ def analytics(request):
 
     return render(request, 'dashboard/analytics.html', context)
 
-class LibraryView(generic.ListView):
-    template_name = 'library.html'
-    context_object_name = 'resources_list'
-    model = Resource
-
-    def get_context_data(self, **kwargs):
-        context = super(LibraryView, self).get_context_data(**kwargs)
-        context['resources_list'] = Resource.objects.all()
-        context['billing'] = Billing.objects.filter(user=self.request.user).first()
-
-        return context
-
-class AssumptionsView(generic.ListView):
-    template_name = 'dashboard/assumptions.html'
-    context_object_name = 'assumptions_list'
-    model = Tool
-
-    def get_context_data(self, **kwargs):
-        context = super(AssumptionsView, self).get_context_data(**kwargs)
-        context['assumptions_list'] = Assumption.objects.order_by('-created_at')
-        context['assumptions_validated'] = Assumption.objects.filter(status='Validated').count()
-        context['assumptions_inprogress'] = Assumption.objects.filter(status='In Progress').count()
-        context['assumptions_invalidated'] = Assumption.objects.filter(status='Invalidated').count()
-        context['d_validated'] = Assumption.objects.filter(status='Validated').filter(dvf='desirability').count()
-        context['d_inprogress'] = Assumption.objects.filter(status='In Progress').filter(dvf='desirability').count()
-        context['d_invalidated'] = Assumption.objects.filter(status='Invalidated').filter(dvf='desirability').count()
-        context['v_validated'] = Assumption.objects.filter(status='Validated').filter(dvf='viability').count()
-        context['v_inprogress'] = Assumption.objects.filter(status='In Progress').filter(dvf='viability').count()
-        context['v_invalidated'] = Assumption.objects.filter(status='Invalidated').filter(dvf='viability').count()
-        context['f_validated'] = Assumption.objects.filter(status='Validated').filter(dvf='feasibility').count()
-        context['f_inprogress'] = Assumption.objects.filter(status='In Progress').filter(dvf='feasibility').count()
-        context['f_invalidated'] = Assumption.objects.filter(status='Invalidated').filter(dvf='feasibility').count()
-
-        return context
-
-class ToolsView(generic.ListView):
-    template_name = 'tools.html'
-    context_object_name = 'tools_list'
-    model = Tool
-
-    def get_context_data(self, **kwargs):
-        context = super(ToolsView, self).get_context_data(**kwargs)
-        context['tools_list'] = Tool.objects.all()
-        context['billing'] = Billing.objects.filter(user=self.request.user).first()
-
-        return context
-
-class DashboardProjectsView(generic.ListView):
-    template_name = 'dashboard/projects.html'
-    context_object_name = 'projects_list'
-    model = Project
-
-    def get_context_data(self, **kwargs):
-        context = super(DashboardProjectsView, self).get_context_data(**kwargs)
-        context['projects_list'] = Project.objects.order_by("-created_at")
-        context['assumptions'] = Assumption.objects.all()
-        context['objectives'] = Objective.objects.all()
-        context['elevators'] = Elevator.objects.all()
-        context['problems'] = Primary.objects.all()
-        context['solutions'] = Solution.objects.all()
-        context['models'] = BusinessModel.objects.all()
-        context['dvf'] = Dvf.objects.all()
-        context['futures'] = Future.objects.all()
-        context['summaries'] = Summary.objects.all()
-        context['links'] = Link.objects.all()
-        context['files'] = File.objects.all()
-
-        return context
-
 # Error Pages
 def server_error(request):
     return render(request, 'errors/500.html')
@@ -343,689 +283,3 @@ def permission_denied(request):
 
 def bad_request(request):
     return render(request, 'errors/400.html')
-
-def learn(request):
-    tutorial = Tutorial.objects.order_by('created_at')
-    progress = Progress.objects.filter(user=request.user).first()
-    doc = progress
-    if doc is None:
-        doc = Progress()
-
-    saved = [
-        doc.intro,
-        doc.elevator_pitch,
-        doc.customer_persona,
-        doc.empathy_map,
-        doc.obj,
-        doc.seo,
-        doc.google,
-        doc.content,
-        doc.tech,
-        doc.next_steps,
-    ]
-
-    billing = Billing.objects.filter(user=request.user).first()
-
-    return render(request, 'learn.html', {
-        'tutorial': tutorial,
-        'progress': progress,
-        'saved': saved,
-        'billing': billing
-    })
-
-class DashboardView(generic.ListView):
-    template_name = 'dashboard/reports.html'
-    # context_object_name = 'users_list'
-    current = datetime.now(timezone.utc)
-
-
-
-    model = Project
-
-    def get_context_data(self, **kwargs):
-        context = super(DashboardView, self).get_context_data(**kwargs)
-
-        context['projects'] = Project.objects.order_by('title')
-        context['users'] = User.objects.order_by('first_name')
-        context['actives'] = Project.objects.filter(status="Active")
-        context['killed'] = Project.objects.filter(status="Killed")
-        context['assumptions_list'] = Assumption.objects.all()
-        context['comments_list'] = Comment.objects.all()
-        context['dvfs'] = Dvf.objects.all()
-        context['completed_obj'] = Objective.objects.filter(status='Complete').values('project','stage','status').annotate(Count('project'))
-
-        context['file_proj'] = File.objects.values('project').order_by().annotate(Count('project'))
-        context['businessmodel_proj'] = BusinessModel.objects.values('project').order_by().annotate(Count('project'))
-        context['solution_proj'] = Solution.objects.values('project').order_by().annotate(Count('project'))
-        context['elevator_proj'] = Elevator.objects.values('project').order_by().annotate(Count('project'))
-        context['problem_proj'] = Problem.objects.values('project').order_by().annotate(Count('project'))
-        context['link_proj'] = Link.objects.values('project').order_by().annotate(Count('project'))
-        context['dvf_proj'] = Dvf.objects.values('project').order_by().annotate(Count('project'))
-
-        context['assumption_user'] = Assumption.objects.values('user').order_by().annotate(Count('user'))
-
-
-
-        context['concept_list'] = Project.objects.filter(stage = "Concept").filter(status = "Active")
-        context['scale_list'] = Project.objects.filter(stage = "Scale").filter(status = "Active")
-        context['seed_list'] = Project.objects.filter(stage = "Seed 3") | Project.objects.filter(stage = "Seed 2") | Project.objects.filter(stage = "Seed 1").filter(status = "Active")
-        context['seedlaunch_list'] = Project.objects.filter(stage = "Seed Launch")
-        context['launch_list'] = Project.objects.filter(stage = "Launch")
-
-        context['zones_apacs_seed'] = (Zone.objects.filter(project__stage="Seed 1") | Zone.objects.filter(project__stage="Seed 2") | Zone.objects.filter(project__stage="Seed 3")).filter(zone="APAC S")
-        context['zones_apacs_seedlaunch'] = Zone.objects.filter(project__stage="Seed Launch").filter(zone="APAC S")
-        context['zones_apacs_launch'] = Zone.objects.filter(project__stage="Launch").filter(zone="APAC S")
-
-        context['zones_apacn_seed'] = (Zone.objects.filter(project__stage="Seed 1") | Zone.objects.filter(project__stage="Seed 2") | Zone.objects.filter(project__stage="Seed 3")).filter(zone="APAC N")
-        context['zones_apacn_seedlaunch'] = Zone.objects.filter(project__stage="Seed Launch").filter(zone="APAC N")
-        context['zones_apacn_launch'] = Zone.objects.filter(project__stage="Launch").filter(zone="APAC N")
-
-        context['zones_eu_seed'] = (Zone.objects.filter(project__stage="Seed 1") | Zone.objects.filter(project__stage="Seed 2") | Zone.objects.filter(project__stage="Seed 3")).filter(zone="EU")
-        context['zones_eu_seedlaunch'] = Zone.objects.filter(project__stage="Seed Launch").filter(zone="EU")
-        context['zones_eu_launch'] = Zone.objects.filter(project__stage="Launch").filter(zone="EU")
-
-        context['zones_naz_seed'] = (Zone.objects.filter(project__stage="Seed 1") | Zone.objects.filter(project__stage="Seed 2") | Zone.objects.filter(project__stage="Seed 3")).filter(zone="NAZ")
-        context['zones_naz_seedlaunch'] = Zone.objects.filter(project__stage="Seed Launch").filter(zone="NAZ")
-        context['zones_naz_launch'] = Zone.objects.filter(project__stage="Launch").filter(zone="NAZ")
-
-        context['zones_maz_seed'] = (Zone.objects.filter(project__stage="Seed 1") | Zone.objects.filter(project__stage="Seed 2") | Zone.objects.filter(project__stage="Seed 3")).filter(zone="MAZ")
-        context['zones_maz_seedlaunch'] = Zone.objects.filter(project__stage="Seed Launch").filter(zone="MAZ")
-        context['zones_maz_launch'] = Zone.objects.filter(project__stage="Launch").filter(zone="MAZ")
-
-        context['zones_lan_seed'] = (Zone.objects.filter(project__stage="Seed 1") | Zone.objects.filter(project__stage="Seed 2") | Zone.objects.filter(project__stage="Seed 3")).filter(zone="LAN LAS")
-        context['zones_lan_seedlaunch'] = Zone.objects.filter(project__stage="Seed Launch").filter(zone="LAN LAS")
-        context['zones_lan_launch'] = Zone.objects.filter(project__stage="Launch").filter(zone="LAN LAS")
-
-        context['logs'] = Log.objects.all()
-
-        return context
-
-
-class DetailView(generic.DetailView):
-    model = Project
-    template_name = 'detail.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(DetailView, self).get_context_data(**kwargs)
-
-        if not self.request.user.is_superuser:
-            if not Team.objects.filter(user=self.request.user,
-                project__id=self.object.id).exists():
-                raise Http404
-
-        permission = Team.objects.filter(project=self.object).filter(user=self.request.user).filter(permission="edit")
-
-        if permission or self.request.user.is_superuser:
-            context['permission'] = True
-        else:
-            permission = False
-
-        context['recent_activity'] = 'recent_activity.html'
-        context['team'] = Team.objects.filter(project=self.object).filter(permission="edit")
-
-        context['viewers'] = Team.objects.filter(project=self.object).filter(permission="view")
-        context['comments'] = Comment.objects.filter(project=self.object).order_by('-created_at')
-        context['files'] = File.objects.filter(project=self.object).order_by('-updated_at')
-        context['links'] = Link.objects.filter(project=self.object).order_by('-updated_at')
-        context['fileform'] = FileForm()
-
-        context['elevators'] = Elevator.objects.filter(project=self.object).order_by('-updated_at')
-        context['primarys'] = Primary.objects.filter(project=self.object).order_by('-updated_at')
-        context['secondarys'] = Secondary.objects.filter(project=self.object).order_by('-updated_at')
-        context['empathys'] = Empathy.objects.filter(project=self.object).order_by('-updated_at')
-
-        context['logs'] = Log.objects.all()
-
-        wallet = Wallet.objects.filter(project=self.object).order_by('-period')[:4]
-
-        wallets = Wallet.objects.filter(project=self.object).order_by('-period')
-
-        context['wallets'] = wallets
-
-        context['wallets_actual_ytd'] = wallet.aggregate(total_actual=Sum('amount_actual'))
-
-        context['wallets_budget_ytd'] = wallet.aggregate(total_budget=Sum('amount_budget'))
-
-        return context
-    # def dispatch(self, *args, **kwargs):
-    #     if not Team.objects.filter(user=self.request.user,
-    #             project__id=self.object.id).exists():
-    #         raise Http404
-
-    #     return super(DetailView, self).dispatch(*args, **kwargs)
-
-class SeedView(generic.DetailView):
-    model = Project
-    template_name = 'seed.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(SeedView, self).get_context_data(**kwargs)
-
-        permission = Team.objects.filter(project=self.object).filter(user=self.request.user).filter(permission="edit")
-
-        if permission or self.request.user.is_superuser:
-            context['permission'] = True
-        else:
-            permission = False
-
-        context['team'] = Team.objects.filter(project=self.object)
-        context['comments'] = Comment.objects.filter(project=self.object)
-        context['assumptions'] = Assumption.objects.filter(project=self.object).filter(stage="seed").order_by('dvf')
-        context['objectives'] = Objective.objects.filter(project=self.object).filter(stage="seed").order_by('dvf')
-        context['summary'] = Summary.objects.filter(project=self.object).filter(stage="seed").order_by('-updated_at')
-        context['past'] = Past.objects.filter(project=self.object).filter(stage="seed").order_by('-updated_at')
-        context['future'] = Future.objects.filter(project=self.object).filter(stage="seed").order_by('-updated_at')
-        context['dvf_seed'] = Dvf.objects.filter(project=self.object).filter(stage="seed").order_by('-updated_at')
-
-        return context
-
-class SeedLaunchView(generic.DetailView):
-    model = Project
-    template_name = 'seed-launch.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(SeedLaunchView, self).get_context_data(**kwargs)
-
-        permission = Team.objects.filter(project=self.object).filter(user=self.request.user).filter(permission="edit")
-
-        if permission or self.request.user.is_superuser:
-            context['permission'] = True
-        else:
-            permission = False
-
-        context['team'] = Team.objects.filter(project=self.object)
-        context['comments'] = Comment.objects.filter(project=self.object)
-        context['assumptions'] = Assumption.objects.filter(project=self.object).filter(stage="seedlaunch").order_by('dvf')
-        context['objectives'] = Objective.objects.filter(project=self.object).filter(stage="seedlaunch").order_by('dvf')
-        context['summary'] = Summary.objects.filter(project=self.object).filter(stage="seedlaunch").order_by('-updated_at')
-        context['past'] = Past.objects.filter(project=self.object).filter(stage="seedlaunch").order_by('-updated_at')
-        context['future'] = Future.objects.filter(project=self.object).filter(stage="seedlaunch").order_by('-updated_at')
-        context['dvf_seedlaunch'] = Dvf.objects.filter(project=self.object).filter(stage="seedlaunch").order_by('-updated_at')
-
-        return context
-
-class LaunchView(generic.DetailView):
-    model = Project
-    template_name = 'launch.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(LaunchView, self).get_context_data(**kwargs)
-        context['team'] = Team.objects.filter(project=self.object)
-        context['comments'] = Comment.objects.filter(project=self.object)
-        context['assumptions'] = Assumption.objects.filter(project=self.object).filter(stage="launch").order_by('dvf')
-        context['objectives'] = Objective.objects.filter(project=self.object).filter(stage="launch").order_by('dvf')
-        context['summary'] = Summary.objects.filter(project=self.object).filter(stage="launch").order_by('-updated_at')
-        context['past'] = Past.objects.filter(project=self.object).filter(stage="launch").order_by('-updated_at')
-        context['future'] = Future.objects.filter(project=self.object).filter(stage="launch").order_by('-updated_at')
-        context['permission'] = Team.objects.filter(project=self.object).filter(user=self.request.user).filter(permission="edit")
-        context['dvf_launch'] = Dvf.objects.filter(project=self.object).filter(stage="launch").order_by('-updated_at')
-
-        return context
-
-class HomeView(generic.ListView):
-    template_name = 'home.html'
-    context_object_name = 'projects_list'
-    model = Project
-
-
-    def get_context_data(self, **kwargs):
-        context = super(HomeView, self).get_context_data(**kwargs)
-
-        self.request.session['session_var_name'] = "Value"
-
-        if date.today() == self.request.user.date_joined.date():
-            alert = True
-        else:
-            alert = False
-
-
-        x = 0
-        progress = Progress.objects.filter(user=self.request.user).first()
-
-        if progress.intro:
-            x += 10
-        if progress.elevator_pitch:
-            x += 10
-        if progress.customer_persona:
-            x += 10
-        if progress.empathy_map:
-            x += 10
-        if progress.seo:
-            x += 10
-        if progress.google:
-            x += 10
-        if progress.content:
-            x += 10
-        if progress.tech:
-            x += 10
-        if progress.next_steps:
-            x += 10
-
-        context['projects_list'] = Project.objects.filter(team__user=self.request.user).order_by('title')
-        context['alert'] = alert
-        context['progress'] = x
-
-        return context
-
-class ProjectsView(generic.ListView):
-    template_name = 'projects.html'
-    context_object_name = 'projects_list'
-    model = Project
-
-
-    def get_context_data(self, **kwargs):
-        context = super(ProjectsView, self).get_context_data(**kwargs)
-
-        self.request.session['session_var_name'] = "Value"
-
-        if date.today() == self.request.user.date_joined.date():
-            alert = True
-        else:
-            alert = False
-
-        context['projects_list'] = Project.objects.filter(team__user=self.request.user).order_by('title')
-        context['alert'] = alert
-        context['billing'] = Billing.objects.filter(user=self.request.user).first()
-
-        return context
-
-class AdminpanelView(generic.ListView):
-    template_name = 'adminpanel.html'
-    model = Project
-
-    def get_context_data(self, **kwargs):
-        context = super(AdminpanelView, self).get_context_data(**kwargs)
-
-        if date.today() == self.request.user.date_joined.date():
-            alert = True
-        else:
-            alert = False
-
-        context['concept_list'] = Project.objects.filter(stage = "Concept")
-        context['scale_list'] = Project.objects.filter(stage = "Scale")
-        context['seed_list'] = Project.objects.filter(stage = "Seed 1" or "Seed 2" or "Seed 3")
-        context['seedlaunch_list'] = Project.objects.filter(stage = "Seed Launch")
-        context['launch_list'] = Project.objects.filter(stage = "Launch")
-
-        # #APAC S projects list
-        # context['APACSSeed_list'] = Project.objects.filter(zone = "APAC S", stage = "Seed 1")
-        # context['APACSSeedLaunch_list'] = Project.objects.filter(zone = "APAC S", stage = "Seed Launch")
-        # context['APACSLaunch_list'] = Project.objects.filter(zone = "APAC S", stage = "Launch")
-
-        # #APAC N projects list
-        # context['APACNSeed_list'] = Project.objects.filter(zone = "APAC N", stage = "Seed 1")
-        # context['APACNSeedLaunch_list'] = Project.objects.filter(zone = "APAC N", stage = "Seed Launch")
-        # context['ApacnLaunch_list'] = Project.objects.filter(zone = "APAC N", stage = "Launch")
-
-        # #EU projects list
-        # context['EUSeed_list'] = Project.objects.filter(zone = "EU", stage = "Seed 1")
-        # context['EUSeedLaunch_list'] = Project.objects.filter(zone = "EU", stage = "Seed Launch")
-        # context['EULaunch_list'] = Project.objects.filter(zone = "EU", stage = "Launch")
-
-        # #NAZ projects list
-        # context['NAZSeed_list'] = Project.objects.filter(zone = "NAZ", stage = "Seed 1")
-        # context['NAZSeedLaunch_list'] = Project.objects.filter(zone = "NAZ", stage = "Seed Launch")
-        # context['NAZLaunch_list'] = Project.objects.filter(zone = "NAZ", stage = "Launch")
-
-        # #MAZ projects list
-        # context['MAZSeed_list'] = Project.objects.filter(zone = "MAZ", stage = "Seed 1")
-        # context['MAZSeedLaunch_list'] = Project.objects.filter(zone = "MAZ", stage = "Seed Launch")
-        # context['MAZLaunch_list'] = Project.objects.filter(zone = "MAZ", stage = "Launch")
-
-        # #LAS/LAN projects list
-        # context['LANSeed_list'] = Project.objects.filter(zone = "LAN LAS", stage = "Seed 1")
-        # context['LANSeedLaunch_list'] = Project.objects.filter(zone = "LAN LAS", stage = "Seed Launch")
-        # context['LANLaunch_list'] = Project.objects.filter(zone = "LAN LAS", stage = "Launch")
-
-        context['killed_list'] = Project.objects.filter(status = "Killed")
-        context['active_list'] = Project.objects.filter(status = "Active")
-        context['users_list'] = User.objects.filter()
-        context['assumptions_list'] = Assumption.objects.filter()
-        context['comments_list'] = Comment.objects.filter()
-
-        context['alert'] = alert
-
-        return context
-
-class FaqView(generic.TemplateView):
-    template_name = 'faq.html'
-
-class TutorialView(generic.TemplateView):
-    template_name = 'tutorial.html'
-
-class InfoView(generic.CreateView):
-    model = Profile
-    form_class = ProfileForm
-    template_name = 'registration/info.html'
-
-    def form_valid(self, form):
-        p = form.save(commit=False)
-        p.user = self.request.user
-
-        user = self.request.user
-        user.first_name = self.request.POST.get('first_name', '')
-        user.last_name = self.request.POST.get('last_name', '')
-        user.save()
-
-
-
-        #if there is an existent profile, edit it
-        profile = Profile.objects.filter(user=self.request.user).first()
-        if profile is not None:
-            p.id = profile.id
-
-        p.save()
-        return redirect('/projects/')
-
-
-@csrf_exempt
-def model_form(request, name='', project_id=0, id=0):
-    forms = {
-        'summary': SummaryForm,
-        'past': PastForm,
-        'future': FutureForm,
-        'elevator': ElevatorForm,
-        'primary': PrimaryForm,
-        'secondary': SecondaryForm,
-        'empathy': EmpathyForm,
-        'assumption': AssumptionForm,
-        'dvf': DvfForm,
-        'link': LinkForm,
-        'project': ProjectForm,
-        'file': FileForm,
-        'objective':ObjectiveForm,
-        'wallet': WalletForm
-    }
-
-    instances = {
-        'summary': Summary,
-        'past': Past,
-        'future': Future,
-        'elevator': Elevator,
-        'primary': Primary,
-        'secondary': Secondary,
-        'empathy': Empathy,
-        'assumption': Assumption,
-        'dvf': Dvf,
-        'link': Link,
-        'project': Project,
-        'file': File,
-        'objective': Objective,
-        'wallet': Wallet
-    }
-
-    method = request.method
-
-    if method == 'DELETE':
-        obj = instances.get(name, None)
-        if obj is None:
-            raise Http404('instance name not found')
-
-        doc = obj.objects.filter(pk=id).first()
-        if doc is None:
-            raise Http404('id not found')
-
-        doc.user = request.user
-        doc.delete()
-        return JsonResponse({'status': 'ok'})
-
-    form = forms.get(name, None)
-    if form is None:
-        raise Http404('name not found')
-
-    if id == 0:
-        f = form() if method == 'GET' else form(data=request.POST)
-    else:
-        obj = instances.get(name, None)
-        if obj is None:
-            raise Http404('instance name not found')
-
-        try:
-            if name == 'project':
-                instance = obj.objects.get(pk=id)
-            else:
-                instance = obj.objects.get(project_id=project_id, pk=id)
-
-            f = form(instance=instance) if method == 'GET' else form(instance=instance, data=request.POST)
-        except:
-            raise Http404('id not found')
-
-    context = {
-        'form': f,
-        'name': name,
-        'project_id': project_id,
-        'id': id,
-    }
-
-    if method == 'GET':
-        return render(request, 'form.html', context)
-
-    if not f.is_valid():
-        context['form'] = f
-        return render(request, 'form.html', context, status=400)
-
-    project = Project.objects.filter(pk=project_id).first()
-    if project is None:
-        raise Http404('project not foud')
-
-    doc = f.save(commit=False)
-    doc.user = request.user
-    if name != 'project':
-        doc.project = project
-    doc.save()
-
-    return JsonResponse({'status': 'ok'})
-
-def project_form(request, id=0):
-    method = request.method
-
-    if id == 0:
-        f = ProjectFormCreate() if method == 'GET' else ProjectFormCreate(data=request.POST)
-    else:
-        try:
-            instance = Project.objects.get(pk=id)
-            f = ProjectForm(instance=instance) if method == 'GET' else ProjectForm(instance=instance, data=request.POST)
-        except:
-            raise Http404('id not found')
-    context = {
-        'form': f,
-        'id': id,
-        'hidestatus': True if id == 0 else False,
-        'error': '',
-    }
-
-    if method == 'GET':
-        return render(request, 'form.html', context)
-
-    if not f.is_valid():
-        context['form'] = f
-        return render(request, 'form.html', context, status=400)
-
-    try:
-        p = f.save(commit=False)
-        p.slug = slugify(p.title)
-        if id == 0:
-            p.status = 'Draft'
-        p.user = request.user
-        p.save()
-
-        if id==0:
-            doc = Team()
-            doc.permission = "edit"
-            doc.user = request.user
-            doc.project = p
-            doc.save()
-    except:
-        context['error'] = 'Project name already taken'
-        return render(request, 'form.html', context, status=400)
-
-    return JsonResponse({'status': 'ok'})
-
-def comment_save(request):
-    if request.method != 'POST':
-        raise Http404
-
-    form = CommentForm(data=request.POST)
-    if not form.is_valid():
-        return JsonResponse(form.errors, status=400)
-
-    doc = form.save(commit=False)
-    doc.user = request.user
-    doc.save()
-    return JsonResponse({'status': 'ok'})
-
-def file_save(request):
-    if request.method != 'POST':
-        raise Http404
-
-    form = FileForm(request.POST, request.FILES)
-    if not form.is_valid():
-        return JsonResponse(form.errors, status=400)
-
-    doc = form.save(commit=False)
-    doc.user = request.user
-    doc.save()
-    return redirect(request.META['HTTP_REFERER'])
-
-
-@csrf_exempt
-def save_learn_progress(request, section=0, value=0):
-    if request.method != 'POST':
-        raise Http404
-
-    doc = Progress.objects.filter(user=request.user).first()
-    if doc is None:
-        doc = Progress()
-
-    section = int(section)
-    value = int(value)
-    opt = True if value == 1 else False
-
-    if section == 0:
-        doc.intro = opt
-    elif section == 1:
-        doc.elevator_pitch = opt
-    elif section == 2:
-        doc.customer_persona = opt
-    elif section == 3:
-        doc.empathy_map = opt
-    elif section == 4:
-        doc.seo = opt
-    elif section == 5:
-        doc.google = opt
-    elif section == 6:
-        doc.content = opt
-    elif section == 7:
-        doc.tech = opt
-    elif section == 11:
-        doc.next_steps = opt
-
-    doc.user = request.user
-    doc.save()
-    return JsonResponse({'status': 'ok'})
-
-
-def send_invite(request, project_id=0):
-    if request.method not in ['POST', 'GET']:
-        raise Http404
-
-    project = Project.objects.filter(pk=project_id).first()
-    if project is None:
-        raise Http404
-
-    context = {
-        'form': InviteForm(),
-        'project': project,
-        'project_id': project_id,
-    }
-
-    if request.method == 'GET':
-        return render(request, 'form.html', context)
-
-    form = InviteForm(request.POST)
-    if not form.is_valid():
-        context['form'] = form
-        return render(request, 'form.html', context, status=400)
-
-    perm = Team.objects.filter(
-        project__id=project_id,
-        permission='edit',
-        user=request.user
-    ).exists()
-
-    if not perm:
-        raise Http404
-
-    doc = form.save(commit=False)
-    doc.user = request.user
-    doc.key = get_random_string(length=32)
-    doc.project = project
-    doc.save()
-
-    host = request.META['HTTP_HOST'] + '/invite/claim?key='
-
-    plaintext = get_template('mails/invite.txt')
-    context = {
-        'link': host+doc.key,
-        'project': project,
-        'user': request.user,
-    }
-
-    text_content = plaintext.render(context)
-
-    send_mail(
-        'You have been invited to Box OS',
-        text_content,
-        'admin@box-os.com',
-        [request.POST.get('email')],
-        fail_silently=True,
-    )
-
-    return JsonResponse({'status': 'ok'})
-
-
-@csrf_exempt
-def leave_project(request, project_id):
-    if request.method != 'POST':
-        raise Http404
-
-    Team.objects.filter(project__id=project_id, user=request.user).delete()
-    return JsonResponse({'status': 'ok'})
-
-
-def check_invite(request):
-    if request.method != 'GET':
-        raise Http404
-
-    key = request.GET.get('key', None)
-    if key is None:
-        raise Http404
-
-    invite = Invite.objects.filter(
-        user=request.user,
-        key=key,
-        used=False).first()
-
-    if invite is None:
-        raise Http404
-
-    doc = Team()
-    doc.user = request.user
-    doc.project = invite.project
-    doc.permission = invite.permission
-    doc.save()
-
-    invite.used = True
-    invite.save()
-
-    return redirect('/')
-
-def tools(request):
-    items = Tool.objects.all()
-    data = serializers.serialize("json", items, use_natural_foreign_keys=True)
-    return HttpResponse(data, content_type="application/json")
-
-def library(request):
-    items = Resource.objects.all()
-    data = serializers.serialize("json", items, use_natural_foreign_keys=True)
-    return HttpResponse(data, content_type="application/json")

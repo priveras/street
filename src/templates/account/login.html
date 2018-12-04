@@ -1,111 +1,98 @@
-<!DOCTYPE html>
-<html lang="en">
-    {% load staticfiles %}
-    {% load widget_tweaks %}
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta content="BOX OS helps manage early stage businesses by leveraging start-up processes and mechanics" name="description" />
-        <meta content="Coderthemes" name="author" />
-        <!-- App favicon -->
-        <link rel="shortcut icon" href="assets/images/favicon.ico">
+{% extends "account/base.html" %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+{% block content %}
+<!-- CONTENT
+================================================== -->
+<div class="container-fluid">
+  <div class="row align-items-center justify-content-center">
+    <div class="col-12 col-md-5 col-lg-6 col-xl-4 px-lg-6 my-5">
+          
+      <!-- Heading -->
+      <h1 class="display-4 text-center mb-3">
+        Sign in
+      </h1>
+      
+      <!-- Subheading -->
+      <p class="text-muted text-center mb-5">
+        Free access to our dashboard.
+      </p>
+      {% if form.errors %}
+        {% for field in form %}
+            {% for error in field.errors %}
+                <div class="alert alert-danger">{{ error|escape }}</div>
+            {% endfor %}
+        {% endfor %}
+        {% for error in form.non_field_errors %}
+          <div class="alert alert-danger">{{ error|escape }}</div>
+        {% endfor %}
+      {% endif %}
+      
+      <!-- Form -->
+      <form class="login" method="POST" action="{% url 'account_login' %}">
+        {% csrf_token %}
 
-        <!-- App css -->
-        <link href="{% static 'assets/css/icons.min.css' %}" rel="stylesheet" type="text/css" />
-        <link href="{% static 'assets/css/app.css' %}" rel="stylesheet" type="text/css" />
+        <!-- Email address -->
+        <div class="form-group">
 
-        <!-- Global site tag (gtag.js) - Google Analytics -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-126693419-1"></script>
-        <script>
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
+          <!-- Label -->
+          <label>Email Address</label>
 
-          gtag('config', 'UA-126693419-1');
-        </script>
+          <!-- Input -->
+          {{ form.login|add_class:"form-control"|attr:"placeholder:name@address.com"|attr:"required"|attr:"autofocus"|attr:"type:email" }}
 
-    </head>
-
-    <body class="auth-fluid-pages pb-0">
-
-        <div class="auth-fluid">
-            <!--Auth fluid left content -->
-            <div class="auth-fluid-form-box">
-                <div class="align-items-center d-flex h-100">
-                    <div class="card-body">
-
-                        <!-- Logo -->
-                        <div class="auth-brand text-center text-lg-left">
-                            <a href="">
-                                <span><img src="{% static 'assets/images/logo-dark.png' %}" alt="" height="18"></span>
-                            </a>
-                        </div>
-
-                        <!-- title-->
-                        <h4 class="mt-0">Sign In</h4>
-                        <p class="text-muted mb-4">Enter your email address and password to access account.</p>
-                        <!-- form -->
-                        {% if form.errors %}
-                            {% for field in form %}
-                                {% for error in field.errors %}
-                                    <div class="alert alert-danger">{{ error|escape }}</div>
-                                {% endfor %}
-                            {% endfor %}
-                            {% for error in form.non_field_errors %}
-                                <div class="alert alert-danger">{{ error|escape }}</div>
-                            {% endfor %}
-                        {% endif %}
-                        <form class="login" method="POST" action="{% url 'account_login' %}">
-                            {% csrf_token %}
-                            <div class="form-group">
-                                <label for="emailaddress">Email address</label>
-                                {{ form.login|add_class:"form-control"|attr:"placeholder:name@address.com"|attr:"required"|attr:"autofocus"|attr:"type:email" }}
-                            </div>
-                            <div class="form-group">
-                                <a href="{% url 'account_reset_password' %}" class="text-muted float-right"><small>Forgot your password?</small></a>
-                                <label for="password">Password</label>
-                                {{ form.password|add_class:"form-control"|attr:"placeholder:Enter your password"|attr:"required"|attr:"type:password" }}
-                            </div>
-                            <div class="form-group mb-3">
-                                <div class="custom-control custom-checkbox">
-                                    {{ form.remember|attr:"type:checkbox"|attr:"checked"|add_class:"custom-control-input" }}
-                                    <label class="custom-control-label" for="checkbox-signin">Remember me</label>
-                                </div>
-                            </div>
-                            <div class="form-group mb-0 text-center">
-                                <button class="btn btn-primary btn-block" type="submit"><i class="mdi mdi-login"></i> Log In </button>
-                            </div>
-                        </form>
-                        <!-- end form-->
-
-                        <!-- Footer-->
-                        <footer class="footer footer-alt">
-                            <p class="text-muted">Don't have an account? <a href="{{ signup_url }}" class="text-dark ml-1"><b>Sign Up</b></a></p>
-                        </footer>
-
-                    </div> <!-- end .card-body -->
-                </div> <!-- end .align-items-center.d-flex.h-100-->
-            </div>
-            <!-- end auth-fluid-form-box-->
-
-            <!-- Auth fluid right content -->
-            <div class="auth-fluid-right text-center">
-                <div class="auth-user-testimonial">
-                    <h2 class="mb-3">UA Framework is great!</h2>
-                    <p class="lead"><i class="mdi mdi-format-quote-open"></i> The best way to learn about user acquisition and apply<br> learnings to real projects <i class="mdi mdi-format-quote-close"></i>
-                    </p>
-                    <p>
-                        - Louis Aronne, Founder Saturday Session 
-                    </p>
-                </div> <!-- end auth-user-testimonial-->
-            </div>
-            <!-- end Auth fluid right content -->
         </div>
-        <!-- end auth-fluid-->
 
-        <!-- App js -->
-        <script src="{% static 'assets/js/app.min.js' %}"></script>
+        <!-- Password -->
+        <div class="form-group">
 
-    </body>
+          <div class="row">
+            <div class="col">
+                  
+              <!-- Label -->
+              <label>Password</label>
 
-</html>
+            </div>
+            <div class="col-auto">
+              
+              <!-- Help text -->
+              <a href="{% url 'account_reset_password' %}" class="form-text small text-muted">
+                Forgot password?
+              </a>
+
+            </div>
+          </div> <!-- / .row -->
+
+          <!-- Input group -->
+          <div class="input-group input-group-merge">
+
+            <!-- Input -->
+            {{ form.password|add_class:"form-control"|attr:"placeholder:Enter your password"|attr:"required"|attr:"type:password" }}
+
+          </div>
+        </div>
+
+        <!-- Submit -->
+        <button class="btn btn-lg btn-block btn-primary mb-3" type="submit">
+          Sign in
+        </button>
+
+        <!-- Link -->
+        <p class="text-center">
+          <small class="text-muted text-center">
+            Don't have an account yet? <a href="{% url 'account_signup' %}">Sign up</a>.
+          </small>
+        </p>
+        
+      </form>
+
+    </div>
+    <div class="col-12 col-md-7 col-lg-6 col-xl-8 d-none d-lg-block">
+      
+      <!-- Image -->
+      <div class="bg-cover vh-100 mt--1 mr--3" style="background-image: url({% static 'assets/img/covers/auth-side-cover.jpg' %});"></div>
+
+    </div>
+  </div> <!-- / .row -->
+</div>
+{% endblock %}

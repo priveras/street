@@ -2,145 +2,42 @@ from django.db import models
 from django.contrib.auth.models import User
 from pinax.eventlog.models import log
 from datetime import datetime, timezone
+from django.contrib.postgres.fields import ArrayField
 
-
-class Billing(models.Model):
-    _SILVER = 'silver'
-    _GOLD = 'gold'
-    _PLATINUM = 'platinum'
-
-    CHOICES = (
-        (_SILVER, _SILVER),
-        (_GOLD, _GOLD),
-        (_PLATINUM, _PLATINUM),
-    )
-
-    user = models.ForeignKey(User)
-    plan = models.CharField(choices=CHOICES, max_length=20)
-    priority = models.IntegerField(default=1)
-    token = models.CharField(max_length=100)
-    customer = models.CharField(max_length=100)
-    status = models.IntegerField(default=1)
-    valid_until = models.DateTimeField(null=True, blank=True)
+class Event(models.Model):
+    user = models.ForeignKey(User, blank=True, on_delete=models.CASCADE)
+    title = models.CharField(max_length=300)
+    text = models.TextField(blank=True)
+    location = models.CharField(max_length=300)
+    link = models.URLField()
+    image = models.FileField(upload_to='images/%Y%m%d', blank=True)
+    date = models.DateField()
+    time = models.TimeField()
     created_at = models.DateTimeField(db_index=True, auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now_add=True)
-
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return str(self.user)
 
-class Project(models.Model):
-
-    STATUS_ACTIVE = 'Active'
-    STATUS_ARCHIVED = 'Archived'
-    STATUS_KILLED = 'Killed'
-    STATUS_DRAFT = 'Draft'
-
-    STATUS_ALL = (
-        (STATUS_ACTIVE, 'Active'),
-        (STATUS_ARCHIVED, 'Archived'),
-        (STATUS_KILLED, 'Killed'),
-        (STATUS_DRAFT, 'Draft'),
-        )
-
-    user = models.ForeignKey(User, blank=True, null=True)
-    title = models.CharField(max_length=200, blank=False, null=False)
-    slug = models.SlugField(max_length=200, unique=True)
-    description = models.TextField(blank=True)
-    status = models.CharField(choices=STATUS_ALL, max_length=200)
-    updated_at = models.DateTimeField(auto_now=True)
+class Post(models.Model):
+    user = models.ForeignKey(User, blank=True, on_delete=models.CASCADE)
+    text = models.TextField(blank=True)
+    image = models.FileField(upload_to='images/%Y%m%d', blank=True)
     created_at = models.DateTimeField(db_index=True, auto_now_add=True)
-
-    def save(self, *args, **kwargs):
-        if not self.id:
-            log(
-                user=self.user,
-                action='CREATE_PROJECT',
-                obj=self,
-                extra={
-                    "project_slug": self.slug,
-                    "project": self.title,
-                    "description": self.description,
-                    "status": self.status,
-                    "event": "created project"
-                    }
-                )
-        else:
-            log(
-                user=self.user,
-                action='EDIT_PROJECT',
-                obj=self,
-                extra={
-                    "project_id": self.id,
-                    "project": self.title,
-                    "description": self.description,
-                    "status": self.status,
-                    "event": "edited project"
-                    }
-                )
-
-        super(Project, self).save(args, kwargs)
-
-    def __str__(self):
-        return str(self.title)
-
-class Elevator(models.Model):
-    user = models.ForeignKey(User)
-    project = models.ForeignKey(Project)
-    text = models.TextField()
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return str(self.user)
+
+class Comment(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE,)
+    post = models.ForeignKey(Post, related_name="comments", on_delete=models.CASCADE, null=True)
+    text = models.TextField(blank=True)
     created_at = models.DateTimeField(db_index=True, auto_now_add=True)
-
-    def save(self, *args, **kwargs):
-
-        if not self.id:
-            log(
-                user=self.user,
-                action='ADD_ELEVATOR',
-                obj=self,
-                extra={
-                    "project_id": self.project.id,
-                    "project": self.project.title,
-                    "text": self.text,
-                    "event": "added elevator pitch"
-                    }
-                )
-        else:
-            log(
-                user=self.user,
-                action='EDIT_ELEVATOR',
-                obj=self,
-                extra={
-                    "project_id": self.project.id,
-                    "project": self.project.title,
-                    "text": self.text,
-                    "event": "edited elevator pitch"
-                    }
-                )
-
-        super(Elevator, self).save(args, kwargs)
-
-    def delete(self, *args, **kwargs):
-
-        log(
-            user=self.user,
-            action='DELETE_ELEVATOR',
-            obj=self,
-            extra={
-                "project_id": self.project.id,
-                "project": self.project.title,
-                "text": self.text,
-                "event": "deleted elevator pitch"
-                }
-            )
-
-        super(Elevator, self).delete(args, kwargs)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return str(self.project)
-
-    def __str__(self):
-        return str(self.title)
+        return str(self.user)
 
 class Resource(models.Model):
     user = models.ForeignKey(User)
@@ -155,1024 +52,438 @@ class Resource(models.Model):
     def __str__(self):
         return str(self.title)
 
-class Tool(models.Model):
+class Job(models.Model):
     user = models.ForeignKey(User)
-    title = models.CharField(max_length=300)
+    company = models.CharField(max_length=300, blank=True)
+    title = models.CharField(max_length=300, blank=True)
     excerpt = models.TextField(blank=True)
-    image = models.FileField(upload_to='images/tools/%Y%m%d', null=True)
-    link = models.CharField(max_length=300)
-    category = models.CharField(max_length=500)
-    featured = models.BooleanField(default=False)
+    link = models.CharField(max_length=300, blank=True)
+    image = models.FileField(upload_to='images/%Y%m%d', blank=True)
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(db_index=True, auto_now_add=True)
 
     def __str__(self):
         return str(self.title)
 
-class Progress(models.Model):
-    user = models.ForeignKey(User, unique=True)
-    intro = models.BooleanField(default=False, blank=True)
-    elevator_pitch = models.BooleanField(default=False, blank=True)
-    customer_persona = models.BooleanField(default=False, blank=True)
-    empathy_map = models.BooleanField(default=False, blank=True)
-    obj = models.BooleanField(default=False, blank=True)
-    seo = models.BooleanField(default=False, blank=True)
-    google = models.BooleanField(default=False, blank=True)
-    content = models.BooleanField(default=False, blank=True)
-    tech = models.BooleanField(default=False, blank=True)
-    next_steps = models.BooleanField(default=False, blank=True)
-
-    def __str__(self):
-        return str(self.user)
-
-
-class Tutorial(models.Model):
-    title = models.CharField(max_length=300)
-    content = models.TextField(blank=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    created_at = models.DateTimeField(db_index=True, auto_now_add=True)
 
 class Profile(models.Model):
-    user = models.ForeignKey(User, unique=True)
-    job_title = models.CharField(max_length=200)
-    location = models.CharField(max_length=200)
-    company = models.CharField(max_length=200)
-    profile_image = models.FileField(upload_to='images/%Y%m%d', null=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def save(self, *args, **kwargs):
-        if not self.id:
-            log(
-                user=self.user,
-                action='CREATE_PROFILE',
-                obj=self,
-                extra={
-                    "job_title": self.job_title,
-                    "location": self.location,
-                    "company": self.company,
-                    "event": "joined UA Framework"
-                    }
-                )
-        else:
-            log(
-                user=self.user,
-                action='EDIT_PROFILE',
-                obj=self,
-                extra={
-                    "job_title": self.job_title,
-                    "location": self.location,
-                    "company": self.company,
-                    "event": "edited profile"
-                    }
-                )
-
-        super(Profile, self).save(args, kwargs)
-
-    def __str__(self):
-        return str(self.user)
-
-
-class Team(models.Model):
-    user = models.ForeignKey(User)
-    project = models.ForeignKey(Project)
-    permission_choices = (
-            ('edit', 'Edit'),
-            ('view', 'View'),
-            )
-    permission = models.CharField(choices=permission_choices, max_length=200)
-    updated_at = models.DateTimeField(auto_now=True)
-    created_at = models.DateTimeField(db_index=True, auto_now_add=True)
-
-    def save(self, *args, **kwargs):
-        if not self.id:
-            log(
-                user=self.user,
-                action='ADD_TEAM',
-                obj=self,
-                extra={
-                    "project_id": self.project.id,
-                    "project": self.project.title,
-                    "permission": self.permission,
-                    "event": "joined project"
-                    }
-                )
-        else:
-            log(
-                user=self.user,
-                action='EDIT_TEAM',
-                obj=self,
-                extra={
-                    "project_id": self.project.id,
-                    "project": self.project.title,
-                    "permission": self.permission,
-                    "event": "permission updated"
-                    }
-                )
-
-        super(Team, self).save(args, kwargs)
-
-    def __str__(self):
-        return str(self.user)
-
-class Comment(models.Model):
-    project = models.ForeignKey(Project)
-    user = models.ForeignKey(User)
-    text = models.TextField()
-    updated_at = models.DateTimeField(auto_now=True)
-    created_at = models.DateTimeField(db_index=True, auto_now_add=True)
-
-    def save(self, *args, **kwargs):
-
-        if not self.id:
-            log(
-                user=self.user,
-                action='ADD_COMMENT',
-                obj=self,
-                extra={
-                    "project_id": self.project.id,
-                    "project": self.project.title,
-                    "text": self.text,
-                    "event": "added a comment"
-                    }
-                )
-
-        super(Comment, self).save(args, kwargs)
-
-    def __str__(self):
-        return str(self.user)
-
-class Link(models.Model):
-    project = models.ForeignKey(Project)
-    user = models.ForeignKey(User)
-    title = models.CharField(max_length=500, null=False)
-    link = models.URLField(null=False)
-    updated_at = models.DateTimeField(auto_now=True)
-    created_at = models.DateTimeField(db_index=True, auto_now_add=True)
-
-    def __str__(self):
-        return str(self.project)
-
-    def save(self, *args, **kwargs):
-
-        if not self.id:
-            log(
-                user=self.user,
-                action='ADD_LINK',
-                obj=self,
-                extra={
-                    "project_id": self.project.id,
-                    "project": self.project.title,
-                    "title": self.title,
-                    "link": self.link,
-                    "event": "added link"
-                    }
-                )
-
-        super(Link, self).save(args, kwargs)
-
-    def delete(self, *args, **kwargs):
-
-        log(
-            user=self.user,
-            action='DELETE_LINK',
-            obj=self,
-            extra={
-                "project_id": self.project.id,
-                "project": self.project.title,
-                "title": self.title,
-                "link": self.link,
-                "event": "deleted link"
-                }
-            )
-
-        super(Link, self).delete(args, kwargs)
-
-    def __str__(self):
-        return str(self.user)
-
-class Dvf(models.Model):
-    user = models.ForeignKey(User)
-    project = models.ForeignKey(Project)
-    stage_choices = (
-            ('seed', 'Seed'),
-            ('seedlaunch', 'Seed Launch'),
-            ('launch', 'Launch'),
-            )
-    stage = models.CharField(choices=stage_choices, max_length=200)
-    status_choices = (
-            ('On Track', 'On Track'),
-            ('Delayed', 'Delayed'),
-            ('At Risk', 'At Risk'),
-            )
-    desirability = models.CharField(choices=status_choices, max_length=200)
-    viability = models.CharField(choices=status_choices, max_length=200)
-    feasibility = models.CharField(choices=status_choices, max_length=200)
-    updated_at = models.DateTimeField(auto_now=True)
-    created_at = models.DateTimeField(db_index=True, auto_now_add=True)
-
-    def save(self, *args, **kwargs):
-        if not self.id:
-            log(
-                user=self.user,
-                action='ADD_DVF',
-                obj=self,
-                extra={
-                    "project_id": self.project.id,
-                    "project": self.project.title,
-                    "stage": self.stage,
-                    "desirability": self.desirability,
-                    "viability": self.viability,
-                    "feasibility": self.feasibility,
-                    "event": "added DVF"
-                    }
-                )
-        else:
-
-            log(
-                user=self.user,
-                action='EDIT_DVF',
-                obj=self,
-                extra={
-                    "project_id": self.project.id,
-                    "project": self.project.title,
-                    "stage": self.stage,
-                    "desirability": self.desirability,
-                    "viability": self.viability,
-                    "feasibility": self.feasibility,
-                    "event": "edited dvf"
-                    }
-                )
-
-        super(Dvf, self).save(args, kwargs)
-
-    def get_active_user_count(User):
-        now = datetime.now(timezone.utc)
-        count_active = 0
-        active_user_list = User.objects.all()
-
-        for u in active_user_list:
-            if (now - u.last_login).days > 14:
-                count_active += 1
-
-        return count_active
-
-
-    def time_in_stage(self):
-        now = datetime.now(timezone.utc)
-        return (now - self.created_at).days
-
-    def getTimeSeed(self):
-        dvf_list_seed = Dvf.objects.filter(stage="seed")
-        dvfTotal = 0
-        now = datetime.now(timezone.utc)
-        dvf_seed_count = 0
-        dvf_seed_count_biz = 0
-
-        for d in dvf_list_seed:
-            if d.project.stage in ('Seed 1', 'Seed 2', 'Seed 3'):
-                dvf_seed_count += 1
-                dvf_seed_count_biz += 1
-                dvfTotal += ((now-d.created_at).days)
-
-        if (dvf_seed_count == 0):
-            dvf_seed_count = 0
-
-        else:
-            dvf_seed_count = dvfTotal/dvf_seed_count
-
-        return dvf_seed_count
-
-    def getTimeSeedLaunch(self):
-        dvf_list_seedlaunch = Dvf.objects.filter(stage="seedlaunch")
-        seedlaunch_total = 0
-        time_diff = datetime.now(timezone.utc)
-        dvf_sl_count = 0
-        sl_biz = 0
-
-        for d in dvf_list_seedlaunch:
-            if d.project.stage in ('Seed Launch'):
-                seedlaunch_total += 1
-                dvf_sl_count += 1
-                sl_biz += ((time_diff-d.created_at).days)
-
-        if (sl_biz == 0):
-            sl_biz = 0
-
-        else:
-            sl_biz = seedlaunch_total/(sl_biz)
-
-        return sl_biz
-
-    def getTimeLaunch(self):
-        dvf_list_launch = Dvf.objects.filter(stage="launch")
-        launch_total = 0
-        time_diffs = datetime.now(timezone.utc)
-        dvf_l_count = 0
-        l_biz = 0
-
-        for d in dvf_list_launch:
-            if d.project.stage in ('Launch'):
-                launch_total += 1
-                dvf_l_count += 1
-                l_biz += ((time_diffs-d.created_at).days)
-
-        if (dvf_l_count == 0):
-            dvf_l_count = 0
-
-        else:
-            l_biz = dvf_l_count/l_biz
-
-        return l_biz
-
-
-
-
-    def __str__(self):
-        return str(self.project)
-
-class Zone(models.Model):
-    project = models.ForeignKey(Project)
-
-    ZONE_APACS = 'APAC S'
-    ZONE_APACN = 'APAC N'
-    ZONE_EU = 'EU'
-    ZONE_NAZ = 'NAZ'
-    ZONE_MAZ = 'MAZ'
-    ZONE_LAS = 'LAN LAS'
-
-    ZONES = (
-        (ZONE_APACS, 'APAC S'),
-        (ZONE_APACN, 'APAC N'),
-        (ZONE_EU, 'EU'),
-        (ZONE_NAZ, 'NAZ'),
-        (ZONE_MAZ, 'MAZ'),
-        (ZONE_LAS, 'LAN LAS'),
-        )
-
-    zone = models.CharField(choices=ZONES, max_length=200, blank=True)
-
-    def __str__(self):
-        return str(self.project)
-
-class Assumption(models.Model):
-    user = models.ForeignKey(User)
-    project = models.ForeignKey(Project)
-    stage_choices = (
-            ('seed', 'Seed'),
-            ('seedlaunch', 'Seed Launch'),
-            ('launch', 'Launch'),
-            )
-    stage = models.CharField(choices=stage_choices, max_length=200)
-    dvf_choices = (
-            ('desirability', 'Desirability'),
-            ('viability', 'Viability'),
-            ('feasibility', 'Feasibility'),
-            )
-    dvf = models.CharField(choices=dvf_choices, max_length=200)
-    objective_id = models.TextField(blank=True)
-    assumption = models.TextField()
-    metric = models.TextField(blank=True)
-    learnings = models.TextField(blank=True)
-    status_choices = (
-            ('Validated', 'Validated'),
-            ('In Progress', 'In Progress'),
-            ('Invalidated', 'Invalidated'),
-            ('Inconclusive', 'Inconclusive'),
-            )
-    status = models.CharField(choices=status_choices, max_length=200)
-    scale_choices = (
-            ('high', 'High'),
-            ('medium', 'Medium'),
-            ('low', 'Low'),
-            )
-    uncertainty = models.CharField(choices=scale_choices, max_length=200, blank=True)
-    critical = models.CharField(choices=scale_choices, max_length=200, blank=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    created_at = models.DateTimeField(db_index=True, auto_now_add=True)
-
-    def save(self, *args, **kwargs):
-
-        if not self.id:
-            log(
-                user=self.user,
-                action='ADD_ASSUMPTION',
-                obj=self,
-                extra={
-                    "project_id": self.project.id,
-                    "project": self.project.title,
-                    "stage": self.stage,
-                    "dvf": self.dvf,
-                    "text": self.assumption,
-                    "metric": self.metric,
-                    "learnings": self.learnings,
-                    "status": self.status,
-                    "uncertainty": self.uncertainty,
-                    "critical": self.critical,
-                    "event": "added assumption"
-                    }
-                )
-        else:
-            log(
-                user=self.user,
-                action='EDIT_ASSUMPTION',
-                obj=self,
-                extra={
-                    "project_id": self.project.id,
-                    "project": self.project.title,
-                    "stage": self.stage,
-                    "dvf": self.dvf,
-                    "text": self.assumption,
-                    "metric": self.metric,
-                    "learnings": self.learnings,
-                    "status": self.status,
-                    "event": "edited assumption"
-                    }
-                )
-
-        super(Assumption, self).save(args, kwargs)
-
-    def delete(self, *args, **kwargs):
-
-        log(
-            user=self.user,
-            action='DELETE_ASSUMPTION',
-            obj=self,
-            extra={
-                "project_id": self.project.id,
-                "project": self.project.title,
-                "stage": self.stage,
-                "dvf": self.dvf,
-                "text": self.assumption,
-                "metric": self.metric,
-                "learnings": self.learnings,
-                "status": self.status,
-                "event": "deleted assumption"
-                }
-            )
-
-        super(Assumption, self).delete(args, kwargs)
-
-    def __str__(self):
-        return str(self.project)
-
-class Metric(models.Model):
-    user = models.ForeignKey(User)
-    project = models.ForeignKey(Project, null=True)
-    stage_choices = (
-            ('seed', 'Seed'),
-            ('seedlaunch', 'Seed Launch'),
-            ('launch', 'Launch'),
-            )
-    stage = models.CharField(choices=stage_choices, max_length=200)
-    dvf_choices = (
-            ('desirability', 'Desirability'),
-            ('viability', 'Viability'),
-            ('feasibility', 'Feasibility'),
-            )
-    dvf = models.CharField(choices=dvf_choices, max_length=200)
-    metric = models.TextField()
-    value = models.TextField(blank=True)
-    status_choices = (
-            ('On Track', 'On Track'),
-            ('Delayed', 'Delayed'),
-            ('At Risk', 'At Risk'),
-            )
-    status = models.CharField(choices=status_choices, max_length=200)
-    updated_at = models.DateTimeField(auto_now=True)
-    created_at = models.DateTimeField(db_index=True, auto_now_add=True)
-
-    def __str__(self):
-        return str(self.project)
-
-class Objective(models.Model):
-    user = models.ForeignKey(User)
-    project = models.ForeignKey(Project)
-    stage_choices = (
-            ('seed', 'Seed'),
-            ('seedlaunch', 'Seed Launch'),
-            ('launch', 'Launch'),
-            )
-    stage = models.CharField(choices=stage_choices, max_length=200)
-    id = models.AutoField(primary_key=True)
-    dvf_choices = (
-            ('problem', 'Problem'),
-            ('solution', 'Solution'),
-            ('business model', 'Business Model'),
-            )
-    dvf = models.CharField(choices=dvf_choices, max_length=200)
-    value = models.TextField(blank=True)
-    metric = models.TextField(blank=True)
-    status_choices = (
-            ('Complete', 'Complete'),
-            ('On Track', 'On Track'),
-            ('Delayed', 'Delayed'),
-            ('At Risk', 'At Risk'),
-            )
-    status = models.CharField(choices=status_choices, max_length=200)
-    updated_at = models.DateTimeField(auto_now=True)
-    created_at = models.DateTimeField(db_index=True, auto_now_add=True)
-
-    def save(self, *args, **kwargs):
-
-        if not self.id:
-            log(
-                user=self.user,
-                action='ADD_OBJECTIVE',
-                obj=self,
-                extra={
-                    "project_id": self.project.id,
-                    "project": self.project.title,
-                    "stage": self.stage,
-                    "dvf": self.dvf,
-                    "value": self.value,
-                    "metric": self.metric,
-                    "status": self.status,
-                    "event": "added objective"
-                    }
-                )
-        else:
-            log(
-                user=self.user,
-                action='EDIT_OBJECTIVE',
-                obj=self,
-                extra={
-                    "project_id": self.project.id,
-                    "project": self.project.title,
-                    "stage": self.stage,
-                    "dvf": self.dvf,
-                    "value": self.value,
-                    "metric": self.metric,
-                    "status": self.status,
-                    "event": "edited objective"
-                    }
-                )
-
-        super(Objective, self).save(args, kwargs)
-
-    def delete(self, *args, **kwargs):
-
-        log(
-            user=self.user,
-            action='DELETE_OBJECTIVE',
-            obj=self,
-            extra={
-                "project_id": self.project.id,
-                "project": self.project.title,
-                "stage": self.stage,
-                "dvf": self.dvf,
-                "value": self.value,
-                "metric": self.metric,
-                "status": self.status,
-                "event": "removed objective"
-                }
-            )
-
-        super(Objective, self).delete(args, kwargs)
-
-    def __str__(self):
-        return str(self.project)
-
-class Primary(models.Model):
-    user = models.ForeignKey(User)
-    project = models.ForeignKey(Project)
-    text = models.TextField()
-    status_choices = (
-            ('Validated', 'Validated'),
-            ('Testing', 'Testing'),
-            ('Invalidated', 'Invalidated'),
-            )
-    status = models.CharField(choices=status_choices, max_length=200)
-    updated_at = models.DateTimeField(auto_now=True)
-    created_at = models.DateTimeField(db_index=True, auto_now_add=True)
-
-    def save(self, *args, **kwargs):
-
-        if not self.id:
-            log(
-                user=self.user,
-                action='ADD_PRIMARY',
-                obj=self,
-                extra={
-                    "project_id": self.project.id,
-                    "project": self.project.title,
-                    "text": self.text,
-                    "status": self.status,
-                    "event": "added a primary persona"
-                    }
-                )
-        else:
-            log(
-                user=self.user,
-                action='EDIT_PROBLEM',
-                obj=self,
-                extra={
-                    "project_id": self.project.id,
-                    "project": self.project.title,
-                    "text": self.text,
-                    "status": self.status,
-                    "event": "edited primary persona"
-                    }
-                )
-
-        super(Primary, self).save(args, kwargs)
-
-    def delete(self, *args, **kwargs):
-
-        log(
-            user=self.user,
-            action='DELETE_PRIMARY',
-            obj=self,
-            extra={
-                "project_id": self.project.id,
-                "project": self.project.title,
-                "text": self.text,
-                "status": self.status,
-                "event": "deleted primary persona"
-                }
-            )
-
-        super(Primary, self).delete(args, kwargs)
-
-    def __str__(self):
-        return str(self.project)
-
-class Summary(models.Model):
-    user = models.ForeignKey(User)
-    project = models.ForeignKey(Project)
-    stage_choices = (
-            ('seed', 'Seed'),
-            ('seedlaunch', 'Seed Launch'),
-            ('launch', 'Launch'),
-            )
-    stage = models.CharField(choices=stage_choices, max_length=200)
-    text = models.TextField()
-    updated_at = models.DateTimeField(auto_now=True)
-    created_at = models.DateTimeField(db_index=True, auto_now_add=True)
-
-    def save(self, *args, **kwargs):
-
-        if not self.id:
-            log(
-                user=self.user,
-                action='ADD_SUMMARY',
-                obj=self,
-                extra={
-                    "project_id": self.project.id,
-                    "project": self.project.title,
-                    "text": self.text,
-                    "stage": self.stage,
-                    "event": "added summary"
-                    }
-                )
-        else:
-            log(
-                user=self.user,
-                action='EDIT_SUMMARY',
-                obj=self,
-                extra={
-                    "project_id": self.project.id,
-                    "project": self.project.title,
-                    "text": self.text,
-                    "stage": self.stage,
-                    "event": "edited summary"
-                    }
-                )
-
-        super(Summary, self).save(args, kwargs)
-
-    def delete(self, *args, **kwargs):
-
-        log(
-            user=self.user,
-            action='DELETE_SUMMARY',
-            obj=self,
-            extra={
-                "project_id": self.project.id,
-                "project": self.project.title,
-                "text": self.text,
-                "stage": self.stage,
-                "event": "deleted summary"
-                }
-            )
-
-        super(Summary, self).delete(args, kwargs)
-
-
-    def __str__(self):
-        return str(self.project)
-
-class Past(models.Model):
-    user = models.ForeignKey(User)
-    project = models.ForeignKey(Project)
-    stage_choices = (
-            ('seed', 'Seed'),
-            ('seedlaunch', 'Seed Launch'),
-            ('launch', 'Launch'),
-            )
-    stage = models.CharField(choices=stage_choices, max_length=200, blank=True)
-    text = models.TextField(blank=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    created_at = models.DateTimeField(db_index=True, auto_now_add=True)
-
-    def __str__(self):
-        return str(self.project)
-
-class Future(models.Model):
-    user = models.ForeignKey(User)
-    project = models.ForeignKey(Project)
-    stage_choices = (
-            ('seed', 'Seed'),
-            ('seedlaunch', 'Seed Launch'),
-            ('launch', 'Launch'),
-            )
-    stage = models.CharField(choices=stage_choices, max_length=200)
-    text = models.TextField()
-    updated_at = models.DateTimeField(auto_now=True)
-    created_at = models.DateTimeField(db_index=True, auto_now_add=True)
-
-    def save(self, *args, **kwargs):
-
-        if not self.id:
-            log(
-                user=self.user,
-                action='ADD_PRIORITY',
-                obj=self,
-                extra={
-                    "project_id": self.project.id,
-                    "project": self.project.title,
-                    "text": self.text,
-                    "stage": self.stage,
-                    "event": "added current priorities"
-                    }
-                )
-        else:
-            log(
-                user=self.user,
-                action='EDIT_PRIORITY',
-                obj=self,
-                extra={
-                    "project_id": self.project.id,
-                    "project": self.project.title,
-                    "text": self.text,
-                    "stage": self.stage,
-                    "event": "edited current priorities"
-                    }
-                )
-
-        super(Future, self).save(args, kwargs)
-
-    def delete(self, *args, **kwargs):
-
-        log(
-            user=self.user,
-            action='DELETE_PRIORITY',
-            obj=self,
-            extra={
-                "project_id": self.project.id,
-                "project": self.project.title,
-                "text": self.text,
-                "stage": self.stage,
-                "event": "deleted current priorities"
-                }
-            )
-
-        super(Future, self).delete(args, kwargs)
-
-    def __str__(self):
-        return str(self.project)
-
-class Secondary(models.Model):
-    user = models.ForeignKey(User)
-    project = models.ForeignKey(Project)
-    text = models.TextField()
-    status_choices = (
-            ('Validated', 'Validated'),
-            ('Testing', 'Testing'),
-            ('Invalidated', 'Invalidated'),
-            )
-    status = models.CharField(choices=status_choices, max_length=200)
-    updated_at = models.DateTimeField(auto_now=True)
-    created_at = models.DateTimeField(db_index=True, auto_now_add=True)
-
-    def save(self, *args, **kwargs):
-
-        if not self.id:
-            log(
-                user=self.user,
-                action='ADD_SECONDARY',
-                obj=self,
-                extra={
-                    "project_id": self.project.id,
-                    "project": self.project.title,
-                    "text": self.text,
-                    "status": self.status,
-                    "event": "added a secondary persona"
-                    }
-                )
-        else:
-            log(
-                user=self.user,
-                action='EDIT_SECONDARY',
-                obj=self,
-                extra={
-                    "project_id": self.project.id,
-                    "project": self.project.title,
-                    "text": self.text,
-                    "status": self.status,
-                    "event": "edited secondary persona"
-                    }
-                )
-
-        super(Secondary, self).save(args, kwargs)
-
-    def delete(self, *args, **kwargs):
-
-        log(
-            user=self.user,
-            action='DELETE_SECONDARY',
-            obj=self,
-            extra={
-                "project_id": self.project.id,
-                "project": self.project.title,
-                "text": self.text,
-                "status": self.status,
-                "event": "deleted secondary persona"
-                }
-            )
-
-        super(Secondary, self).delete(args, kwargs)
-
-    def __str__(self):
-        return str(self.project)
-
-class Empathy(models.Model):
-    user = models.ForeignKey(User)
-    project = models.ForeignKey(Project)
-    description = models.TextField()
-    think = models.TextField()
-    see = models.TextField()
-    say = models.TextField()
-    hear = models.TextField()
-    updated_at = models.DateTimeField(auto_now=True)
-    created_at = models.DateTimeField(db_index=True, auto_now_add=True)
-
-    def save(self, *args, **kwargs):
-
-        if not self.id:
-            log(
-                user=self.user,
-                action='ADD_EMPATHY_MAP',
-                obj=self,
-                extra={
-                    "project_id": self.project.id,
-                    "project": self.project.title,
-                    "text": self.description,
-                    "text": self.think,
-                    "text": self.see,
-                    "text": self.say,
-                    "text": self.hear,
-                    "event": "added empathy map"
-                    }
-                )
-        else:
-            log(
-                user=self.user,
-                action='EDIT_EMPATHY_MAP',
-                obj=self,
-                extra={
-                    "project_id": self.project.id,
-                    "project": self.project.title,
-                    "text": self.description,
-                    "text": self.think,
-                    "text": self.see,
-                    "text": self.say,
-                    "text": self.hear,
-                    "event": "edited empathy map"
-                    }
-                )
-
-        super(Empathy, self).save(args, kwargs)
-
-    def delete(self, *args, **kwargs):
-
-        log(
-            user=self.user,
-            action='DELETE_EMPATHY_MAP',
-            obj=self,
-            extra={
-                "project_id": self.project.id,
-                "project": self.project.title,
-                "text": self.description,
-                "text": self.think,
-                "text": self.see,
-                "text": self.say,
-                "text": self.hear,
-                "event": "deleted empathy map"
-                }
-            )
-
-        super(Empathy, self).delete(args, kwargs)
-
-    def __str__(self):
-        return str(self.project)
-
-class File(models.Model):
-    user = models.ForeignKey(User)
-    project = models.ForeignKey(Project)
-    title = models.CharField(max_length=200)
-    file = models.FileField(upload_to='files/%Y%m%d', blank=False, null=False)
-    updated_at = models.DateTimeField(auto_now=True)
-    created_at = models.DateTimeField(db_index=True, auto_now_add=True)
-
-    def save(self, *args, **kwargs):
-
-        if not self.id:
-            log(
-                user=self.user,
-                action='ADD_FILE',
-                obj=self,
-                extra={
-                    "project_id": self.project.id,
-                    "project": self.project.title,
-                    "title": self.title,
-                    "file": self.file.url,
-                    "event": "added a file"
-                    }
-                )
-
-        super(File, self).save(args, kwargs)
-
-    def __str__(self):
-        return str(self.project)
-
-
-class Invite(models.Model):
-    PERMISSION_EDIT = 'edit'
-    PERMISSION_VIEW = 'view'
-
-    PERMISSIONS = (
-        (PERMISSION_EDIT, 'Edit'),
-        (PERMISSION_VIEW, 'View'),
+    LOCATION = (
+        ('Aberdeen', 'Aberdeen'),
+        ('Abilene', 'Abilene'),
+        ('Akron', 'Akron'),
+        ('Albany', 'Albany'),
+        ('Albuquerque', 'Albuquerque'),
+        ('Alexandria', 'Alexandria'),
+        ('Allentown', 'Allentown'),
+        ('Amarillo', 'Amarillo'),
+        ('Anaheim', 'Anaheim'),
+        ('Anchorage', 'Anchorage'),
+        ('Ann Arbor', 'Ann Arbor'),
+        ('Antioch', 'Antioch'),
+        ('Apple Valley', 'Apple Valley'),
+        ('Appleton', 'Appleton'),
+        ('Arlington', 'Arlington'),
+        ('Arvada', 'Arvada'),
+        ('Asheville', 'Asheville'),
+        ('Athens', 'Athens'),
+        ('Atlanta', 'Atlanta'),
+        ('Atlantic City', 'Atlantic City'),
+        ('Augusta', 'Augusta'),
+        ('Aurora', 'Aurora'),
+        ('Austin', 'Austin'),
+        ('Bakersfield', 'Bakersfield'),
+        ('Baltimore', 'Baltimore'),
+        ('Barnstable', 'Barnstable'),
+        ('Baton Rouge', 'Baton Rouge'),
+        ('Beaumont', 'Beaumont'),
+        ('Bel Air', 'Bel Air'),
+        ('Bellevue', 'Bellevue'),
+        ('Berkeley', 'Berkeley'),
+        ('Bethlehem', 'Bethlehem'),
+        ('Billings', 'Billings'),
+        ('Birmingham', 'Birmingham'),
+        ('Bloomington', 'Bloomington'),
+        ('Boise', 'Boise'),
+        ('Boise City', 'Boise City'),
+        ('Bonita Springs', 'Bonita Springs'),
+        ('Boston', 'Boston'),
+        ('Boulder', 'Boulder'),
+        ('Bradenton', 'Bradenton'),
+        ('Bremerton', 'Bremerton'),
+        ('Bridgeport', 'Bridgeport'),
+        ('Brighton', 'Brighton'),
+        ('Brownsville', 'Brownsville'),
+        ('Bryan', 'Bryan'),
+        ('Buffalo', 'Buffalo'),
+        ('Burbank', 'Burbank'),
+        ('Burlington', 'Burlington'),
+        ('Cambridge', 'Cambridge'),
+        ('Canton', 'Canton'),
+        ('Cape Coral', 'Cape Coral'),
+        ('Carrollton', 'Carrollton'),
+        ('Cary', 'Cary'),
+        ('Cathedral City', 'Cathedral City'),
+        ('Cedar Rapids', 'Cedar Rapids'),
+        ('Champaign', 'Champaign'),
+        ('Chandler', 'Chandler'),
+        ('Charleston', 'Charleston'),
+        ('Charlotte', 'Charlotte'),
+        ('Chattanooga', 'Chattanooga'),
+        ('Chesapeake', 'Chesapeake'),
+        ('Chicago', 'Chicago'),
+        ('Chula Vista', 'Chula Vista'),
+        ('Cincinnati', 'Cincinnati'),
+        ('Clarke County', 'Clarke County'),
+        ('Clarksville', 'Clarksville'),
+        ('Clearwater', 'Clearwater'),
+        ('Cleveland', 'Cleveland'),
+        ('College Station', 'College Station'),
+        ('Colorado Springs', 'Colorado Springs'),
+        ('Columbia', 'Columbia'),
+        ('Columbus', 'Columbus'),
+        ('Concord', 'Concord'),
+        ('Coral Springs', 'Coral Springs'),
+        ('Corona', 'Corona'),
+        ('Corpus Christi', 'Corpus Christi'),
+        ('Costa Mesa', 'Costa Mesa'),
+        ('Dallas', 'Dallas'),
+        ('Daly City', 'Daly City'),
+        ('Danbury', 'Danbury'),
+        ('Davenport', 'Davenport'),
+        ('Davidson County', 'Davidson County'),
+        ('Dayton', 'Dayton'),
+        ('Daytona Beach', 'Daytona Beach'),
+        ('Deltona', 'Deltona'),
+        ('Denton', 'Denton'),
+        ('Denver', 'Denver'),
+        ('Des Moines', 'Des Moines'),
+        ('Detroit', 'Detroit'),
+        ('Downey', 'Downey'),
+        ('Duluth', 'Duluth'),
+        ('Durham', 'Durham'),
+        ('El Monte', 'El Monte'),
+        ('El Paso', 'El Paso'),
+        ('Elizabeth', 'Elizabeth'),
+        ('Elk Grove', 'Elk Grove'),
+        ('Elkhart', 'Elkhart'),
+        ('Erie', 'Erie'),
+        ('Escondido', 'Escondido'),
+        ('Eugene', 'Eugene'),
+        ('Evansville', 'Evansville'),
+        ('Fairfield', 'Fairfield'),
+        ('Fargo', 'Fargo'),
+        ('Fayetteville', 'Fayetteville'),
+        ('Fitchburg', 'Fitchburg'),
+        ('Flint', 'Flint'),
+        ('Fontana', 'Fontana'),
+        ('Fort Collins', 'Fort Collins'),
+        ('Fort Lauderdale', 'Fort Lauderdale'),
+        ('Fort Smith', 'Fort Smith'),
+        ('Fort Walton Beach', 'Fort Walton Beach'),
+        ('Fort Wayne', 'Fort Wayne'),
+        ('Fort Worth', 'Fort Worth'),
+        ('Frederick', 'Frederick'),
+        ('Fremont', 'Fremont'),
+        ('Fresno', 'Fresno'),
+        ('Fullerton', 'Fullerton'),
+        ('Gainesville', 'Gainesville'),
+        ('Garden Grove', 'Garden Grove'),
+        ('Garland', 'Garland'),
+        ('Gastonia', 'Gastonia'),
+        ('Gilbert', 'Gilbert'),
+        ('Glendale', 'Glendale'),
+        ('Grand Prairie', 'Grand Prairie'),
+        ('Grand Rapids', 'Grand Rapids'),
+        ('Grayslake', 'Grayslake'),
+        ('Green Bay', 'Green Bay'),
+        ('GreenBay', 'GreenBay'),
+        ('Greensboro', 'Greensboro'),
+        ('Greenville', 'Greenville'),
+        ('Gulfport-Biloxi', 'Gulfport-Biloxi'),
+        ('Hagerstown', 'Hagerstown'),
+        ('Hampton', 'Hampton'),
+        ('Harlingen', 'Harlingen'),
+        ('Harrisburg', 'Harrisburg'),
+        ('Hartford', 'Hartford'),
+        ('Havre de Grace', 'Havre de Grace'),
+        ('Hayward', 'Hayward'),
+        ('Hemet', 'Hemet'),
+        ('Henderson', 'Henderson'),
+        ('Hesperia', 'Hesperia'),
+        ('Hialeah', 'Hialeah'),
+        ('Hickory', 'Hickory'),
+        ('High Point', 'High Point'),
+        ('Hollywood', 'Hollywood'),
+        ('Honolulu', 'Honolulu'),
+        ('Houma', 'Houma'),
+        ('Houston', 'Houston'),
+        ('Howell', 'Howell'),
+        ('Huntington', 'Huntington'),
+        ('Huntington Beach', 'Huntington Beach'),
+        ('Huntsville', 'Huntsville'),
+        ('Independence', 'Independence'),
+        ('Indianapolis', 'Indianapolis'),
+        ('Inglewood', 'Inglewood'),
+        ('Irvine', 'Irvine'),
+        ('Irving', 'Irving'),
+        ('Jackson', 'Jackson'),
+        ('Jacksonville', 'Jacksonville'),
+        ('Jefferson', 'Jefferson'),
+        ('Jersey City', 'Jersey City'),
+        ('Johnson City', 'Johnson City'),
+        ('Joliet', 'Joliet'),
+        ('Kailua', 'Kailua'),
+        ('Kalamazoo', 'Kalamazoo'),
+        ('Kaneohe', 'Kaneohe'),
+        ('Kansas City', 'Kansas City'),
+        ('Kennewick', 'Kennewick'),
+        ('Kenosha', 'Kenosha'),
+        ('Killeen', 'Killeen'),
+        ('Kissimmee', 'Kissimmee'),
+        ('Knoxville', 'Knoxville'),
+        ('Lacey', 'Lacey'),
+        ('Lafayette', 'Lafayette'),
+        ('Lake Charles', 'Lake Charles'),
+        ('Lakeland', 'Lakeland'),
+        ('Lakewood', 'Lakewood'),
+        ('Lancaster', 'Lancaster'),
+        ('Lansing', 'Lansing'),
+        ('Laredo', 'Laredo'),
+        ('Las Cruces', 'Las Cruces'),
+        ('Las Vegas', 'Las Vegas'),
+        ('Layton', 'Layton'),
+        ('Leominster', 'Leominster'),
+        ('Lewisville', 'Lewisville'),
+        ('Lexington', 'Lexington'),
+        ('Lincoln', 'Lincoln'),
+        ('Little Rock', 'Little Rock'),
+        ('Long Beach', 'Long Beach'),
+        ('Lorain', 'Lorain'),
+        ('Los Angeles', 'Los Angeles'),
+        ('Louisville', 'Louisville'),
+        ('Lowell', 'Lowell'),
+        ('Lubbock', 'Lubbock'),
+        ('Macon', 'Macon'),
+        ('Madison', 'Madison'),
+        ('Manchester', 'Manchester'),
+        ('Marina', 'Marina'),
+        ('Marysville', 'Marysville'),
+        ('McAllen', 'McAllen'),
+        ('McHenry', 'McHenry'),
+        ('Medford', 'Medford'),
+        ('Melbourne', 'Melbourne'),
+        ('Memphis', 'Memphis'),
+        ('Merced', 'Merced'),
+        ('Mesa', 'Mesa'),
+        ('Mesquite', 'Mesquite'),
+        ('Miami', 'Miami'),
+        ('Milwaukee', 'Milwaukee'),
+        ('Minneapolis', 'Minneapolis'),
+        ('Miramar', 'Miramar'),
+        ('Mission Viejo', 'Mission Viejo'),
+        ('Mobile', 'Mobile'),
+        ('Modesto', 'Modesto'),
+        ('Monroe', 'Monroe'),
+        ('Monterey', 'Monterey'),
+        ('Montgomery', 'Montgomery'),
+        ('Moreno Valley', 'Moreno Valley'),
+        ('Murfreesboro', 'Murfreesboro'),
+        ('Murrieta', 'Murrieta'),
+        ('Muskegon', 'Muskegon'),
+        ('Myrtle Beach', 'Myrtle Beach'),
+        ('Naperville', 'Naperville'),
+        ('Naples', 'Naples'),
+        ('Nashua', 'Nashua'),
+        ('Nashville', 'Nashville'),
+        ('New Bedford', 'New Bedford'),
+        ('New Haven', 'New Haven'),
+        ('New London', 'New London'),
+        ('New Orleans', 'New Orleans'),
+        ('New York', 'New York'),
+        ('New York City', 'New York City'),
+        ('Newark', 'Newark'),
+        ('Newburgh', 'Newburgh'),
+        ('Newport News', 'Newport News'),
+        ('Norfolk', 'Norfolk'),
+        ('Normal', 'Normal'),
+        ('Norman', 'Norman'),
+        ('North Charleston', 'North Charleston'),
+        ('North Las Vegas', 'North Las Vegas'),
+        ('North Port', 'North Port'),
+        ('Norwalk', 'Norwalk'),
+        ('Norwich', 'Norwich'),
+        ('Oakland', 'Oakland'),
+        ('Ocala', 'Ocala'),
+        ('Oceanside', 'Oceanside'),
+        ('Odessa', 'Odessa'),
+        ('Ogden', 'Ogden'),
+        ('Oklahoma City', 'Oklahoma City'),
+        ('Olathe', 'Olathe'),
+        ('Olympia', 'Olympia'),
+        ('Omaha', 'Omaha'),
+        ('Ontario', 'Ontario'),
+        ('Orange', 'Orange'),
+        ('Orem', 'Orem'),
+        ('Orlando', 'Orlando'),
+        ('Overland Park', 'Overland Park'),
+        ('Oxnard', 'Oxnard'),
+        ('Palm Bay', 'Palm Bay'),
+        ('Palm Springs', 'Palm Springs'),
+        ('Palmdale', 'Palmdale'),
+        ('Panama City', 'Panama City'),
+        ('Pasadena', 'Pasadena'),
+        ('Paterson', 'Paterson'),
+        ('Pembroke Pines', 'Pembroke Pines'),
+        ('Pensacola', 'Pensacola'),
+        ('Peoria', 'Peoria'),
+        ('Philadelphia', 'Philadelphia'),
+        ('Phoenix', 'Phoenix'),
+        ('Pittsburgh', 'Pittsburgh'),
+        ('Plano', 'Plano'),
+        ('Pomona', 'Pomona'),
+        ('Pompano Beach', 'Pompano Beach'),
+        ('Port Arthur', 'Port Arthur'),
+        ('Port Orange', 'Port Orange'),
+        ('Port Saint Lucie', 'Port Saint Lucie'),
+        ('Port St. Lucie', 'Port St. Lucie'),
+        ('Portland', 'Portland'),
+        ('Portsmouth', 'Portsmouth'),
+        ('Poughkeepsie', 'Poughkeepsie'),
+        ('Providence', 'Providence'),
+        ('Provo', 'Provo'),
+        ('Pueblo', 'Pueblo'),
+        ('Punta Gorda', 'Punta Gorda'),
+        ('Racine', 'Racine'),
+        ('Raleigh', 'Raleigh'),
+        ('Rancho Cucamonga', 'Rancho Cucamonga'),
+        ('Reading', 'Reading'),
+        ('Redding', 'Redding'),
+        ('Reno', 'Reno'),
+        ('Richland', 'Richland'),
+        ('Richmond', 'Richmond'),
+        ('Richmond County', 'Richmond County'),
+        ('Riverside', 'Riverside'),
+        ('Roanoke', 'Roanoke'),
+        ('Rochester', 'Rochester'),
+        ('Rockford', 'Rockford'),
+        ('Roseville', 'Roseville'),
+        ('Round Lake Beach', 'Round Lake Beach'),
+        ('Sacramento', 'Sacramento'),
+        ('Saginaw', 'Saginaw'),
+        ('Saint Louis', 'Saint Louis'),
+        ('Saint Paul', 'Saint Paul'),
+        ('Saint Petersburg', 'Saint Petersburg'),
+        ('Salem', 'Salem'),
+        ('Salinas', 'Salinas'),
+        ('Salt Lake City', 'Salt Lake City'),
+        ('San Antonio', 'San Antonio'),
+        ('San Bernardino', 'San Bernardino'),
+        ('San Buenaventura', 'San Buenaventura'),
+        ('San Diego', 'San Diego'),
+        ('San Francisco', 'San Francisco'),
+        ('San Jose', 'San Jose'),
+        ('Santa Ana', 'Santa Ana'),
+        ('Santa Barbara', 'Santa Barbara'),
+        ('Santa Clara', 'Santa Clara'),
+        ('Santa Clarita', 'Santa Clarita'),
+        ('Santa Cruz', 'Santa Cruz'),
+        ('Santa Maria', 'Santa Maria'),
+        ('Santa Rosa', 'Santa Rosa'),
+        ('Sarasota', 'Sarasota'),
+        ('Savannah', 'Savannah'),
+        ('Scottsdale', 'Scottsdale'),
+        ('Scranton', 'Scranton'),
+        ('Seaside', 'Seaside'),
+        ('Seattle', 'Seattle'),
+        ('Sebastian', 'Sebastian'),
+        ('Shreveport', 'Shreveport'),
+        ('Simi Valley', 'Simi Valley'),
+        ('Sioux City', 'Sioux City'),
+        ('Sioux Falls', 'Sioux Falls'),
+        ('South Bend', 'South Bend'),
+        ('South Lyon', 'South Lyon'),
+        ('Spartanburg', 'Spartanburg'),
+        ('Spokane', 'Spokane'),
+        ('Springdale', 'Springdale'),
+        ('Springfield', 'Springfield'),
+        ('St. Louis', 'St. Louis'),
+        ('St. Paul', 'St. Paul'),
+        ('St. Petersburg', 'St. Petersburg'),
+        ('Stamford', 'Stamford'),
+        ('Sterling Heights', 'Sterling Heights'),
+        ('Stockton', 'Stockton'),
+        ('Sunnyvale', 'Sunnyvale'),
+        ('Syracuse', 'Syracuse'),
+        ('Tacoma', 'Tacoma'),
+        ('Tallahassee', 'Tallahassee'),
+        ('Tampa', 'Tampa'),
+        ('Temecula', 'Temecula'),
+        ('Tempe', 'Tempe'),
+        ('Thornton', 'Thornton'),
+        ('Thousand Oaks', 'Thousand Oaks'),
+        ('Toledo', 'Toledo'),
+        ('Topeka', 'Topeka'),
+        ('Torrance', 'Torrance'),
+        ('Trenton', 'Trenton'),
+        ('Tucson', 'Tucson'),
+        ('Tulsa', 'Tulsa'),
+        ('Tuscaloosa', 'Tuscaloosa'),
+        ('Tyler', 'Tyler'),
+        ('Utica', 'Utica'),
+        ('Vallejo', 'Vallejo'),
+        ('Vancouver', 'Vancouver'),
+        ('Vero Beach', 'Vero Beach'),
+        ('Victorville', 'Victorville'),
+        ('Virginia Beach', 'Virginia Beach'),
+        ('Visalia', 'Visalia'),
+        ('Waco', 'Waco'),
+        ('Warren', 'Warren'),
+        ('Washington', 'Washington'),
+        ('Waterbury', 'Waterbury'),
+        ('Waterloo', 'Waterloo'),
+        ('West Covina', 'West Covina'),
+        ('West Valley City', 'West Valley City'),
+        ('Westminster', 'Westminster'),
+        ('Wichita', 'Wichita'),
+        ('Wilmington', 'Wilmington'),
+        ('Winston', 'Winston'),
+        ('Winter Haven', 'Winter Haven'),
+        ('Worcester', 'Worcester'),
+        ('Yakima', 'Yakima'),
+        ('Yonkers', 'Yonkers'),
+        ('York', 'York'),
+        ('Youngstown', 'Youngstown'),
+        ('Other', 'Other'),
     )
 
-    permission = models.CharField(choices=PERMISSIONS, max_length=10)
-    user = models.ForeignKey(User)
-    project = models.ForeignKey(Project)
-    email = models.EmailField()
-    key = models.CharField(max_length=32)
-    used = models.BooleanField(default=False)
+    STATUS = (
+        ('Active', 'Active'),
+        ('Pending', 'Pending'),
+        ('Declined', 'Declined'),
+        ('Inactive', 'Inactive'),
+        )
 
+    user = models.ForeignKey(User, unique=True)
+    status = models.CharField(choices=STATUS, max_length=200, blank=True)
+    job_title = models.CharField(max_length=200)
+    location = models.CharField(choices=LOCATION, max_length=200)
+    company = models.CharField(max_length=200)
+    link = models.URLField()
+    linkedin = models.URLField()
+    twitter = models.CharField(max_length=200, blank=True)
+    description = models.TextField()
+    bio = models.TextField()
+    image = models.ImageField(upload_to='images/%Y%m%d', null=True)
+    team = models.CharField(max_length=200)
+    events = ArrayField(models.CharField(max_length=200))
+    activities = ArrayField(models.CharField(max_length=200))
+    mentorship = ArrayField(models.CharField(max_length=200))
+    panel = models.BooleanField(default=False)
+    moderator = models.BooleanField(default=False)
+    referal = models.CharField(max_length=200, blank=True)
+    referal_email = models.CharField(max_length=200, blank=True)
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(db_index=True, auto_now_add=True)
 
-class Wallet(models.Model):
-    user = models.ForeignKey(User, blank=True, null=True)
-    project = models.ForeignKey(Project)
-    period_choices = (
-            ('1', '1Q18'),
-            ('2', '2Q18'),
-            ('3', '3Q18'),
-            ('4', '4Q18'),
-            ('5', '1Q19'),
-            ('6', '2Q19'),
-            ('7', '3Q19'),
-            ('8', '4Q19'),
-            )
-    period = models.CharField(choices=period_choices, max_length=200)
-    amount_budget = models.FloatField(default=0)
-    amount_actual = models.FloatField(default=0)
-    updated_at = models.DateTimeField(auto_now=True)
-    created_at = models.DateTimeField(db_index=True, auto_now_add=True)
-
-    def save(self, *args, **kwargs):
-        if not self.id:
-            log(
-                user=self.user,
-                action='ADD_COMMENT',
-                obj=self,
-                extra={
-                    "project_id": self.project.id,
-                    "project": self.project.title,
-                    "amount_budget": self.amount_budget,
-                    "amount_actual": self.amount_actual,
-                    "period": self.period,
-                    "event": "added wallet"
-                    }
-                )
-        else:
-            log(
-                user=self.user,
-                action='EDIT_WALLET',
-                obj=self,
-                extra={
-                    "project_id": self.project.id,
-                    "project": self.project.title,
-                    "amount_budget": self.amount_budget,
-                    "amount_actual": self.amount_actual,
-                    "period": self.period,
-                    "event": "added wallet"
-                    }
-                )
-
-        super(Wallet, self).save(args, kwargs)
+    def __str__(self):
+        return str(self.user)

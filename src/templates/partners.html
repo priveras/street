@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block navigation %}
+  {% include 'navigation.html' %}
+{% endblock %}
+
+{% block content %}
+<!-- MAIN CONTENT
+================================================== -->
+<div class="main-content">
+
+  {% include 'header.html' %}
+
+  <!-- CONTENT -->
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        
+        <!-- Files -->
+        <div class="card" data-toggle="lists" data-lists-values='["name"]'>
+          <div class="card-header">
+            <div class="row align-items-center">
+              <div class="col">
+                
+                <!-- Title -->
+                <h4 class="card-header-title">
+                  Partners ({{partners.count}})
+                </h4>
+
+              </div>
+              <div class="col-auto">
+                
+                <!-- Dropdown -->
+                <div class="dropdown">
+
+                  <!-- Toggle -->
+                  <a href="#!" class="small text-muted dropdown-toggle" data-toggle="dropdown">
+                    Sort order
+                  </a>
+
+                  <!-- Menu -->
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item sort" data-sort="name" href="#!">
+                      Asc
+                    </a>
+                    <a class="dropdown-item sort" data-sort="name" href="#!">
+                      Desc
+                    </a>
+                  </div>
+
+                </div>
+
+              </div>
+            </div> <!-- / .row -->
+          </div>
+          <div class="card-header">
+            <div class="row">
+              <div class="col-12 col-lg-8">
+                
+                <!-- Form -->
+                <form>
+                  <div class="input-group input-group-flush input-group-merge">
+                    <input type="search" class="form-control form-control-prepended search" placeholder="Search">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text">
+                        <span class="fe fe-search"></span>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+
+              </div>
+            </div> <!-- / .row -->
+          </div>
+          <div class="card-body">
+
+            <!-- List -->
+            <ul class="list-group list-group-lg list-group-flush list my--4">
+              {% for partner in partners %}
+              <li class="list-group-item px-0">
+                
+                <div class="row align-items-center">
+                  <div class="col-auto">
+                    
+                    <a href="#!" class="avatar avatar-lg">
+                      <img src="{{partner.image.url}}" alt="..." class="avatar-img rounded">
+                    </a>
+
+                  </div>
+                  <div class="col ml--2">
+
+                    <!-- Title -->
+                    <h4 class="card-title mb-1 name">
+                      {{partner.title|capfirst}}
+                    </h4>
+
+                    <!-- Text -->
+                    <p class="card-text small text-muted mb-1">
+                      {{partner.slogan}}
+                    </p>
+
+                    <!-- Time -->
+                    <p class="card-text small text-muted">
+                      
+                      <small>
+                        <span class="text-success">●</span> Active
+                      </small>
+                      
+                    </p>
+                    
+                  </div>
+                  <div class="col-auto">
+                    
+                
+                    <a href="" class="btn btn-sm btn-white d-none d-md-inline-block">
+                      More Info
+                    </a>
+
+                  </div>
+                  <div class="col-auto">
+                    
+                    <!-- Dropdown -->
+                    <div class="dropdown">
+                      <a href="#!" class="dropdown-ellipses dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fe fe-more-vertical"></i>
+                      </a>
+                      <div class="dropdown-menu dropdown-menu-right">
+                        <a href="#!" class="dropdown-item">
+                          Action
+                        </a>
+                        <a href="#!" class="dropdown-item">
+                          Another action
+                        </a>
+                        <a href="#!" class="dropdown-item">
+                          Something else here
+                        </a>
+                      </div>
+                    </div>
+
+                  </div>
+                </div> <!-- / .row -->
+
+              </li>
+              {% endfor %}
+            </ul>
+
+          </div>
+        </div>
+
+      </div>
+    </div> <!-- / .row -->
+  </div>
+
+</div> <!-- / .main-content -->
+{% endblock %}
+{% block js %}
+<script type="text/javascript">
+  $('img').on("error", function() {
+    $(this).attr('src', '{% static 'assets/img/logo-square.png' %}');
+  });
+</script>
+{% endblock %}

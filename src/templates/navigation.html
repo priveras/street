@@ -1,0 +1,161 @@
+{% load staticfiles %}
+<nav class="navbar navbar-vertical fixed-left navbar-expand-md navbar-light" id="sidebar">
+  <div class="container-fluid">
+
+    <!-- Toggler -->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#sidebarCollapse" aria-controls="sidebarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Brand -->
+
+    <!--<a class="navbar-brand" href="index.html">
+      <img src="{% static 'assets/img/logo.png' %}" class="navbar-brand-img 
+      mx-auto" alt="...">
+    </a>-->
+    <a class="navbar-brand" href="{% url 'app:home' %}">
+      <div class="avatar avatar-sm">
+        <span class="avatar-title rounded-circle bg-dark">VCP</span>
+      </div>
+    </a>
+
+    <!-- User (xs) -->
+    <div class="navbar-user d-md-none">
+
+      <!-- Dropdown -->
+      <div class="dropdown">
+  
+        <!-- Toggle -->
+        <a href="#!" id="sidebarIcon" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <div class="avatar avatar-sm avatar-online">
+            {% for profile in user.profile_set.all %}
+              {% if profile.image %}
+              <img src="{{profile.image.url}}" class="avatar-img rounded-circle" alt="...">
+              {% else %}
+              <img src="{% static 'assets/img/logo.png' %}" class="avatar-img rounded-circle" alt="...">
+              {% endif %}
+            {% endfor %}
+          </div>
+        </a>
+
+        <!-- Menu -->
+        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="sidebarIcon">
+          {% for profile in user.profile_set.all %}
+          <a href="{% url 'app:info-update' profile.id %}" class="dropdown-item">Account</a>
+          {% endfor %}
+          <hr class="dropdown-divider">
+          <form method="post" action="{% url 'account_logout' %}">
+            {% csrf_token %}
+            {% if redirect_field_value %}
+            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+            {% endif %}
+            <button class="dropdown-item" style="cursor:pointer">Logout</button>
+          </form>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Collapse -->
+    <div class="collapse navbar-collapse" id="sidebarCollapse">
+
+      {% if user.is_superuser %}
+      
+      <!-- Navigation -->
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="#sidebarDashboards" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
+            <i class="fe fe-home"></i> Admin
+          </a>
+          <div class="collapse " id="sidebarDashboards">
+            <ul class="nav nav-sm flex-column">
+              <li class="nav-item">
+                <a href="" class="nav-link ">
+                  Partners
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="" class="nav-link ">
+                  Resources
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="" class="nav-link ">
+                  Jobs
+                </a>
+              </li>
+            </ul>
+          </div>
+        </li>
+      </ul>
+
+      <!-- Divider -->
+      <hr class="navbar-divider my-3">
+
+      {% endif %}
+
+      {% if user.profile_set.all.0.status != 'Active' %}
+      <!-- Heading -->
+      <h6 class="navbar-heading">
+        Navigation
+      </h6>
+      <ul class="navbar-nav mb-md-4">
+        <li class="nav-item">
+          <a href="mailto:admin@vcplatform.com" class="nav-link">
+            <i class="fe fe-mail"></i> Help
+          </a>
+        </li>
+      </a>
+      {% else %}
+
+      <!-- Heading -->
+      <h6 class="navbar-heading">
+        Navigation
+      </h6>
+
+      <!-- Navigation -->
+      <ul class="navbar-nav mb-md-4">
+        <li class="nav-item">
+          {% if request.path == '/home/' %}
+          <a href="{% url 'app:home' %}" class="nav-link active">
+          {% else %}
+          <a href="{% url 'app:home' %}" class="nav-link">
+          {% endif %}
+            <i class="fe fe-clipboard"></i> News
+          </a>
+        </li>
+        <li class="nav-item">
+          {% if request.path == '/members/' %}
+          <a href="{% url 'app:members' %}" class="nav-link active">
+          {% else %}
+          <a href="{% url 'app:members' %}" class="nav-link">
+          {% endif %}
+            <i class="fe fe-users"></i> Members
+          </a>
+        </li>
+        <li class="nav-item">
+          {% if request.path == '/events/' %}
+          <a href="{% url 'app:jobs' %}" class="nav-link active">
+          {% else %}
+          <a href="{% url 'app:events' %}" class="nav-link">
+          {% endif %}
+            <i class="fe fe-calendar"></i> Events
+          </a>
+        </li>
+        <li class="nav-item">
+          {% if request.path == '/jobs/' %}
+          <a href="{% url 'app:jobs' %}" class="nav-link active">
+          {% else %}
+          <a href="{% url 'app:jobs' %}" class="nav-link">
+          {% endif %}
+            <i class="fe fe-file-text"></i> Jobs
+          </a>
+        </li>
+      </ul>
+      {% endif %}
+
+    </div> <!-- / .navbar-collapse -->
+
+  </div>
+</nav>

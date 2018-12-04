@@ -1,0 +1,58 @@
+{% load staticfiles %}
+{% load humanize %}
+<div class="comment mb-3" style="width:100%">
+  <div class="row">
+    <div class="col-auto">
+
+      <!-- Avatar -->
+      <a class="avatar avatar-sm" href="profile-posts.html">
+        {% for profile in comment.user.profile_set.all %}
+          {% if profile.image %}
+            <img src="{{profile.image.url}}" alt="..." class="avatar-img rounded-circle">
+          {% else %}
+            <img src="{% static 'assets/img/logo.png' %}" alt="..." class="avatar-img rounded-circle">
+          {% endif %}
+        {% endfor %}
+      </a>
+
+    </div>
+    <div class="col ml--2">
+      
+      <!-- Body -->
+      <div class="comment-body w-100">
+
+        <div class="row">
+          <div class="col">
+
+            <!-- Title -->
+            <h5 class="comment-title">
+              {{comment.user.first_name}} {{comment.user.last_name}}
+            </h5>
+
+          </div>
+          <div class="col-auto">
+
+            <!-- Time -->
+            <time class="comment-time">
+              {% if user == comment.user %}
+              <a href=""><i class="fe fe-edit"></i></a>
+              <a href=""><i class="fe fe-trash"></i></a>
+              {% endif %}
+              <span class="mr-2"></span>
+              <span class="fe fe-clock"></span>
+              {{comment.created_at|naturaltime|capfirst}}
+            </time>
+
+          </div>
+        </div> <!-- / .row -->
+
+        <!-- Text -->
+        <p class="comment-text">
+          {{comment.text|urlize}}
+        </p>
+
+      </div>
+
+    </div>
+  </div> <!-- / .row -->
+</div>

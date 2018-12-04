@@ -1,75 +1,460 @@
 {% extends '../base.html' %}
 {% load staticfiles %}
+
+{% block navigation %}
+  {% include 'navigation.html' %}
+{% endblock %}
+
 {% load widget_tweaks %}
 {% block content %}
-<!-- start page title -->
-<div class="row">
-    <div class="col-12">
-        <div class="page-title-box">
-            <div class="page-title-right">
-                <ol class="breadcrumb m-0">
-                    <li class="breadcrumb-item"><a href="javascript: void(0);">OS Dashboard</a></li>
-                    <li class="breadcrumb-item"><a href="javascript: void(0);">Accounts</a></li>
-                    <li class="breadcrumb-item active">Info</li>
-                </ol>
-            </div>
-            <h4 class="page-title">Complete Your Profile</h4>
-        </div>
-    </div>
-</div>
-<!-- end page title -->
+<div class="main-content">
 
-<!-- CONTENT -->
-<div class="container-fluid">
-<div class="row" id="validation">
-{% if form.errors %}
-  <ul>
-    {% for field in form %}
-        {% if field.errors %}
-            <li><strong class="text-danger">{{ field.label_tag }}</strong> {{ field.errors }}</li>
+  <div class="container-fluid">
+    <div class="row justify-content-center">
+      <div class="col-12 col-lg-10 col-xl-8">
+        
+        <!-- Header -->
+        <div class="header mt-md-5">
+          <div class="header-body">
+            <div class="row align-items-center">
+              <div class="col">
+                
+                <!-- Pretitle -->
+                <h6 class="header-pretitle">
+                  Overview
+                </h6>
+
+                <!-- Title -->
+                <h1 class="header-title">
+                  Account
+                </h1>
+
+              </div>
+            </div> <!-- / .row -->
+            <div class="row align-items-center">
+              <div class="col">
+                
+                <!-- Nav -->
+                <ul class="nav nav-tabs nav-overflow header-tabs">
+                  <li class="nav-item">
+                    <a href="" class="nav-link active">
+                      Profile
+                    </a>
+                  </li>
+                  <!--<li class="nav-item">
+                    <a href="#!" class="nav-link">
+                      Billing
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#!" class="nav-link">
+                      Notifications
+                    </a>
+                  </li>-->
+                </ul>
+
+              </div>
+            </div>
+          </div>
+        </div>
+        {% if form.errors %}
+          <ul>
+            {% for field in form %}
+                {% if field.errors %}
+                    <li><strong class="text-danger">{{ field.label_tag }}</strong> {{ field.errors }}</li>
+                {% endif %}
+            {% endfor %}
+          </ul>
+        </div>
         {% endif %}
-    {% endfor %}
-  </ul>
-</div>
-{% endif %}
-</div>
-<div class="row">
-  <div class="col-12 col-xl-8">
-    <div class="card">
-        <div class="card-body">
+        <form action="" method="POST" enctype="multipart/form-data" class="mb-5">
+          {% csrf_token %}
+          <div class="row">
+            <div class="col-12 col-md-6">
+              <!-- First name -->
+              <div class="form-group">
 
-          <form action="" method="POST" enctype="multipart/form-data" class="validation-wizard wizard-circle">
-            {% csrf_token %}
-            <div class="form-group">
-              <label for="exampleInputEmail1">First Name</label>
-              {% render_field form.first_name|attr:"placeholder:John" class="form-control required" value="" %}
-            </div>
-            <div class="form-group">
-              <label for="exampleInputPassword1">Last Name</label>
-              {% render_field form.last_name|attr:"placeholder:Doe" class="form-control required" %}
-            </div>
-            <div class="form-group">
-              <label for="exampleInputPassword1">Job Title</label>
-              {% render_field form.job_title|attr:"placeholder:Marketing Director" class="form-control required" %}
-            </div>
-            <div class="form-group">
-              <label for="exampleInputPassword1">Company</label>
-              {% render_field form.company|attr:"placeholder:Company X" class="form-control required" %}
-            </div>
-            <div class="form-group">
-              <label for="exampleInputPassword1">Location</label>
-              {% render_field form.location|attr:"placeholder:San Francisco" class="form-control required" %}
-            </div>
-            <div class="form-group">
-              <label for="exampleInputPassword1">Profile Image <small class="text-muted">(Max File Size 1MB)</small></label>
-              {% render_field form.profile_image class="form-control-file required" %}
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-          </form>
+                <!-- Label -->
+                <label>
+                  First name
+                </label>
 
-        </div>
+                <!-- Input -->
+
+                {% render_field form.first_name|attr:"placeholder:John"|attr:"type:text" class="form-control required" value=user.first_name %}
+
+              </div>
+
+            </div>
+            <div class="col-12 col-md-6">
+              
+              <!-- Last name -->
+              <div class="form-group">
+
+                <!-- Label -->
+                <label>
+                  Last name
+                </label>
+
+                {% render_field form.last_name|attr:"placeholder:Doe"|attr:"type:text" class="form-control required" value=user.last_name %}
+
+              </div>
+
+            </div>
+            <div class="col-12 col-md-6">
+              
+              <!-- Email address -->
+              <div class="form-group">
+
+                <!-- Label -->
+                <label class="mb-1">
+                  Firm
+                </label>
+
+                <!-- Input -->
+                {% render_field form.company|attr:"placeholder:XYZ VC"|attr:"type:text" class="form-control required" %}
+
+              </div>
+
+            </div>
+            <div class="col-12 col-md-6">
+              
+              <!-- Email address -->
+              <div class="form-group">
+
+                <!-- Label -->
+                <label class="mb-1">
+                  Firm's Website
+                </label>
+
+                <!-- Input -->
+                {% render_field form.link|attr:"placeholder:http://"|attr:"type:url" class="form-control required" %}
+
+              </div>
+
+            </div>
+            <div class="col-12 col-md-6">
+              
+              <!-- Email address -->
+              <div class="form-group">
+
+                <!-- Label -->
+                <label class="mb-1">
+                  Job Title
+                </label>
+
+                <!-- Input -->
+                {% render_field form.job_title|attr:"placeholder:Managing Director"|attr:"type:text" class="form-control required" %}
+              </div>
+
+            </div>
+            <div class="col-12 col-md-6">
+              
+              <!-- Birthday -->
+              <div class="form-group">
+
+                <!-- Label -->
+                <label>
+                  Location
+                </label>
+
+                <!-- Input -->
+                {% render_field form.location|attr:"placeholder:San Francisco"|attr:"type:text" data-toggle="select" class="form-control required" %}
+              </div>
+
+            </div>
+            <div class="col-12 col-md-6">
+              
+              <!-- Email address -->
+              <div class="form-group">
+
+                <!-- Label -->
+                <label class="mb-1">
+                  Linkedin Public Profile
+                </label>
+
+                <!-- Input -->
+                {% render_field form.linkedin|attr:"placeholder:http://"|attr:"type:url" class="form-control required" %}
+
+              </div>
+
+            </div>
+            <div class="col-12 col-md-6">
+              
+              <!-- Email address -->
+              <div class="form-group">
+
+                <!-- Label -->
+                <label class="mb-1">
+                  Twitter Handle <span class="text-muted">(Optional)</span>
+                </label>
+
+                <!-- Input -->
+                {% render_field form.twitter|attr:"placeholder:@johndoe"|attr:"type:text" class="form-control" %}
+
+              </div>
+
+            </div>
+            <div class="col-12">
+              
+              <!-- Email address -->
+              <div class="form-group">
+
+                <!-- Label -->
+                <label class="mb-1">
+                  Description of Role
+                </label>
+                <small class="form-text text-muted">
+                  A bit more about yourself - feel free to copy and paste bio if one exists
+                </small>
+
+                <!-- Input -->
+                {% render_field form.description|attr:"placeholder:Type your role description here..."|attr:"type:text"|attr:"rows:4"|attr:"maxlength:300" class="form-control required" %}
+              </div>
+
+            </div>
+            <div class="col-12">
+              
+              <!-- Email address -->
+              <div class="form-group">
+
+                <!-- Label -->
+                <label class="mb-1">
+                  Bio/Background
+                </label>
+                <small class="form-text text-muted">
+                  A bit more about yourself - feel free to copy and paste bio if one exists
+                </small>
+
+                <!-- Input -->
+                {% render_field form.bio|attr:"placeholder:Type your bio here..."|attr:"type:text"|attr:"rows:4"|attr:"maxlength:300" class="form-control required" %}
+              </div>
+
+            </div>
+            <div class="col-6">
+              
+              <!-- Birthday -->
+              <div class="form-group">
+
+                <!-- Label -->
+                <label>
+                  Profile Image <small class="text-muted">No larger than 1200px * 600px. </small>
+                </label>
+                {% render_field form.image class="form-control-file required" %}
+
+              </div>
+
+            </div>
+          </div> <!-- / .row -->
+
+          <!-- Divider -->
+          <hr class="mt-4 mb-5">
+
+          <div class="row">
+
+            <div class="col-12">
+              
+              <!-- Email address -->
+              <div class="form-group">
+
+                <!-- Label -->
+                <label class="mb-1">
+                  Size of Team
+                </label>
+
+                <!-- Input -->
+                {% render_field form.team|attr:"placeholder:ie: 10"|attr:"type:text" class="form-control" %}
+
+              </div>
+
+            </div>
+
+            <div class="col-12">
+              
+              <!-- Birthday -->
+              <div class="form-group">
+
+                <!-- Label -->
+                <label>
+                  Team Responsibilities/Activities
+                </label>
+                <small class="form-text text-muted">
+                  Add the cities where you'd like to attend Alpha events. 
+                </small>
+               <!-- Input -->
+                {% render_field form.activities|attr:"data-toggle:select"|attr:"multiple" class="form-control" %}
+              </div>
+
+            </div>
+
+            <div class="col-12">
+              
+              
+              <div class="form-group">
+
+                
+                <label>
+                  Interested in Mentorship Program Participation
+                </label>
+                <small class="form-text text-muted">
+                  Add the cities where you'd like to attend Alpha events. 
+                </small>
+
+                
+                {% render_field form.mentorship|attr:"data-toggle:select"|attr:"multiple" class="form-control" %}
+              </div>
+
+            </div>
+
+            <!--<div class="col-12">
+              
+              
+              <div class="form-group">
+
+                
+                <label>
+                  Events
+                </label>
+                <small class="form-text text-muted">
+                  Add the cities where you'd like to attend Alpha events. 
+                </small>
+
+                
+                {% render_field form.events|attr:"data-toggle:select"|attr:"multiple" class="form-control" %}
+              </div>
+
+            </div>-->
+          </div>
+
+          
+          <!--<hr class="mt-4 mb-5">
+
+          <div class="row">
+            <div class="col-12 col-md-6">
+              
+              
+              <div class="form-group">
+
+                
+                <label class="mb-1">
+                  Panelist
+                </label>
+
+                
+                <small class="form-text text-muted">
+                  Select if you are you interested in sitting on panels
+                </small>
+
+                <div class="row">
+                  <div class="col-auto">
+                    
+                    
+                    <div class="custom-control custom-checkbox-toggle">
+                      {% render_field form.panel|attr:"type:checkbox" class="custom-control-input" %}
+                      <label class="custom-control-label" for="toggleOne"></label>
+                    </div>
+
+                  </div>
+                  <div class="col ml--2">
+                    
+                    
+                    <small class="text-muted">
+                      You're currently invisible
+                    </small>
+
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <div class="col-12 col-md-6">
+              
+              
+              <div class="form-group">
+
+                
+                <label class="mb-1">
+                  Moderator
+                </label>
+
+
+                <small class="form-text text-muted">
+                  Select if you are you interested in moderating discussions
+                </small>
+
+                <div class="row">
+                  <div class="col-auto">
+                    
+
+                    <div class="custom-control custom-checkbox-toggle">
+                      {% render_field form.moderator|attr:"type:checkbox" class="custom-control-input" %}
+                      <label class="custom-control-label" for="toggleTwo"></label>
+                    </div>
+
+                  </div>
+                  <div class="col ml--2">
+                    
+                    
+                    <small class="text-muted">
+                      You're currently available
+                    </small>
+
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>-->
+
+          <hr class="mt-4 mb-5">
+
+          <div class="row">
+            <div class="col-12 col-md-6">
+              
+              <!-- Email address -->
+              <div class="form-group">
+
+                <!-- Label -->
+                <label class="mb-1">
+                  Referred By <span class="text-muted">(Optional)</span>
+                </label>
+
+                <!-- Input -->
+                {% render_field form.referal|attr:"placeholder:Jane Doe"|attr:"type:url" class="form-control required" %}
+
+              </div>
+
+            </div>
+            <div class="col-12 col-md-6">
+              
+              <!-- Email address -->
+              <div class="form-group">
+
+                <!-- Label -->
+                <label class="mb-1">
+                  Refered By Email <span class="text-muted">(Optional)</span>
+                </label>
+
+                <!-- Input -->
+                {% render_field form.referal_email|attr:"placeholder:jane@doe.com"|attr:"type:text" class="form-control" %}
+
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Divider -->
+          <hr class="mt-4 mb-5">
+
+
+          <button type="submit" class="btn btn-primary w-100">
+            Save Info
+          </button>
+
+        </form>
+
       </div>
+    </div> <!-- / .row -->
   </div>
-</div>
 </div>
 {% endblock %}

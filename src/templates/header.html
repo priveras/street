@@ -1,0 +1,75 @@
+{% load staticfiles %}
+<!-- HEADER -->
+<div class="header">
+
+  <!-- Image -->
+  <img src="{% static 'assets/img/covers/alpha-cover.jpg' %}" class="header-img-top" alt="...">
+  
+  <div class="container-fluid">
+
+    <!-- Body -->
+    <div class="header-body mt--5 mt-md--6">
+      <div class="row align-items-end">
+        <div class="col-auto">
+          
+          <!-- Avatar -->
+          <div class="avatar avatar-xxl header-avatar-top">
+            <img src="{% static 'assets/img/logo-square.png' %}" alt="..." class="avatar-img rounded border border-4 border-body">
+          </div>
+
+        </div>
+        <div class="col mb-3 ml--3 ml-md--2">
+          
+          <!-- Pretitle -->
+          <h6 class="header-pretitle">
+            Network
+          </h6>
+
+          <!-- Title -->
+          <h1 class="header-title">
+              VC Platform Network
+          </h1>
+
+        </div>
+      </div> <!-- / .row -->
+      <div class="row align-items-center">
+        <div class="col">
+          
+          <!-- Nav -->
+          <ul class="nav nav-tabs nav-overflow header-tabs">
+            <li class="nav-item">
+              {% if request.path == '/home/' %}
+              <a href="{% url 'app:home' %}" class="nav-link active">
+              {% else %}
+              <a href="{% url 'app:home' %}" class="nav-link">
+              {% endif %}
+                News
+              </a>
+            </li>
+            <li class="nav-item">
+              {% if request.path == '/members/' %}
+              <a href="{% url 'app:members' %}" class="nav-link active">
+              {% else %}
+              <a href="{% url 'app:members' %}" class="nav-link">
+              {% endif %}
+                Members
+              </a>
+            </li>
+            <li class="nav-item">
+              {% if request.path == '/jobs/' %}
+              <a href="{% url 'app:jobs' %}" class="nav-link active">
+              {% else %}
+              <a href="{% url 'app:jobs' %}" class="nav-link">
+              {% endif %}
+                Jobs
+              </a>
+            </li>
+          </ul>
+
+        </div>
+      </div>
+    </div> <!-- / .header-body -->
+
+  </div>
+
+</div> <!-- / .header -->

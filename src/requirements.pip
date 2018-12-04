@@ -8,4 +8,5 @@ sendgrid==3.6.5
 sendgrid-django==4.2.0
 pinax-eventlog
 django-import-export
-stripe==1.82.1
+django-el-pagination==3.2.4
+django-multiselectfield==0.1.8

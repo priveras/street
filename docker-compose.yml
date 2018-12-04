@@ -2,7 +2,7 @@ version: '2'
 services:  
   nginx:
     image: nginx:latest
-    container_name: nzua
+    container_name: nzplatformvc
     ports:
       - "8000:8000"
     volumes:
@@ -12,7 +12,7 @@ services:
       - web
   web:
     build: .
-    container_name: dzua
+    container_name: dzplatformvc
     depends_on:
       - db
     volumes:
@@ -21,6 +21,6 @@ services:
       - "8000"
   db:
     image: postgres:latest
-    container_name: pzua
+    container_name: pzplatformvc
     volumes:
       - /var/lib/postgresql/data

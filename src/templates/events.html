@@ -1,0 +1,190 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block navigation %}
+  {% include 'navigation.html' %}
+{% endblock %}
+
+{% block content %}
+<!-- MAIN CONTENT
+================================================== -->
+<div class="main-content">
+  
+  {% include 'navbar.html' %}
+
+  <!-- CONTENT -->
+  <div class="container-fluid mt-5 mb-5">
+    <div class="row">
+      <div class="col-12">
+        
+        <!-- Files -->
+        <div class="card" data-toggle="lists" data-lists-values='["name"]'>
+          <div class="card-header">
+            <div class="row align-items-center">
+              <div class="col">
+                
+                <!-- Title -->
+                <h4 class="card-header-title">
+                  Events
+                </h4>
+
+              </div>
+              <div class="col-auto">
+                
+                <!-- Dropdown -->
+                <div class="dropdown">
+
+                  <!-- Toggle -->
+                  <a href="#!" class="small text-muted dropdown-toggle" data-toggle="dropdown">
+                    Sort order
+                  </a>
+
+                  <!-- Menu -->
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item sort" data-sort="name" href="#!">
+                      Asc
+                    </a>
+                    <a class="dropdown-item sort" data-sort="name" href="#!">
+                      Desc
+                    </a>
+                  </div>
+
+                </div>
+
+              </div>
+            </div> <!-- / .row -->
+          </div>
+          <div class="card-header">
+            <div class="row">
+              <div class="col-12">
+                
+                <!-- Form -->
+                <form>
+                  <div class="input-group input-group-flush input-group-merge">
+                    <input type="search" class="form-control form-control-prepended search" placeholder="Search">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text">
+                        <span class="fe fe-search"></span>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+
+              </div>
+            </div> <!-- / .row -->
+          </div>
+          <div class="card-body">
+
+            <!-- List -->
+            <ul class="list-group list-group-lg list-group-flush list my--4">
+
+              {% for event in events %}
+              <li class="list-group-item px-0">
+                
+                <div class="row align-items-center">
+                  <div class="col-auto">
+                    
+                    <!-- Avatar -->
+                    {% if event.image %}
+                    <a href="#!" class="avatar avatar-lg">
+                      <img src="{{event.image.url}}" alt="..." class="avatar-img rounded">
+                    </a>
+                    {% endif %}
+
+                  </div>
+                  <div class="col ml--2">
+
+                    <!-- Title -->
+                    <h4 class="card-title mb-1 name">
+                      {{event.title}}
+                    </h4>
+
+                    <!-- Text -->
+                    <small>
+                      <span class="text-success ">●</span> <span class="text-muted">{{event.location}}</span>
+                    </small>
+                    <div class="row align-items-center no-gutters">
+                      <div class="col-auto">
+
+                        <div class="small mr-2">29%</div>
+                        
+                      </div>
+                      <div class="col">
+                        
+                        <!-- Progress -->
+                        <div class="progress progress-sm">
+                          <div class="progress-bar" role="progressbar" style="width: 29%" aria-valuenow="29" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+
+                      </div>
+                    </div>
+
+                    <!-- Time -->
+                    <p class="card-text small text-muted">
+                      Uploaded by {{event.user.first_name}} {{event.user.last_name}} on <time datetime="2018-01-03">Jan 3, 2018</time>
+                    </p>
+                    
+                  </div>
+                  <div class="col-auto">  
+                    <!-- Avatar group -->
+                    <div class="avatar-group d-none d-md-inline-flex">
+                      {% for profile in event.user.profile_set.all %}
+                      <a href="profile-posts.html" class="avatar avatar-xs" data-toggle="tooltip" title="" data-original-title="{{event.user.first_name}} {{event.user.last_name}}">
+                        <img src="{{profile.image.url}}" class="avatar-img rounded-circle" alt="...">
+                      </a>
+                      {% endfor %}
+                    </div>
+
+                  </div>
+                  <div class="col-auto">
+                    
+                    <!-- Button -->
+                    {% if resource.file %}
+                    <a href="{{resource.file}}" class="btn btn-sm btn-white d-none d-md-inline-block">
+                      Download
+                    </a>
+                    {% endif %}
+                    {% if resource.link %}
+                    <a href="{{resource.link}}" target="_blank" class="btn btn-sm btn-white d-none d-md-inline-block">
+                      Link
+                    </a>
+                    {% endif %}
+
+                  </div>
+                  <div class="col-auto">
+                    
+                    <!-- Dropdown -->
+                    <div class="dropdown">
+                      <a href="#!" class="dropdown-ellipses dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fe fe-more-vertical"></i>
+                      </a>
+                      <div class="dropdown-menu dropdown-menu-right">
+                        <a href="#!" class="dropdown-item">
+                          Action
+                        </a>
+                        <a href="#!" class="dropdown-item">
+                          Another action
+                        </a>
+                        <a href="#!" class="dropdown-item">
+                          Something else here
+                        </a>
+                      </div>
+                    </div>
+
+                  </div>
+                </div> <!-- / .row -->
+
+              </li>
+
+              {% endfor %}
+            </ul>
+
+          </div>
+        </div>
+
+      </div>
+    </div> <!-- / .row -->
+  </div>
+  
+</div> <!-- / .main-content -->
+{% endblock %}

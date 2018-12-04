@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load humanize %}
+
+{% block navigation %}
+  {% include 'navigation.html' %}
+{% endblock %}
+
+{% block content %}
+<!-- MAIN CONTENT
+================================================== -->
+<div class="main-content">
+
+  <!-- include 'header.html' -->
+  
+  <!-- CONTENT -->
+  <div class="container-fluid mb-5">
+    <div class="row justify-content-center">
+      <div class="col-12 col-lg-10 col-xl-8">
+            
+        <!-- Header -->
+        <div class="header mt-md-5">
+          <div class="header-body">
+            
+            <!-- Pretitle -->
+            <h6 class="header-pretitle">
+              VC Platform
+            </h6>
+
+            <!-- Title -->
+            <h1 class="header-title">
+              Membership Status
+            </h1>
+
+          </div>
+        </div>
+
+        <!-- Card -->
+        <div class="card">
+          <div class="card-body text-center">
+            <div class="row justify-content-center">
+              <div class="col-12 col-md-10 col-xl-8">
+            
+                <!-- Image -->
+                <img src="{% static 'assets/img/illustrations/happiness.svg' %}" alt="..." class="img-fluid mt--5 mb-4" style="max-width: 272px;">
+
+                <!-- Title -->
+                <h2>
+                  Thanks for completing the application
+                </h2>
+
+                <!-- Content -->
+                <p class="text-muted">
+                  {% if user.profile_set.all.0.status == 'Pending' %}
+                  Our team is currenlty reviewing your request and will get back you shortly with a status update.
+                  {% elif user.profile_set.all.0.status == 'Inactive' %}
+                  Your account has been deactivated. To reactivate it, contact our team at <a href="mailto:admin@vcplatform.com">admin@vcplatform.com</a>.
+                  {% elif user.profile_set.all.0.status == 'Declined' %}
+                  Your membership request has been declined. To learn more, contact our team at <a href="mailto:admin@vcplatform.com">admin@vcplatform.com</a>.
+                  {% else %}
+                  Your application has been approved. We are excited to welcome you to the VC Platform community.
+                  {% endif %}
+                </p>
+                  {% if user.profile_set.all.0.status == 'Pending' %}
+                  <div class="alert alert-warning alert-dismissible fade show text-white" role="alert">
+                    <strong>Membership Status:</strong> Pending
+                  </div>
+                  {% elif user.profile_set.all.0.status == 'Inactive' %}
+                  <div class="alert alert-light alert-dismissible fade show" role="alert">
+                    <strong>Membership Status:</strong> Inactive
+                  </div>
+                  {% elif user.profile_set.all.0.status == 'Declined' %}
+                  <div class="alert alert-danger alert-dismissible fade show text-white" role="alert">
+                    <strong>Membership Status:</strong> Declined
+                  </div>
+                  {% else %}
+                  <div class="alert alert-success alert-dismissible fade show text-white" role="alert">
+                    <strong>Membership Status:</strong> Approved
+                  </div>
+                  <p>go to <a href="{% url 'app:home' %}">home</a></p>
+                  {% endif %}
+              
+              </div>
+            </div> <!-- / .row -->
+          </div>
+        </div>
+
+      </div>
+    </div> <!-- / .row -->
+  </div>
+
+</div> <!-- / .main-content -->
+{% endblock %}
