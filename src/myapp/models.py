@@ -475,7 +475,7 @@ class Profile(models.Model):
     bio = models.TextField()
     image = models.ImageField(upload_to='images/%Y%m%d', null=True)
     team = models.CharField(max_length=200)
-    events = ArrayField(models.CharField(max_length=200))
+    events = ArrayField(models.CharField(max_length=200), blank=True)
     activities = ArrayField(models.CharField(max_length=200))
     mentorship = ArrayField(models.CharField(max_length=200))
     panel = models.BooleanField(default=False)
