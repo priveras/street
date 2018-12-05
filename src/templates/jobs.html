@@ -86,7 +86,17 @@
             <!-- List -->
             <ul class="list-group list-group-lg list-group-flush list my--4">
 
-              {% for job in jobs %}
+              {% if not job %}
+              <li class="list-group-item px-0">
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                      <p>No jobs available.</p>
+                    </div>
+                </div>
+              </li>
+              {% endif %}
+
+              {% for job in job %}
               <li class="list-group-item px-0">
                 
                 <div class="row align-items-center">
