@@ -224,6 +224,17 @@ def comment_create(request):
     context = {'comment': comment}
     return render(request, template, context)
 
+class MembersRequestView(generic.ListView):
+    template_name = 'members-request.html'
+    context_object_name = 'members'
+    model = User
+
+
+    def get_context_data(self, **kwargs):
+        context = super(MembersView, self).get_context_data(**kwargs)
+        context['members'] = User.objects.order_by('-created_at')
+
+        return context
 
 class MembersView(generic.ListView):
     template_name = 'members.html'
