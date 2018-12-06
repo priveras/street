@@ -6,10 +6,35 @@ from datetime import date, datetime, timezone
 from django.http import JsonResponse, HttpResponse
 from django.template import Context
 from django.core import serializers
+from django.core.mail import send_mail
 from .forms import ProfileForm, PostForm, CommentForm, JobForm
 
 from .models import Resource, Post, Profile, Comment, Job, Event
 from django.http import HttpResponseRedirect
+
+@csrf_exempt
+def delete_post(request, post_id):
+    if request.method != 'POST':
+        raise Http404
+
+    Post.objects.filter(id=post_id, user=request.user).delete()
+    return JsonResponse({'status': 'ok'})
+
+@csrf_exempt
+def delete_comment(request, comment_id):
+    if request.method != 'POST':
+        raise Http404
+
+    Comment.objects.filter(id=comment_id, user=request.user).delete()
+    return JsonResponse({'status': 'ok'})
+
+@csrf_exempt
+def delete_job(request, job_id):
+    if request.method != 'POST':
+        raise Http404
+
+    Job.objects.filter(id=job_id, user=request.user).delete()
+    return JsonResponse({'status': 'ok'})
 
 class EventsView(generic.ListView):
     template_name = 'events.html'
@@ -194,6 +219,7 @@ def comment_create(request):
     comment = f.save(commit=False)
     comment.user = request.user
     comment.save()
+    #send_mail('New Comment', 'Hi! Just wanted to let you know that your post has a new comment. Login to VC Platform to see the message.', 'hello@attomik.com', [comment.post.user.email])
 
     context = {'comment': comment}
     return render(request, template, context)

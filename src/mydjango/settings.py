@@ -146,8 +146,8 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 
 DEFAULT_FROM_EMAIL = "Admin VC Platform <admin@vcplatform.com>"
-#EMAIL_BACKEND = "sgbackend.SendGridBackend"
-#SENDGRID_API_KEY = "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"
+EMAIL_BACKEND = "sgbackend.SendGridBackend"
+SENDGRID_API_KEY = "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"
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/

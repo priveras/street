@@ -35,8 +35,8 @@
             <!-- Time -->
             <time class="comment-time">
               {% if user == comment.user %}
-              <a href=""><i class="fe fe-edit"></i></a>
-              <a href=""><i class="fe fe-trash"></i></a>
+              <!--<a href=""><i class="fe fe-edit"></i></a>-->
+              <a href="#" class="delete-comment" data-toggle="modal" data-target="#delete2" data-id="{{ comment.id }}" ><i class="fe fe-trash"></i></a>
               {% endif %}
               <span class="mr-2"></span>
               <span class="fe fe-clock"></span>

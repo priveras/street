@@ -54,11 +54,11 @@ class Resource(models.Model):
 
 class Job(models.Model):
     user = models.ForeignKey(User)
-    company = models.CharField(max_length=300, blank=True)
-    title = models.CharField(max_length=300, blank=True)
-    excerpt = models.TextField(blank=True)
-    link = models.CharField(max_length=300, blank=True)
-    image = models.FileField(upload_to='images/%Y%m%d', blank=True)
+    company = models.CharField(max_length=300)
+    title = models.CharField(max_length=300)
+    excerpt = models.TextField()
+    link = models.CharField(max_length=300)
+    image = models.FileField(upload_to='images/%Y%m%d')
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(db_index=True, auto_now_add=True)
 

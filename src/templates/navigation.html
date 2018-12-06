@@ -122,7 +122,7 @@
           {% else %}
           <a href="{% url 'app:home' %}" class="nav-link">
           {% endif %}
-            <i class="fe fe-clipboard"></i> News
+            <i class="fe fe-clipboard"></i> Feed
           </a>
         </li>
         <li class="nav-item">
@@ -141,6 +141,15 @@
           <a href="{% url 'app:events' %}" class="nav-link">
           {% endif %}
             <i class="fe fe-calendar"></i> Events
+          </a>
+        </li>
+        <li class="nav-item">
+          {% if request.path == '/jobs/' %}
+          <a href="{% url 'app:jobs' %}" class="nav-link active">
+          {% else %}
+          <a href="{% url 'app:jobs' %}" class="nav-link">
+          {% endif %}
+            <i class="fe fe-user-check"></i> Vendors
           </a>
         </li>
         <li class="nav-item">

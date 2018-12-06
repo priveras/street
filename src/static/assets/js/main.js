@@ -1,12 +1,58 @@
 $(function(){
 
+  $('.delete-post').click(function(){
+    var id = $(this).attr('data-id');
+    $('#delete-post-submit').attr('data-id', id);
+    console.log(id + 'hello');
+  });
+
+  $('#delete-post-submit').click(function(){
+    var id = $(this).attr('data-id');
+    var path = '/api/delete/post/' + id;
+
+    $.post(path, function(data) {
+      $('#delete1').modal('toggle');
+      window.location.reload();
+    });
+  });
+
+  $('.delete-comment').click(function(){
+    var id = $(this).attr('data-id');
+    $('#delete-comment-submit').attr('data-id', id);
+    console.log(id + 'hello');
+  });
+
+  $('#delete-comment-submit').click(function(){
+    var id = $(this).attr('data-id');
+    var path = '/api/delete/comment/' + id;
+
+    $.post(path, function(data) {
+      $('#delete2').modal('toggle');
+      window.location.reload();
+    });
+  });
+
+  $('.delete-job').click(function(){
+    var id = $(this).attr('data-id');
+    $('#delete-job-submit').attr('data-id', id);
+    console.log(id + 'hello');
+  });
+
+  $('#delete-job-submit').click(function(){
+    var id = $(this).attr('data-id');
+    var path = '/api/delete/job/' + id;
+
+    $.post(path, function(data) {
+      $('#delete3').modal('toggle');
+      window.location.reload();
+    });
+  });
+
   //save a post
   $('#post-form').submit(function(e){
     e.preventDefault();
     var data = {
       text: $('#text-post').val(),
-      company: $('#company-post').val(),
-      image: $('#image-post').val(),
     };
 
     if(!data.text){

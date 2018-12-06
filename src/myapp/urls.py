@@ -22,4 +22,14 @@ urlpatterns = [
 
     url(r'^accounts/info/$', login_required(views.InfoView.as_view()), name='info'),
     url(r'^accounts/info/update/(?P<pk>\d+)/$', login_required(views.InfoUpdateView.as_view()), name='info-update'),
+
+    url(r'^api/delete/post/(?P<post_id>[0-9]+)',
+        login_required(views.delete_post),
+        name='delete-post'),
+    url(r'^api/delete/comment/(?P<comment_id>[0-9]+)',
+        login_required(views.delete_comment),
+        name='delete-comment'),
+    url(r'^api/delete/job/(?P<job_id>[0-9]+)',
+        login_required(views.delete_job),
+        name='delete-job'),
 ]
