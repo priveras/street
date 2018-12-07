@@ -48,6 +48,22 @@ $(function(){
     });
   });
 
+  $('.delete-event').click(function(){
+    var id = $(this).attr('data-id');
+    $('#delete-event-submit').attr('data-id', id);
+    console.log(id + 'hello');
+  });
+
+  $('#delete-event-submit').click(function(){
+    var id = $(this).attr('data-id');
+    var path = '/api/delete/event/' + id;
+
+    $.post(path, function(data) {
+      $('#delete4').modal('toggle');
+      window.location.reload();
+    });
+  });
+
   //save a post
   $('#post-form').submit(function(e){
     e.preventDefault();

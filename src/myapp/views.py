@@ -7,7 +7,7 @@ from django.http import JsonResponse, HttpResponse
 from django.template import Context
 from django.core import serializers
 from django.core.mail import send_mail
-from .forms import ProfileForm, PostForm, CommentForm, JobForm
+from .forms import ProfileForm, PostForm, CommentForm, JobForm, EventForm
 
 from .models import Resource, Post, Profile, Comment, Job, Event
 from django.http import HttpResponseRedirect
@@ -29,12 +29,54 @@ def delete_comment(request, comment_id):
     return JsonResponse({'status': 'ok'})
 
 @csrf_exempt
+def delete_event(request, event_id):
+    if request.method != 'POST':
+        raise Http404
+
+    Event.objects.filter(id=event_id, user=request.user).delete()
+    return JsonResponse({'status': 'ok'})
+
+@csrf_exempt
 def delete_job(request, job_id):
     if request.method != 'POST':
         raise Http404
 
     Job.objects.filter(id=job_id, user=request.user).delete()
     return JsonResponse({'status': 'ok'})
+
+class EventsCreateView(generic.CreateView):
+    model = Event
+    form_class = EventForm
+    template_name = 'events_create.html'
+
+    def form_valid(self, form):
+        p = form.save(commit=False)
+        p.user = self.request.user
+        p.save()
+        return redirect('/events/')
+
+class EventsUpdateView(generic.UpdateView):
+    model = Event
+    form_class = EventForm
+    template_name = 'events_create.html'
+
+    def user_passes_test(self, request):
+        if request.user.is_authenticated():
+            self.object = self.get_object()
+            return self.object.user == request.user
+        return False
+
+    def dispatch(self, request, *args, **kwargs):
+        if not self.user_passes_test(request):
+            return HttpResponseRedirect('/')
+        return super(EventsUpdateView, self).dispatch(
+            request, *args, **kwargs)
+
+    def form_valid(self, form):
+        p = form.save(commit=False)
+        p.user = self.request.user
+        p.save()
+        return redirect('/events/')
 
 class EventsView(generic.ListView):
     template_name = 'events.html'
@@ -44,7 +86,7 @@ class EventsView(generic.ListView):
 
     def get_context_data(self, **kwargs):
         context = super(EventsView, self).get_context_data(**kwargs)
-        context['events'] = Event.objects.order_by('-created_at')
+        context['events'] = Event.objects.order_by('datetime')
 
         return context
 

@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block navigation %}
+  {% include 'navigation.html' %}
+{% endblock %}
+
+{% load widget_tweaks %}
+{% block content %}
+<div class="main-content">
+
+  {% include 'navbar.html' %}
+
+  <div class="container-fluid">
+    <div class="row justify-content-center">
+      <div class="col-12 col-lg-10 col-xl-8">
+        
+        <!-- Header -->
+        <div class="header mt-md-5">
+          <div class="header-body">
+            <div class="row align-items-center">
+              <div class="col">
+                
+                <!-- Pretitle -->
+                <h6 class="header-pretitle">
+                  Events
+                </h6>
+
+                <!-- Title -->
+                <h1 class="header-title">
+                  Create Event
+                </h1>
+
+              </div>
+            </div> <!-- / .row -->
+        
+          </div>
+        </div>
+        {% if form.errors %}
+          <ul>
+            {% for field in form %}
+                {% if field.errors %}
+                    <li><strong class="text-danger">{{ field.label_tag }}</strong> {{ field.errors }}</li>
+                {% endif %}
+            {% endfor %}
+          </ul>
+        </div>
+        {% endif %}
+        <form action="" method="POST" enctype="multipart/form-data" class="mb-5">
+          {% csrf_token %}
+          <div class="row">
+            <div class="col-12">
+              
+              <!-- Email address -->
+              <div class="form-group">
+
+                <!-- Label -->
+                <label class="mb-1">
+                  Event Title
+                </label>
+
+                <!-- Input -->
+                {% render_field form.title|attr:"placeholder:ie: Founders Summit"|attr:"type:text" class="form-control required" %}
+              </div>
+
+            </div>
+            <div class="col-12">
+              
+              <!-- Email address -->
+              <div class="form-group">
+
+                <!-- Label -->
+                <label class="mb-1">
+                  Event Description
+                </label>
+
+                <!-- Input -->
+                {% render_field form.description|attr:"placeholder:Write the event description here..."|attr:"type:text"|attr:"rows:4"|attr:"maxlength:150" class="form-control required" %}
+
+              </div>
+
+            </div>
+            <div class="col-12">
+              
+              <!-- Email address -->
+              <div class="form-group">
+
+                <!-- Label -->
+                <label class="mb-1">
+                  Location
+                </label>
+
+                <!-- Input -->
+                {% render_field form.location|attr:"placeholder:1 Hacker Way, Menlo Park, 94025"|attr:"type:text"|attr:"rows:4" class="form-control required" %}
+              </div>
+
+            </div>
+            <div class="col-12">
+              
+              <!-- Email address -->
+              <div class="form-group">
+
+                <!-- Label -->
+                <label class="mb-1">
+                  Link <small class="text-muted">(Event link with more information)</small>
+                </label>
+
+                <!-- Input -->
+                {% render_field form.link|attr:"placeholder:http://"|attr:"type:text"|attr:"rows:4" class="form-control required" %}
+              </div>
+
+            </div>
+            <div class="col-12">
+              
+              <!-- Birthday -->
+              <div class="form-group">
+
+                <!-- Label -->
+                <label>
+                  Event Image <small class="text-muted">Preferrably a squared image 500px * 500px. </small>
+                </label>
+                {% render_field form.image class="form-control-file required" %}
+
+              </div>
+
+            </div>
+            <div class="col-12">
+              
+              <div class="form-group">
+                <label>
+                  Start Date & Time
+                </label>
+                {% render_field form.datetime|set_data:"toggle:flatpickr"|attr:"type:text"|attr:"placeholder:Event's start date and time"|attr:"readonly:readonly" class="form-control required flatpickr-input active" %}
+              </div>
+
+            </div>
+          </div> <!-- / .row -->
+
+          <!-- Divider -->
+          <hr class="mt-4 mb-5">
+
+
+          <button type="submit" class="btn btn-primary w-100">
+            Save Info
+          </button>
+
+        </form>
+
+      </div>
+    </div> <!-- / .row -->
+  </div>
+</div>
+{% endblock %}

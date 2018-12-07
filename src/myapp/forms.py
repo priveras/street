@@ -1,5 +1,5 @@
 from django import forms
-from .models import Comment, Post, Profile, Job
+from .models import Comment, Post, Profile, Job, Event
 
 class PostForm(forms.ModelForm):
     class Meta:
@@ -14,6 +14,11 @@ class CommentForm(forms.ModelForm):
 class JobForm(forms.ModelForm):
     class Meta:
         model = Job
+        exclude = ['user', 'created_at', 'updated_at']
+
+class EventForm(forms.ModelForm):
+    class Meta:
+        model = Event
         exclude = ['user', 'created_at', 'updated_at']
 
 class ProfileForm(forms.ModelForm):

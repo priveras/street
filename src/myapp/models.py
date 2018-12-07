@@ -7,12 +7,11 @@ from django.contrib.postgres.fields import ArrayField
 class Event(models.Model):
     user = models.ForeignKey(User, blank=True, on_delete=models.CASCADE)
     title = models.CharField(max_length=300)
-    text = models.TextField(blank=True)
+    description = models.TextField()
     location = models.CharField(max_length=300)
-    link = models.URLField()
-    image = models.FileField(upload_to='images/%Y%m%d', blank=True)
-    date = models.DateField()
-    time = models.TimeField()
+    link = models.URLField(blank=True)
+    image = models.FileField(upload_to='images/%Y%m%d')
+    datetime = models.DateTimeField()
     created_at = models.DateTimeField(db_index=True, auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
