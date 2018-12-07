@@ -66,10 +66,13 @@ $(function(){
 
   //save a post
   $('#post-form').submit(function(e){
+    var myEditor = document.querySelector('#text-post')
     e.preventDefault();
+    var html = myEditor.children[0].innerHTML
     var data = {
-      text: $('#text-post').val(),
+      text: html,
     };
+    console.log(html);
 
     if(!data.text){
       return false;
@@ -81,6 +84,7 @@ $(function(){
         return false;
       }
 
+      $('#post').modal('toggle');
       $('#text-post').val("");
       $('#post-divider').after(data);
     });

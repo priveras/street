@@ -104,7 +104,7 @@
                       </a>
                       {% for profile in member.profile_set.all %}
                       <small>
-                        <span class="text-success">●</span> {{profile.location}}
+                        <i class="fa fa-map-marker-alt text-muted"></i> {{profile.location}}
                       </small>
                       {% endfor %}
                     </h4>

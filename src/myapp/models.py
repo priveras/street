@@ -21,7 +21,6 @@ class Event(models.Model):
 class Post(models.Model):
     user = models.ForeignKey(User, blank=True, on_delete=models.CASCADE)
     text = models.TextField(blank=True)
-    image = models.FileField(upload_to='images/%Y%m%d', blank=True)
     created_at = models.DateTimeField(db_index=True, auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
