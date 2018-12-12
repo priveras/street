@@ -6,16 +6,25 @@ from . import views
 
 app_name = 'app'
 urlpatterns = [
+
+    url(r'^admin/members/$', login_required(views.MembersAdminView.as_view()), name='members-admin'),
+
 	url(r'^$', login_required(views.index), name='index'),
     url(r'^home/$', login_required(views.home), name='home'),
     url(r'^members/$', login_required(views.MembersView.as_view()), name='members'),
     url(r'^resources/$', login_required(views.ResourcesView.as_view()), name='resources'),
-    url(r'^events/$', login_required(views.EventsView.as_view()), name='events'),
+
+    url(r'^vendors/$', login_required(views.VendorsView.as_view()), name='vendors'),
+    url(r'^vendors/create/$', login_required(views.VendorCreateView.as_view()), name='vendor-create'),
+    url(r'^vendors/update/(?P<pk>\d+)/$', login_required(views.VendorUpdateView.as_view()), name='vendor-update'),
+
     url(r'^jobs/$', login_required(views.JobsView.as_view()), name='jobs'),
-    url(r'^jobs/create/$', login_required(views.JobsCreateView.as_view()), name='jobs-create'),
-    url(r'^events/create/$', login_required(views.EventsCreateView.as_view()), name='events-create'),
-    url(r'^events/update/(?P<pk>\d+)/$', login_required(views.EventsUpdateView.as_view()), name='events-update'),
-    url(r'^jobs/update/(?P<pk>\d+)/$', login_required(views.JobsUpdateView.as_view()), name='jobs-update'),
+    url(r'^jobs/create/$', login_required(views.JobCreateView.as_view()), name='job-create'),
+    url(r'^jobs/update/(?P<pk>\d+)/$', login_required(views.JobUpdateView.as_view()), name='job-update'),
+
+    url(r'^events/$', login_required(views.EventsView.as_view()), name='events'),
+    url(r'^events/create/$', login_required(views.EventCreateView.as_view()), name='event-create'),
+    url(r'^events/update/(?P<pk>\d+)/$', login_required(views.EventUpdateView.as_view()), name='event-update'),
     url(r'^members/(?P<username>[\w.@+-]+)/$', login_required(views.profile), name='profile'),
     url(r'^status/$', login_required(views.StatusView.as_view()), name='status'),
     

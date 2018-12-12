@@ -9,7 +9,7 @@
 <!-- MAIN CONTENT
 ================================================== -->
 <div class="main-content">
-  
+
   {% include 'navbar.html' %}
 
   <!-- CONTENT -->
@@ -18,15 +18,14 @@
       <div class="col-12">
         
         <!-- Files -->
-        <div class="card" data-toggle="lists" data-lists-values='["name"]'>
+        <div class="card" data-toggle="lists" data-lists-values='["name", "job"]'>
           <div class="card-header">
             <div class="row align-items-center">
               <div class="col">
                 
                 <!-- Title -->
                 <h4 class="card-header-title">
-                  Events
-                  <span class="text-muted ml-4" style="font-weight:normal">Past Events</span>
+                  Members ({{members.count}})
                 </h4>
 
               </div>
@@ -53,19 +52,11 @@
                 </div>
 
               </div>
-              <div class="col-auto">
-                    
-                <!-- Button -->
-                <a href="{% url 'app:event-create' %}" class="btn btn-sm btn-primary">
-                  Post Event
-                </a>
-
-              </div>
             </div> <!-- / .row -->
           </div>
           <div class="card-header">
             <div class="row">
-              <div class="col-12">
+              <div class="col-12 col-lg-8">
                 
                 <!-- Form -->
                 <form>
@@ -86,62 +77,73 @@
 
             <!-- List -->
             <ul class="list-group list-group-lg list-group-flush list my--4">
-
-              {% for event in events %}
+              {% for member in members %}
+              {% if member.profile_set.all %}
               <li class="list-group-item px-0">
                 
                 <div class="row align-items-center">
                   <div class="col-auto">
                     
-                    <!-- Avatar -->
-                    {% if event.image %}
-                    <a href="#!" class="avatar avatar-xl">
-                      <img src="{{event.image.url}}" alt="..." class="avatar-img rounded">
+                    <a href="#!" class="avatar avatar-lg">
+                      {% for profile in member.profile_set.all %}
+                        {% if profile.image %}
+                        <img src="{{profile.image.url}}" alt="..." class="avatar-img rounded-circle">
+                        {% else %}
+                        <img src="{% static 'assets/img/logo.png' %}" alt="..." class="avatar-img rounded-circle">
+                        {% endif %}
+                      {% endfor %}
                     </a>
-                    {% endif %}
 
                   </div>
                   <div class="col ml--2">
 
                     <!-- Title -->
                     <h4 class="card-title mb-1 name">
-                      {{event.title}} <small class="text-muted ">Posted by {{event.user.first_name}} {{event.user.last_name}} on <time>Jan 3, 2018</time></small>
-                    </h4>
-                    <!-- Text -->
-                    <small>
-                      <i class="fa fa-calendar-alt text-muted"></i> <span class="text-muted">{{event.datetime}}</span>
-                    </small>
-                    <br>
-                    <small>
-                      <i class="fa fa-map-marked-alt text-muted"></i> <span class="text-muted">{{event.location}}</span>
-                    </small>
-                    
-                  </div>
-                  <div class="col-auto">
-                    
-                    <!-- Avatar group -->
-                    <div class="avatar-group">
-                      {% for rsvp in event.rsvp_set.all|slice:":4" %}
-                      <a href="profile-posts.html" class="avatar avatar-xs" data-toggle="tooltip" title="" data-original-title="{{rsvp.user.first_name}} {{rsvp.user.last_name}}">
-                        {% for profile in rsvp.user.profile_set.all %}
-                        <img src="{{profile.image.url}}" class="avatar-img rounded-circle" alt="...">
-                        {% endfor %}
+                      <a href="{% url 'app:profile' member.username %}" class="text-dark">
+                        {{member.first_name}} {{member.last_name}}
                       </a>
+                      {% for profile in member.profile_set.all %}
+                      <small>
+                        <i class="fa fa-map-marker-alt text-muted"></i> {{profile.location}}
+                      </small>
                       {% endfor %}
-                      {% if event.rsvp_set.count > 4 %}
-                      <div class="avatar avatar-xs">
-                        <div class="avatar-title rounded-circle border border-white">+{{event.rsvp_set.count|add:"-4"}}</div>
-                      </div>
-                      {% endif %}
-                    </div>
+                    </h4>
 
+                    <!-- Text -->
+                    <p class="card-text small text-muted mb-1 job">
+                      {% for profile in member.profile_set.all %}
+                      {{profile.job_title}} at <a href="{{profile.company}}" target="_blank">{{profile.company}}</a>
+                      {% endfor %}
+                    </p>
+                    <p class="card-text small text-muted">
+                      {% for profile in member.profile_set.all %}
+                        {% for activity in profile.activities %}
+                          <span class="badge badge-soft-secondary">{{activity}}</span>
+                        {% endfor %}
+                      {% endfor %}
+                    </p>
                   </div>
                   <div class="col-auto">
                     
-                
-                    <a href="{{resource.file}}" class="btn btn-sm btn-white d-none d-md-inline-block">
-                      Attending
-                    </a>
+                    {% for profile in member.profile_set.all %}
+                      {% if profile.status == 'Active' %}
+                      <a href="{{resource.file}}" class="btn btn-sm btn-success d-none d-md-inline-block">
+                        {{profile.status}}
+                      </a>
+                      {% elif profile.status == 'Pending' %}
+                      <a href="{{resource.file}}" class="btn btn-sm btn-warning d-none d-md-inline-block text-white">
+                        {{profile.status}}
+                      </a>
+                      {% elif profile.staus == 'Declined' %}
+                      <a href="{{resource.file}}" class="btn btn-sm btn-danger d-none d-md-inline-block">
+                        {{profile.status}}
+                      </a>
+                      {% else %}
+                      <a href="{{resource.file}}" class="btn btn-sm btn-white d-none d-md-inline-block">
+                        {{profile.status}}
+                      </a>
+                      {% endif %}
+                    {% endfor %}
 
                   </div>
                   <div class="col-auto">
@@ -152,11 +154,14 @@
                         <i class="fe fe-more-vertical"></i>
                       </a>
                       <div class="dropdown-menu dropdown-menu-right">
-                        <a href="{% url 'app:event-update' event.id %}" class="dropdown-item">
-                          Edit
+                        <a href="#!" class="dropdown-item">
+                          Pending
                         </a>
-                        <a href="#!" class="dropdown-item delete-event" data-toggle="modal" data-target="#delete4" data-id="{{ event.id }}">
-                          Delete
+                        <a href="#!" class="dropdown-item">
+                          Declined
+                        </a>
+                        <a href="#!" class="dropdown-item">
+                          Inactive
                         </a>
                       </div>
                     </div>
@@ -165,7 +170,7 @@
                 </div> <!-- / .row -->
 
               </li>
-
+              {% endif %}
               {% endfor %}
             </ul>
 
@@ -175,22 +180,13 @@
       </div>
     </div> <!-- / .row -->
   </div>
-  
+
 </div> <!-- / .main-content -->
-<!-- Modal Delete Event -->
-<div class="modal fade" id="delete4" tabindex="-1" role="dialog" aria-labelledby="deleteCommentLabel" aria-hidden="true">
-  <div class="modal-dialog modal-sm" role="document">
-    <div class="modal-content">
-      <div class="modal-body p-4">
-          <div class="text-center">
-              <i class="fe fe-alert-triangle h1 text-warning"></i>
-              <h4 class="mt-2">Delete Event</h4>
-              <p class="mt-3">Are you sure you want to delete this event?</p>
-              <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
-              <button type="button" class="btn btn-danger my-2 text-white" id="delete-event-submit" data-dismiss="modal">Delete</button>
-          </div>
-      </div>
-    </div>
-  </div>
-</div>
+{% endblock %}
+{% block js %}
+<script type="text/javascript">
+  $('img').on("error", function() {
+    $(this).attr('src', '{% static 'assets/img/logo-square.png' %}');
+  });
+</script>
 {% endblock %}

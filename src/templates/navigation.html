@@ -71,6 +71,11 @@
           <div class="collapse " id="sidebarDashboards">
             <ul class="nav nav-sm flex-column">
               <li class="nav-item">
+                <a href="{% url 'app:members-admin' %}" class="nav-link ">
+                  Members
+                </a>
+              </li>
+              <li class="nav-item">
                 <a href="" class="nav-link ">
                   Partners
                 </a>
@@ -160,6 +165,30 @@
           {% endif %}
             <i class="fe fe-file-text"></i> Jobs
           </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#resources" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
+            <i class="fe fe-folder-plus"></i> Resources
+          </a>
+          <div class="collapse " id="resources">
+            <ul class="nav nav-sm flex-column">
+              <li class="nav-item">
+                <a href="{% url 'app:members-admin' %}" class="nav-link ">
+                  Files
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="" class="nav-link ">
+                  Tools
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{% url 'app:vendors' %}" class="nav-link ">
+                  Vendors
+                </a>
+              </li>
+            </ul>
+          </div>
         </li>
       </ul>
       {% endif %}

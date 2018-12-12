@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block navigation %}
+  {% include 'navigation.html' %}
+{% endblock %}
+
+{% load widget_tweaks %}
+{% block content %}
+<div class="main-content">
+
+  {% include 'navbar.html' %}
+
+  <div class="container-fluid">
+    <div class="row justify-content-center">
+      <div class="col-12 col-lg-10 col-xl-8">
+        
+        <!-- Header -->
+        <div class="header mt-md-5">
+          <div class="header-body">
+            <div class="row align-items-center">
+              <div class="col">
+                
+                <!-- Pretitle -->
+                <h6 class="header-pretitle">
+                  Vendors
+                </h6>
+
+                <!-- Title -->
+                <h1 class="header-title">
+                  Create Vendor Post
+                </h1>
+
+              </div>
+            </div> <!-- / .row -->
+        
+          </div>
+        </div>
+        {% if form.errors %}
+          <ul>
+            {% for field in form %}
+                {% if field.errors %}
+                    <li><strong class="text-danger">{{ field.label_tag }}</strong> {{ field.errors }}</li>
+                {% endif %}
+            {% endfor %}
+          </ul>
+        </div>
+        {% endif %}
+        <form action="" method="POST" enctype="multipart/form-data" class="mb-5">
+          {% csrf_token %}
+          <div class="row">
+            <div class="col-12">
+              
+              <!-- Email address -->
+              <div class="form-group">
+
+                <!-- Label -->
+                <label class="mb-1">
+                  Vendor Title
+                </label>
+
+                <!-- Input -->
+                {% render_field form.title|attr:"placeholder:Company X"|attr:"type:text" class="form-control required" %}
+              </div>
+
+            </div>
+            <div class="col-12">
+              
+              <!-- Birthday -->
+              <div class="form-group">
+
+                <!-- Label -->
+                <label>
+                  Description/Notes
+                </label>
+
+                <!-- Input -->
+                {% render_field form.description|attr:"placeholder:Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa."|attr:"type:text"|attr:"rows:2"|attr:"maxlength:200" class="form-control required" %}
+              </div>
+
+            </div>
+            <div class="col-12">
+              
+              
+              <div class="form-group">
+
+                
+                <label>
+                  Category
+                </label>
+                <small class="form-text text-muted">
+                  Add the categories relevant to this vendor
+                </small>
+
+                
+                {% render_field form.categories|attr:"data-toggle:select"|attr:"multiple" class="form-control" %}
+              </div>
+
+            </div>
+            <div class="col-12">
+              
+              <!-- Email address -->
+              <div class="form-group">
+
+                <!-- Label -->
+                <label class="mb-1">
+                  Link <small class="text-muted">(Optional)</small>
+                </label>
+
+                <!-- Input -->
+                {% render_field form.link|attr:"placeholder:http://"|attr:"type:text"|attr:"rows:4" class="form-control" %}
+              </div>
+
+            </div>
+            <div class="col-12 col-md-6">
+              
+              <!-- Email address -->
+              <div class="form-group">
+
+                <!-- Label -->
+                <label class="mb-1">
+                  Contact <small class="text-muted">(Optional)</small>
+                </label>
+
+                <!-- Input -->
+                {% render_field form.contact|attr:"placeholder:John Doe"|attr:"type:text" class="form-control" %}
+
+              </div>
+
+            </div>
+            <div class="col-12 col-md-6">
+              
+              <!-- Email address -->
+              <div class="form-group">
+
+                <!-- Label -->
+                <label class="mb-1">
+                  Contact Email <small class="text-muted">(Optional)</small>
+                </label>
+
+                <!-- Input -->
+                {% render_field form.contact_email|attr:"placeholder:john@doe.com"|attr:"type:email" class="form-control" %}
+
+              </div>
+
+            </div>
+          </div> <!-- / .row -->
+
+          <!-- Divider -->
+          <hr class="mt-4 mb-5">
+
+
+          <button type="submit" class="btn btn-primary w-100">
+            Save Info
+          </button>
+
+        </form>
+
+      </div>
+    </div> <!-- / .row -->
+  </div>
+</div>
+{% endblock %}

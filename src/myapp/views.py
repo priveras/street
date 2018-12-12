@@ -7,9 +7,9 @@ from django.http import JsonResponse, HttpResponse
 from django.template import Context
 from django.core import serializers
 from django.core.mail import send_mail
-from .forms import ProfileForm, PostForm, CommentForm, JobForm, EventForm
+from .forms import *
 
-from .models import Resource, Post, Profile, Comment, Job, Event
+from .models import *
 from django.http import HttpResponseRedirect
 
 @csrf_exempt
@@ -44,7 +44,53 @@ def delete_job(request, job_id):
     Job.objects.filter(id=job_id, user=request.user).delete()
     return JsonResponse({'status': 'ok'})
 
-class EventsCreateView(generic.CreateView):
+class VendorsView(generic.ListView):
+    template_name = 'vendors.html'
+    context_object_name = 'vendors'
+    model = Vendor
+
+
+    def get_context_data(self, **kwargs):
+        context = super(VendorsView, self).get_context_data(**kwargs)
+        context['vendors'] = Vendor.objects.order_by('title')
+
+        return context
+
+class VendorCreateView(generic.CreateView):
+    model = Vendor
+    form_class = VendorForm
+    template_name = 'vendor_create.html'
+
+    def form_valid(self, form):
+        p = form.save(commit=False)
+        p.user = self.request.user
+        p.save()
+        return redirect('/vendors/')
+
+class VendorUpdateView(generic.UpdateView):
+    model = Vendor
+    form_class = VendorForm
+    template_name = 'vendor_create.html'
+
+    def user_passes_test(self, request):
+        if request.user.is_authenticated():
+            self.object = self.get_object()
+            return self.object.user == request.user
+        return False
+
+    def dispatch(self, request, *args, **kwargs):
+        if not self.user_passes_test(request):
+            return HttpResponseRedirect('/')
+        return super(VendorUpdateView, self).dispatch(
+            request, *args, **kwargs)
+
+    def form_valid(self, form):
+        p = form.save(commit=False)
+        p.user = self.request.user
+        p.save()
+        return redirect('/vendors/')
+
+class EventCreateView(generic.CreateView):
     model = Event
     form_class = EventForm
     template_name = 'events_create.html'
@@ -55,7 +101,7 @@ class EventsCreateView(generic.CreateView):
         p.save()
         return redirect('/events/')
 
-class EventsUpdateView(generic.UpdateView):
+class EventUpdateView(generic.UpdateView):
     model = Event
     form_class = EventForm
     template_name = 'events_create.html'
@@ -69,7 +115,7 @@ class EventsUpdateView(generic.UpdateView):
     def dispatch(self, request, *args, **kwargs):
         if not self.user_passes_test(request):
             return HttpResponseRedirect('/')
-        return super(EventsUpdateView, self).dispatch(
+        return super(EventUpdateView, self).dispatch(
             request, *args, **kwargs)
 
     def form_valid(self, form):
@@ -117,7 +163,7 @@ def home(
     context = {
         'posts': Post.objects.order_by('-created_at'),
         'resources': Resource.objects.order_by('-created_at')[:3],
-        'members': User.objects.order_by('-date_joined').filter(profile__isnull=False)[:10],
+        'members': User.objects.order_by('-date_joined').filter(profile__isnull=False).filter(profile__status='Active')[:10],
         'post_block': 'post_block.html',
         'post_comment': 'post_comment.html',
     }
@@ -126,7 +172,7 @@ def home(
         template = page_template
     return render(request, template, context)
 
-class JobsCreateView(generic.CreateView):
+class JobCreateView(generic.CreateView):
     model = Job
     form_class = JobForm
     template_name = 'jobs_create.html'
@@ -137,7 +183,7 @@ class JobsCreateView(generic.CreateView):
         p.save()
         return redirect('/jobs/')
 
-class JobsUpdateView(generic.UpdateView):
+class JobUpdateView(generic.UpdateView):
     model = Job
     form_class = JobForm
     template_name = 'jobs_create.html'
@@ -151,7 +197,7 @@ class JobsUpdateView(generic.UpdateView):
     def dispatch(self, request, *args, **kwargs):
         if not self.user_passes_test(request):
             return HttpResponseRedirect('/')
-        return super(JobsUpdateView, self).dispatch(
+        return super(JobUpdateView, self).dispatch(
             request, *args, **kwargs)
 
     def form_valid(self, form):
@@ -266,15 +312,15 @@ def comment_create(request):
     context = {'comment': comment}
     return render(request, template, context)
 
-class MembersRequestView(generic.ListView):
-    template_name = 'members-request.html'
+class MembersAdminView(generic.ListView):
+    template_name = 'admin/members.html'
     context_object_name = 'members'
     model = User
 
 
     def get_context_data(self, **kwargs):
-        context = super(MembersView, self).get_context_data(**kwargs)
-        context['members'] = User.objects.order_by('-created_at')
+        context = super(MembersAdminView, self).get_context_data(**kwargs)
+        context['members'] = User.objects.order_by('-date_joined')
 
         return context
 
@@ -286,7 +332,7 @@ class MembersView(generic.ListView):
 
     def get_context_data(self, **kwargs):
         context = super(MembersView, self).get_context_data(**kwargs)
-        context['members'] = User.objects.order_by('first_name')
+        context['members'] = User.objects.filter(profile__isnull=False).filter(profile__status='Active').order_by('first_name')
 
         return context
 

@@ -4,6 +4,20 @@ from pinax.eventlog.models import log
 from datetime import datetime, timezone
 from django.contrib.postgres.fields import ArrayField
 
+class Vendor(models.Model):
+    user = models.ForeignKey(User)
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+    link = models.URLField(blank=True)
+    categories = ArrayField(models.CharField(max_length=200))
+    contact = models.CharField(max_length=500,blank=True)
+    contact_email = models.CharField(max_length=500,blank=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(db_index=True, auto_now_add=True)
+
+    def __str__(self):
+        return str(self.title)
+
 class Event(models.Model):
     user = models.ForeignKey(User, blank=True, on_delete=models.CASCADE)
     title = models.CharField(max_length=300)
@@ -14,6 +28,13 @@ class Event(models.Model):
     datetime = models.DateTimeField()
     created_at = models.DateTimeField(db_index=True, auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return str(self.title)
+
+class Rsvp(models.Model):
+    user = models.ForeignKey(User)
+    event = models.ForeignKey(Event)
 
     def __str__(self):
         return str(self.user)

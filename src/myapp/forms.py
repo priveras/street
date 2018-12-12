@@ -1,5 +1,5 @@
 from django import forms
-from .models import Comment, Post, Profile, Job, Event
+from .models import *
 
 class PostForm(forms.ModelForm):
     class Meta:
@@ -76,3 +76,18 @@ class ProfileForm(forms.ModelForm):
 
     def events_labels(self):
         return [label for value, label in self.fields['events'].choices if value in self['events'].value()]
+
+class VendorForm(forms.ModelForm):
+    class Meta:
+        model = Vendor
+        exclude = ['user', 'created_at', 'updated_at']
+
+    CATEGORIES = (
+        ('Accounting', 'Accounting'),
+        ('Events', 'Events'),
+        ('Legal', 'Legal'),
+        ('Marketing', 'Marketing'),
+        ('Web Development', 'Web Development'),
+        )
+
+    categories = forms.MultipleChoiceField(choices=CATEGORIES)

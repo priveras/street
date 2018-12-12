@@ -55,7 +55,7 @@
               <div class="col-auto">
                     
                 <!-- Button -->
-                <a href="{% url 'app:jobs-create' %}" class="btn btn-sm btn-primary">
+                <a href="{% url 'app:job-create' %}" class="btn btn-sm btn-primary">
                   Post Job
                 </a>
 
@@ -130,21 +130,6 @@
                     </p>
                     
                   </div>
-                  <div class="col-auto">
-                    
-                    <!-- Button -->
-                    {% if resource.file %}
-                    <a href="{{resource.file}}" class="btn btn-sm btn-white d-none d-md-inline-block">
-                      Download
-                    </a>
-                    {% endif %}
-                    {% if resource.link %}
-                    <a href="{{resource.link}}" target="_blank" class="btn btn-sm btn-white d-none d-md-inline-block">
-                      Link
-                    </a>
-                    {% endif %}
-
-                  </div>
                   {% if job.user == user %}
                   <div class="col-auto">
                     
@@ -154,7 +139,7 @@
                         <i class="fe fe-more-vertical"></i>
                       </a>
                       <div class="dropdown-menu dropdown-menu-right">
-                        <a href="{% url 'app:jobs-update' job.id %}" class="dropdown-item">
+                        <a href="{% url 'app:job-update' job.id %}" class="dropdown-item">
                           Edit
                         </a>
                         <a href="#!" class="dropdown-item delete-job" data-toggle="modal" data-target="#delete3" data-id="{{ job.id }}">
