@@ -12,68 +12,73 @@
 <div class="main-content">
   
   {% include 'navbar.html' %}
+  {% load staticfiles %}
+<!-- HEADER -->
+<div class="header">
+
+  <!-- Image -->
+  <img src="{% static 'assets/img/covers/alpha-cover.jpg' %}" class="header-img-top" alt="...">
+  
+  <div class="container-fluid">
+
+    <!-- Body -->
+    <div class="header-body mt--5 mt-md--6">
+      <div class="row align-items-end">
+        <div class="col-auto">
+          
+          <!-- Avatar -->
+          <div class="avatar avatar-xxl header-avatar-top">
+            {% for profile in member.profile_set.all %}
+            <img src="{{ profile.image.url }}" alt="..." class="avatar-img rounded border border-4 border-body">
+            {% endfor %}
+          </div>
+
+        </div>
+        <div class="col mb-3 ml--3 ml-md--2">
+          
+          <!-- Pretitle -->
+          <h6 class="header-pretitle">
+            Profile
+          </h6>
+
+          <!-- Title -->
+          <h1 class="header-title">
+              {{member.first_name}} {{member.last_name}}
+          </h1>
+
+        </div>
+      </div> <!-- / .row -->
+    </div> <!-- / .header-body -->
+
+  </div>
+
+</div> <!-- / .header -->
 
   <!-- CONTENT -->
   <div class="container-fluid mt-5 mb-5">
     <div class="row">
       <div class="col-12 col-xl-8">
-      	<div class="row align-items-center">
-          <div class="col-auto">
-
-            <div class="avatar avatar-xxl header-avatar-top">
-
-            {% for profile in member.profile_set.all %}
-            <img src="{{ profile.image.url }}" class="avatar-img rounded-circle">
-            {% endfor %}
-
-            </div>
-
-
-          </div>
-          <div class="col ml--3 ml-md--2">
-            
-            <!-- Pretitle -->
-            <h6 class="header-pretitle">
-              Member
-            </h6>
-
-            <!-- Title -->
-            <h1 class="header-title">
-              {{member.first_name}} {{member.last_name}}
-            </h1>
-            <h4>
-              {% for profile in member.profile_set.all %}
-            	{{profile.job_title}} at <a href="{{profile.link}}">{{profile.company}}</a>
-              {% endfor %}
-            </h4>
-
-          </div>
-          {% if user != userp %}
-          <div class="col-auto">
-            <a href="#" class="btn btn-primary">Get an Intro</a>
-          </div>
-          {% endif %}
-          
-        </div>
         <!-- Card -->
-        <div class="card mt-5">
+        <div class="card">
           <div class="card-body">
-            <h2>Info:</h2>
+            <h2>Main Info</h2>
 
             <hr>
             {% for profile in member.profile_set.all %}
             <!-- Text -->
+            <h3>Role</h3>
             <p class="mb-3 text-justify">
-              <b>Role:</b> {{profile.description}}
+              {{profile.description}}
             </p>
+            <h3>Bio</h3>
             <p class="mb-3 text-justify">
-              <b>Bio:</b> {{profile.bio}}
+              {{profile.bio}}
             </p>
+            <h3>Specialties</h3>
             <p class="card-text">
-              <b>Team Responsibilities: </b>
               {% for profile in member.profile_set.all %}
-                {% for activity in profile.activities %}
-                  <span class="badge badge-soft-secondary">{{activity}}</span>
+                {% for specialty in profile.specialty %}
+                  <span class="badge badge-soft-secondary">{{specialty}}</span>
                 {% endfor %}
               {% endfor %}
             </p>
@@ -104,7 +109,7 @@
           <!-- Card -->
           <div class="card mt-5">
             <div class="card-body">
-              <h2>Latest posts by {{userp.first_name|capfirst}}</h2>
+              <h2>Latest posts by {{member.first_name|capfirst}}</h2>
               <hr>
               <!-- Header -->
               <div class="mb-3">
@@ -311,27 +316,6 @@
               </div> <!-- / .row -->
               {% endif %}
             {% endfor %}
-
-            <hr>
-
-            <div class="row align-items-center">
-              <div class="col">
-                
-                <!-- Title -->
-                <h5 class="mb-0">
-                  Team Size
-                </h5>
-
-              </div>
-              <div class="col-auto">
-                {% for profile in member.profile_set.all %}
-                <small>
-                  {{profile.team}}
-                </small>
-                {% endfor %}
-
-              </div>
-            </div> <!-- / .row -->
 
             {% if user.is_superuser %}
 

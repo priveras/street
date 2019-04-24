@@ -25,7 +25,7 @@
                 
                 <!-- Title -->
                 <h4 class="card-header-title">
-                  Members ({{members.count}})
+                  Members
                 </h4>
 
               </div>
@@ -84,7 +84,7 @@
                 <div class="row align-items-center">
                   <div class="col-auto">
                     
-                    <a href="#!" class="avatar avatar-lg">
+                    <a href="{% url 'app:profile' member.username %}" class="avatar avatar-lg">
                       {% for profile in member.profile_set.all %}
                         {% if profile.image %}
                         <img src="{{profile.image.url}}" alt="..." class="avatar-img rounded-circle">
@@ -117,8 +117,8 @@
                     </p>
                     <p class="card-text small text-muted">
                       {% for profile in member.profile_set.all %}
-                        {% for activity in profile.activities %}
-                          <span class="badge badge-soft-secondary">{{activity}}</span>
+                        {% for specialty in profile.specialty %}
+                          <span class="badge badge-soft-secondary">{{specialty}}</span>
                         {% endfor %}
                       {% endfor %}
                     </p>

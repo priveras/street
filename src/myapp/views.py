@@ -12,6 +12,35 @@ from .forms import *
 from .models import *
 from django.http import HttpResponseRedirect
 
+class HubView(generic.ListView):
+    template_name = 'hub.html'
+    context_object_name = 'announcements'
+    model = Announcement
+
+
+    def get_context_data(self, **kwargs):
+        context = super(HubView, self).get_context_data(**kwargs)
+        context = {
+            'announcements' : Announcement.objects.order_by('-created_at')[:5],
+            'articles' : Article.objects.order_by('-created_at')[:20],
+            'teams' : Team.objects.order_by('-created_at')[:20],
+            'feature' : Feature.objects.order_by('-created_at')[:1],
+            'members': User.objects.order_by('-date_joined').filter(profile__isnull=False).filter(profile__status='Active')[:10],
+            'total_members': Profile.objects.count(),
+            'total_resources': Resource.objects.count(),
+            'total_teams': Team.objects.count(),
+        }
+
+        return context
+
+@csrf_exempt
+def delete_vendor(request, vendor_id):
+    if request.method != 'POST':
+        raise Http404
+
+    Vendor.objects.filter(id=vendor_id, user=request.user).delete()
+    return JsonResponse({'status': 'ok'})
+
 @csrf_exempt
 def delete_post(request, post_id):
     if request.method != 'POST':
@@ -148,7 +177,7 @@ def profile(request, username):
                   })
 
 def index(request):
-    return HttpResponseRedirect('/home/')
+    return redirect('/home/')
 
 def home(
     request,
@@ -363,9 +392,6 @@ class JobsView(generic.ListView):
 
 class StatusView(generic.TemplateView):
     template_name = "status.html"
-
-class IndexView(generic.TemplateView):
-    template_name = "front/index.html"
 
 def analytics(request):
 

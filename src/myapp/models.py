@@ -4,6 +4,60 @@ from pinax.eventlog.models import log
 from datetime import datetime, timezone
 from django.contrib.postgres.fields import ArrayField
 
+class Team(models.Model):
+    title = models.CharField(max_length=300)
+    description = models.TextField(blank=True)
+    location = models.CharField(max_length=300)
+    created_at = models.DateTimeField(db_index=True, auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return str(self.title)
+
+class TeamMember(models.Model):
+    user = models.ForeignKey(User, blank=True, on_delete=models.CASCADE)
+    team = models.ForeignKey(Team, blank=True, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(db_index=True, auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return str(self.user)
+
+class Feature(models.Model):
+    user = models.ForeignKey(User, blank=True, on_delete=models.CASCADE)
+    title = models.CharField(max_length=300)
+    image = models.FileField(upload_to='images/%Y%m%d')
+    text = models.TextField(blank=True)
+    link = models.URLField(blank=True)
+    created_at = models.DateTimeField(db_index=True, auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return str(self.title)
+
+
+class Article(models.Model):
+    user = models.ForeignKey(User, blank=True, on_delete=models.CASCADE)
+    title = models.CharField(max_length=300)
+    image = models.FileField(upload_to='images/%Y%m%d')
+    text = models.TextField(blank=True)
+    link = models.URLField(blank=True)
+    created_at = models.DateTimeField(db_index=True, auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return str(self.title)
+
+class Announcement(models.Model):
+    user = models.ForeignKey(User, blank=True, on_delete=models.CASCADE)
+    title = models.CharField(max_length=300)
+    text = models.TextField(blank=True)
+    created_at = models.DateTimeField(db_index=True, auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return str(self.title)
+
 class Vendor(models.Model):
     user = models.ForeignKey(User)
     title = models.CharField(max_length=200)
@@ -493,14 +547,9 @@ class Profile(models.Model):
     description = models.TextField()
     bio = models.TextField()
     image = models.ImageField(upload_to='images/%Y%m%d', null=True)
-    team = models.CharField(max_length=200)
-    events = ArrayField(models.CharField(max_length=200), blank=True)
-    activities = ArrayField(models.CharField(max_length=200))
-    mentorship = ArrayField(models.CharField(max_length=200))
-    panel = models.BooleanField(default=False)
-    moderator = models.BooleanField(default=False)
-    referal = models.CharField(max_length=200, blank=True)
-    referal_email = models.CharField(max_length=200, blank=True)
+    specialty = ArrayField(models.CharField(max_length=200))
+    #panel = models.BooleanField(default=False)
+    #moderator = models.BooleanField(default=False)
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(db_index=True, auto_now_add=True)
 

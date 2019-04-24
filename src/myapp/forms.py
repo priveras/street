@@ -40,7 +40,7 @@ class ProfileForm(forms.ModelForm):
         ('Other', 'Other'),
         )
 
-    ACTIVITIES = (
+    SPECIALTY = (
         ('Accounting/Bookkeeping', 'Accounting/Bookkeeping'),
         ('Brand', 'Brand'),
         ('Business Development', 'Business Development'),
@@ -69,7 +69,7 @@ class ProfileForm(forms.ModelForm):
         )
 
     events = forms.MultipleChoiceField(choices=EVENTS, required=False)
-    activities = forms.MultipleChoiceField(widget=forms.SelectMultiple, choices=ACTIVITIES)
+    specialty = forms.MultipleChoiceField(widget=forms.SelectMultiple, choices=SPECIALTY)
     mentorship = forms.MultipleChoiceField(widget=forms.SelectMultiple, choices=MENTORSHIP, required=False)
     moderator= forms.BooleanField(widget= forms.CheckboxInput(attrs={'id':'toggleTwo'}), required=False)
     panel= forms.BooleanField(widget= forms.CheckboxInput(attrs={'id':'toggleOne'}), required=False)

@@ -46,4 +46,7 @@ urlpatterns = [
     url(r'^api/delete/event/(?P<event_id>[0-9]+)',
         login_required(views.delete_event),
         name='delete-event'),
+    url(r'^api/delete/vendor/(?P<vendor_id>[0-9]+)',
+        login_required(views.delete_vendor),
+        name='delete-vendor'),
 ]

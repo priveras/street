@@ -1,0 +1,648 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load humanize %}
+
+{% block navigation %}
+  {% include 'navigation.html' %}
+{% endblock %}
+
+{% block content %}
+<!-- MAIN CONTENT
+================================================== -->
+<div class="main-content">
+
+  {% include 'navbar.html' %}
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="container-fluid">
+
+      <!-- Body -->
+      <div class="header-body">
+        <div class="row align-items-end">
+          <div class="col">
+            
+            <!-- Pretitle -->
+            <h6 class="header-pretitle">
+              ZX Network
+            </h6>
+
+            <!-- Title -->
+            <h1 class="header-title">
+              Home
+            </h1>
+
+          </div>
+        </div> <!-- / .row -->
+      </div> <!-- / .header-body -->
+
+    </div>
+  </div> <!-- / .header -->
+  
+  <!-- CARDS -->
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12 col-lg-6 col-xl">
+        
+        <!-- Card -->
+        <div class="card">
+          <div class="card-body">
+            <div class="row align-items-center">
+              <div class="col">
+
+                <!-- Title -->
+                <h6 class="card-title text-uppercase text-muted mb-2">
+                  Members
+                </h6>
+                
+                <!-- Heading -->
+                <span class="h2 mb-0">
+                  {% if total_members %}
+                  {{total_members}}
+                  {% else %}
+                  0
+                  {% endif %}
+                </span>
+
+              </div>
+              <div class="col-auto">
+                
+                <!-- Icon -->
+                <span class="h2 fe fe-user text-muted mb-0"></span>
+
+              </div>
+            </div> <!-- / .row -->
+
+          </div>
+        </div>
+
+      </div>
+      <div class="col-12 col-lg-6 col-xl">
+        
+        <!-- Card -->
+        <div class="card">
+          <div class="card-body">
+            <div class="row align-items-center">
+              <div class="col">
+
+                <!-- Title -->
+                <h6 class="card-title text-uppercase text-muted mb-2">
+                  Resources
+                </h6>
+                
+                <!-- Heading -->
+                <span class="h2 mb-0">
+                  {% if total_resources %}
+                  {{total_resources}}
+                  {% else %}
+                  0
+                  {% endif %}
+                </span>
+
+              </div>
+              <div class="col-auto">
+                
+                <!-- Icon -->
+                <span class="h2 fe fe-folder-plus text-muted mb-0"></span>
+
+              </div>
+            </div> <!-- / .row -->
+
+          </div>
+        </div>
+          
+      </div>
+      <div class="col-12 col-lg-6 col-xl">
+        
+       
+        <!-- Card -->
+        <div class="card">
+          <div class="card-body">
+            <div class="row align-items-center">
+              <div class="col">
+
+                <!-- Title -->
+                <h6 class="card-title text-uppercase text-muted mb-2">
+                  Teams
+                </h6>
+                
+                <!-- Heading -->
+                <span class="h2 mb-0">
+                  {% if total_teams %}
+                  {{total_teams}}
+                  {% else %}
+                  0
+                  {% endif %}
+                </span>
+
+              </div>
+              <div class="col-auto">
+                
+                <!-- Icon -->
+                <span class="h2 fe fe-briefcase text-muted mb-0"></span>
+
+              </div>
+            </div> <!-- / .row -->
+
+          </div>
+        </div>
+          
+      </div>
+      <div class="col-12 col-lg-6 col-xl">
+        
+        <!-- Card -->
+        <div class="card">
+          <div class="card-body">
+            <div class="row align-items-center">
+              <div class="col">
+
+                <!-- Title -->
+                <h6 class="card-title text-uppercase text-muted mb-2">
+                  Effective Hourly
+                </h6>
+                
+                <!-- Heading -->
+                <span class="h2 mb-0">
+                  $85.50
+                </span>
+
+              </div>
+              <div class="col-auto">
+                
+                <!-- Icon -->
+                <span class="h2 fe fe-clock text-muted mb-0"></span>
+
+              </div>
+            </div> <!-- / .row -->
+
+          </div>
+        </div>
+          
+      </div>
+    </div> <!-- / .row -->
+    <div class="row">
+      <div class="col-12 col-xl-8">
+        
+        <!-- Orders -->
+        <div class="card">
+          <div class="card-header">
+            <div class="row align-items-center">
+              <div class="col">
+            
+                <!-- Title -->
+                <h4 class="card-header-title">
+                  Announcements
+                </h4>
+
+              </div>
+            
+            </div> <!-- / .row -->
+
+          </div>
+          <div class="card-body" style="max-height: 347.5px; overflow-y: auto;">
+
+            {% if announcements %}
+
+              {% for announcement in announcements %}
+              
+              <ul class="list-group list-group-lg list-group-flush list my-n4">
+                
+                <li class="list-group-item px-0">
+                  <div class="row align-items-center">
+                    <div class="col-auto">
+
+                    </div>
+                    <div class="col ml-n2">
+
+                      <!-- Title -->
+                      <h4 class="card-title mb-1 name text-primary">
+                        <a href="#!">{{announcement.title}}</a>
+                      </h4>
+
+                      <!-- Text -->
+                      <p class="card-text small mb-1 text-justify">
+                        {{announcement.text|truncatechars:150}}
+                      </p>
+
+                      <!-- Time -->
+                      <p class="card-text small text-muted">
+                        Posted by {{announcement.user.first_name}} {{announcement.user.last_name}} on <time datetime="2018-01-03">{{announcement.created_at|date}}</time>
+                      </p>
+                      
+                    </div>
+                    <div class="col-auto">
+                      
+                      <!-- Button -->
+                      <button class="btn btn-sm btn-white d-none d-md-inline-block" data-toggle="modal" data-target="#announcements">
+                        Read More
+                      </button>
+
+                    </div>
+                  </div> <!-- / .row -->
+
+                </li>
+              </ul>
+              {% endfor %}
+
+            {% else %}
+            <ul class="list-group list-group-lg list-group-flush list my-n4">
+                
+                <li class="list-group-item px-0">
+                  <div class="row align-items-center">
+                    <div class="col-auto">
+                      
+                      
+
+                    </div>
+                    <div class="col ml-n2">
+
+                      <!-- Title -->
+                      <h4 class="card-title mb-1 name">
+                        <a href="#!">No Announcements yet</a>
+                      </h4>
+
+                      <!-- Text -->
+                      <p class="card-text small text-muted mb-1">
+                        6.9mb directory
+                      </p>
+
+                      <!-- Time -->
+                      <p class="card-text small text-muted">
+                        Uploaded by Dianna Smiley on <time datetime="2018-01-03">Jan 3, 2018</time>
+                      </p>
+                      
+                    </div>
+                    <div class="col-auto">
+                      
+                      <!-- Button -->
+                      <a href="#!" class="btn btn-sm btn-white d-none d-md-inline-block">
+                        New Announcement
+                      </a>
+
+                    </div>
+                  </div> <!-- / .row -->
+
+                </li>
+              </ul>
+            {% endif %}
+
+          </div>
+        </div>
+
+      </div>
+      <div class="col-12 col-xl-4">
+        <!-- Devices -->
+        <div class="card">
+          <div class="card-header">
+            <div class="row align-items-center">
+              <div class="col">
+            
+                <!-- Title -->
+                <h4 class="card-header-title">
+                  Trivia
+                </h4>
+
+              </div>
+              <div class="col-auto">
+                <span class="badge badge-soft-success mt--1">
+                  100pts
+                </span>
+              </div>
+            </div> <!-- / .row -->
+
+          </div>
+          <div class="card-body" style="max-height: 347.5px; overflow-y: auto;">
+            
+            <!-- Avatar -->
+            <div class="text-center">
+              <a href="team-overview.html" class="card-avatar avatar avatar-lg mx-auto">
+                <img src="http://www.hssc.us/wp-content/uploads/2017/06/Trivia.png" alt="" class="avatar-img rounded">
+              </a>
+            </div>
+
+            <!-- Title -->
+            <h2 class="card-title text-center mb-3">
+              <a href="team-overview.html">ZX Trivia</a>
+            </h2>
+
+            <!-- Text -->
+            <p class="card-text text-center text-muted mb-4">
+              Which one of these is NOT a ZX Ventures business unit?
+            </p>
+
+            <!-- Divider -->
+            <hr>
+
+            <div class="row align-items-center">
+              <div class="col">
+                
+                <!-- Time -->
+                <div class="btn btn-white btn-sm" style="width:100%">Specialties</div>
+                <div class="btn btn-white btn-sm mt-2" style="width:100%">Homebrewing</div>
+                <div class="btn btn-white btn-sm mt-2" style="width:100%">Explore</div>
+              </div>
+            </div> <!-- / .row -->
+
+          </div>
+        </div>
+        
+      </div>
+    </div> <!-- / .row -->
+    <div class="row">
+      <div class="col-12 col-xl-4">
+
+        <!-- Projects -->
+        <div class="card">
+          <div class="card-header">
+            <div class="row align-items-center">
+              <div class="col">
+                
+                <!-- Title -->
+                <h4 class="card-header-title">
+                  New Members
+                </h4>
+
+              </div>
+              <div class="col-auto">
+
+                <!-- Link -->
+                <a href="{% url 'app:members' %}" class="small">View all</a>
+                
+              </div>
+            </div> <!-- / .row -->
+          </div>
+          <div class="card-body" style="max-height: 347.5px; overflow-y: auto;">
+
+          {% for member in members %}
+
+              {% if member.username != members.0.username %}
+              <hr>
+              {% endif %}
+
+              <div class="row align-items-center">
+                <div class="col-auto">
+                  
+                  <!-- Avatar -->
+                  <a href="{% url 'app:profile' member.username %}" class="avatar">
+                    {% for profile in member.profile_set.all %}
+                      {% if profile.image %}
+                      <img src="{{profile.image.url}}" alt="..." class="avatar-img rounded-circle">
+                      {% endif %}
+                    {% endfor %}
+                  </a>
+
+                </div>
+                <div class="col ml--2">
+
+                  <!-- Title -->
+                  <h4 class="card-title mb-1">
+                    <a href="{% url 'app:profile' member.username %}">{{member.first_name}} {{member.last_name}}</a>
+                  </h4>
+
+                  <!-- Time -->
+                  <p class="card-text small text-muted">
+                    {% for profile in member.profile_set.all %}
+                    {{profile.job_title}} at <a href="{{profile.link}}" target="_blank">{{profile.company}}</a>
+                    <br>
+                    <small>
+                      <i class="fa fa-map-marker-alt text-muted"></i> {{profile.location}}
+                    </small>
+                    {% endfor %}
+                  </p>
+                  
+                </div>
+              </div> <!-- / .row -->
+
+          {% endfor %}
+
+          </div> <!-- / .card-body -->
+        </div> <!-- / .card -->           
+
+      </div>
+      <div class="col-12 col-xl-8">
+        
+        <!-- Performance -->
+        <div class="card">
+          <div class="card-header">
+            <div class="row align-items-center">
+              <div class="col">
+            
+                <!-- Title -->
+                <h4 class="card-header-title">
+                  News and Articles
+                </h4>
+
+              </div>
+              <div class="col-auto">
+                <a href="{% url 'app:members' %}" class="btn-white btn btn-sm">Share Article</a>
+              </div>
+            </div> <!-- / .row -->
+
+          </div>
+          <div class="card-body" style="max-height: 347.5px; overflow-y: auto;">
+
+            {% for article in articles %}
+
+            {% if article.title != articles.0.title %}
+            <hr>
+            {% endif %}
+
+            <div class="row align-items-center">
+              <div class="col-auto">
+                
+                <!-- Avatar -->
+                <a href="project-overview.html" class="avatar avatar-4by3">
+                  <img src="{{article.image.url}}" alt="..." class="avatar-img rounded">
+                </a>
+
+              </div>
+              <div class="col ml-n2">
+
+                <!-- Title -->
+                <h4 class="card-title mb-1">
+                  <a href="project-overview.html">{{article.title|truncatechars:100}}</a>
+                </h4>
+
+                <!-- Time -->
+                <p class="card-text small text-muted">
+                  <time datetime="2018-05-24">{{article.text|truncatechars:130}}</time>
+                </p>
+                
+              </div>
+              <div class="col-auto">
+                
+                <!-- Dropdown -->
+                <div class="dropdown">
+                  <a href="#" class="dropdown-ellipses dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fe fe-more-vertical"></i>
+                  </a>
+                  <div class="dropdown-menu dropdown-menu-right">
+                    <a href="#!" class="dropdown-item">
+                      Action
+                    </a>
+                    <a href="#!" class="dropdown-item">
+                      Another action
+                    </a>
+                    <a href="#!" class="dropdown-item">
+                      Something else here
+                    </a>
+                  </div>
+                </div>
+                
+              </div>
+            </div> <!-- / .row -->
+            {% endfor %}
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 col-xl-7">
+        
+        <!-- Goals -->
+        <div class="card">
+          <div class="card-header">
+            <div class="row align-items-center">
+              <div class="col">
+
+                <!-- Title -->
+                <h4 class="card-header-title">
+                  Teams
+                </h4>
+
+              </div>
+              <div class="col-auto">
+
+                <!-- Button -->
+                <a href="#!" class="btn btn-sm btn-white">
+                  See All
+                </a>
+                
+              </div>
+            </div> <!-- / .row -->
+          </div>
+          <div class="table-responsive mb-0" >
+            <table class="table table-sm table-nowrap card-table">
+              <thead>
+                <tr>
+                  <th>
+                    <a href="#" class="text-muted">
+                      Title
+                    </a>
+                  </th>
+                  <th>
+                    <a href="#" class="text-muted">
+                      Location
+                    </a>
+                  </th>
+                  <th>
+                    Team
+                  </th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody class="list">
+                {% for team in teams %}
+                <tr>
+                  <td class="goal-project">
+                    {{team.title}}
+                  </td>
+                  <td class="goal-progress">
+                    {{team.location}}
+                  </td>
+                  <td>
+                    <div class="avatar-group">
+                      {% if team.teammember_set.all %}
+                        {% for member in team.teammember_set.all %}
+                        <a href="profile-posts.html" class="avatar avatar-xs" data-toggle="tooltip" title="{{member.user.first_name}} {{member.user.last_name}}">
+                          {% for profile in member.user.profile_set.all %}
+                          <img src="{{profile.image.url}}" class="avatar-img rounded-circle" alt="...">
+                          {% endfor %}
+                        </a>
+                        {% endfor %}
+                      {% else %}
+                        <a href="profile-posts.html" class="avatar avatar-xs" data-toggle="tooltip" title="No members">
+                          <img src="https://icons-for-free.com/free-icons/png/512/1287507.png" class="avatar-img rounded-circle" alt="...">
+                        </a>
+                      {% endif %}
+                    </div>
+                  </td>
+                  <td class="text-right">
+                    <div class="dropdown">
+                      <a href="#!" class="dropdown-ellipses dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-boundary="window">
+                        <i class="fe fe-more-vertical"></i>
+                      </a>
+                      <div class="dropdown-menu dropdown-menu-right">
+                        <a href="#!" class="dropdown-item">
+                          Action
+                        </a>
+                        <a href="#!" class="dropdown-item">
+                          Another action
+                        </a>
+                        <a href="#!" class="dropdown-item">
+                          Something else here
+                        </a>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+      <div class="col-12 col-xl-5">
+        
+        <!-- Card -->
+        <div class="card">
+          <div class="card-body text-center">
+            <div class="row justify-content-center">
+              <div class="col-12 col-xl-10">
+            
+                <!-- Image -->
+                <img src="{{feature.0.image.url}}" alt="..." class="img-fluid mt--5 mb-4" style="max-width: 272px;">
+
+                <!-- Title -->
+                <h2 class="mb-2">
+                  {{feature.0.title}}
+                </h2>
+
+                <!-- Content -->
+                <p class="text-muted">
+                  {{feature.0.text}}
+                </p>
+              
+              </div>
+            </div> <!-- / .row -->
+          </div>
+        </div>
+
+      </div>
+    </div> <!-- / .row -->
+  </div>
+
+</div> <!-- / .main-content -->
+<!-- Modal -->
+<div class="modal fade" id="announcements" tabindex="-1" role="dialog" aria-labelledby="announcementsLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

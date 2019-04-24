@@ -108,7 +108,7 @@
 
                 <!-- Label -->
                 <label class="mb-1">
-                  Firm
+                  Company
                 </label>
 
                 <!-- Input -->
@@ -124,7 +124,7 @@
 
                 <!-- Label -->
                 <label class="mb-1">
-                  Firm's Website
+                  Company Website
                 </label>
 
                 <!-- Input -->
@@ -205,7 +205,7 @@
                   Description of Role
                 </label>
                 <small class="form-text text-muted">
-                  A bit more about yourself - feel free to copy and paste bio if one exists
+                  A bit more about your role, let others know what you are working on.
                 </small>
 
                 <!-- Input -->
@@ -254,54 +254,18 @@
 
             <div class="col-12">
               
-              <!-- Email address -->
-              <div class="form-group">
-
-                <!-- Label -->
-                <label class="mb-1">
-                  Size of Team
-                </label>
-
-                <!-- Input -->
-                {% render_field form.team|attr:"placeholder:ie: 10"|attr:"type:text" class="form-control" %}
-
-              </div>
-
-            </div>
-
-            <div class="col-12">
-              
               <!-- Birthday -->
               <div class="form-group">
 
                 <!-- Label -->
                 <label>
-                  Team Responsibilities/Activities
+                  Specialties
                 </label>
                 <small class="form-text text-muted">
-                  Add the cities where you'd like to attend Alpha events. 
+                  Add some areas you are a specialist in
                 </small>
                <!-- Input -->
-                {% render_field form.activities|attr:"data-toggle:select"|attr:"multiple" class="form-control" %}
-              </div>
-
-            </div>
-
-            <div class="col-12">
-              
-              
-              <div class="form-group">
-
-                
-                <label>
-                  Interested in Mentorship Program Participation
-                </label>
-                <small class="form-text text-muted">
-                  Add the cities where you'd like to attend Alpha events. 
-                </small>
-
-                
-                {% render_field form.mentorship|attr:"data-toggle:select"|attr:"multiple" class="form-control" %}
+                {% render_field form.specialty|attr:"data-toggle:select"|attr:"multiple" class="form-control" %}
               </div>
 
             </div>
@@ -405,44 +369,7 @@
 
             </div>
           </div>-->
-
-          <hr class="mt-4 mb-5">
-
-          <div class="row">
-            <div class="col-12 col-md-6">
-              
-              <!-- Email address -->
-              <div class="form-group">
-
-                <!-- Label -->
-                <label class="mb-1">
-                  Referred By <small class="text-muted">(Optional)</small>
-                </label>
-
-                <!-- Input -->
-                {% render_field form.referal|attr:"placeholder:Jane Doe"|attr:"type:url" class="form-control required" %}
-
-              </div>
-
-            </div>
-            <div class="col-12 col-md-6">
-              
-              <!-- Email address -->
-              <div class="form-group">
-
-                <!-- Label -->
-                <label class="mb-1">
-                  Refered By Email <small class="text-muted">(Optional)</small>
-                </label>
-
-                <!-- Input -->
-                {% render_field form.referal_email|attr:"placeholder:jane@doe.com"|attr:"type:text" class="form-control" %}
-
-              </div>
-
-            </div>
-          </div>
-
+          
           <!-- Divider -->
           <hr class="mt-4 mb-5">
 

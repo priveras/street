@@ -64,6 +64,22 @@ $(function(){
     });
   });
 
+  $('.delete-vendor').click(function(){
+    var id = $(this).attr('data-id');
+    $('#delete-vendor-submit').attr('data-id', id);
+    console.log(id + 'hello');
+  });
+
+  $('#delete-vendor-submit').click(function(){
+    var id = $(this).attr('data-id');
+    var path = '/api/delete/vendor/' + id;
+
+    $.post(path, function(data) {
+      $('#delete5').modal('toggle');
+      window.location.reload();
+    });
+  });
+
   //save a post
   $('#post-form').submit(function(e){
     var myEditor = document.querySelector('#text-post')

@@ -103,13 +103,13 @@
                   <div class="col-auto">
                     
                     <!-- Avatar -->
-                    <a href="#!" class="avatar avatar-lg">
+                    <span class="avatar avatar-md">
                       {% if job.image %}
                       <img src="{{job.image.url}}" alt="..." class="avatar-img rounded-circle">
                       {% else %}
                       <img src="{% static 'assets/img/logo.png' %}" alt="..." class="avatar-img rounded-circle">
                       {% endif %}
-                    </a>
+                    </span>
 
                   </div>
                   <div class="col ml--2">
@@ -126,7 +126,7 @@
 
                     <!-- Time -->
                     <p class="card-text small text-muted">
-                      Posted by {{job.user.first_name}} {{job.user.last_name}} on <time datetime="2018-01-03">Jan 3, 2018</time>
+                      Posted by <a href="{% url 'app:profile' job.user.username %}">{{job.user.first_name}} {{job.user.last_name}}</a> on <time datetime="2018-01-03">Jan 3, 2018</time>
                     </p>
                     
                   </div>

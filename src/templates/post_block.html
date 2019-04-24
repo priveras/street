@@ -11,7 +11,7 @@
           <div class="col-auto">
             
             <!-- Avatar -->
-            <a href="#!" class="avatar">
+            <a href="{% url 'app:profile' post.user.username %}" class="avatar">
               {% for profile in post.user.profile_set.all %}
                 {% if profile.image %}
                 <img src="{{profile.image.url}}" alt="..." class="avatar-img rounded-circle">
@@ -26,7 +26,7 @@
 
             <!-- Title -->
             <h4 class="card-title mb-1">
-              {{post.user.first_name}} {{post.user.last_name}}
+              <a href="{% url 'app:profile' post.user.username %}">{{post.user.first_name}} {{post.user.last_name}}</a>
             </h4>
 
             <!-- Time -->
